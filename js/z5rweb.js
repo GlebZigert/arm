@@ -1,0 +1,221 @@
+.import "utils.js" as Utils
+.import "constants.js" as Const
+.import "journal.js" as Journal
+
+var passageEvents = [16, 17] // TODO: change to classes!
+var stickyStates = [102, 103, 12, 13, 14, 15/*, 8, 9*/]
+
+
+function Z5RWeb(model) {
+    var status = model.status
+    model.status = {db: "", tcp: ""}
+
+    this.model = model
+    this.serviceId = this.model.serviceId
+    this.handlers = {
+        ListDevices: this.rebuildTree.bind(this),
+        UpdateDevice: this.update.bind(this),
+        DeleteDevice: this.deleteDev.bind(this),
+        StatusUpdate: this.statusUpdate.bind(this),
+        Events: this.processEvents.bind(this),
+    }
+    this.statusUpdate(status)
+}
+
+Z5RWeb.prototype.shutdown = function () {
+    console.log(this.model.type, this.model.id, 'shutdown')
+}
+
+Z5RWeb.prototype.statusUpdate = function (data) {
+    //console.log("##################### Z5R SUP", JSON.stringify(data))
+    if (data.tcp !== this.model.status.tcp && data.tcp === "online") {
+        root.send(this.serviceId, 'ListDevices', '')
+        root.send(0, 'LoadJournal', this.serviceId)
+    }
+
+    this.model.status = data
+    this.model.color = Utils.serviceColor(this.model.status)
+}
+
+Z5RWeb.prototype.rebuildTree = function (data) {
+    console.log("Z5RWeb tree:", JSON.stringify(data))
+    var i,
+        list = [],
+        model = this.model.children
+
+    if (this.validateTree()) {
+        this.update(data)
+    } else {
+        console.log('Z5RWeb: rebuild whole tree')
+        for (i = 0; i < data.length; i++) {
+            list.push(this.complement(data[i]))
+        }
+
+        //console.log("Z5RWeb list:", JSON.stringify(list))
+        model.clear()
+        model.append(list)
+        this.cache = Utils.makeCache(model, {})
+        for (i = 0; i < model.count; i++)
+            Utils.updateMaps(model.get(i))
+    }
+}
+
+Z5RWeb.prototype.processEvents = function (events) {
+    //console.log("Z5R Events", JSON.stringify(events))
+    // [{"fromState":0,"state":2,"data":"","text":"ключ не найден в банке ключей (вход), #000000929F4C","deviceId":1,"userId":0,"time":"2021-04-22T16:35:20Z"}]
+    var i, item
+    Journal.logEvents(events)
+
+    if (!this.cache)
+        return // just created, no devices yet
+
+    for (i = 0; i < events.length; i++) {
+        item = this.cache[events[i].deviceId]
+        if (item) {
+            //events[i].class >= 200 ? data.states[0].class : data.states[1].class
+            if (Const.EC_INFO_ALARM_RESET === events[i].class) {
+                resetAlarm(item)
+            } else {
+                setState(item, events[i], 1)
+            }
+            if (passageEvents.indexOf(events[i].event) >= 0)
+                root.newPassage(events[i])
+        }
+    }
+}
+
+Z5RWeb.prototype.update = function (dev) {
+    Utils.replaceDevice(this.model.children, this.serviceId, this.complement(dev))
+}
+
+Z5RWeb.prototype.deleteDev = function (id) {
+    Utils.deleteItem(this.model.children, id)
+}
+
+Z5RWeb.prototype.checkSticky = function (event) {
+    return stickyStates.indexOf(event.event) >= 0
+}
+
+Z5RWeb.prototype.validateTree = function (data) {
+    console.log('Z5RWeb: validateTree stub')
+    return false
+}
+
+Z5RWeb.prototype.complement = function (data) {
+    data.serviceId = this.serviceId
+    data.label = data.name
+    data.zones = linksMap(data.zones)
+    //data.state = data.state
+    //data.stateType = 'na'
+    data.icon = 'fa_shield_alt'
+    data.form = 'z5rweb'
+    data.stickyState = false
+    data.state = 0
+
+    setState(data, data.states[0].class >= 200 ? data.states[0] : data.states[1], 0)
+    return data
+}
+
+Z5RWeb.prototype.reloadTree = function (id) {
+    if ('online' === this.model.status.tcp)
+        root.send(this.serviceId, 'ListDevices', '')
+}
+
+Z5RWeb.prototype.contextMenu = function (id) {
+    var i,
+        menu = [],
+        serviceId = this.model.serviceId,
+        device = this.cache[id]
+    //console.log("z5rweb-CM", JSON.stringify(device))
+
+    if (device && 2 === device.accessMode) {
+        menu.push({text: "Открыть вход", command: 8})
+        menu.push({text: "Открыть выход", command: 9})
+        if (0 !== device.mode)
+            menu.push({text: "Нормальный режим", command: 37, argument: 0})
+        if (1 !== device.mode)
+            menu.push({text: "Заблокировать", command: 37, argument: 1})
+        if (2 !== device.mode)
+            menu.push({text: "Свободный проход", command: 37, argument: 2})
+    }
+    //console.log(JSON.stringify(menu))
+
+    return menu.map(function (v) {
+        v.serviceId = serviceId
+        v.deviceId = id
+        return v
+    })
+}
+
+// priority: 0 - state, 1 - event
+function setState(dev, event, priority) {
+    console.log("Z5R SetState", JSON.stringify(event))
+    var mode,
+        text,
+        animation,
+        sticky = stickyStates.indexOf(event.event) >= 0,
+        classCode = event.class,
+        sid = event.event || classCode, // TODO: check this!
+        className = Utils.className(classCode),
+        color = Const.statesColors[className],
+        modes = ['Норм. режим', 'Свободный проход', 'Блокировка', 'Неизв. режим']
+        // sticky = Utils.useAlarms()
+    switch (classCode) {
+        case Const.EC_NORMAL_ACCESS: dev.mode = 0; break
+        case Const.EC_POINT_BLOCKED: dev.mode = 1; break
+        case Const.EC_FREE_PASS: dev.mode = 2; break
+    }
+
+    if (classCode >= 200) {// ignore info events
+        mode = modes[dev.mode % modes.length]
+        text = event.text //+ ' (' + mode + ')'
+
+        if (undefined !== dev.state && dev.state !== sid)
+            animation = 'flash'; // once
+
+        if (sticky && priority > 0)
+            animation = 'blink'; // continuous
+
+        //console.log('Z5R check-3', dev.stickyState, dev.state, sid)
+        if (priority < 0 || !dev.stickyState && dev.state !== sid) {
+            //console.log('Z5R check-1')
+            // update map
+            if (sticky && priority > 0) {
+                //console.log('Z5R check-2')
+                dev.stickyState = true
+                //event.sticky = true
+                root.playAlarm(className)
+            }
+            dev.mapState = className
+            dev.mapColor = color
+            dev.mapTooltip = text
+            dev.display = animation
+            Utils.updateMaps(dev)
+        }
+        dev.stateClass = classCode
+        dev.state = sid
+        dev.color = color
+        dev.tooltip = text
+        /*if (sticky && priority > 0 && !dev.stickyState) {
+            dev.mapColor = dev.color = Const.statesColors[className]
+        }
+
+        dev.mapColor = dev.color = Const.statesColors[className]
+        dev.tooltip = dev.mapTooltip = event.text + ' (' + mode + ')'*/
+    }
+}
+
+function linksMap(arr) {
+    return (arr || []).map(function (v){return {scope: v[0], id: v[1], flags: v[2]}})
+}
+
+function resetAlarm(dev) {
+    var className = Utils.className(dev.stateClass)
+
+    dev.mapState = className
+    dev.mapColor = dev.color
+    dev.mapTooltip = dev.tooltip
+    dev.display = 'flash'
+    dev.stickyState = false
+    Utils.updateMaps(dev)
+}

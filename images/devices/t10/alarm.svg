@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="33.749992mm"
+   height="33.749989mm"
+   viewBox="0 0 33.749994 33.749988"
+   version="1.1"
+   id="svg5086"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)"
+   sodipodi:docname="alarm.svg">
+  <defs
+     id="defs5080" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="63.77951"
+     inkscape:cy="63.779493"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="460"
+     inkscape:window-height="403"
+     inkscape:window-x="1392"
+     inkscape:window-y="8"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata5083">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-88.958338,-131.95834)">
+    <path
+       d="m 91.208317,165.70833 h 29.250003 q 2.25002,0 2.25002,-2.24999 v -29.25001 q 0,-2.24999 -2.25002,-2.24999 H 91.208317 q -2.24999,0 -2.24999,2.24999 v 29.25001 q 0,2.24999 2.24999,2.24999 z"
+       style="fill:#ff0000;fill-rule:evenodd;stroke-width:0.26458332"
+       id="path4380"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 100.95832,153.70833 h 0.30001 q 3.00001,0 3.00001,-3 v -12.15001 q 0,-2.99998 -3.00001,-2.99998 h -0.30001 q -2.999979,0 -2.999979,2.99998 v 12.15001 q 0,3 2.999979,3 z"
+       style="fill:#ffffff;fill-rule:evenodd;stroke-width:0.26458332"
+       id="path4382"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="matrix(0.26458333,0,0,0.26458333,-31.041671,-205.54167)"
+       id="Layer1490">
+      <path
+         d="m 518.9793,1363.4646 a 19.2371,19.8425 -180 1 1 -19.2371,-19.8426 19.2371,19.8425 -180 0 1 19.2371,19.8426 z"
+         style="fill:#000000;fill-rule:evenodd;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round"
+         id="path4384"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 518.9793,1363.4646 a 19.2371,19.8425 -180 1 1 -19.2371,-19.8426 19.2371,19.8425 -180 0 1 19.2371,19.8426 z"
+         style="fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         id="path4386"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="matrix(0.26458333,0,0,0.26458333,-31.041671,-205.54167)"
+       id="Layer1491">
+      <path
+         d="m 487.7037,1349.0972 h 23.5217 v -22.483 h -23.5217 z"
+         style="fill:#000000;fill-rule:evenodd;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round"
+         id="path4389"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 487.7037,1349.0972 h 23.5217 v -22.483 h -23.5217 z"
+         style="fill:none;stroke:#000000;stroke-width:0.75;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         id="path4391"
+         inkscape:connector-curvature="0" />
+    </g>
+    <path
+       d="m 107.93178,144.18992 a 1.681189,3.6986369 0 0 1 1.68119,3.69864 1.681189,3.6986369 0 0 1 -1.68119,3.69864"
+       style="fill:none;stroke:#ffffff;stroke-width:1.19062495;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="path4394"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 108.77239,141.49998 a 3.3624044,6.2204335 0 0 1 3.36241,6.22046 3.3624044,6.2204335 0 0 1 -3.36241,6.22044"
+       style="fill:none;stroke:#000000;stroke-width:1.19062495;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="path4396"
+       inkscape:connector-curvature="0" />
+    <path
+       d="m 110.45358,139.1463 a 4.3711283,8.4059977 0 0 1 4.37113,8.40603 4.3711283,8.4059977 0 0 1 -4.37113,8.40599"
+       style="fill:none;stroke:#ffffff;stroke-width:1.19062495;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+       id="path4398"
+       inkscape:connector-curvature="0" />
+    <g
+       transform="matrix(0.26458333,0,0,0.26458333,-31.041671,-205.54167)"
+       id="Layer1492">
+      <path
+         d="m 493.2283,1315.2756 h 7.0867 z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke-width:6;stroke-linecap:round;stroke-linejoin:round"
+         id="path4400"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 493.2283,1315.2756 h 7.0867 z"
+         style="fill:none;stroke:#000000;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         id="path4402"
+         inkscape:connector-curvature="0" />
+    </g>
+    <g
+       transform="matrix(0.26458333,0,0,0.26458333,-31.041671,-205.54167)"
+       id="Layer1493">
+      <path
+         d="m 493.2283,1337.9528 h 7.0867 z"
+         style="fill:#ffffff;fill-rule:evenodd;stroke-width:6;stroke-linecap:round;stroke-linejoin:round"
+         id="path4405"
+         inkscape:connector-curvature="0" />
+      <path
+         d="m 493.2283,1337.9528 h 7.0867 z"
+         style="fill:none;stroke:#ffffff;stroke-width:6;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none"
+         id="path4407"
+         inkscape:connector-curvature="0" />
+    </g>
+  </g>
+</svg>
