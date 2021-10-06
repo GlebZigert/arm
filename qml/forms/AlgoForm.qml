@@ -207,6 +207,7 @@ GridLayout {
     }
     ///////////////////////////////////////////
     Text { text: "Аргумент";  Layout.alignment: Qt.AlignRight }
+    // TODO: bug fix
     TextField {
         property string name: 'argument'
         Layout.fillWidth: true
