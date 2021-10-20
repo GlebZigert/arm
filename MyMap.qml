@@ -22,6 +22,8 @@ RowLayout {
 
     //property var statesColors: Utils.statesColors
     property string anticache // TODO: only for changed pics, not for all
+    //signal reCache()
+
     property bool asyncWait
     //property string viewMode: "map"
     property var currentMap
@@ -100,32 +102,25 @@ RowLayout {
                 border.color: parent.palette.highlight
                 border.width: !parent.editable && parent.visualFocus ? 2 : 0
             }*/
-            onCurrentIndexChanged: {
-                anchorsModel.clear()
-                currentMap = model.get(currentIndex)
-                if (currentMap) {
-                    console.log('Choose', currentMap.type, currentMap.id, map.zoomLevel)
-                    if ("plan" === currentMap.type)
-                        planScale = scalePresets[currentMap.id] || 1
-                }
-            }
+            onCurrentIndexChanged: activateMap()
+            onCountChanged: activateMap()
 
-            onCountChanged: {
-                console.log("MyMap COUNT", count)
-                if (count > 0) {
-                    if (currentMap) {
-                        for (var i = 0; i < root.maps.count; i++)
-                            if (root.maps.get(i).id === currentMap.id) {
-                                if (currentIndex !== i)
-                                    currentIndex = i
-                                else
-                                    currentIndexChanged()
-                                break
-                            }
-                    } else
-                          currentIndex = 0
-                } else
-                    currentIndex = -1
+            function activateMap() {
+                console.log('Activate map #', currentIndex, 'of', count)
+                var newMap
+                if (currentIndex >= count || currentIndex < 0)
+                    currentIndex = count - 1
+
+                if (currentIndex < 0)
+                    anchorsModel.clear()
+                else { // index valid
+                    newMap = model.get(currentIndex)
+                    if (newMap && currentMap !== newMap) {  // map has changed
+                        currentMap = newMap
+                        console.log('Selected map', currentMap.type, currentMap.id, map.zoomLevel)
+                        planScale = 'plan' === currentMap.type && scalePresets[currentMap.id] || 1
+                    }
+                }
             }
         }
     }

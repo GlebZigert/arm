@@ -202,8 +202,10 @@ ApplicationWindow {
              //console.log("[RECV]", message)
              var msg = JSON.parse(message)
              Services.message(msg) // regular action first
-             if (msg.task)
-                 tasks.result(msg) // personal action after
+             if (msg.task) {
+                 // don't call immediately, give some time for the magic to happen
+                 Qt.callLater(tasks.result, msg) // personal action after
+             }
              //newMessage(msg)
          }
          onStatusChanged: if (socket.status === WebSocket.Error) {

@@ -121,8 +121,8 @@ ColumnLayout {
                 payload.devices = Helpers.getLinks(model.devices)//.reduce(function (acc, v) {if (v.flags > 0) acc.push(v); return acc}, [])
             }
 
-            if (fileDialog.ready)
-                filename = fileDialog.file
+            if (fileDialog.file)
+                fileDialog.reset()
 
             console.log("USER PAYLOAD:", JSON.stringify(payload))
             asyncWait = true

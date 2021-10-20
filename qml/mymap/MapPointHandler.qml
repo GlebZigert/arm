@@ -1,9 +1,9 @@
 // for v2.11
-import QtQuick 2.11
-import Qt.labs.handlers 1.0
+//import QtQuick 2.11
+//import Qt.labs.handlers 1.0
 
 // for v2.13 and above
-//import QtQuick 2.13
+import QtQuick 2.13
 
 PointHandler {
     property real startX

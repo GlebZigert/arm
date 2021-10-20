@@ -8,15 +8,20 @@ import QtQuick.Controls 2.4
     height: 200
     clip: true*/
 Flickable {
+    id: flickable
+    property real maxScale: 4
+    property real minScale: 1 / maxScale
+    onWidthChanged: Qt.callLater(setScale, planScale, 0, 0)
+    onHeightChanged: Qt.callLater(setScale, planScale, 0, 0)
+
     // antialiasing: https://stackoverflow.com/questions/48895449/how-do-i-enable-antialiasing-on-qml-shapes
     layer.enabled: true
     layer.samples: 4
 
-    id: flickable
     interactive: -2 === currentAnchor
     //anchors.fill: parent
-    contentWidth: image.width
-    contentHeight: image.height
+    contentWidth: image.sourceSize.width // parent.width//image.sourceSize.width * planScale//image.width
+    contentHeight: image.sourceSize.height // parent.height//image.sourceSize.height * planScale //image.height
     clip: true
     boundsBehavior: Flickable.StopAtBounds
 
@@ -25,19 +30,28 @@ Flickable {
 
     Image {
         id: image
-        property string url: currentMap && 'plan' === currentMap.type ? "http://" + serverHost + "/0/plan?id=" + currentMap.id + '&rnd=' + anticache : ''
         cache: false
-        source: url
-        //anchors.fill: parent
-        width: sourceSize.width * planScale
-        height: sourceSize.height * planScale
-        //fillMode: Image.PreserveAspectFit
-        onStatusChanged: {
-            console.log("Image status:", status)
-            if (Image.Error === status && currentMap.id && currentMap.id > 0)
-                reloadTimer.running = true
+        source: currentMap && 'plan' === currentMap.type ? "http://" + serverHost + "/0/plan?id=" + currentMap.id + '&ac=' + anticache : ''
+        anchors.fill: parent
+        //width: sourceSize.width * planScale
+        //height: sourceSize.height * planScale
+        fillMode: Image.PreserveAspectFit
+        onSourceSizeChanged: {
+            var sx = flickable.width / sourceSize.width,
+                sy = flickable.height / sourceSize.height,
+                scale = Math.min(sx, sy)
+            console.log(sx, sy, scale)
+            Qt.callLater(setScale, scale, 0, 0)
+            //flickable.contentWidth = image.sourceSize.width * planScale
+            //flickable.contentHeight = image.sourceSize.height * planScale
         }
-        Timer {
+
+        onStatusChanged: {
+            console.log("Plan image status:", status)
+            //if (Image.Error === status && currentMap.id && currentMap.id > 0)
+              //  reloadTimer.running = true
+        }
+        /*Timer {
             id: reloadTimer
             //running: socket.active
             interval: 3000
@@ -45,7 +59,7 @@ Flickable {
                 console.log('RELOAD')
                 anticache = Math.round(Math.random() * 2e9)
             }
-        }
+        }*/
 
         MouseArea {
             anchors.fill: parent
@@ -53,17 +67,33 @@ Flickable {
                 var normOne
                 if (wheel.modifiers & Qt.ControlModifier) {
                     normOne = wheel.angleDelta.y / 120
-                    planScale += normOne * 0.05
-                    if (planScale < 0.2)
-                        planScale = 0.2
-                    if (planScale > 2)
-                        planScale = 2
-                    //console.log("WHEEL+Ctrl:", planScale)
+                    flickable.setScale(planScale * (1 + .1 * normOne), wheel.x, wheel.y)
                 } else {
-                    wheel.accepted = false;
+                    wheel.accepted = false
                 }
             }
         }
+    }
+
+    function setScale(scale, x, y) {
+        var sx = flickable.width / image.sourceSize.width,
+            sy = flickable.height / image.sourceSize.height,
+            min = Math.min(sx, sy)
+
+        if (scale < minScale)
+            scale = minScale
+        if (scale > maxScale)
+            scale = maxScale
+        if (scale < min)
+            scale = min
+
+        planScale = scale
+        flickable.resizeContent(
+                    image.sourceSize.width * scale,
+                    image.sourceSize.height * scale,
+                    Qt.point(x, y))
+
+        flickable.returnToBounds()
     }
 
     Repeater {
@@ -77,4 +107,8 @@ Flickable {
 
     ShapeAnchors{}
     MapMouseArea{}
+
+    function reload() {
+        anticache = Math.round(Math.random() * 2e9)
+    }
 }

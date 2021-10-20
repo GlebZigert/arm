@@ -146,7 +146,7 @@ Rectangle {
             Button {
                 enabled: !asyncWait && !!currentMap && currentMap.type === 'plan'
                 Layout.fillWidth: true
-                text: !fileDialog.ready ? "Выбрать файл" : fileDialog.file.split(/[/\/]/).pop()
+                text: !fileDialog.file ? "Выбрать файл" : fileDialog.file.split(/[/\/]/).pop()
                 onClicked: fileDialog.open()
             }
         }
@@ -275,7 +275,7 @@ Rectangle {
             return
         }
 
-        if ('plan' === payload.type && !payload.id && !fileDialog.ready) {
+        if ('plan' === payload.type && !payload.id && !fileDialog.file) {
             messageBox.error("Необходимо выбрать файл с изображением")
             return
         }
@@ -287,29 +287,29 @@ Rectangle {
         }
         //console.log(JSON.stringify(payload))
         asyncWait = true
-        root.newTask('configuration', 'UpdateMap', payload, saveDone, saveFailed.bind(null, payload))
+        root.newTask('configuration', 'UpdateMap', payload, saveDone, saveFailed)
     }
 
-    function saveFailed(payload) {
+    function saveFailed() {
         messageBox.error("Сбой во время сохранения. Попробуйте ещё раз.")
         asyncWait = false
     }
 
-    function cleanZeroMaps() {
-        for (var i = 0; i < root.maps.count; i++) {
-            console.log(root.maps.get(i).id)
-            if (0 === root.maps.get(i).id)
-                root.maps.remove(i)
-        }
-    }
-
     function saveDone(msg) {
-        if (0 === currentMap.id) {
-            //mapChooser.currentIndex = root.maps.count - 1//mapChooser.currentIndex
-            cleanZeroMaps()
-        }
+        // {"service":0,"action":"UpdateMap","task":2,"data":{"id":26,"type":"map","name":"gfhgfh","cx":0,"cy":0,"zoom":0,"shapes":[],"zoomLevel":3}}
+        console.log("Map saveDone", JSON.stringify(msg))
+        var i,
+            url = "http://" + serverHost + "/0/plan?id=" + msg.data.id;
 
-        var url = "http://" + serverHost + "/0/plan?id=" + currentMap.id;
+        if (0 === currentMap.id) // it was a new map, remove draft
+            for (i = root.maps.count-1; i >= 0; i--) {
+                if (currentMap === root.maps.get(i)) {
+                    mapChooser.currentIndex = root.maps.count - 1
+                    Qt.callLater(root.maps.remove, i)
+                    break
+                }
+            }
+
         if ('map' === msg.data.type) {
             asyncWait = false
         } else if (fileDialog.file) { // upload background image
@@ -326,18 +326,18 @@ Rectangle {
     }
 
     function uploadDone(success) {
-        var rnd
         if (success) {
-            fileDialog.ready = false
+            fileDialog.reset()
+            anticache = Math.round(Math.random() * 2e9)
         } else {
             messageBox.error("Не удаётся загрузить выбранный файл с изображением на сервер")
         }
         asyncWait = false
     }
 
-    function savePosition() {
+    /*function savePosition() {
         console.log('save pos')
-    }
+    }*/
 
     function deviceSelected(pane, serviceId, deviceId) {
         if (pane !== panePosition)

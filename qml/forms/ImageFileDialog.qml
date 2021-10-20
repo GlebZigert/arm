@@ -2,8 +2,7 @@ import QtQuick.Dialogs 1.1
 
 FileDialog {
     property bool ready
-    property string file: fileUrl.toString()
-    id: fileDialog
+    property string file: ready ? fileUrl.toString() : ''
     title: "Выберите файл"
     folder: shortcuts.home
     nameFilters: [ "Изображения (*.jpg *.png)"]
@@ -14,5 +13,8 @@ FileDialog {
     onRejected: {
         ready = false
         //console.log("Canceled", fileUrls)
+    }
+    function reset() {
+        ready = false
     }
 }

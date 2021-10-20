@@ -210,7 +210,7 @@ GridLayout {
     TextField {
         property string name: 'argument'
         Layout.fillWidth: true
-        text: model.argument || ''
+        text: model.argument || '0'
         validator: RegExpValidator { regExp: /\d*/ }
     }
 

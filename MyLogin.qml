@@ -45,7 +45,7 @@ Item {
             placeholderText: "IP сервера"
             validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/ }
             color: acceptableInput ? palette.text : "red"
-            text: "192.168.1.252"
+            text: "127.0.0.1"
         }
         ///////////////////////////////////////////
         Text { text: ""; visible: !!root.currentUser; Layout.alignment: Qt.AlignLeft }

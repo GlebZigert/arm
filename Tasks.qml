@@ -13,7 +13,8 @@ Timer {
         stop()
         if (doneHandler) {
             // don't use doneHandler(data), give some time for the magic to happen
-            Qt.callLater(doneHandler, data)
+            //Qt.callLater(doneHandler, data)
+            doneHandler(data)
             doneHandler = null
         }
     }
@@ -21,7 +22,7 @@ Timer {
     onNewTask: {
         var payload = JSON.stringify({service: service, action: action, task: ++taskId, data: data})
         //console.log(taskId++)
-        if (running)
+        if (running) // TODO: can't run multiple tasks in parallel
             fail(false) // not real fail, action in progress
         else if (!socket.active)
             fail(true) // fail - no connection

@@ -10,7 +10,7 @@ layouts[1] = [
     {symbol: '2', views: [['MyMap', 'PassageView'], ['MyJournal', 'ZonesTree']]},
     {symbol: '3', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},
-    {symbol: '5', views: [['Test']]},
+    //{symbol: '5', views: [['Test']]},
 ]
 commands[1] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal"]
 config[1] = {

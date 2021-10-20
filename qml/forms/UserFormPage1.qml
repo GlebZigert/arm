@@ -7,7 +7,7 @@ GridLayout {
     columns: 2
 //    Layout.preferredWidth: parent.width
     property var modelId: model.id
-    onModelIdChanged:fileDialog.ready = false
+    onModelIdChanged: fileDialog.reset()
 
     property bool changeable: adminMode && (armConfig[activeComponent] & 1)
 
@@ -98,7 +98,7 @@ GridLayout {
         enabled: changeable
         Layout.fillWidth: true
         visible: !!fields['photo'];
-        text: !fileDialog.ready ? "Выбрать файл" : fileDialog.file.split(/[/\/]/).pop()
+        text: !fileDialog.file ? "Выбрать файл" : fileDialog.file.split(/[/\/]/).pop()
         onClicked: fileDialog.open()
     }
     ///////////////////////////////////////////
