@@ -28,6 +28,8 @@ Flickable {
     ScrollBar.vertical: ScrollBar {policy: ScrollBar.AsNeeded} // .AlwaysOn
     ScrollBar.horizontal: ScrollBar {policy: ScrollBar.AsNeeded} // .AlwaysOn
 
+    onMovingChanged: savePosition()
+
     Image {
         id: image
         cache: false
@@ -37,17 +39,31 @@ Flickable {
         //height: sourceSize.height * planScale
         fillMode: Image.PreserveAspectFit
         onSourceSizeChanged: {
-            var sx = flickable.width / sourceSize.width,
+            var x = 0, y = 0,
+                sx = flickable.width / sourceSize.width,
                 sy = flickable.height / sourceSize.height,
-                scale = Math.min(sx, sy)
-            console.log(sx, sy, scale)
-            Qt.callLater(setScale, scale, 0, 0)
-            //flickable.contentWidth = image.sourceSize.width * planScale
-            //flickable.contentHeight = image.sourceSize.height * planScale
+                scale = Math.min(sx, sy),
+                position = currentMap && mapPosition[currentMap.id]
+
+            if (position) {
+                x = position.x
+                y = position.y
+                scale = position.scale
+            }
+            planScale = scale
+            Qt.callLater(function() {
+                flickable.contentWidth = sourceSize.width * scale
+                flickable.contentHeight = sourceSize.height * scale
+                flickable.contentX = x
+                flickable.contentY = y
+            })
+
+            console.log(x, y, sx, sy, scale)
+
         }
 
         onStatusChanged: {
-            console.log("Plan image status:", status)
+            //console.log("Plan image status:", status)
             //if (Image.Error === status && currentMap.id && currentMap.id > 0)
               //  reloadTimer.running = true
         }
@@ -75,6 +91,16 @@ Flickable {
         }
     }
 
+    function savePosition() {
+        if (!moving && currentMap) {
+            var data = {x: contentX, y: contentY, scale: planScale}
+            //console.log("DATA:", JSON.stringify(data))
+            mapPosition[currentMap.id] = data
+            //contentX : real
+            //contentY : real
+        }
+    }
+
     function setScale(scale, x, y) {
         var sx = flickable.width / image.sourceSize.width,
             sy = flickable.height / image.sourceSize.height,
@@ -89,11 +115,12 @@ Flickable {
 
         planScale = scale
         flickable.resizeContent(
-                    image.sourceSize.width * scale,
-                    image.sourceSize.height * scale,
-                    Qt.point(x, y))
+            image.sourceSize.width * scale,
+            image.sourceSize.height * scale,
+            Qt.point(x, y))
 
         flickable.returnToBounds()
+        savePosition()
     }
 
     Repeater {

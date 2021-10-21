@@ -34,12 +34,9 @@ RowLayout {
     property int initialZoom: 6
     property int maxSize: 8192
     //property real currentScale: currentMap && 'plan' === currentMap.type ? 1 : Math.pow(2, map.zoomLevel - initialZoom)
-    property var scalePresets: ({})
+    property var mapPosition: ({}) // id: {x, y, scale}
     property real planScale: 1
-    onPlanScaleChanged: if (currentMap && 'plan' === currentMap.type) {
-        scalePresets[currentMap.id] = planScale
-        Qt.callLater(arrangeAnchors)
-    }
+    onPlanScaleChanged: currentMap && 'plan' === currentMap.type && Qt.callLater(arrangeAnchors)
     property real currentScale: currentMap && 'plan' === currentMap.type ? planScale : Math.pow(2, map.zoomLevel - initialZoom)
 
     //property real currentScale: !currentMap ? 1 : Math.pow(2, 'plan' === currentMap.type ? plan.zoomLevel : map.zoomLevel - initialZoom)
@@ -53,6 +50,12 @@ RowLayout {
     property bool appendFinished: true
     onAppendFinishedChanged: if (appendFinished) arrangeAnchors()
     property real blinkOpacity: 0.8
+
+    onCurrentMapChanged: {
+        //console.log('Selected map', currentMap.type, currentMap.id, map.zoomLevel)
+        planScale = 'plan' === currentMap.type && mapPosition[currentMap.id] && mapPosition[currentMap.id].scale || 1
+    }
+
     NumberAnimation on blinkOpacity {
         loops: Animation.Infinite
         from: 0.1
@@ -106,7 +109,7 @@ RowLayout {
             onCountChanged: activateMap()
 
             function activateMap() {
-                console.log('Activate map #', currentIndex, 'of', count)
+                //console.log('Activate map #', currentIndex, 'of', count)
                 var newMap
                 if (currentIndex >= count || currentIndex < 0)
                     currentIndex = count - 1
@@ -117,8 +120,6 @@ RowLayout {
                     newMap = model.get(currentIndex)
                     if (newMap && currentMap !== newMap) {  // map has changed
                         currentMap = newMap
-                        console.log('Selected map', currentMap.type, currentMap.id, map.zoomLevel)
-                        planScale = 'plan' === currentMap.type && scalePresets[currentMap.id] || 1
                     }
                 }
             }
