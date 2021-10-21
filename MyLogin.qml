@@ -85,8 +85,9 @@ Item {
             text: root.currentUser ? "Сменить" : "Войти"
             onClicked: root.currentUser ? change() : login()
         }
-
     }
+    // TODO: remove next line in production
+    Component.onCompleted: login()
 
     function logout() {
         var i,
