@@ -52,8 +52,10 @@ RowLayout {
     property real blinkOpacity: 0.8
 
     onCurrentMapChanged: {
-        //console.log('Selected map', currentMap.type, currentMap.id, map.zoomLevel)
+        console.log('Selected ', currentMap.type, currentMap.id, map.zoomLevel)
         planScale = 'plan' === currentMap.type && mapPosition[currentMap.id] && mapPosition[currentMap.id].scale || 1
+        anchorsModel.clear()
+        currentItem = null
     }
 
     NumberAnimation on blinkOpacity {
@@ -254,13 +256,14 @@ RowLayout {
         }
     }
 
-    function getCenter() {
+    function getCenter(item) {
+        item = item || currentItem
         var coord, center;
         if ('map' === currentMap.type) {
-            coord = QtPositioning.coordinate(currentItem.y, currentItem.x)
+            coord = QtPositioning.coordinate(item.y, item.x)
             center = map.fromCoordinate(coord, false)
         } else
-            center = Qt.point(currentItem.x * currentScale, currentItem.y * currentScale)
+            center = Qt.point(item.x * currentScale, item.y * currentScale)
         return center
     }
 
@@ -284,31 +287,9 @@ RowLayout {
             anchorsModel.clear()
             return
         }
-
-        var i, coord, coords = [],
-            center = getCenter(),
-            scale = currentScale //'text' === currentItem.type ? 1 : currentScale
-
-        if (isPoly()) {
-            coords = currentItem.data.split(' ').map(function (v){
-                var pair = v.split(',')
-                if ('map' === currentMap.type)
-                    return {x: center.x + currentScale * parseFloat(pair[0]), y: center.y + currentScale * parseFloat(pair[1]), r: 0}
-                else
-                    return {x: currentScale * parseFloat(pair[0]), y: currentScale * parseFloat(pair[1]), r: 0}
-            })
-        } else if (['rectangle', 'ellipse', 'text'].indexOf(currentItem.type) >= 0) {
-            coords = [
-                [-currentItem.w/2, -currentItem.h/2], [0, -currentItem.h/2], [currentItem.w/2, -currentItem.h/2],
-                [currentItem.w/2, 0],
-                [currentItem.w/2, currentItem.h/2], [0, currentItem.h/2], [-currentItem.w/2, currentItem.h/2],
-                [-currentItem.w/2, 0],
-                [currentItem.w/3, currentItem.h/3]
-            ].map(function (v) {
-                var p = rotatePoint(v[0] * scale, v[1] * scale, currentItem.r)
-                return {x: center.x + p[0], y: center.y + p[1], r: currentItem.r}
-            })
-        }
+        var i,
+            scale = currentScale,
+            coords = anchorCoords(currentItem)
 
         if (anchorsModel.count === coords.length) {
             for (i = 0; i < coords.length; i++)
@@ -318,6 +299,34 @@ RowLayout {
             anchorsModel.append(coords)
         }
     }
+
+    function anchorCoords(item) {
+        var coords,
+            center = getCenter(item)
+
+        if (['rectangle', 'ellipse', 'text'].indexOf(item.type) >= 0) {
+            coords = [
+                [-item.w/2, -item.h/2], [0, -item.h/2], [item.w/2, -item.h/2],
+                [item.w/2, 0],
+                [item.w/2, item.h/2], [0, item.h/2], [-item.w/2, item.h/2],
+                [-item.w/2, 0],
+                [item.w/3, item.h/3]
+            ].map(function (v) {
+                var p = rotatePoint(v[0] * currentScale, v[1] * currentScale, item.r)
+                return {x: center.x + p[0], y: center.y + p[1], r: item.r}
+            })
+        } else if (item.data) {
+            coords = item.data.split(' ').map(function (v) {
+                var pair = v.split(',')
+                if ('map' === currentMap.type)
+                    return {x: center.x + currentScale * parseFloat(pair[0]), y: center.y + currentScale * parseFloat(pair[1]), r: 0}
+                else
+                    return {x: currentScale * parseFloat(pair[0]), y: currentScale * parseFloat(pair[1]), r: 0}
+            })
+        }
+        return coords
+    }
+
 
     // https://stackoverflow.com/questions/849211/shortest-distance-between-a-point-and-a-line-segment
     function pointDistance(x, y, x1, y1, x2, y2) {

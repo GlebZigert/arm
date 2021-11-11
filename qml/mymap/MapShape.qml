@@ -80,7 +80,7 @@ Shape {
     MapPointHandler{}
 
     Component.onCompleted: {
-        console.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y)
+        //console.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y)
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
