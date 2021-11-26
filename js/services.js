@@ -48,11 +48,11 @@ function message(msg) {
     if (!qml) init()
 
     if (0 === msg.service && msg.action in handlers) {
-        console.log('Running action:', msg.action)
+        console.log('Running CORE action:', msg.action)
         if ("function" === typeof handlers[msg.action])
             handlers[msg.action](msg)
         else if (msg.action in handlers[msg.action].handlers)
-            handlers[msg.action].handlers[msg.action](msg)
+            handlers[msg.action].handlers[msg.action](msg) // WTF?
         else
             console.log('Handler not found:', msg.action)
         console.log('Done action:', msg.action)
@@ -245,7 +245,7 @@ function reconnectUser(msg) {
 }
 
 function listServices(msg) {
-//        console.log("LIST SVC:", JSON.stringify(msg))
+        console.log("LIST SVC:", JSON.stringify(msg))
         var i,
             id,
             service,

@@ -1,4 +1,5 @@
 .import "utils.js" as Utils
+.import "constants.js" as Const
 
 var handlers = {
     ListMaps: listMaps,
@@ -45,7 +46,7 @@ function listMaps(msg) {
 
 function updateMap(msg) {
     //console.log(JSON.stringify(msg.data))
-    if (!msg.data/* || msg.task*/)
+    if (!msg.data)
         return
 
     var map
@@ -54,15 +55,20 @@ function updateMap(msg) {
             break
     //console.log("=====================")
     //dumpModel(root.maps)
-    injectExtra(msg.data)
-    if (i < root.maps.count) {
-        //map.imageSource = planImagePath(map.id)
-        map.name = msg.data.name
-        mergeShapes(map.shapes, msg.data.shapes || [])
-    } else //if (!msg.task)// new map
-        root.maps.append(msg.data)
+
+    if (msg.data.shapes && msg.data.shapes.length) {
+        injectExtra(msg.data)
+        if (i < root.maps.count) {
+            //map.imageSource = planImagePath(map.id)
+            map.name = msg.data.name
+            mergeShapes(map.shapes, msg.data.shapes || [])
+        } else //if (!msg.task)// new map
+            root.maps.append(msg.data)
+    } else if (Const.ARM_ADMIN !== root.armRole && i < root.maps.count) {
+        root.maps.remove(i)
+    }
     //dumpModel(root.maps)
-    console.log("Maps COUNT after update", root.maps.count)
+    //console.log("Maps COUNT after update", root.maps.count)
 }
 
 function mergeShapes(model, updates) {

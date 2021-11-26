@@ -30,7 +30,7 @@ config[1] = {
 ///////////////////////////////////
 layouts[2] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
-    {symbol: '2', views: [['Test']]},
+//    {symbol: '2', views: [['Test']]},
     {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
 ]
 commands[2] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
