@@ -5,7 +5,6 @@ import "helpers.js" as Helpers
 
 ColumnLayout {
     property bool embedded: !!model.children
-    anchors.margins: 5
     anchors.fill: parent
 
     RowLayout {

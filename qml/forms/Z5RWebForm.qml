@@ -8,7 +8,6 @@ GridLayout {
     id: form
     columns: 2
     anchors.fill: parent
-    anchors.margins: 5
 
     ///////////////////////////////////////////
     Text { text: "Название";  Layout.alignment: Qt.AlignRight }

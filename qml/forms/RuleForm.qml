@@ -9,10 +9,10 @@ ColumnLayout {
     property int id: model['id'] || 0 // TODO: delete it
     property bool changeable: adminMode && armConfig[activeComponent] > 0
     anchors.fill: parent
-    anchors.margins: 5
     spacing: 5
+
     RowLayout {
-        width: parent.width
+        Layout.fillWidth: true
         Repeater {
             model: ['Режим', 'График'/*, 'Дополнительно'*/]
             delegate: Button {
@@ -30,6 +30,7 @@ ColumnLayout {
         id: stack
         currentIndex: 0
         Layout.fillHeight: true
+
         RuleFormPage1 {id: form1} // rule data
         RuleFormPage2 {id: form2} // rule days & time
     }
@@ -37,15 +38,13 @@ ColumnLayout {
     ////////////////////// A C T I O N   B U T T O N S ///////////////////
     //////////////////////////////////////////////////////////////////////
     RowLayout {
-        width: parent.width
-        Layout.margins: 5
         spacing: 5
+        Layout.fillWidth: true
+
         Button {
             text: itemId ? "Обновить" : "Создать"
             Layout.fillWidth: true
             enabled: changeable
-            //Layout.alignment: Qt.AlignCenter
-            // anchors.centerIn: parent
             onClicked: saveMode()
         }
         Button {

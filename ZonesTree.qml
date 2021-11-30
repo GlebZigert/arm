@@ -96,6 +96,7 @@ Item {
                 property var model//: ({})
                 //width: parent.width
                 anchors.fill: parent
+                anchors.margins: 5
                 sourceComponent: model ? forms[model.form] : undefined
                 //sourceComponent: model ? forms[model.template] : null
                 //source: 'template' in model ? 'qml/forms/'+forms[model.template]+'.qml' : ''

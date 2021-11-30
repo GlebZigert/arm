@@ -10,7 +10,7 @@ GridLayout {
     id: form
     columns: 2
     anchors.fill: parent
-    anchors.margins: 5
+    //anchors.margins: 5
 
     property int userId: model.userId || 0
     //property int zoneId: model.zoneId || 0
@@ -214,6 +214,7 @@ GridLayout {
         validator: RegExpValidator { regExp: /\d*/ }
     }
 
+    Item {Layout.columnSpan: 2; Layout.fillHeight: true} // V-space placeholder
 
     RowLayout {
         Layout.columnSpan: 2

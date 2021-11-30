@@ -15,9 +15,6 @@ Item {
     property bool adminMode: false
     property var forms: ({
         'user': Qt.createComponent('qml/forms/UserForm.qml'),
-        /*'service': Qt.createComponent('qml/forms/ServiceForm.qml'),
-        'newServiceForm': Qt.createComponent('qml/forms/ServiceForm.qml')*/
-
     })
 
     anchors.fill: parent
@@ -42,6 +39,7 @@ Item {
             Loader {
                 id: loader
                 anchors.fill: parent
+                anchors.margins: 5
                 //property int itemId // why don't use (model && model.id || 0) here?
                 property int itemId: model && model.id || 0
                 property int nocache // for user image url

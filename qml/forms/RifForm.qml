@@ -3,7 +3,6 @@ import QtQuick 2.0
 Column {
     spacing: 5
     anchors.fill: parent
-    anchors.margins: 5
 
     Row {
         spacing: 5

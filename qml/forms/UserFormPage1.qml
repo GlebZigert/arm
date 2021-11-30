@@ -49,7 +49,7 @@ GridLayout {
 
     Image {
         id: image
-        visible: !!fields['photo'];
+        //visible: !!fields['photo'];
         property int lph: sourceSize.height / (sourceSize.width || 1) * width
         Layout.columnSpan: 2
         Layout.fillWidth: true
@@ -57,13 +57,8 @@ GridLayout {
         clip: true
         cache: false
         fillMode: Image.PreserveAspectFit
-        source: "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
+        source: !!fields['photo'] ? '' : "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
         //source: "qrc:/images/user-solid.svg"
-        /*onStatusChanged: {
-            console.log("User image status:", status, "WH", width, height)
-            console.log("PWH", paintedWidth, paintedHeight)
-            console.log("PWH2", JSON.stringify(sourceSize))
-        }*/
     }
 
     ///////////////////////////////////////////

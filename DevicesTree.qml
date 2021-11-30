@@ -44,8 +44,11 @@ Item {
                 id: loader
                 property int itemId: model && model.serviceId || 0
                 property var model//: ({})
+                anchors.margins: 5
                 anchors.fill: parent
-                sourceComponent: model ? forms[model.form] : undefined
+                //width: parent.width
+                //height: parent.height
+                sourceComponent: model && model.form && forms[model.form]// : undefined
                 //sourceComponent: model ? forms[model.template] : null
                 //source: 'template' in model ? 'qml/forms/'+forms[model.template]+'.qml' : ''
             }

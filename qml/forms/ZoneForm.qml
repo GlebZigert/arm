@@ -9,7 +9,6 @@ ColumnLayout {
     id: form
     //columns: 2
     anchors.fill: parent
-    anchors.margins: 5
     property bool changeable: adminMode && (armConfig[activeComponent] & 1)
     property ListModel devicesTree: root.devices.get(0).children
     property ListModel fakeDevices: ListModel{}

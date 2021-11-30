@@ -87,7 +87,7 @@ Item {
         }
     }
     // TODO: remove next line in production
-    //Component.onCompleted: login()
+    Component.onCompleted: login()
 
     function logout() {
         var i,
