@@ -8,9 +8,6 @@ var stickyStates = [
     ]
 
 function Parus(model) {
-    var status = model.status
-    model.status = {db: "", tcp: ""}
-
     this.model = model
     this.cache = {} // for empty tree case
     this.serviceId = this.model.serviceId
@@ -18,25 +15,23 @@ function Parus(model) {
         ListDevices: this.rebuildTree.bind(this),
         UpdateDevice: this.update.bind(this),
         DeleteDevice: this.deleteDev.bind(this),
-        StatusUpdate: this.statusUpdate.bind(this),
         Events: this.processEvents.bind(this),
     }
-    this.statusUpdate(status)
+    Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
 
-Parus.prototype.shutdown = function () {
-    console.log(this.model.type, this.model.id, 'shutdown')
-}
-
-Parus.prototype.statusUpdate = function (data) {
+Parus.prototype.statusUpdate = function (sid) {
     //console.log("##################### Z5R SUP", JSON.stringify(data))
-    if (data.tcp !== this.model.status.tcp && data.tcp === "online") {
+    if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
     }
 
-    this.model.status = data
-    this.model.color = Utils.serviceColor(this.model.status)
+    Utils.setServiceStatus(this.model, sid)
+}
+
+Parus.prototype.shutdown = function () {
+    console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Parus.prototype.reloadTree = function (id) {
@@ -85,7 +80,7 @@ Parus.prototype.processEvents = function (events) {
             } else {
                 setState(dev, events[i].class, events[i].text, 1)
             }
-        }
+        } else this.statusUpdate(events[i].class)
     }
 }
 
@@ -176,7 +171,7 @@ function setState(dev, classCode, text, priority) {
         return// ignore info events
     var animation,
         className = Utils.className(classCode),
-        color = Const.statesColors[className],
+        color = Const.classColors[className],
         sticky = stickyStates.indexOf(classCode) >= 0 && Utils.useAlarms()
 
     // TODO: don't flash for duplicate events?

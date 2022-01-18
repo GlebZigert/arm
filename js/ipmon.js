@@ -175,7 +175,7 @@ function setState(dev, classCode, text, priority) {
         return// ignore info events
     var animation,
         className = Utils.className(classCode),
-        color = Const.statesColors[className],
+        color = Const.classColors[className],
         sticky = stickyStates.indexOf(classCode) >= 0 && Utils.useAlarms()
 
     // TODO: don't flash for duplicate events?

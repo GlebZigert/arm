@@ -99,7 +99,7 @@ function loadJournal(msg) {
 
     events = complementEvents(msg.data.filter(function (v) {return !(v.id in known)}))
 
-    if (root.events.count)
+    if (root.events.count) {
         for (i = root.events.count - 1; i >= 0 ; i--) {
             item = root.events.get(i)
             // TODO: preserve ID order for the same time
@@ -112,7 +112,9 @@ function loadJournal(msg) {
                     root.events.insert(i+1, events.pop())
             }
         }
-    else
+        while (events.length > 0)
+            root.events.insert(0, events.pop())
+    } else
         root.events.append(events)
 }
 
@@ -142,7 +144,7 @@ function complementEvents(events) {
         }
         events[i].timeString = Utils.formatDate(d) + ' ' + Utils.formatFullTime(d)
         events[i].text = (events[i].class + '.' + events[i].event) + ': ' + events[i].text
-        events[i].color = Utils.stateColor(events[i])
+        events[i].color = Utils.stateColor(events[i].class)
         events[i].sticky = checkSticky ? checkSticky(events[i]) : false
     }
 //console.log(":", JSON.stringify(events))

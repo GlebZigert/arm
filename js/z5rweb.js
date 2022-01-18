@@ -16,25 +16,22 @@ function Z5RWeb(model) {
         ListDevices: this.rebuildTree.bind(this),
         UpdateDevice: this.update.bind(this),
         DeleteDevice: this.deleteDev.bind(this),
-        StatusUpdate: this.statusUpdate.bind(this),
         Events: this.processEvents.bind(this),
     }
-    this.statusUpdate(status)
+    Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
 
 Z5RWeb.prototype.shutdown = function () {
     console.log(this.model.type, this.model.id, 'shutdown')
 }
 
-Z5RWeb.prototype.statusUpdate = function (data) {
-    //console.log("##################### Z5R SUP", JSON.stringify(data))
-    if (data.tcp !== this.model.status.tcp && data.tcp === "online") {
+Z5RWeb.prototype.statusUpdate = function (sid) {
+    if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
     }
 
-    this.model.status = data
-    this.model.color = Utils.serviceColor(this.model.status)
+    Utils.setServiceStatus(this.model, sid)
 }
 
 Z5RWeb.prototype.rebuildTree = function (data) {
@@ -80,7 +77,7 @@ Z5RWeb.prototype.processEvents = function (events) {
             }
             if (passageEvents.indexOf(events[i].event) >= 0)
                 root.newPassage(events[i])
-        }
+        } else this.statusUpdate(events[i].class)
     }
 }
 
@@ -157,7 +154,7 @@ function setState(dev, event, priority) {
         classCode = event.class,
         sid = event.event || classCode, // TODO: check this!
         className = Utils.className(classCode),
-        color = Const.statesColors[className],
+        color = Const.classColors[className],
         modes = ['Норм. режим', 'Свободный проход', 'Блокировка', 'Неизв. режим']
         // sticky = Utils.useAlarms()
     switch (classCode) {
@@ -197,10 +194,10 @@ function setState(dev, event, priority) {
         dev.color = color
         dev.tooltip = text
         /*if (sticky && priority > 0 && !dev.stickyState) {
-            dev.mapColor = dev.color = Const.statesColors[className]
+            dev.mapColor = dev.color = Const.classColors[className]
         }
 
-        dev.mapColor = dev.color = Const.statesColors[className]
+        dev.mapColor = dev.color = Const.classColors[className]
         dev.tooltip = dev.mapTooltip = event.text + ' (' + mode + ')'*/
     }
 }

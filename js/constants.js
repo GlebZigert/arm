@@ -7,7 +7,7 @@ var classNames = {
     500: 'alarm'
 }
 
-var statesColors = {
+var classColors = {
     0: "#a5a5a5",
     na: "#a5a5a5",
 
@@ -37,11 +37,11 @@ const   ARM_ADMIN       = 1, // админ
         ARM_SECRET      = 6, // гостайна
         ARM_BUREAU      = 7 // бюро пропусков
 
-const   EC_NA = 0, //iota
+const   EC_NA = 0,  //iota
         // INFO
         EC_INFO                 = 100,
         EC_ENTER_ZONE           = 101,
-        EC_EXIT_ZONE            = 102,
+        EC_EXIT_ZONE            = 102,         // virtual code
         EC_INFO_ALARM_RESET     = 103,
         EC_USER_LOGGED_IN       = 104,
         EC_USER_LOGGED_OUT      = 105,
@@ -49,7 +49,7 @@ const   EC_NA = 0, //iota
         EC_LOGIN_TIMEOUT        = 107,
         EC_USER_SHIFT_STARTED   = 108,
         EC_USER_SHIFT_COMPLETED = 109,
-        EC_SERVICE_STARTED      = 110,
+        EC_SERVICE_READY        = 110,
         EC_SERVICE_SHUTDOWN     = 111,
         EC_ARMED                = 112,
         EC_DISARMED             = 113,
@@ -70,14 +70,15 @@ const   EC_NA = 0, //iota
         // ERROR
         EC_ERROR                = 300,
         EC_USERS_LIMIT_EXCEED   = 301,
-
+        EC_SERVICE_FAILURE      = 302,  // internal error
+        EC_SERVICE_ERROR        = 303,  // remote service error
+        EC_DATABASE_ERROR       = 304,
 
         // LOST (no link)
         EC_LOST                 = 400,
         EC_CONNECTION_LOST      = 401,
         EC_SERVICE_OFFLINE      = 402,
         EC_DATABASE_UNAVAILABLE = 403,
-
 
         // ALARM
         EC_ALARM                = 500,
@@ -92,5 +93,18 @@ var stickyStates = [
     EC_ACCESS_VIOLATION,
     EC_GLOBAL_ALARM
 ]
+
+var serviceStatuses = {
+    [EC_SERVICE_READY]: "self",
+    [EC_SERVICE_SHUTDOWN]: "self",
+    [EC_SERVICE_FAILURE]: "self",
+    [EC_SERVICE_ONLINE]: "tcp",
+    [EC_SERVICE_OFFLINE]: "tcp",
+    [EC_SERVICE_ERROR]: "tcp",
+    [EC_DATABASE_READY]: "db",
+    [EC_DATABASE_UNAVAILABLE]: "db",
+    [EC_DATABASE_ERROR]: "db",
+}
+
 
 var useAlarms = [ARM_UNIT, ARM_CHECKPOINT, ARM_GUARD, ARM_OPERATOR]

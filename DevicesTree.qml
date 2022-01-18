@@ -48,7 +48,7 @@ Item {
                 anchors.fill: parent
                 //width: parent.width
                 //height: parent.height
-                sourceComponent: model && model.form && forms[model.form]// : undefined
+                sourceComponent: model && model.form && forms[model.form] || undefined
                 //sourceComponent: model ? forms[model.template] : null
                 //source: 'template' in model ? 'qml/forms/'+forms[model.template]+'.qml' : ''
             }

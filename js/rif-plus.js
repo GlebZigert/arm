@@ -162,19 +162,28 @@ function getClassName(devType, sid) {
 }*/
 
 function Rif(model) {
-    var status = model.status
     this.model = model
-    this.model.status = {db: "", tcp: ""}
     this.cache = {}
     this.serviceId = this.model.serviceId
 
     this.handlers = {
         ListDevices: this.rebuildTree.bind(this),
         Events: this.processEvents.bind(this),
-        StatusUpdate: this.statusUpdate.bind(this),
     }
-    this.statusUpdate(status)
+
+    Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
+
+Rif.prototype.statusUpdate = function (sid) {
+    if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid)
+        root.send(this.serviceId, 'ListDevices', '')
+    if (Const.EC_DATABASE_READY === sid && this.model.status.db !== sid)
+        root.send(0, 'LoadJournal', this.serviceId)
+
+    Utils.setServiceStatus(this.model, sid)
+    //console.log("============== RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
+}
+
 
 Rif.prototype.listStates = function (deviceId) {
     var i,
@@ -264,18 +273,6 @@ Rif.prototype.shutdown = function () {
     console.log(this.model.type, this.model.id, 'shutdown')
 }
 
-Rif.prototype.statusUpdate = function (data) {
-    console.log("==============1 STATUS", JSON.stringify(this.model.status), JSON.stringify(data))
-    if (data.tcp !== this.model.status.tcp && data.tcp === "online")
-        root.send(this.serviceId, 'ListDevices', '')
-    if (data.db !== this.model.status.db && data.db === "online")
-        root.send(0, 'LoadJournal', this.serviceId)
-
-    this.model.status = data
-    this.model.color = Utils.serviceColor(this.model.status)
-    //console.log("==============2 STATUS", JSON.stringify(this.model.status), JSON.stringify(data))
-}
-
 Rif.prototype.rebuildTree = function (data0) {
     //console.log("Rif Tree:", JSON.stringify(data0))
     if (!data0)
@@ -360,7 +357,7 @@ Rif.prototype.processEvents = function (events) {
             } else {
                 setState(dev, events[i]['class'], events[i].event, events[i].text, 1)
             }
-        }
+        } else this.statusUpdate(events[i].class)
     }
     Journal.logEvents(events)
 
@@ -430,7 +427,7 @@ function resetAlarm(dev) {
         color = statesColors[className]*/
 
     var className = Utils.className(dev.stateClass)/*,
-            color = Const.statesColors[dev.stateClass]*/
+            color = Const.classColors[dev.stateClass]*/
 
     dev.mapState = className + dev.lastAction
     dev.mapColor = dev.color
@@ -452,8 +449,8 @@ function setState(dev, classCode, sid, text, priority) {
 
     if (!className) return false
 
-    //color = Const.statesColors[className]
-    color = Const.statesColors[classCode]
+    //color = Const.classColors[className]
+    color = Const.classColors[classCode]
 
     if (undefined !== dev.state && dev.state !== sid)
         animation = 'flash'; // once

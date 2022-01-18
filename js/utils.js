@@ -16,9 +16,9 @@ function className(cls) {
     return Const.classNames[100 * Math.floor(cls / 100)] || ''
 }
 
-function stateColor(state) {
-    var cls = 100 * Math.floor(state['class'] / 100)
-    return Const.statesColors[cls] || ''
+function stateColor(eClass) {
+    var cls = 100 * Math.floor(eClass / 100)
+    return Const.classColors[cls] || ''
 }
 
 function getDeviceTNID(item) {
@@ -203,7 +203,7 @@ function updateShape(shape, dev) {
     var state = dev && dev.mapState || 'na'
     shape.name = dev && dev.name || ''
     shape.state = state // for icons
-    shape.color = Const.statesColors[state.replace(/\d+$/, '')] || 'gray'
+    shape.color = Const.classColors[state.replace(/\d+$/, '')] || 'gray'
     shape.display = dev && dev.display || ''
     shape.tooltip = dev && dev.mapTooltip || '?'
 }
@@ -220,7 +220,7 @@ function updateMaps(dev) {
     }
 }
 
-function serviceColor(status) {
+/*function serviceColor(status) {
     // service can be model or object (hash)
     if ("offline" === status.tcp || "offline" === status.db)
         return "gold"
@@ -230,6 +230,28 @@ function serviceColor(status) {
         return "green"
     else
         return "lightgray"
+}*/
+
+function setInitialStatus(model, statusUpdate) {
+    var status = model.status
+    model.status = {tcp: 0, db: 0, self: 0}
+    for (var i in status)
+        statusUpdate(status[i])
+}
+
+function setServiceStatus(model, sid) {
+    var key = Const.serviceStatuses[sid]
+    if (!key) {
+        return
+    }
+    var status = model.status
+    status[key] = sid
+    model.status = status
+
+    var max = Math.max(model.status.self, model.status.tcp, model.status.db),
+        color = stateColor(max)
+    model.color = color
+    //console.log(max, color, JSON.stringify(model.status))
 }
 
 function makeCache(model, cache) {

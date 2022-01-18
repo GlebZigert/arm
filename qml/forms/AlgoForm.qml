@@ -22,6 +22,8 @@ GridLayout {
     property alias sourceType: sourceCombo.currentIndex
     property alias targetType: targetCombo.currentIndex
 
+    property bool asyncWait
+
     onSourceTypeChanged: 0 === sourceType ? updateDevEvents() : updateZoneEvents()
     onTargetTypeChanged: 0 === targetType? updateDevCommands() : updateZoneCommands()
 
@@ -221,6 +223,7 @@ GridLayout {
         Layout.fillWidth: true
         //Layout.preferredHeight: 30
         Button {
+            enabled: !asyncWait
             Layout.fillWidth: true
             text: 0 === itemId ? "Создать" : "Обновить"
             // anchors.centerIn: parent
@@ -229,8 +232,17 @@ GridLayout {
         Button {
             Layout.fillWidth: true
             text: "Удалить"
-            enabled: itemId !== 0
-            onClicked: root.send('configuration', 'DeleteAlgorithm', model.id)
+            enabled: itemId !== 0 && !asyncWait
+            //onClicked: root.send('configuration', 'DeleteAlgorithm', model.id)
+            onClicked: {
+                asyncWait = true
+                root.newTask('configuration', 'DeleteAlgorithm', model.id, done, errorMessage)
+            }
+            function done(msg) {
+                asyncWait = false
+                console.log(JSON.stringify(msg))
+                messageBox.information(msg.data)
+            }
         }
     }
 
@@ -242,6 +254,13 @@ GridLayout {
     UserSelector {
         id: userSelector
         userTree: root.users
+    }
+
+    function errorMessage(failed) {
+        if (failed) {
+            asyncWait = false
+            messageBox.error("Операция не выполнена: сервер недоступен")
+        }
     }
 
     function updateUser() {
@@ -327,6 +346,7 @@ GridLayout {
     //////////////////////////////////////////////////////////////////////////
 
     function done(msg) {
+        asyncWait = false
         tree.findItem(msg.data.id)
     }
 
@@ -361,7 +381,8 @@ GridLayout {
         if (ok) {
             payload.argument = parseInt(payload.argument)
             console.log("AlgoForm payload:", JSON.stringify(payload))
-            root.newTask('configuration', 'UpdateAlgorithm', payload, done, function (){console.log('UpdateAlgo failed')})
+            asyncWait = true
+            root.newTask('configuration', 'UpdateAlgorithm', payload, done, errorMessage)
         } else
             messageBox.error("Форма заполнена некорректно")
     }

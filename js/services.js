@@ -210,10 +210,10 @@ function updateService(service, data) {
             service.model[key] = data[key]
 
     service.model.label = data.title
-    if ('statusUpdate' in service) {
+    /*if ('statusUpdate' in service) {
         service.statusUpdate({db: "", tcp: ""})
         service.statusUpdate(data.status)
-    }
+    }*/
 }
 
 function deleteService(id) {
@@ -245,7 +245,7 @@ function reconnectUser(msg) {
 }
 
 function listServices(msg) {
-        console.log("LIST SVC:", JSON.stringify(msg))
+//        console.log("LIST SVC:", JSON.stringify(msg))
         var i,
             id,
             service,

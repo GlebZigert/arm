@@ -24,7 +24,7 @@ MessageDialog {
         icon = StandardIcon.Warning
         show('Внимание', txt)
     }
-    function information(text) {
+    function information(txt) {
         icon = StandardIcon.Information
         show('Информация', txt)
     }

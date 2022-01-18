@@ -41,7 +41,7 @@ function listMaps(msg) {
     //console.log("MAPS:", JSON.stringify((msg.data)))
     root.maps.clear()
     root.maps.append(msg.data)
-    console.log("Maps COUNT after list", root.maps.count)
+    //console.log("Maps COUNT after list", root.maps.count)
 }
 
 function updateMap(msg) {
