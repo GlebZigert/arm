@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import "../../js/axxon.js" as Axxon
 Item {
 
     property int serviceId:-1
@@ -26,7 +27,7 @@ Item {
         onTriggered:
         {
             //console.log("zoom_timer_timeout")
-            Tlmtr.stop_zoom(serviceId)
+            Tlmtr.stop_zoom()
 
         }
     }
@@ -184,7 +185,7 @@ var x=0
 
                //console.log("[str] ",str)
 
-               Tlmtr.move(str,serviceId)
+               Tlmtr.move(str)
       //console.log("[value] ", value)
       //console.log("[",x," ",y," ",val,"]")
 

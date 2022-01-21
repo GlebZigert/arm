@@ -5,6 +5,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.5
 
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import "../../js/axxon.js" as Axxon
 
 Item {
 
@@ -87,11 +88,11 @@ Row{
         id: zoom_area
     anchors.fill:parent
         onPressed: {
-        Tlmtr.zoom_in(serviceId)
+        Tlmtr.zoom_in()
         }
         onReleased: {
             //console.log("stop")
-            Tlmtr.stop_zoom(serviceId)
+            Tlmtr.stop_zoom()
         }
     }
     }
@@ -110,11 +111,11 @@ Row{
     anchors.fill:parent
     propagateComposedEvents: true
         onPressed: {
-        Tlmtr.zoom_out(serviceId)
+        Tlmtr.zoom_out()
         }
         onReleased: {
             //console.log("stop")
-            Tlmtr.stop_zoom(serviceId)
+            Tlmtr.stop_zoom()
         }
     }
     }
@@ -147,11 +148,11 @@ Row{
             id: focus_area
         anchors.fill:parent
             onPressed: {
-            Tlmtr.focus_in(serviceId)
+            Tlmtr.focus_in()
             }
             onReleased: {
                 //console.log("stop")
-                Tlmtr.stop_focus(serviceId)
+                Tlmtr.stop_focus()
             }
         }
         }
@@ -170,11 +171,11 @@ Row{
         anchors.fill:parent
         propagateComposedEvents: true
             onPressed: {
-            Tlmtr.focus_out(serviceId)
+            Tlmtr.focus_out()
             }
             onReleased: {
                 //console.log("stop")
-                Tlmtr.stop_focus(serviceId)
+                Tlmtr.stop_focus()
             }
         }
         }
@@ -205,12 +206,12 @@ Row{
 
     onReleased: {
         //console.log("stop")
-        Tlmtr.stop_moving(serviceId)
+        Tlmtr.stop_moving()
     }
 
     onEntered: {
         //console.log("[onEntered]")
-        Tlmtr.capture_session(point,serviceId)
+        Tlmtr.capture_session(point)
         timer.start()
         //mouse.accepted=false
 
@@ -236,11 +237,11 @@ Row{
             {
                 if (zoom==1)
                 {
-                Tlmtr.zoom_in(serviceId)
+                Tlmtr.zoom_in()
                 }
                 if (zoom==-1)
                 {
-                Tlmtr.zoom_out(serviceId)
+                Tlmtr.zoom_out()
                 }
 
             }
@@ -264,7 +265,7 @@ Row{
         onTriggered:
         {
             //console.log("zoom_timer_timeout")
-            Tlmtr.stop_zoom(serviceId)
+            Tlmtr.stop_zoom()
             drop_area.zoom_prev=0
         }
     }
@@ -272,7 +273,7 @@ Row{
     function set_point(str)
     {
     point=str
-    Tlmtr.capture_session(point,serviceId)
+    Tlmtr.capture_session(point)
     }
 
 

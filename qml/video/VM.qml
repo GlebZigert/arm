@@ -303,7 +303,7 @@ Rectangle{
         anchors.fill: parent
           visible: true
 
-          source:"http://root:root@192.168.0.187:8000/live/media/snapshot/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0"
+        //  source:"http://root:root@192.168.0.187:8000/live/media/snapshot/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0"
 
                             fillMode: VideoOutput.PreserveAspectCrop
 
@@ -360,6 +360,7 @@ function set_live_play(){
     count=0
  //   timer.stop()
 //    set_live_stop()
+ /*
         console.log("..............................[set_live_play]")
     console.log("live_player.source: ",live_player.source)
     console.log("live_player.status: ",live_player.status)
@@ -368,7 +369,7 @@ function set_live_play(){
     console.log("live_player.error: ",live_player.error)
     console.log("live_player.errorString: ",live_player.errorString)
     console.log("live_player.availability: ",live_player.availability)
-
+*/
     current_camera=live_player.source
 
     background.visible=false

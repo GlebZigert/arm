@@ -95,15 +95,13 @@ ApplicationWindow {
     //property ListModel panes: ListModel {}
 
     /********************** V I D E O ***********************/
-    property ListModel rtsp_stream_url: ListModel{signal updated()}
+    property ListModel cameraList: ListModel{signal updated();signal current_update()}
     property ListModel stream_from_storage: ListModel{signal updated()}
     property ListModel camera_presets: ListModel {signal updated()}
 
-    property ListModel current_camera: ListModel {signal updated()}
 
-    property ListModel camera_to_livestream: ListModel {signal updated()}
 
-    property ListModel update_intervals: ListModel {signal updated()}
+    property ListModel current_intervals: ListModel {signal updated()}
 
     property ListModel test: ListModel {signal qwerty()}
 
@@ -116,7 +114,11 @@ ApplicationWindow {
     property string storage_live
 
     property int videoPane
+    property int  axxon_service_id
 
+    signal frash_URL()
+    signal update_intervals(var x)
+    signal event_on_camera(var x)
 
     FontAwesome {
         id: faFont

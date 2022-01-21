@@ -13,14 +13,15 @@ import QtQuick.Layouts 1.1
 import QtQuick.Controls 1.4
 
 import QtQuick 2.0
-
+import VideoPlayer 1.0
+//import MyPlayer 1.0
 import "qml/video" as Video
 
 import "js/axxon_telemetry_control.js" as Tlmtr
 import "js/axxon.js" as Axxon
 
 Item{
-    id: container
+    id: srv
     anchors.fill: parent
     property int panePosition
     property var video: ({
@@ -33,6 +34,8 @@ Item{
     property var current_cameraId: -1
     property var current_serviceId: -1
 
+    property var current
+    property bool telemetry_on_off_value: false
 
     signal show_videoWall()
 
@@ -43,6 +46,8 @@ Item{
     property string storage: "storage"
     property string live: "live"
     property bool interfase_visible: false
+
+    property int cid
 
     onPanePositionChanged: {
 
@@ -64,7 +69,7 @@ Item{
         if((root.storage_live==live)&&(root.pause_play==play))
         {
         //console.log("+")
-        Tlmtr.hold_session(current_serviceId)
+        Tlmtr.hold_session()
         timer.start()
         }
         else
@@ -82,7 +87,7 @@ Item{
         onTriggered:
         {
             //console.log("zoom_timer_timeout")
-            Tlmtr.stop_zoom(current_serviceId)
+            Tlmtr.stop_zoom()
             vm_area.zoom_prev=0
         }
     }
@@ -94,7 +99,7 @@ Item{
         {
            // console.log("[!!]")
             if(current_cameraId!="")
-            Axxon.request_intervals(current_cameraId,current_serviceId)
+            Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
 
 
         }
@@ -137,14 +142,19 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
 
    Rectangle { color: "lightgray";
-
+        id:vm_rect
       anchors.fill: parent
        clip:true
-       Video.VM{
+       VideoPlayer{
            id: vm
+            x:(parent.width- width)/2
+            width: (height/1080)*1920
+         //   height:300
 
-           width: parent.width
-           height: parent.height
+        //   x:(parent.width- width)/2
+        //   width: (height/1080)*1920
+
+               height: parent.height
 
    //    accesspoint: "ASTRAAXXON/DeviceIpint.2/SourceEndpoint.video:0:0"
            //-------------
@@ -165,6 +175,9 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
                property int mouseX_prev
                property int mouseY_prev
+
+
+
 
 
                onPressed: {
@@ -191,7 +204,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                    property int msec:0
                    onTriggered:
                    {
-                       Tlmtr.stop_moving(current_serviceId)
+                       Tlmtr.stop_moving()
                            vm_area.x_prev=0
                            vm_area.y_prev=0
                    }
@@ -332,7 +345,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
                           //console.log("[str] ",str)
 
-                          Tlmtr.move(str,current_serviceId)
+                          Tlmtr.move(str)
                  //console.log("[value] ", value)
                  //console.log("[",x," ",y," ",val,"]")
 
@@ -365,11 +378,11 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                      {
                          if (zoom==1)
                          {
-                         Tlmtr.zoom_in(current_serviceId)
+                         Tlmtr.zoom_in()
                          }
                          if (zoom==-1)
                          {
-                         Tlmtr.zoom_out(current_serviceId)
+                         Tlmtr.zoom_out()
                          }
 
                      }
@@ -430,8 +443,12 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
                         if(tform1.xScale==1)
                         {
-                        vm.x =0
+
+                        vm.x =(vm_rect.width- (vm_rect.height/1080)*1920)/2
                         vm.y =0
+
+                        console.log("rect.x ", vm.x )
+                        console.log("rect.y ",vm.y )
                         }
 
                         //console.log("realX ",realX )
@@ -476,7 +493,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
            if(delay_timer.running)
            {
 
-               if(container.interfase_visible)
+               if(srv.interfase_visible)
                {
                bottom_panel.height=0
                timelist_rect.width=0
@@ -486,7 +503,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                bottom_panel.height=160
                timelist_rect.width=100
                }
-               container.interfase_visible=!container.interfase_visible
+               srv.interfase_visible=!srv.interfase_visible
            }
 
        mouse.accepted=false
@@ -494,6 +511,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
     //   request_to_turn_pause_play()
        }
        }
+
 
    }
 
@@ -533,7 +551,7 @@ anchors.fill:parent
                    target: configPanel
                    opacity: 1
                    anchors.rightMargin: 0
-                    width: 300
+                    width: 400
                }
            },
            State {
@@ -877,7 +895,7 @@ MouseArea{
 
 onClicked: {
 
-container.hide_or_show_menu()
+srv.hide_or_show_menu()
 
     // console.log("------------------ 1")
     root.test.qwerty()
@@ -887,240 +905,120 @@ container.hide_or_show_menu()
 }
 }
 
+/*
+Button{
+x:100
+y:100
+width: 100
+height: 100
+onClicked: {
+ root.send(1, 'ListDevices', '')
+}
+}
+*/
 
 Component.onCompleted: {
 
 
+Axxon.get_service_id()
+console.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
+    /*
+    console.log("Ищем вкладку где Axxon")
+    console.log("кол-во вкладок: ",root.layouts.count)
+    for (var i = 0; i < root.panes.length; i++){
+    console.log(root.panes[i].symbol," ",root.panes[i].it_s_video)
 
-   /*
-     console.log("Ищем вкладку где Axxon")
-//    console.log("кол-во вкладок: ",root.layouts.count)
-  for (var i = 0; i < root.panes.length; i++){
-      console.log(root.panes[i].symbol," ",root.panes[i].it_s_video)
-
-      if(root.panes[i].it_s_video==1)
-          root.videoPane=i+1
+    if(root.panes[i].it_s_video==1)
+    root.videoPane=i+1
 
 
     }
-  */
+    */
 
-//root.videoWall_show()
+    //root.videoWall_show()
 
-hide_menu()
-show_menu()
+    hide_menu()
+    show_menu()
 
-   // configPanel.state = "hide"
+     timeline.to_live()
+    // configPanel.state = "hide"
     //root.requestVideo.connect(request)
 
+    root.event_on_camera.connect(f_event_on_camera)
 
     timeline.moved_at_dt.connect(f_moved_at_dt)
+    timeline.paused_and_moved_at_dt.connect(f_paused_and_moved_at_dt)
     timeline.livestream_button_clicked.connect(f_set_live_play)
-    timeline.pause_or_play.connect(f_play_or_pause)
+
+    timeline.play_signal.connect(f_play)
+    timeline.pause_signal.connect(f_pause)
+    /*
     //request_to_turn_pause_play.connect(timeline.play_or_pause)
+ */
+    timelist.send_time.connect(timeline.set_time)
 
-        timelist.send_time.connect(timeline.set_time)
 
+    timeline.tree_on_off.connect(f_tree_on_off)
 
- timeline.tree_on_off.connect(f_tree_on_off)
-
+    //Реакция на выбор камеры в меню с камерами
     camera_storage.add_to_space.connect(f_change_camera)
+
+    root.update_intervals.connect(timeline.update_slider_intervals)
 
     timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
 
 
     timeline.signal_telemetry_on_off.connect( f_telemetry_on_off)
-    timeline.signal_loaded_cameras_on_off.connect( f_loaded_cameras_on_off)
-    timeline.eventlog_on_off.connect( f_eventlog_on_off)
 
-    vm.playing.connect(timeline.timer_start)
-    vm.live_playing.connect(vm_live_playing_handler)
+    timeline.signal_loaded_cameras_on_off.connect(f_loaded_cameras_on_off)
+
+    timeline.eventlog_on_off.connect( f_eventlog_on_off)
+/* */
+        vm.playing.connect(timeline.timer_start)
+    //    vm.live_playing.connect(vm_live_playing_handler)
 
     timeline.update_timelist.connect(timelist.set_current)
 
 
-  //  calendar.pressed.connect(f_current_camera_update)
-calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
+    //  calendar.pressed.connect(f_current_camera_update)
+    calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
+/*
+    root.camera_presets.updated.connect(update_presets)
+    */
 
-root.camera_presets.updated.connect(update_presets)
+    //Когда пришел ответ по нашему запросу сформированному в функции f_change_camera
+    //root.current_camera.updated.connect(f_current_camera_update)
 
-root.current_camera.updated.connect(f_current_camera_update)
+    root.cameraList.updated.connect(reconnect_livestream)
 
-root.rtsp_stream_url.updated.connect(reconnect_livestream)
-
-
-root. camera_to_livestream.updated.connect( handler_to_camera_to_livestream_updated)
-
-root.eventSelected.connect(eventSelected_handler)
-
-
-root.update_intervals.updated.connect(to_update_intervals_handler)
-
-root.another_user.updated.connect(show_another_user)
-
-        calendar.enabled=false
-        calendar_rect.visible=false
-        calendar_rect_area.enabled=false
-
-     //   tlmtr_rect.visible=false
-     //   telemetry.set_disabled()
-        telemetry_on_off_value=false
-
-       root.storage_live=live
-       root.pause_play=play
-        //update_vm()
-
-//    console.log("------------------ 1")
-    root.test.qwerty()
-//    console.log("------------------ 2")
-      }
-    property bool telemetry_on_off_value: false
+    root.frash_URL.connect(f_current_camera_update)
 
 
-function vm_live_playing_handler()
-{
-    if(root.storage_live==live)
-    if(root.pause_play==play)
-    {
-    timeline.to_live()
-        vm.set_live_play()
-    }
 
-}
 
-function f_tree_on_off()
-{
-if(r2.width>0)
-    r2.width=0
-else
-    r2.width=200
-}
+    root.eventSelected.connect(eventSelected_handler)
+/*
 
-function reconnect_livestream()
-{
-    /*
-  console.log("[]")
-  console.log("[]")
-  console.log("[==================================================================================]")
-  console.log("[]")
-  console.log("[]")
-  console.log("[reconnect_livestream]")
-  console.log("[]")
-  console.log("[]")
-  console.log("[==================================================================================]")
-  console.log("[]")
-  console.log("[]")
-  */
-    for(var i=0;i< root.rtsp_stream_url.count;i++)
-    {
-        var x= root.rtsp_stream_url.get(i)
-     //   console.log("посмотри: ",x.axxon_id," ",x.state,"      current_cameraId",current_cameraId)
-        if(x.axxon_id==current_cameraId)
-        {
-            /*
-            console.log(" ")
-            console.log(" ")
-            console.log(" ")
-            console.log(" ")
-            console.log("Камера ",x.point," изменила состояние на ",x.state," ",x.state)
-            console.log(" ")
-            console.log(" ")
-            console.log(" ")
-            console.log(" ")
+    root.update_intervals.updated.connect(to_update_intervals_handler)
 */
+    root.another_user.updated.connect(show_another_user)
+
+    calendar.enabled=false
+    calendar_rect.visible=false
+    calendar_rect_area.enabled=false
 
 
-            if(x.state=="lost")
-            {
-            vm.url_livestream="NOTHING"
-            vm.set_live_play()
-            }
+    telemetry_on_off_value=false
 
-            if(x.state!="lost")
-            {
+    root.storage_live=live
+    root.pause_play=play
 
-                for(var j=0;j<root.current_camera.count;j++)
-                {
-                    var y=root.current_camera.get(j)
-
-                                   if(x.axxon_id==y.id)
-                        {
-                            vm.url_livestream=y.liveStream
-
-                        }
-
-
-                    }
-
-
-
-
-
-
-             if(root.pause_play==play)
-             if(root.storage_live==live)
-             vm.set_live_play()
-            }
-
-
-        }
-
-    }
-
-    if(root.pause_play==play)
-        if(root.storage_live==live)
-            {
-         //   console.log("live")
-            vm.set_live_play()
-            }
-  camera_storage.update_from_rtsp_stream_url()
-
-}
-
-
-function m_func(){
-//console.log("func!!!12")
-
-}
-
-function f_eventlog_on_off()
-{
-    if(eventlog.width>0)
-       eventlog.width=0
-        else
-       eventlog.width=700
-
-}
-
-function show_another_user(message){
-//console.log(" ")
-//    var str
-//    var user=root.another_user.get(0)
-//    str="Управление забрал "+user.name+" "+user.surename
-//console.log(str)
-//console.log(" ")
-   var user=root.another_user.get(0)
-    another_user_text.text=user.message
-    another_user_rect.visible=true
-    another_user_timer.start()
 }
 
 function to_update_intervals_handler()
 {
-//   console.log("[to_update_intervals_handler]")
-//    console.log("root.update_intervals.count ",root.update_intervals.count)
-    /*
-    var i
-    for(i in root.update_intervals)
-    {
-    console.log("i ",i)
-    console.log("root.update_intervals[i] ",root.update_intervals[i])
 
-    console.log("root.update_intervals.count ",root.update_intervals[i].m_intervals.intervals[0].begin)
-    console.log("root.update_intervals.count ",root.update_intervals[i].m_intervals.intervals[0].end)
-    }
-*/
-         var x=root.update_intervals.get(0)
+    var x=root.update_intervals.get(0)
     timeline.update_slider_intervals(x.m_intervals)
 
 
@@ -1128,261 +1026,19 @@ function to_update_intervals_handler()
 
 function to_update_intervals_handler_and_go_to_this_dt()
 {
-to_update_intervals_handler()
+    console.log("to_update_intervals_handler_and_go_to_this_dt")
+//to_update_intervals_handler()
     var dt=timeline.current_dt()
+
+
   //  console.log(dt)
   //  console.log("[2]")
     root.storage_live=storage
     timeline.to_storage()
 
-request_URL(current_cameraId,current_serviceId,dt)
+    var lcl=Axxon.camera(cid)
 
-}
-
-function eventSelected_handler(event)
-{
-    vm.clear_storage_player()
-//console.log("")
-//console.log("[ eventSelected_handler ]")
-//  console.log('Event selected', JSON.stringify(event))
-
-    var str=event.commands
-  // console.log('event.commands', str)
-    str=str.replace(/(\[)/g, "")
- // console.log('event.commands', str)
-    str=str.replace(/(\])/g,"")
- // console.log('event.commands', str)
-
-    var arr=str.split(",",4)
- //   console.log(arr[0])
- //   console.log(arr[1])
- //   console.log(arr[2])
- //   console.log(arr[3])
-    //Взять айди камеры и время
-
-    var serviceId=arr[0]
-    var globalDeviceId=arr[1]
-    var cameraId="";
-
-    var dt=event.timeString
-
-
- //   console.log("serviceId ",serviceId)
- //   console.log("globalDeviceId ",globalDeviceId)
-
- //   console.log("dt ",dt)
-
-
-dt= dt.substring(6,10)+
-    dt.substring(3,5)+
-    dt.substring(0,2)+
-    "T"+
-    dt.substring(11,13)+
-    dt.substring(14,16)+
-    dt.substring(17,19)+
-    ".000000"
-
-  //  console.log("dt ",dt)
-var y
-  for(var i=0;i<root.rtsp_stream_url.count;i++)
-  {
-  var x=root.rtsp_stream_url.get(i)
-  //    console.log(i,": ",x.id," ",globalDeviceId)
-
-      if(x.id==globalDeviceId)
-      {
-      cameraId=x.axxon_id
-      y=x
-      }
-  }
-
- // console.log(" ")
- //   console.log("cameraId ",cameraId)
-
- // console.log(" ")
-    if(cameraId!="")
-    {
-        root.activePane=root.videoPane
-        root.storage_live=storage
-//-------------------------------------------------
-        current_cameraId=cameraId
-        current_serviceId=serviceId
-        //console.log("camera id: ",current_serviceId)
-        //console.log("current_serviceId: ",current_serviceId)
-        telemetry.set_serviceId(current_serviceId)
-
-
-        preset_list.serviceId=current_serviceId
-        telemetryControlID=y.telemetryControlID
-        root.telemetryPoint=telemetryControlID
-        telemetry.set_point(y.telemetryControlID)
-
-
-
-
-        //    console.log("[storage]")
-        //    console.log("[1]")
-           // var dt=timeline.current_dt()
-         //   console.log(dt)
-         //   console.log("[2]")
-        timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
-        Axxon.request_URL(current_cameraId,current_serviceId,dt,"utc")
-
-         //update_vm(timeline.get_dt())
-//-------------------------------------------------
-
-
-    }
-
-
-}
-
-function handler_to_camera_to_livestream_updated()
-{
-//console.log("[handler_to_camera_to_livestream_updated]")
-    current_cameraId=root.camera_to_livestream.get(0).id
-
-    telemetryControlID=current_camera.get(0).telemetryControlID
-    root.telemetryPoint=telemetryControlID
-
-
-    telemetry.set_point(telemetryControlID)
-
-    root.pause_play=play
-    root.storage_live=live
-
-    f_current_camera_update()
-
-
-
-    timeline.to_live()
-}
-
-
-function f_current_camera_update()
-{
-
-
-//console.log("[f_current_camera_update !]")
-
-    for(var i=0;i<root.current_camera.count;i++)
-    {
-        var x=root.current_camera.get(i)
-/*
-        console.log("id: ", x.id)
-
-
-
-        console.log("-------------------------")
-        console.log(" ")
-        console.log(" ")
-        console.log("liveStream: ", x.liveStream)
-        console.log(" ")
-        console.log(" ")
-        console.log("-------------------------")
-        //console.log("storageStream: ", x.storageStream)
-        //console.log("snapshot: ", x.snapshot)
-        */
-        var state=false
-        //ищем эту камеру
-        for(var i=0;i< root.rtsp_stream_url.count;i++)
-        {
-        //    console.log("наш id: ", x.id)
-            var y= root.rtsp_stream_url.get(i)
-        //    console.log("x.id: ", y.axxon_id)
-            if(x.id==y.axxon_id)
-            {
-         //   console.log("Состояние этой камеры: ", y.state)
-
-           //     console.log("name           ",y.name)
-           //     console.log("id             ",y.id)
-
-                var str=y.name+" "+y.id
-              //                 console.log("str             ",str)
-
-            timeline.set_camera_zone(str)
-
-
-            state=y.state
-            }
-
-
-        }
-
-        if(x.id==current_cameraId)
-        {
-    //    console.log("[Пришли URL на камеру]")
-  // console.log("x.liveStream   ",x.liveStream)
- //  console.log("storageStream  ",x.storageStream)
- //  console.log("snapshot       ",x.snapshot)
-
-
-            vm.url_livestream=x.liveStream
-            vm.url_storagestream=x.storageStream
-            vm.url_snapshot=x.snapshot
-
-
-//Найди состояние камеры!!!
-
-
-
-            if(root.storage_live==live)
-            {
-            if(state!="lost"){
-        //       console.log("1")
-            update_vm()
-            }
-            else{
-       //     console.log("2")
-                vm.url_livestream="NOTHING"
-            vm.set_live_play()
-            }
-            }
-            else
-            update_vm()
-
-    //      timeline.update_slider_intervals(x.intervals)
-         }
-
-       /* }
-        else
-        {
-        vm.set_live_stop()
-        }*/
-    }
-
-
-}
-
-
-    function update_presets()
-    {
-        //console.log("[update_presets]")
-    }
-
-function f_loaded_cameras_on_off()
-{
-if(configPanel.state=="show")
-    configPanel.state="hide"
-    else
-{
-//    Axxon. getListDevices()
-    configPanel.state="show"
-}
-}
-
-function f_telemetry_on_off()
-{
-if(telemetry_on_off_value)
-{
-telemetry_menu.width=0
-}
-else
-{
-telemetry_menu.width=260
-}
-telemetry_on_off_value=!telemetry_on_off_value
-
+request_URL(lcl.id,lcl.serviceId,dt)
 
 }
 
@@ -1404,102 +1060,11 @@ else
 }
 
 
-
-function f_change_camera(x)
-{
-  // console.log("[f_change_camera(x)]")
-configPanel.state="hide"
-    //   live_videoOutput.visible=true
-   //    image.visible=false
-   //    storage_videoOutput.visible=false
-//console.log("!!Меняю камеру: id:",x.obj.id," ; имя:",x.obj.name,"; телеметрия:",x.obj.telemetryControlID)
-//    vm.accesspoint=x.obj.point
-//    vm.reload_livestream()
-    current_cameraId=x.obj.axxon_id
-    current_serviceId=x.obj.serviceId
-    //console.log("camera id: ",current_serviceId)
-    //console.log("current_serviceId: ",current_serviceId)
-    telemetry.set_serviceId(current_serviceId)
-
-
-    preset_list.serviceId=current_serviceId
-    telemetryControlID=x.obj.telemetryControlID
-    root.telemetryPoint=telemetryControlID
-    telemetry.set_point(telemetryControlID)
-
-
-    if(root.storage_live==live)
-    {
-  //   console.log("[live]")
-    request_URL(current_cameraId,current_serviceId,"")
-    }
-    if(root.storage_live==storage)
-    {
-     //   console.log("[storage]")
-    //    console.log("[1]")
-        var dt=timeline.current_dt()
-     //   console.log(dt)
-     //   console.log("[2]")
-    request_URL(current_cameraId,current_serviceId,dt)
-    }
-     //update_vm(timeline.get_dt())
-
-
-
-}
-
-function f_play_or_pause(str,dt)
-{
-    if(root.storage_live==storage){
-
-    if(str=="play")
-        root.pause_play=play
-    if(str=="pause")
-        root.pause_play=pause
-
-    request_URL(current_cameraId,current_serviceId,dt)
-    }
-
-    if(root.storage_live==live){
-
-  //  console.log("[REAL LIVE]")
-        if(str=="play")
-            root.pause_play=play
-        if(str=="pause")
-            root.pause_play=pause
-
-       update_vm(dt)
-    }
-    root.storage_live=storage     //update_vm(dt)
-
-}
-
-function f_moved_at_dt(dt)
-{
-root.storage_live=storage
-
-
-    request_URL(current_cameraId,current_serviceId,dt)
-     //update_vm(dt)
-
-}
-
-function f_set_live_play()
-{
-root.storage_live=live
-root.pause_play=play
-var dt=""
-
-    request_URL(current_cameraId,current_serviceId,dt)
- //update_vm(dt)
-}
-
-
 function hide_or_show_menu()
 {
   //  console.log("[hide_or_show_menu] ",container.interfase_visible )
 
-     if(container.interfase_visible)
+     if(srv.interfase_visible)
      {
   hide_menu()
 
@@ -1513,40 +1078,176 @@ function hide_or_show_menu()
 
 
 }
+/*
+function f_update_intervals(x){
+console.log("[update intervals]")
+console.log(JSON.stringify(x))
+console.log(JSON.stringify(x.intervals.length))
+    timeline.update_slider_intervals(x)
+}
+*/
 
-function show_menu()
-{
-  //  console.log("[show] " )
-bottom_panel.height=160
-timelist_rect.width=110
- container.interfase_visible=true
+function f_event_on_camera(id){
+
+ if( !(
+    (root.storage_live==live)&&
+    (root.pause_play==play)&&
+    (cid==id)
+           ))
+ {
+
+ root.storage_live=live
+ root.pause_play=play
+ timeline.to_live()
+ f_change_camera(id)
+ }
+ else{
+ console.log("совпадает")
+ }
 }
 
-function hide_menu()
-{
- //   console.log("[hide] " )
-  bottom_panel.height=0
-      telemetry_menu.width=0
-  timelist_rect.width=0
-      eventlog.width=0
-      configPanel.state="hide"
+//Когда выбрал камеру в меню  камерами
+function f_change_camera(id){
 
-      calendar.enabled=false
-      calendar_rect.visible=false
-      calendar_rect_area.enabled=false
-       r2.width=0
- container.interfase_visible=false
+    cid=id
+    var lcl
+    lcl=Axxon.camera(cid)
+    console.log(lcl.name)
+    configPanel.state="hide"
+
+    telemetry.set_serviceId(lcl.serviceId)
+    preset_list.serviceId=lcl.serviceId
+
+    console.log("telemetryControlID: ",lcl.telemetryControlID)
+    root.telemetryPoint=lcl.telemetryControlID
+
+    //запрашиваем у сервера всю нужную нам инфу по этой камере
+    var dt=""
+    if(root.storage_live==storage){
+        dt=timeline.current_dt()
+
+    }
+    request_URL(lcl.id,lcl.serviceId,dt)
 }
 
-function request_URL(cameraId, serviceId, dt)
-{
-//console.log("камера: ",cameraId,"; сервис: ",serviceId,"; dt: ",dt)
+
+function reconnect_livestream(){
+  camera_storage.update_from_cameraList()
+
+}
+
+//Пришли свежие настройки на камеру:
+// ее URL - лайвстрим
+// ee URL архив стрим по заданному dt
+// ее URL снэпшот по заданному dt
+//
+//Ты - в зависимости от ситуации - должен отобразить на дисплэй дату
+//с того либо иного URL
+
+function f_current_camera_update(){
+
+    var lcl
+    lcl=Axxon.camera(cid)
+
+    console.log("")
+    console.log("Обновляем камеру")
+
+
+
+
+    update_vm()
+
+
+
+
+
+
+
+
+}
+
+function f_tree_on_off(){
+    if(r2.width>0)
+        r2.width=0
+    else
+        r2.width=200
+}
+
+function show_menu(){
+
+    bottom_panel.height=160
+    timelist_rect.width=110
+    srv.interfase_visible=true
+}
+
+function hide_menu(){
+
+    bottom_panel.height=0
+    telemetry_menu.width=0
+    timelist_rect.width=0
+    eventlog.width=0
+    configPanel.state="hide"
+    calendar.enabled=false
+    calendar_rect.visible=false
+    calendar_rect_area.enabled=false
+    r2.width=0
+    srv.interfase_visible=false
+}
+
+function f_loaded_cameras_on_off(){
+    if(configPanel.state=="show"){
+        configPanel.state="hide"
+    }else{
+        //Axxon. getListDevices()
+        configPanel.state="show"
+    }
+}
+
+function f_play(){
+    root.pause_play=play
+    request_URL(cid,Axxon.camera(cid).serviceId,timeline.current_dt())
+}
+
+function f_pause(){
+    root.pause_play=pause
+    vm.stop()
+}
+
+function f_paused_and_moved_at_dt(dt){
+f_pause()
+f_moved_at_dt(dt)
+}
+
+
+function f_moved_at_dt(dt){
+root.storage_live=storage
+
+
+request_URL(cid,Axxon.camera(cid).serviceId,dt)
+     //update_vm(dt)
+
+}
+
+function request_URL(cameraId, serviceId, dt){
 Axxon.request_URL(cameraId, serviceId, dt,"utc")
 
 }
 
-function  update_vm(dt)
+function f_set_live_play()
+{
+    console.log("[f_set_live_play]")
+root.storage_live=live
+root.pause_play=play
+var dt=""
+update_vm()
+
+Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
+}
+
+function  update_vm(id)
  {
+    var lcl=Axxon.camera(cid)
+
     //console.log("[",dt,"]")
  //   console.log("-------------update vm")
  if(root.pause_play==pause)
@@ -1554,14 +1255,16 @@ function  update_vm(dt)
    //  console.log("pause")
      if(root.storage_live==storage)
          {
+         vm.source=lcl.snapshot
+         vm.shot()
       //   console.log("storage")
-         vm.set_storage_pause(dt)
+
          }
      else
      if(root.storage_live==live)
          {
-      //   console.log("live")
-         vm.set_live_pause()
+        vm.stop()
+
          }
      }
  else
@@ -1570,17 +1273,19 @@ function  update_vm(dt)
    //  console.log("play")
      if(root.storage_live==storage)
          {
-       //  console.log("storage")
-         vm.set_storage_play(dt)
+         vm.source=lcl.storageStream
+         vm.start()
+
          }
      else
      if(root.storage_live==live)
          {
          preset_list.clear_model()
-         Tlmtr.preset_info(telemetryControlID,current_serviceId)
+         Tlmtr.preset_info()
 
-         root.telemetryPoint=telemetryControlID
-         Tlmtr.capture_session(telemetryControlID,current_serviceId)
+
+
+         Tlmtr.capture_session()
 
          timer.start()
          tform1.xScale =1
@@ -1589,22 +1294,93 @@ function  update_vm(dt)
 
      //    rect.x =0
      //    rect.y =0
-     //   console.log("live")
-         vm.set_live_play()
+        console.log("live")
+         vm.source=lcl.liveStream
+         vm.start()
          }
 
      }
  }
 
-function f_qwerty12345(){
-//console.log("f_qwerty12345()")
+function f_telemetry_on_off(){
+if(telemetry_on_off_value)
+{
+    telemetry_menu.width=0
+    }
+    else
+    {
+    telemetry_menu.width=260
+    }
+    telemetry_on_off_value=!telemetry_on_off_value
+
+}
+
+function show_another_user(message){
+//console.log(" ")
+//    var str
+//    var user=root.another_user.get(0)
+//    str="Управление забрал "+user.name+" "+user.surename
+//console.log(str)
+//console.log(" ")
+   var user=root.another_user.get(0)
+    another_user_text.text=user.message
+    another_user_rect.visible=true
+    another_user_timer.start()
+}
+
+function eventSelected_handler(event){
+
+    console.log("[ eventSelected_handler]")
+    var str=event.commands
+    str=str.replace(/(\[)/g, "")
+    str=str.replace(/(\])/g,"")
+    var arr=str.split(",",4)
+
+    //Добываем id и dt из данных
+    var serviceId=arr[0]
+    var id=arr[1]
+    var cameraId="";
+
+    var dt=event.timeString
+
+    dt= dt.substring(6,10)+
+        dt.substring(3,5)+
+        dt.substring(0,2)+
+        "T"+
+        dt.substring(11,13)+
+        dt.substring(14,16)+
+        dt.substring(17,19)+
+        ".000000"
+
+    root.storage_live=storage
+    cid=id
+
+    var lcl=Axxon.camera(cid)
+    telemetry.set_serviceId(lcl.serviceId)
+    preset_list.serviceId=lcl.serviceId
+    console.log("telemetryControlID: ",lcl.telemetryControlID)
+    root.telemetryPoint=lcl.telemetryControlID
+
+    timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
+    Axxon.request_URL(cid,Axxon.camera(id).serviceId,dt,"utc")
+
+     //Переключаемся на архив из данной камеры на заданное время
+
+
+}
+
+function f_eventlog_on_off(){
+    if(eventlog.width>0)
+       eventlog.width=0
+        else
+       eventlog.width=700
+
+}
+
+
 }
 
 
 
 
-
-
-
-}
 

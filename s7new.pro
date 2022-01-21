@@ -1,4 +1,4 @@
-QT += quick widgets
+QT += quick widgets  quick quickwidgets  multimedia
 
 CONFIG += c++11
 
@@ -14,7 +14,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        qml/video/Player/clockcircle.cpp \
+        qml/video/Player/ffplayer.cpp \
+        qml/video/Player/starter.cpp \
+        qml/video/Player/videoplayer.cpp \
+        qml/video/Preview/Preview.cpp
 
 RESOURCES += qml.qrc
 
@@ -28,3 +33,15 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+HEADERS += \
+    qml/video/Player/clockcircle.h \
+    qml/video/Player/ffplayer.h \
+    qml/video/Player/starter.h \
+    qml/video/Player/videoplayer.h \
+    qml/video/Preview/Preview.h
+
+DISTFILES += \
+    qml/video/Player/no_signal.jpeg
+
+LIBS +=  -lavformat -lswscale  -lavcodec -lavutil

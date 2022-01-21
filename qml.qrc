@@ -280,7 +280,6 @@
         <file>qml/video/TimeList.qml</file>
         <file>qml/video/virtual_joystick.qml</file>
         <file>qml/video/VM.qml</file>
-        <file>Test.qml</file>
         <file>js/constants.js</file>
         <file>images/user-solid.svg</file>
         <file>qml/forms/ImageFileDialog.qml</file>
@@ -314,5 +313,6 @@
         <file>qml/video/check_camera.jpeg</file>
         <file>qml/video/no_signal.jpeg</file>
         <file>qml/video/no_in_storage.jpeg</file>
+        <file>Video.qml</file>
     </qresource>
 </RCC>

@@ -94,17 +94,19 @@ var stickyStates = [
     EC_GLOBAL_ALARM
 ]
 
-var serviceStatuses = {
-    [EC_SERVICE_READY]: "self",
-    [EC_SERVICE_SHUTDOWN]: "self",
-    [EC_SERVICE_FAILURE]: "self",
-    [EC_SERVICE_ONLINE]: "tcp",
-    [EC_SERVICE_OFFLINE]: "tcp",
-    [EC_SERVICE_ERROR]: "tcp",
-    [EC_DATABASE_READY]: "db",
-    [EC_DATABASE_UNAVAILABLE]: "db",
-    [EC_DATABASE_ERROR]: "db",
-}
+var serviceStatuses = {}
+
+    serviceStatuses[EC_SERVICE_READY] = "self"
+    serviceStatuses[EC_SERVICE_SHUTDOWN] = "self"
+    serviceStatuses[EC_SERVICE_FAILURE] = "self"
+    serviceStatuses[EC_SERVICE_ONLINE] = "tcp"
+    serviceStatuses[EC_SERVICE_OFFLINE] = "tcp"
+    serviceStatuses[EC_SERVICE_ERROR] = "tcp"
+    serviceStatuses[EC_DATABASE_READY] = "db"
+    serviceStatuses[EC_DATABASE_UNAVAILABLE] = "db"
+    serviceStatuses[EC_DATABASE_ERROR] = "db"
+
+
 
 
 var useAlarms = [ARM_UNIT, ARM_CHECKPOINT, ARM_GUARD, ARM_OPERATOR]

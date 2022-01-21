@@ -104,7 +104,7 @@ function set_count(val)
 {
 model.clear()
     for(var i=0;i<val;i++)
-     model.append({number:i})
+     model.append({number:i+1})
 }
 /*
 function add_page()
@@ -121,8 +121,9 @@ combo.activated.connect(current_page_changed)
 
 function current_page_changed()
 {
-////console.log("[current_page_changed]")
-current_page(combo.currentIndex)
+    var dt=new Date();
+console.log("------------------------------------------------------------------------------------- ",dt," current_page_changed ")
+current_page(combo.currentIndex+1)
 }
 
 

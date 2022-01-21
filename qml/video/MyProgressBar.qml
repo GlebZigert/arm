@@ -35,16 +35,18 @@ Item {
 
 //    signal do_snapshot_rt()
 
-        signal pause_or_play(string mode,string dt)
+
 
         signal livestream_button_clicked()
         signal signal_dt(string dt)
 
-        signal signal_play(string dt,int speed)
+
 
         signal storage_stop()
         signal moved_at_dt(string dt)
-        signal pause()
+        signal paused_and_moved_at_dt(string dt)
+        signal pause_signal()
+        signal play_signal()
 
      signal show_or_hide_calendar()
 
@@ -340,6 +342,7 @@ Row {
             anchors.fill: parent
             onClicked: {
             //    stop_streaming()
+                console.log("show_or_hide_calendar")
                 show_or_hide_calendar()
 
             }
@@ -385,7 +388,10 @@ Row {
 
             image.source="Media-Pause-40.png"//it was play
              m_item.play=false
-      pause_or_play("pause",get_dt(dt))
+            m_item.mode=m_item.storage
+        livestream_txt.text=m_item.mode
+             paused_and_moved_at_dt(get_dt(dt))
+
         }
         }
     }
@@ -464,7 +470,9 @@ Row {
 
             image.source="Media-Pause-40.png"//it was play
              m_item.play=false
-         pause_or_play("pause",get_dt(dt))
+            m_item.mode=m_item.storage
+        livestream_txt.text=m_item.mode
+         paused_and_moved_at_dt(get_dt(dt))
 
         }
         }
@@ -473,7 +481,7 @@ Row {
     Rectangle {
         id: livestream
         color: "lightblue";
-        width: 400;
+        width: 300;
         height: 40
 
         radius: 6
@@ -728,6 +736,7 @@ time_rect.color="lightgray"
 
 function timer_start()
 {
+
     var dt=datetime(slider.value)
     Qt.formatTime(dt,"ss")
     var sec= Qt.formatTime(dt,"ss")
@@ -996,18 +1005,9 @@ function play_or_pause()
       console.log(" ")
       console.log(" ")
         console.log("=======================")
-//     get_dt(dt)
-        //Axxon.send_dt(str)
-   //     signal_play(get_dt(dt),m_item.speed)
 
+        play_signal()
 
-        //storage_snapshot(str)
-     //   var dt=datetime(slider.value)
-
-     //   dt_text.text=Qt.formatTime(dt,"yyyy::mm:dd hh:mm:ss")
-    // moved_at_dt(get_dt(dt))
-        pause_or_play("play",get_dt(dt))
-     //   timer_start()
     }
     else
     {
@@ -1031,9 +1031,13 @@ function play_or_pause()
         console.log(" ")
           console.log("=======================")
         dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
-          pause_or_play("pause",get_dt(dt))
+
+
+
         m_item.mode=m_item.storage
        livestream_txt.text=m_item.mode
+
+        pause_signal()
     }
 
 
@@ -1130,7 +1134,9 @@ function update_slider_intervals(intervals)
    // calendar.selectedDate
 
 
-    console.log("[update_slider_intervals]")
+
+ //   console.log("[update_slider_intervals]")
+ //    console.log("интервалы: ", JSON.stringify(intervals))
 //    console.log(intervals)
     m_intervals.clear()
 var dt=datetime(0)
@@ -1150,12 +1156,14 @@ Qt.formatDate(dt,"dd")+
 
 //----------------
 
-    console.log("c_begin ",c_begin)
-    console.log("c_end ",c_end)
+  //  console.log("c_begin ",c_begin)
+  //  console.log("c_end ",c_end)
 
 
-   //console.log("кол-во интервалов: ",intervals.intervals.length)
+
     if(intervals.intervals)
+    {
+  //   console.log("кол-во интервалов: ",intervals.intervals.length)
     if(intervals.intervals.length>0)
     for (var i=0;i<intervals.intervals.length;i++) {
 
@@ -1168,14 +1176,14 @@ Qt.formatDate(dt,"dd")+
 
         if(compare_dt(c_begin,end)>0)
         {
-        console.log("полностью позади")
+     //   console.log("полностью позади")
 
         }
         else
         if(compare_dt(begin,c_end)>0)
         {
 
-        console.log("полностью спереди")
+     //   console.log("полностью спереди")
 
         }
         else
@@ -1194,8 +1202,8 @@ Qt.formatDate(dt,"dd")+
             else
             my_end=c_end
 
-     //   console.log("my_begin ",my_begin)
-     //   console.log("my_end ",my_end)
+  //      console.log("my_begin ",my_begin)
+  //      console.log("my_end ",my_end)
 
             //console.log("slider begin ",convert_dt_to_slider_value(my_begin))
             //console.log("slider end ",convert_dt_to_slider_value(my_end))
@@ -1221,6 +1229,7 @@ Qt.formatDate(dt,"dd")+
 
 
     }
+}
 
 /*
     console.log("интервалы: ",m_intervals.count)
