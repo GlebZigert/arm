@@ -4,12 +4,12 @@
 function Axxon(model) {
     this.model = model
     this.serviceId = this.model.serviceId
-    this.statusUpdate()
+    //this.statusUpdate()
 
     this.handlers = {
         ListDevices: this.rebuildTree.bind(this),
         UpdateDevices: this.update.bind(this),
-        StatusUpdate: this.statusUpdate.bind(this),
+//      StatusUpdate: this.statusUpdate.bind(this),
         DateTime: this.receive_strorage_stream.bind(this),
    //     Telemetry_preset_info: this.receive_preset_info.bind(this),
    //     Telemetry_edit_preset: this.receive_preset_info.bind(this),
@@ -23,7 +23,17 @@ function Axxon(model) {
         Axxon_Event: this.Axxon_event_handler.bind(this),
         Events: this.processEvents.bind(this)
     }
+    Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
+
+Axxon.prototype.statusUpdate = function (sid) {
+    if (Constants.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid)
+        root.send(this.serviceId, 'ListDevices', '')
+
+    Utils.setServiceStatus(this.model, sid)
+    //console.log("============== RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
+}
+
 
 // all available states for each device type, used for algorithms form
 var states = {
@@ -437,11 +447,11 @@ Axxon.prototype.handler_Telemetry_command = function (data) {
 
 
 
-Axxon.prototype.statusUpdate = function (data) {
+/*Axxon.prototype.statusUpdate = function (data) {
     this.model.status = data || this.model.status
     this.model.color = Utils.serviceColor(this.model.status)
     root.send(this.serviceId, 'ListDevices', '')
-}
+}*/
 
 function getListDevices()
 {

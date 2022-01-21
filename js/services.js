@@ -198,6 +198,11 @@ function newService(service) {
 
         item = qml.devices.get(qml.devices.count - 1)
         services[service.serviceId] = new factory[service.type](item)
+
+        if(service.type=="axxon"){
+            console.log("[service.type==Axxon.Axxon]")
+        root.axxon_service_id=service.serviceId
+        }
     }
 }
 
