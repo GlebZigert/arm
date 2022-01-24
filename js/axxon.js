@@ -118,6 +118,7 @@ for (var i = 0; i < events.length; i++) {
         var cameraId="";
 
 
+
         console.log("DeviceId: ",globalDeviceId)
 
         for(var j=0;j<root.cameraList.count;j++){
@@ -226,6 +227,13 @@ for (var i = 0; i < events.length; i++) {
 
 
 
+    }else{
+        var globalDeviceId=events[i].deviceId
+
+        if(globalDeviceId==0){
+            console.log("globalDeviceId==0")
+        this.statusUpdate(events[i].class)
+        }
     }
 
 
@@ -447,11 +455,7 @@ Axxon.prototype.handler_Telemetry_command = function (data) {
 
 
 
-/*Axxon.prototype.statusUpdate = function (data) {
-    this.model.status = data || this.model.status
-    this.model.color = Utils.serviceColor(this.model.status)
-    root.send(this.serviceId, 'ListDevices', '')
-}*/
+
 
 function getListDevices()
 {
@@ -462,10 +466,11 @@ function getListDevices()
 }
 
 Axxon.prototype.request_intervals_handler = function (data) {
+    /*
     console.log("")
     console.log("[request_intervals_handler]")
     console.log("")
-    console.log(JSON.stringify(data))
+    console.log(JSON.stringify(data))*/
    root.update_intervals(data[0].intervals)
 
 }

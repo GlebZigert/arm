@@ -100,7 +100,7 @@ void Preview::replyFinished(QNetworkReply *reply)
     this->current.loadFromData(reply->readAll());
 
     if((this->current.isNull())){
-      qDebug()<<"isNull !!!";
+  //    qDebug()<<"isNull !!!";
     manager->get(QNetworkRequest(QUrl(m_URL)));
     }else{
        update();

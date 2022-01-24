@@ -418,7 +418,7 @@ function do_refresh(i){
     var ind=i+page_size*(current_page-1)
     var x=model.get(ind)
     var y=container.page_model.get(i)
-
+/*
     //console.log("...",ind," из",model.count)
     console.log(" ")
 
@@ -437,7 +437,7 @@ function do_refresh(i){
 
     console.log(" ")
 
-
+*/
     container.page_model.set(i,{obj:{"preview_id":i,"id":x.obj.id,"name":x.obj.name}})
 /*
     container.page_model.get(i).obj.id=x.obj.id
