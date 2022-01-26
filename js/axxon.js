@@ -6,6 +6,9 @@ function Axxon(model) {
     this.serviceId = this.model.serviceId
     //this.statusUpdate()
 
+    console.log("[service.type==Axxon.Axxon]")
+root.axxon_service_id=this.serviceId
+
     this.handlers = {
         ListDevices: this.rebuildTree.bind(this),
         UpdateDevices: this.update.bind(this),
