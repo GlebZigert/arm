@@ -95,7 +95,10 @@ var stickyStates = [
 ]
 
 var serviceStatuses = {}
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     serviceStatuses[EC_SERVICE_READY] = "self"
     serviceStatuses[EC_SERVICE_SHUTDOWN] = "self"
     serviceStatuses[EC_SERVICE_FAILURE] = "self"
@@ -105,8 +108,11 @@ var serviceStatuses = {}
     serviceStatuses[EC_DATABASE_READY] = "db"
     serviceStatuses[EC_DATABASE_UNAVAILABLE] = "db"
     serviceStatuses[EC_DATABASE_ERROR] = "db"
+<<<<<<< HEAD
 
 
 
+=======
+>>>>>>> master
 
 var useAlarms = [ARM_UNIT, ARM_CHECKPOINT, ARM_GUARD, ARM_OPERATOR]

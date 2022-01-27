@@ -45,7 +45,7 @@ function listMaps(msg) {
 }
 
 function updateMap(msg) {
-    //console.log(JSON.stringify(msg.data))
+    console.log("UPD MAP:", JSON.stringify(msg.data))
     if (!msg.data)
         return
 
@@ -56,7 +56,10 @@ function updateMap(msg) {
     //console.log("=====================")
     //dumpModel(root.maps)
 
-    if (msg.data.shapes && msg.data.shapes.length) {
+    // if map_updated && !admin && no_shapes_in_map
+    if (i < root.maps.count && Const.ARM_ADMIN !== root.armRole && (!msg.data.shapes || 0 === msg.data.shapes.length)) {
+            root.maps.remove(i)
+    } else {
         injectExtra(msg.data)
         if (i < root.maps.count) {
             //map.imageSource = planImagePath(map.id)
@@ -64,8 +67,6 @@ function updateMap(msg) {
             mergeShapes(map.shapes, msg.data.shapes || [])
         } else //if (!msg.task)// new map
             root.maps.append(msg.data)
-    } else if (Const.ARM_ADMIN !== root.armRole && i < root.maps.count) {
-        root.maps.remove(i)
     }
     //dumpModel(root.maps)
     //console.log("Maps COUNT after update", root.maps.count)

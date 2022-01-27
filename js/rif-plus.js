@@ -175,13 +175,14 @@ function Rif(model) {
 }
 
 Rif.prototype.statusUpdate = function (sid) {
+    //console.log("==============1 RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
     if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid)
         root.send(this.serviceId, 'ListDevices', '')
     if (Const.EC_DATABASE_READY === sid && this.model.status.db !== sid)
         root.send(0, 'LoadJournal', this.serviceId)
 
     Utils.setServiceStatus(this.model, sid)
-    //console.log("============== RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
+    //console.log("==============2 RIF-STATUS", "=>", this.model.color, JSON.stringify(this.model.status))
 }
 
 
