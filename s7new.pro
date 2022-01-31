@@ -15,12 +15,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        qml/video/Player/clockcircle.cpp \
-        qml/video/Player/ffplayer.cpp \
-        qml/video/Player/starter.cpp \
-        qml/video/Player/videoplayer.cpp \
-        qml/video/Preview/Preview.cpp
-
+        qml/video/Player/clockcircle.cpp
+!win32 {
+    SOURCES += \
+           qml/video/Player/ffplayer.cpp \
+           qml/video/Player/starter.cpp \
+           qml/video/Player/videoplayer.cpp \
+           qml/video/Preview/Preview.cpp
+}
 RESOURCES += qml.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
@@ -35,13 +37,16 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    qml/video/Player/clockcircle.h \
-    qml/video/Player/ffplayer.h \
-    qml/video/Player/starter.h \
-    qml/video/Player/videoplayer.h \
-    qml/video/Preview/Preview.h
-
+    qml/video/Player/clockcircle.h
+!win32 {
+    HEADERS += \
+        qml/video/Player/ffplayer.h \
+        qml/video/Player/starter.h \
+        qml/video/Player/videoplayer.h \
+        qml/video/Preview/Preview.h
+}
 DISTFILES += \
     qml/video/Player/no_signal.jpeg
-
-LIBS +=  -lavformat -lswscale  -lavcodec -lavutil
+!win32 {
+    LIBS +=  -lavformat -lswscale  -lavcodec -lavutil
+}
