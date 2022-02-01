@@ -21,7 +21,7 @@ Timer {
 
     onNewTask: {
         var payload = JSON.stringify({service: service, action: action, task: ++taskId, data: data})
-        //console.log(taskId++)
+        //root.log(taskId++)
         if (running) // TODO: can't run multiple tasks in parallel
             fail(false) // not real fail, action in progress
         else if (!socket.active)
@@ -30,7 +30,7 @@ Timer {
             doneHandler = done
             failHandler = fail
             start()
-            //console.log("[SEND]", payload)
+            //root.log("[SEND]", payload)
             socket.sendTextMessage(payload)
         }
 

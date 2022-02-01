@@ -19,16 +19,16 @@ Item {
         interval: 5000; running: false; repeat: true
         onTriggered:
         {
-        //console.log(".")
+        //root.log(".")
         if (drop_area.containsMouse)
         {
-        //console.log("+")
+        //root.log("+")
         Tlmtr.hold_session()
     //    timer.start()
         }
         else
         {
-            //console.log("-")
+            //root.log("-")
         timer.stop()
         }
 
@@ -91,7 +91,7 @@ Row{
         Tlmtr.zoom_in()
         }
         onReleased: {
-            //console.log("stop")
+            //root.log("stop")
             Tlmtr.stop_zoom()
         }
     }
@@ -114,7 +114,7 @@ Row{
         Tlmtr.zoom_out()
         }
         onReleased: {
-            //console.log("stop")
+            //root.log("stop")
             Tlmtr.stop_zoom()
         }
     }
@@ -151,7 +151,7 @@ Row{
             Tlmtr.focus_in()
             }
             onReleased: {
-                //console.log("stop")
+                //root.log("stop")
                 Tlmtr.stop_focus()
             }
         }
@@ -174,7 +174,7 @@ Row{
             Tlmtr.focus_out()
             }
             onReleased: {
-                //console.log("stop")
+                //root.log("stop")
                 Tlmtr.stop_focus()
             }
         }
@@ -205,12 +205,12 @@ Row{
     }
 
     onReleased: {
-        //console.log("stop")
+        //root.log("stop")
         Tlmtr.stop_moving()
     }
 
     onEntered: {
-        //console.log("[onEntered]")
+        //root.log("[onEntered]")
         Tlmtr.capture_session(point)
         timer.start()
         //mouse.accepted=false
@@ -225,7 +225,7 @@ Row{
 
         onWheel:
         {
-              //console.log("---------------------" )
+              //root.log("---------------------" )
 
 
             if(wheel.angleDelta.y > 0)  // zoom in
@@ -264,7 +264,7 @@ Row{
         property int msec:0
         onTriggered:
         {
-            //console.log("zoom_timer_timeout")
+            //root.log("zoom_timer_timeout")
             Tlmtr.stop_zoom()
             drop_area.zoom_prev=0
         }

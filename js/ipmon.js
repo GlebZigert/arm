@@ -24,11 +24,11 @@ function IPMon(model) {
 }
 
 IPMon.prototype.shutdown = function () {
-    console.log(this.model.type, this.model.id, 'shutdown')
+    root.log(this.model.type, this.model.id, 'shutdown')
 }
 
 IPMon.prototype.statusUpdate = function (data) {
-    //console.log("##################### Z5R SUP", JSON.stringify(data))
+    //root.log("##################### Z5R SUP", JSON.stringify(data))
     if (data.tcp !== this.model.status.tcp && data.tcp === "online") {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
@@ -45,7 +45,7 @@ IPMon.prototype.reloadTree = function (id) {
 
 
 IPMon.prototype.rebuildTree = function (data) {
-    //console.log("IPMon tree:", JSON.stringify(data))
+    //root.log("IPMon tree:", JSON.stringify(data))
     var i,
         list = [],
         model = this.model.children
@@ -53,7 +53,7 @@ IPMon.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     } else {
-        console.log('IPMon: rebuild whole tree')
+        root.log('IPMon: rebuild whole tree')
         for (i = 0; i < data.length; i++) {
             list.push(this.complement(data[i]))
             setState(data[i], data[i].stateClass, data[i].stateText, 0)
@@ -69,7 +69,7 @@ IPMon.prototype.checkSticky = function (event) {
 }
 
 IPMon.prototype.processEvents = function (events) {
-    //console.log("IPMon Events", JSON.stringify(events))
+    //root.log("IPMon Events", JSON.stringify(events))
     var i, dev
     Journal.logEvents(events)
 
@@ -89,7 +89,7 @@ IPMon.prototype.processEvents = function (events) {
 }
 
 IPMon.prototype.update = function (dev) {
-    //console.log("IPMon upd.dev", JSON.stringify(dev))
+    //root.log("IPMon upd.dev", JSON.stringify(dev))
     var item = this.cache[dev.id],
         model = this.model.children
     if (item) { // update existing
@@ -109,7 +109,7 @@ IPMon.prototype.deleteDev = function (id) {
 
 
 IPMon.prototype.validateTree = function (data) {
-    console.log('IPMon: validateTree stub')
+    root.log('IPMon: validateTree stub')
     return false
 }
 
@@ -132,7 +132,7 @@ IPMon.prototype.complement = function (data) {
     var i,
         menu = [],
         device = this.cache[id]
-    console.log("IPMon-CM", JSON.stringify(device))
+    root.log("IPMon-CM", JSON.stringify(device))
 
     menu.push({
           text: "Открыть вход",

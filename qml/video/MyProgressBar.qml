@@ -60,12 +60,12 @@ Item {
         {
 
             var date=new Date().getTime()
-     //       //console.log(prev_date," ",date)
+     //       //root.log(prev_date," ",date)
 
 
         msec=msec+date-prev_date;
             prev_date=date
-//console.log("msec: ",msec)
+//root.log("msec: ",msec)
             if(msec>1000)
             {
 
@@ -75,13 +75,13 @@ Item {
 
                 var dt=datetime(slider.value)
                 Qt.formatTime(dt,"hh:mm:ss")
-               //  console.log("!")
+               //  root.log("!")
                   dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
                 sec++
                 if(sec>60)
                 {
-              //      //console.log("[update_timelist(dt)]")
+              //      //root.log("[update_timelist(dt)]")
                 sec=0
                 update_timelist(dt)
                 }
@@ -113,7 +113,7 @@ Item {
                 else
                 {
 
-                //console.log("[!!!]")
+                //root.log("[!!!]")
 
               //      take_a_pause()
                     timer.msec=0
@@ -342,7 +342,7 @@ Row {
             anchors.fill: parent
             onClicked: {
             //    stop_streaming()
-                console.log("show_or_hide_calendar")
+                root.log("show_or_hide_calendar")
                 show_or_hide_calendar()
 
             }
@@ -505,7 +505,7 @@ Row {
             anchors.fill: parent
             onClicked: {
             //    stop_streaming()
-                //console.log('[.]',livestream_txt.text)
+                //root.log('[.]',livestream_txt.text)
 
                 if(m_item.mode==m_item.storage)
                 {
@@ -675,7 +675,7 @@ color: "lightgray";
             wheelEnabled: true
 
             onHighlightedIndexChanged:  {
-            //console.log("speed_combobox.currentText",speed_combobox.currentText)
+            //root.log("speed_combobox.currentText",speed_combobox.currentText)
             m_item.speed=speed_combobox.currentText
 
                 var dt=datetime(slider.value)
@@ -740,13 +740,13 @@ function timer_start()
     var dt=datetime(slider.value)
     Qt.formatTime(dt,"ss")
     var sec= Qt.formatTime(dt,"ss")
-//console.log("секунд: ",sec)
+//root.log("секунд: ",sec)
     timer.sec=sec
 
 time_rect.color="lightblue"
     var date=new Date().getTime()
-//       //console.log(prev_date," ",date)
-//       //console.log(date-prev_date)
+//       //root.log(prev_date," ",date)
+//       //root.log(date-prev_date)
     timer.prev_date=date
 timer.start()
 }
@@ -776,7 +776,7 @@ dt=datetime(slider.value)
 
 
 
- //   //console.log("[get_dt]--------------------------------------------------------")
+ //   //root.log("[get_dt]--------------------------------------------------------")
     var str=    Qt.formatDate(dt,"yyyy")+
             Qt.formatDate(dt,"MM")+
             Qt.formatDate(dt,"dd")+
@@ -787,7 +787,7 @@ dt=datetime(slider.value)
             "."+
             str_msec
 
-    //console.log("[",str,"]")
+    //root.log("[",str,"]")
 
     return str
 
@@ -815,7 +815,7 @@ Component.onCompleted: {
 function update() {
 
    // var x=root.stream_from_storage.get(1)
-  //  //console.log(x.name)
+  //  //root.log(x.name)
   //  screen.source=x.stream
 
 
@@ -831,9 +831,9 @@ function datetime(value) {
      var min=Math.floor((value-hours*3600)/60)
      var sec=((value-hours*3600)-min*60)
      var msec=timer.msec
-     ////console.log("часы ",hours)
-     ////console.log("мин ",min)
-     ////console.log("сек ",sec)
+     ////root.log("часы ",hours)
+     ////root.log("мин ",min)
+     ////root.log("сек ",sec)
 
     var str_hour
     if(hours<10)
@@ -841,7 +841,7 @@ function datetime(value) {
     else
     str_hour=hours.toString()
 
-    ////console.log("str_hour ",str_hour)
+    ////root.log("str_hour ",str_hour)
 
     var str_min
     if(min<10)
@@ -866,21 +866,21 @@ function datetime(value) {
     str_msec="0"+str_msec
 
 
- //   ////console.log("calendar.data "+calendar.selectedDate)
+ //   ////root.log("calendar.data "+calendar.selectedDate)
 
-  //  console.log("calendar.selectedDate: ",calendar.selectedDate)
+  //  root.log("calendar.selectedDate: ",calendar.selectedDate)
     var dt=new Date(calendar.selectedDate).toLocaleTimeString()
 
 
 
 
 
-//    ////console.log("dt "+dt)
+//    ////root.log("dt "+dt)
 
 
-//    ////console.log("dd "+Qt.formatDate(calendar.selectedDate,"dd"))
-//   ////console.log("dd "+Qt.formatDate(calendar.selectedDate,"MM"))
-//    ////console.log("dd "+Qt.formatDate(calendar.selectedDate,"yyyy"))
+//    ////root.log("dd "+Qt.formatDate(calendar.selectedDate,"dd"))
+//   ////root.log("dd "+Qt.formatDate(calendar.selectedDate,"MM"))
+//    ////root.log("dd "+Qt.formatDate(calendar.selectedDate,"yyyy"))
 
 
 
@@ -891,7 +891,7 @@ function datetime(value) {
 //            Qt.formatDate(calendar.selectedDate,"dd")+
 //           "T"+str_hour+str_min+str_sec
 //
-    ////console.log("str_hour ",str_hour)
+    ////root.log("str_hour ",str_hour)
 
 
   var str_date
@@ -912,24 +912,24 @@ function datetime(value) {
 
 
     var dateTimeString= "2013-09-17 09:56:06"
-     ////console.log("str: ",str)
-     ////console.log("str_date: ",str_date)
-     ////console.log("dateTimeString: ",dateTimeString)
+     ////root.log("str: ",str)
+     ////root.log("str_date: ",str_date)
+     ////root.log("dateTimeString: ",dateTimeString)
 
     var date=Date.fromLocaleString(locale, str_date, "yyyy-MM-dd hh:mm:ss")
 
  //   var date=Date.fromLocaleDateString(locale, str_date, "dd.MM.yyyy hh:mm:ss")
 
-    ////console.log(Date.fromLocaleString(locale, dateTimeString, "yyyy-MM-dd hh:mm:ss"));
-//    ////console.log(Date.fromLocaleString(locale, str_date, "yyyy-MM-dd hh:mm:ss"));
-    //console.log("//========================================  ",date)
+    ////root.log(Date.fromLocaleString(locale, dateTimeString, "yyyy-MM-dd hh:mm:ss"));
+//    ////root.log(Date.fromLocaleString(locale, str_date, "yyyy-MM-dd hh:mm:ss"));
+    //root.log("//========================================  ",date)
 
-    ////console.log("dd "+Qt.formatDate(date,"dd"))
-    ////console.log("MM "+Qt.formatDate(date,"MM"))
-    ////console.log("yyyy "+Qt.formatDate(date,"yyyy"))
-    ////console.log("hh "+Qt.formatTime(date,"hh"))
-    ////console.log("mm "+Qt.formatTime(date,"mm"))
-    ////console.log("ss "+Qt.formatTime(date,"ss"))
+    ////root.log("dd "+Qt.formatDate(date,"dd"))
+    ////root.log("MM "+Qt.formatDate(date,"MM"))
+    ////root.log("yyyy "+Qt.formatDate(date,"yyyy"))
+    ////root.log("hh "+Qt.formatTime(date,"hh"))
+    ////root.log("mm "+Qt.formatTime(date,"mm"))
+    ////root.log("ss "+Qt.formatTime(date,"ss"))
 
 
 
@@ -949,7 +949,7 @@ function set_sliders_and_calendar_from_current_datetime_value(dt)
    livestream_txt.text=m_item.mode
    update_timelist(dt)
     /*
-console.log(dt)
+root.log(dt)
 
     var x=   parseInt(Qt.formatTime(dt,"hh"))*3600+
             parseInt(Qt.formatTime(dt,"mm"))*60+
@@ -991,20 +991,20 @@ function play_or_pause()
     {
         image.source="Media-Play-40.png"
         m_item.play=true
-   //console.log("------------------")
-    //console.log("[play!]")
+   //root.log("------------------")
+    //root.log("[play!]")
         var dt=datetime(slider.value)
 
         dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
-        console.log("=======================")
-        console.log(" ")
-        console.log(" ")
-        console.log(" ")
- console.log("Запустил на времени: ",dt)
-      console.log(" ")
-      console.log(" ")
-      console.log(" ")
-        console.log("=======================")
+        root.log("=======================")
+        root.log(" ")
+        root.log(" ")
+        root.log(" ")
+ root.log("Запустил на времени: ",dt)
+      root.log(" ")
+      root.log(" ")
+      root.log(" ")
+        root.log("=======================")
 
         play_signal()
 
@@ -1014,22 +1014,22 @@ function play_or_pause()
 
         image.source="Media-Pause-40.png"//it was play
          m_item.play=false
-        //console.log("------------------")
-        //console.log("[pause]")
+        //root.log("------------------")
+        //root.log("[pause]")
 
             timer.stop()
     //        timer.msec=0
     //     pause()
         var dt=datetime(slider.value)
-          console.log("=======================")
-          console.log(" ")
-          console.log(" ")
-          console.log(" ")
-   console.log("Остановил на времени: ",dt," ",timer.msec)
-        console.log(" ")
-        console.log(" ")
-        console.log(" ")
-          console.log("=======================")
+          root.log("=======================")
+          root.log(" ")
+          root.log(" ")
+          root.log(" ")
+   root.log("Остановил на времени: ",dt," ",timer.msec)
+        root.log(" ")
+        root.log(" ")
+        root.log(" ")
+          root.log("=======================")
         dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
 
@@ -1056,14 +1056,14 @@ function set_time(value)
     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
     m_item.mode=m_item.storage
    livestream_txt.text=m_item.mode
-////console.log("[!!!]")
+////root.log("[!!!]")
 }
 
 function convert_dt(dt)
 {
 dt=dt.replace("T","")
 var value = parseFloat(dt)
-////console.log(value)
+////root.log(value)
 
 return value
 }
@@ -1076,19 +1076,19 @@ var mouth=dt.slice(4,6)
 var day=dt.slice(6,8)
 
 
-//console.log("year", year)
-//console.log("mouth", mouth)
-//console.log("day", day)
+//root.log("year", year)
+//root.log("mouth", mouth)
+//root.log("day", day)
 
 var hour=dt.slice(9,11)
 var min=dt.slice(11,13)
 var sec=dt.slice(13,15)
 var msec=dt.slice(16,22)
 
-//console.log("hour ", hour)
-//console.log("min ", min)
-//console.log("sec ", sec)
-//console.log("msec ", msec)
+//root.log("hour ", hour)
+//root.log("min ", min)
+//root.log("sec ", sec)
+//root.log("msec ", msec)
 
 var value=hour*3600+min*60+sec
 
@@ -1109,19 +1109,19 @@ function convert_dt_to_slider_value(dt)
 
 
 
-////console.log("year", year)
-////console.log("mouth", mouth)
-////console.log("day", day)
+////root.log("year", year)
+////root.log("mouth", mouth)
+////root.log("day", day)
 
 var hour=dt.substring(9,11)
 var min=dt.substring(11,13)
 var sec=dt.substring(13,15)
 var msec=dt.substring(16,22)
 
-//console.log("hour ", hour)
-//console.log("min ", min)
-//console.log("sec ", sec)
-////console.log("msec ", msec)
+//root.log("hour ", hour)
+//root.log("min ", min)
+//root.log("sec ", sec)
+////root.log("msec ", msec)
 
 var value=hour*3600+min*60+sec*1
 
@@ -1135,9 +1135,9 @@ function update_slider_intervals(intervals)
 
 
 
- //   console.log("[update_slider_intervals]")
- //    console.log("интервалы: ", JSON.stringify(intervals))
-//    console.log(intervals)
+ //   root.log("[update_slider_intervals]")
+ //    root.log("интервалы: ", JSON.stringify(intervals))
+//    root.log(intervals)
     m_intervals.clear()
 var dt=datetime(0)
 
@@ -1156,34 +1156,34 @@ Qt.formatDate(dt,"dd")+
 
 //----------------
 
-  //  console.log("c_begin ",c_begin)
-  //  console.log("c_end ",c_end)
+  //  root.log("c_begin ",c_begin)
+  //  root.log("c_end ",c_end)
 
 
 
     if(intervals.intervals)
     {
-  //   console.log("кол-во интервалов: ",intervals.intervals.length)
+  //   root.log("кол-во интервалов: ",intervals.intervals.length)
     if(intervals.intervals.length>0)
     for (var i=0;i<intervals.intervals.length;i++) {
 
- //   console.log("--- ",i)
+ //   root.log("--- ",i)
     var begin=intervals.intervals[i].begin
     var end=intervals.intervals[i].end
 
-   // console.log("begin ",begin)
-   // console.log("end ",end)
+   // root.log("begin ",begin)
+   // root.log("end ",end)
 
         if(compare_dt(c_begin,end)>0)
         {
-     //   console.log("полностью позади")
+     //   root.log("полностью позади")
 
         }
         else
         if(compare_dt(begin,c_end)>0)
         {
 
-     //   console.log("полностью спереди")
+     //   root.log("полностью спереди")
 
         }
         else
@@ -1202,12 +1202,12 @@ Qt.formatDate(dt,"dd")+
             else
             my_end=c_end
 
-  //      console.log("my_begin ",my_begin)
-  //      console.log("my_end ",my_end)
+  //      root.log("my_begin ",my_begin)
+  //      root.log("my_end ",my_end)
 
-            //console.log("slider begin ",convert_dt_to_slider_value(my_begin))
-            //console.log("slider end ",convert_dt_to_slider_value(my_end))
-            //console.log("slider to ",slider.to)
+            //root.log("slider begin ",convert_dt_to_slider_value(my_begin))
+            //root.log("slider end ",convert_dt_to_slider_value(my_end))
+            //root.log("slider to ",slider.to)
       //     convert_dt_to_slider_value(dt)
 
 
@@ -1232,13 +1232,13 @@ Qt.formatDate(dt,"dd")+
 }
 
 /*
-    console.log("интервалы: ",m_intervals.count)
+    root.log("интервалы: ",m_intervals.count)
         if(m_intervals.count>0)
         for(var i=0;i<m_intervals.count;i++)
         {
-        console.log("интервал: ",i)
-      console.log("_x: ",m_intervals.get(i)._x)
-   console.log("_width: ",m_intervals.get(i)._width)
+        root.log("интервал: ",i)
+      root.log("_x: ",m_intervals.get(i)._x)
+   root.log("_width: ",m_intervals.get(i)._width)
         }
         */
 
@@ -1246,32 +1246,32 @@ Qt.formatDate(dt,"dd")+
 
 function current_dt()
 {
-    console.log("[current_dt()]")
+    root.log("[current_dt()]")
     var dt=datetime(slider.value)
 
     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
     var str =get_dt(dt)
 
-    console.log("str ",str)
+    root.log("str ",str)
     return str
 }
 
 function to_storage(){
-    console.log("[to storage]")
+    root.log("[to storage]")
         m_item.mode=m_item.storage
     livestream_txt.text=m_item.mode
 }
 
 function to_live()
 {
-console.log("[to live]")
+root.log("[to live]")
     m_item.mode=m_item.live
 livestream_txt.text=m_item.mode
 
 
     var dt= new Date()
-    //console.log("-----------------------------------[dt]",dt)
+    //root.log("-----------------------------------[dt]",dt)
 
 
 

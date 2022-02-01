@@ -6,7 +6,7 @@ function Axxon(model) {
     this.serviceId = this.model.serviceId
     //this.statusUpdate()
 
-    console.log("[service.type==Axxon.Axxon]")
+    root.log("[service.type==Axxon.Axxon]")
 root.axxon_service_id=this.serviceId
 
     this.handlers = {
@@ -34,7 +34,7 @@ Axxon.prototype.statusUpdate = function (sid) {
         root.send(this.serviceId, 'ListDevices', '')
 
     Utils.setServiceStatus(this.model, sid)
-    //console.log("============== RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
+    //root.log("============== RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
 }
 
 
@@ -96,7 +96,7 @@ var className
 
 root.playAlarm(className)
 
-console.log("Axxon Events", JSON.stringify(events))
+root.log("Axxon Events", JSON.stringify(events))
     // [{"fromState":0,"state":1004,"data":"","text":"Удал.ком. Открыть","deviceId":1,"userId":0,"time":"2021-05-25T10:08:05Z"},{"fromState":0,"state":111,"data":"","text":"Открыто","deviceId":1,"userId":0,"time":"2021-05-25T10:08:05Z"}]
 var item,
 sType
@@ -104,17 +104,17 @@ sType
 for (var i = 0; i < events.length; i++) {
 
     className = Utils.className(events[i].class)
-    console.log("className: ",className)
+    root.log("className: ",className)
 
     if(className==='alarm'){
 
 
         var str=events[i].commands
-        console.log('event.commands', str)
+        root.log('event.commands', str)
         str=str.replace(/(\[)/g, "")
-        console.log('event.commands', str)
+        root.log('event.commands', str)
         str=str.replace(/(\])/g,"")
-        console.log('event.commands', str)
+        root.log('event.commands', str)
         var arr=str.split(",",4)
         var serviceId=arr[0]
         var globalDeviceId=events[i].deviceId
@@ -122,14 +122,14 @@ for (var i = 0; i < events.length; i++) {
 
 
 
-        console.log("DeviceId: ",globalDeviceId)
+        root.log("DeviceId: ",globalDeviceId)
 
         for(var j=0;j<root.cameraList.count;j++){
 
-            console.log("DeviceId: ",globalDeviceId," root.cameraList[i].: ",root.cameraList.get(j).id)
+            root.log("DeviceId: ",globalDeviceId," root.cameraList[i].: ",root.cameraList.get(j).id)
             if(globalDeviceId==root.cameraList.get(j).id){
 
-                console.log("[PROFIT]")
+                root.log("[PROFIT]")
                 root.cameraList.get(j).mapState="alarm"
                 root.cameraList.get(j).color="red"
                 root.cameraList.get(j).display="blink"
@@ -153,25 +153,25 @@ for (var i = 0; i < events.length; i++) {
      if((className==='ok')||(className==='lost')){
 
          var str=events[i].commands
-         console.log('event.commands', str)
+         root.log('event.commands', str)
          str=str.replace(/(\[)/g, "")
-         console.log('event.commands', str)
+         root.log('event.commands', str)
          str=str.replace(/(\])/g,"")
-         console.log('event.commands', str)
+         root.log('event.commands', str)
          var arr=str.split(",",4)
          var serviceId=arr[0]
          var globalDeviceId=events[i].deviceId
          var cameraId="";
 
 
-         console.log("DeviceId: ",globalDeviceId)
+         root.log("DeviceId: ",globalDeviceId)
 
          for(var j=0;j<root.cameraList.count;j++){
 
-             console.log("DeviceId: ",globalDeviceId," root.cameraList[i].axxon_id: ",root.cameraList.get(j).id)
+             root.log("DeviceId: ",globalDeviceId," root.cameraList[i].axxon_id: ",root.cameraList.get(j).id)
              if(globalDeviceId==root.cameraList.get(j).id){
 
-                 console.log("[PROFIT !!!]")
+                 root.log("[PROFIT !!!]")
 
             //     root.cameraList.get(j).stickyState=false
                  root.cameraList.get(j).mapState=data[i].State
@@ -192,25 +192,25 @@ for (var i = 0; i < events.length; i++) {
         if(events[i].text==='Сброс тревог'){
 
             var str=events[i].commands
-            console.log('event.commands', str)
+            root.log('event.commands', str)
             str=str.replace(/(\[)/g, "")
-            console.log('event.commands', str)
+            root.log('event.commands', str)
             str=str.replace(/(\])/g,"")
-            console.log('event.commands', str)
+            root.log('event.commands', str)
             var arr=str.split(",",4)
             var serviceId=arr[0]
             var globalDeviceId=events[i].deviceId
             var cameraId="";
 
 
-            console.log("DeviceId: ",globalDeviceId)
+            root.log("DeviceId: ",globalDeviceId)
 
             for(var j=0;j<root.cameraList.count;j++){
 
-                console.log("DeviceId: ",globalDeviceId," root.cameraList[i].: ",root.cameraList.get(j).id)
+                root.log("DeviceId: ",globalDeviceId," root.cameraList[i].: ",root.cameraList.get(j).id)
                 if(globalDeviceId==root.cameraList.get(j).id){
 
-                    console.log("[PROFIT !!!]")
+                    root.log("[PROFIT !!!]")
 
                     root.cameraList.get(j).stickyState=false
 
@@ -234,7 +234,7 @@ for (var i = 0; i < events.length; i++) {
         var globalDeviceId=events[i].deviceId
 
         if(globalDeviceId==0){
-            console.log("globalDeviceId==0")
+            root.log("globalDeviceId==0")
         this.statusUpdate(events[i].class)
         }
     }
@@ -247,25 +247,25 @@ Journal.logEvents(events)
 }
 //Axxon.prototype.get_service_id = function(){
 function get_service_id() {
-console.log("[get_service_id()] ",Axxon.serviceId)
- console.log("[get_service_id()] ",this.serviceId)
+root.log("[get_service_id()] ",Axxon.serviceId)
+ root.log("[get_service_id()] ",this.serviceId)
 }
 
 Axxon.prototype.Axxon_event_handler = function (data)
 {
-    console.log("[Axxon_event_handler]")
- //   console.log(data)
- //   console.log(data.objects)
- //   console.log(data.objects[0])
- //   console.log(data.objects[0].name)
- //   console.log(data.objects[0].state)
-    console.log(JSON.stringify(data))
- //   console.log(root.devices)
+    root.log("[Axxon_event_handler]")
+ //   root.log(data)
+ //   root.log(data.objects)
+ //   root.log(data.objects[0])
+ //   root.log(data.objects[0].name)
+ //   root.log(data.objects[0].state)
+    root.log(JSON.stringify(data))
+ //   root.log(root.devices)
 
     for (var i in data.objects) {
-     console.log('---')
-console.log(data.objects[i])
-     console.log(data.objects[i].name," ",data.objects[i].state)
+     root.log('---')
+root.log(data.objects[i])
+     root.log(data.objects[i].name," ",data.objects[i].state)
 
         var point=data.objects[i].name.replace("hosts/","")
         var state=data.objects[i].state
@@ -273,15 +273,15 @@ console.log(data.objects[i])
         for(var j=0;j<root.cameraList.count;j++)
         {
           var x=root.cameraList.get(j)
-            console.log(x.point)
+            root.log(x.point)
             if(x.point==point)
             {
-            console.log("PROFIT !!!")
+            root.log("PROFIT !!!")
                 var id=x.id
-            console.log("x.id: ",id)
-            console.log("this.serviceId: ",this.serviceId)
+            root.log("x.id: ",id)
+            root.log("this.serviceId: ",this.serviceId)
                 var device=Utils.findItem(root.devices,id)
-            console.log("device.name: ",device.name)
+            root.log("device.name: ",device.name)
 
                 var color="gray"
                 if(state=="signal lost")
@@ -317,7 +317,7 @@ console.log(data.objects[i])
 }
 
 Axxon.prototype.shutdown = function () {
-    console.log(this.model.type, this.model.id, 'shutdown')
+    root.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Axxon.prototype.datetime = function()
@@ -329,14 +329,14 @@ Axxon.prototype.datetime = function()
 
 function dt(value)
 {
-    console.log(slider.value)
+    root.log(slider.value)
     value=slider.value
      var hours=Math.floor(value/3600)
      var min=Math.floor((value-hours*3600)/60)
      var sec=((value-hours*3600)-min*60)
-     console.log("часы ",hours)
-     console.log("мин ",min)
-     console.log("сек ",sec)
+     root.log("часы ",hours)
+     root.log("мин ",min)
+     root.log("сек ",sec)
 
     var str_hour
     if(hours<10)
@@ -391,17 +391,17 @@ function  get_rtsp_streams_url() {
     url_array[3]="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.2/SourceEndpoint.video:0:1"
 
 
-   // console.log('hello_world')
+   // root.log('hello_world')
     return url_array//"hosts/ASTRAAXXON/DeviceIpint.2/SourceEndpoint.video:0:1"
 
 }
 
 function  get_wigth(len, size, count) {
 
-     console.log("len: ",len)
-     console.log("size: ",size)
-         console.log("count: ",count)
-    console.log("Math.floor(len/size) ",Math.floor(len/size))
+     root.log("len: ",len)
+     root.log("size: ",size)
+         root.log("count: ",count)
+    root.log("Math.floor(len/size) ",Math.floor(len/size))
 
 
     if(Math.floor(len/size)<count)
@@ -413,10 +413,10 @@ function  get_wigth(len, size, count) {
 
 Axxon.prototype.handler_Telemetry_command = function (data) {
 
-    console.log("[handler_Telemetry_command]")
-    console.log(data)
-    console.log(JSON.stringify(data))
-    console.log("data.Name: ",data.name)
+    root.log("[handler_Telemetry_command]")
+    root.log(data)
+    root.log(JSON.stringify(data))
+    root.log("data.Name: ",data.name)
 
     var str=""
     switch (data.name){
@@ -438,9 +438,9 @@ Axxon.prototype.handler_Telemetry_command = function (data) {
 
     case "Another_user":
 
-    console.log("data.data: ",data.data)
-    console.log("data.data.name: ",data.data.name)
-    console.log("data.data.surename: ",data.data.surename)
+    root.log("data.data: ",data.data)
+    root.log("data.data.name: ",data.data.name)
+    root.log("data.data.surename: ",data.data.surename)
 
      root.another_user.clear()
 
@@ -462,56 +462,56 @@ Axxon.prototype.handler_Telemetry_command = function (data) {
 
 function getListDevices()
 {
-    console.log("")
-    console.log("[getListDevices]")
-    console.log("")
+    root.log("")
+    root.log("[getListDevices]")
+    root.log("")
   root.send(this.serviceId, 'ListDevices', '')
 }
 
 Axxon.prototype.request_intervals_handler = function (data) {
     /*
-    console.log("")
-    console.log("[request_intervals_handler]")
-    console.log("")
-    console.log(JSON.stringify(data))*/
+    root.log("")
+    root.log("[request_intervals_handler]")
+    root.log("")
+    root.log(JSON.stringify(data))*/
    root.update_intervals(data[0].intervals)
 
 }
 
 Axxon.prototype.ExecCommand_handler = function (data) {
 
-     console.log("")
-     console.log("[ExecCommand_handler]")
-     console.log("")
+     root.log("")
+     root.log("[ExecCommand_handler]")
+     root.log("")
 
 
 
     //взять id и сделать эту камеру текущей и перейтив  режим прямой трансляции.
 
- //   console.log(data)
-    console.log(JSON.stringify(data))
+ //   root.log(data)
+    root.log(JSON.stringify(data))
     var id=data[0].id
-    console.log("id: ",id)
+    root.log("id: ",id)
     root.event_on_camera(id)
 root.activePane=root.videoPane
 /*
 
-    console.log("id",data[0].id)
-    console.log("telemetryControlID",data[0].telemetryControlID)
+    root.log("id",data[0].id)
+    root.log("telemetryControlID",data[0].telemetryControlID)
     root.camera_to_livestream.append({id: data[0].id})
 
-     console.log("camera_to_livestream.count: ",camera_to_livestream.count)
+     root.log("camera_to_livestream.count: ",camera_to_livestream.count)
     if(camera_to_livestream.count>0)
-     console.log("id",camera_to_livestream.get(0).id)
+     root.log("id",camera_to_livestream.get(0).id)
 
 
 
-    console.log("------------------------------------")
-    console.log("")
+    root.log("------------------------------------")
+    root.log("")
 
-    console.log("data[0].intervals ",data[0].intervals)
-    console.log("")
-    console.log("------------------------------------")
+    root.log("data[0].intervals ",data[0].intervals)
+    root.log("")
+    root.log("------------------------------------")
 
     root.current_camera.clear()
    root.current_camera.append({
@@ -542,27 +542,27 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     console.log("")
-         console.log("[receive_URL]")
-     console.log("")
+     root.log("")
+         root.log("[receive_URL]")
+     root.log("")
 
-     //    console.log(data)
-     //    console.log(JSON.stringify(data))
-          console.log(JSON.stringify(data))
+     //    root.log(data)
+     //    root.log(JSON.stringify(data))
+          root.log(JSON.stringify(data))
      var i
      for (i in data) {
-//      console.log("id: ", data[i].id)
-//      console.log("liveStream: ", data[i].liveStream)
-//      console.log("storageStream: ", data[i].storageStream)
-//      console.log("snapshot: ", data[i].snapshot)
-//      console.log("интервалы: ", JSON.stringify(data[i].intervals))
+//      root.log("id: ", data[i].id)
+//      root.log("liveStream: ", data[i].liveStream)
+//      root.log("storageStream: ", data[i].storageStream)
+//      root.log("snapshot: ", data[i].snapshot)
+//      root.log("интервалы: ", JSON.stringify(data[i].intervals))
      }
 
      for(var j=0;j< root.cameraList.count;j++){
 
          if( data[i].id==root.cameraList.get(j).id){
 
-             console.log("[PROFIT]")
+             root.log("[PROFIT]")
 
 
 
@@ -594,19 +594,19 @@ Axxon.prototype.receive_URL = function (data) {
 }
 
 Axxon.prototype.receive_strorage_stream = function (data) {
-console.log('[receive_strorage_stream]')
-    console.log(data)
-    console.log(JSON.stringify(data))
+root.log('[receive_strorage_stream]')
+    root.log(data)
+    root.log(JSON.stringify(data))
 
     root.stream_from_storage.clear()
       var i
       for (i in data) {
-          console.log("------------------------------")
-          console.log("id: ", data[i].id)
-          console.log("Camera: ", data[i].name)
-          console.log("URL: ",data[i].stream)
-          console.log("telemetryControlID: ",data[i].telemetryControlID)
-          console.log("serviceId: ",this.serviceId)
+          root.log("------------------------------")
+          root.log("id: ", data[i].id)
+          root.log("Camera: ", data[i].name)
+          root.log("URL: ",data[i].stream)
+          root.log("telemetryControlID: ",data[i].telemetryControlID)
+          root.log("serviceId: ",this.serviceId)
           root.stream_from_storage.append({
                                            id: data[i].id ,
                                            name: data[i].name ,
@@ -628,13 +628,13 @@ console.log('[receive_strorage_stream]')
 
 function receive_preset_info(data) {
 
-    console.log("receive_preset_info")
-    console.log(data)
+    root.log("receive_preset_info")
+    root.log(data)
 
 var i
      root.camera_presets.clear()
       for (i in data) {
-    console.log(data[i].Id," ",data[i].Name)
+    root.log(data[i].Id," ",data[i].Name)
 
     root.camera_presets.append({index: data[i].Id ,
                                 name: data[i].Name,
@@ -652,8 +652,8 @@ Axxon.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     }else{
-              console.log('Axxon: rebuild whole tree')
-              console.log(JSON.stringify(data))
+              root.log('Axxon: rebuild whole tree')
+              root.log(JSON.stringify(data))
         for(var j=0;j< root.cameraList.count;j++){
             root.cameraList.get(j).actual=false
         }
@@ -689,7 +689,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
                 if( data[i].id==root.cameraList.get(j).id){
 
-                    //console.log("[УЖЕ ЕСТЬ]")
+                    //root.log("[УЖЕ ЕСТЬ]")
                     res=false
 
                     root.cameraList.get(j).actual=true
@@ -701,7 +701,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
             }
             if(res){
-                //console.log("[ДОБАВЛЯЮ]")
+                //root.log("[ДОБАВЛЯЮ]")
 
                 root.cameraList.append(    {
 
@@ -733,7 +733,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
         for(j=0;j< root.cameraList.count;j++){
 
-            //console.log(j,".....",root.cameraList.get(j).name,"....",root.cameraList.get(j).actual)
+            //root.log(j,".....",root.cameraList.get(j).name,"....",root.cameraList.get(j).actual)
             if(root.cameraList.get(j).actual==false)
             root.cameraList.remove(j)
         }
@@ -742,20 +742,20 @@ Axxon.prototype.rebuildTree = function (data) {
 
 
             var x=root.cameraList.get(i)
-            //    console.log(x.name,": stickyState: ",x.stickyState," mapState:",x.mapState)
+            //    root.log(x.name,": stickyState: ",x.stickyState," mapState:",x.mapState)
             if(x.stickyState===false){
-            //    console.log("Utils.updateMaps(x) ")
+            //    root.log("Utils.updateMaps(x) ")
             Utils.updateMaps(x)
             }
         }
 
-        console.log(" ")
-        console.log("cameraList:")
+        root.log(" ")
+        root.log("cameraList:")
         for(j=0;j< model.count;j++){
 
-           console.log(j," ",root.cameraList.get(j).name)
+           root.log(j," ",root.cameraList.get(j).name)
         }
-        console.log(" ")
+        root.log(" ")
 
 
 
@@ -767,7 +767,7 @@ Axxon.prototype.rebuildTree = function (data) {
 }
 
 Axxon.prototype.update = function (data) {
-    console.log('Axxon: UPDATE')
+    root.log('Axxon: UPDATE')
     var maxRecords = 200
     for (var i in data) {
         var color = "gray"
@@ -775,7 +775,7 @@ Axxon.prototype.update = function (data) {
 }
 
 Axxon.prototype.validateTree = function (data) {
-    console.log('Axxon: validateTree stub')
+    root.log('Axxon: validateTree stub')
     return false
 }
 
@@ -796,27 +796,27 @@ Axxon.prototype.listCommands = function (deviceId) {
 
 Axxon.prototype.handler_for_Telemetry_capture_session = function (data) {
 
-    console.log("")
-        console.log("[handler_for_Telemetry_capture_session]")
-    console.log("")
-    console.log(data)
-    console.log(JSON.stringify(data))
+    root.log("")
+        root.log("[handler_for_Telemetry_capture_session]")
+    root.log("")
+    root.log(data)
+    root.log(JSON.stringify(data))
     if(data>0)
     root.telemetryId=data
-//     console.log(root.telemetryId)
-//    console.log("")
+//     root.log(root.telemetryId)
+//    root.log("")
 
 }
 
 function request_URL(cameraId, serviceId, dt, format_dt)
 {
-    console.log("")
-    console.log("")
-    console.log("")
-        console.log("[request_URL]")
-    console.log("")
-    console.log("")
-    console.log("")
+    root.log("")
+    root.log("")
+    root.log("")
+        root.log("[request_URL]")
+    root.log("")
+    root.log("")
+    root.log("")
 
     var data={
     cameraId: cameraId,
@@ -828,10 +828,10 @@ function request_URL(cameraId, serviceId, dt, format_dt)
         }
 
       //      cameraId+";"+dt+" "+format_dt
-    console.log("data.cameraId : ",data.cameraId)
-    console.log("data.serviceId : ",data.serviceId)
-    console.log("data.dt       : ",data.dt)
-    console.log("data.format_dt: ",data.format_dt)
+    root.log("data.cameraId : ",data.cameraId)
+    root.log("data.serviceId : ",data.serviceId)
+    root.log("data.dt       : ",data.dt)
+    root.log("data.format_dt: ",data.format_dt)
 
       root.send(serviceId, 'request_URL', data)
 
@@ -839,11 +839,11 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
 function tlmtr_cmd(data)
 {
-   console.log("tlmtr_cmd: ",data)
+   root.log("tlmtr_cmd: ",data)
 if (root.storage_live=="live") {
-     console.log("...this.serviceId ",root.axxon_service_id)
+     root.log("...this.serviceId ",root.axxon_service_id)
     root.send(root.axxon_service_id, 'Telemetry_command', data)
-      console.log("...send")
+      root.log("...send")
 
 }
 
@@ -854,32 +854,32 @@ function request_URL_for_globalDeviceId(cameraId, serviceId, dt)
 
 
     var data=cameraId+" "+dt
-    console.log("data: ",data)
+    root.log("data: ",data)
       root.send(serviceId, 'request_URL_for_globalDeviceId', data)
 
 }
 
 function request_intervals(cameraId,serviceId)
 {
-//console.log("request intrevals for camera id:",current_cameraId,"; service id: ",current_serviceId)
+//root.log("request intrevals for camera id:",current_cameraId,"; service id: ",current_serviceId)
       root.send(serviceId, 'request_intervals', cameraId)
 }
 
 Axxon.prototype.checkSticky = function (event) {
 
-console.log("event.event: ",event.event)
-    console.log("stickyStates.indexOf(event.event): ",stickyStates.indexOf(event.event))
+root.log("event.event: ",event.event)
+    root.log("stickyStates.indexOf(event.event): ",stickyStates.indexOf(event.event))
     return stickyStates.indexOf(event.event) >= 0
 
 
 }
 
 function camera(id){
- //   console.log("...find camera... ",id)
+ //   root.log("...find camera... ",id)
     for(var i=0;i<root.cameraList.count;i++){
- //    console.log(root.cameraList.get(i).id)
+ //    root.log(root.cameraList.get(i).id)
     if(root.cameraList.get(i).id==id){
- //     console.log("PROFIT")
+ //     root.log("PROFIT")
     return root.cameraList.get(i)
     }
     }

@@ -138,12 +138,12 @@ color: "#ffe4c4"
 }
 
 function func(y){
-//console.log("= refresh =")
+//root.log("= refresh =")
 
-//console.log("мой id", image.mid, "и пришедший: ",y.obj.id )
+//root.log("мой id", image.mid, "и пришедший: ",y.obj.id )
     if(image!=null)
     if(image.mid==y.obj.preview_id){
-        //console.log("обновляю:","мой id", image.mid," ",y.obj.name," ",y.obj.frash_snapshot)
+        //root.log("обновляю:","мой id", image.mid," ",y.obj.name," ",y.obj.frash_snapshot)
         text.text=y.obj.name
         if(image.url!=y.obj.frash_snapshot){
             image.url=y.obj.frash_snapshot
@@ -156,7 +156,7 @@ function func(y){
 
 
 Component.onCompleted: {
-    console.log("mid: ",image.mid)
+    root.log("mid: ",image.mid)
     container.refresh.connect(func)
     container.do_refresh(image.mid)
 
@@ -171,15 +171,15 @@ MouseArea {
     propagateComposedEvents : bool
     onReleased:
     {
-        //console.log("[onReleased]")
+        //root.log("[onReleased]")
 
 
     }
     onPressed: {
         var ind = rpt.indexAt(coords.mouseX, coords.mouseY)
-        //console.log(coords.mouseX," ", coords.mouseY)
-        //console.log("ind " ,ind)
-        //console.log(rpt.model.get(ind).obj.name)
+        //root.log(coords.mouseX," ", coords.mouseY)
+        //root.log("ind " ,ind)
+        //root.log(rpt.model.get(ind).obj.name)
          mouse.accepted = false
     }
 
@@ -194,9 +194,9 @@ MouseArea {
 
     onPressed: {
         var ind = rpt.indexAt(coords.mouseX, coords.mouseY)
-        //console.log(coords.mouseX," ", coords.mouseY)
-        console.log("ind " ,ind)
-        ////console.log(rpt.model.get(ind).obj.name)
+        //root.log(coords.mouseX," ", coords.mouseY)
+        root.log("ind " ,ind)
+        ////root.log(rpt.model.get(ind).obj.name)
 
         container.current=ind
 
@@ -244,12 +244,12 @@ for (var i=0;i<page_size;i++){
                            name: "камера "+i.toString(),
 
                          }})
-        //console.log("[look vat this]",model.get(i).obj.number)
+        //root.log("[look vat this]",model.get(i).obj.number)
     }
 */
 
     var xx=model.count/page_size+1
-    //console.log("----xx------------------------------------",xx)
+    //root.log("----xx------------------------------------",xx)
   //  for(var i=0;i<(Math.floor(model.count/page_size)+1);i++)
 
 head.set_count(Math.floor(model.count/page_size)+1)
@@ -265,12 +265,12 @@ go_to_page(current_page)
 
 }
 function update_from_cameraList() {
-console.log("[update_from_cameraList]")
+root.log("[update_from_cameraList]")
 
     model.clear()
       for(var j=0;j< root.cameraList.count;j++){
 
-         console.log(j," ",root.cameraList.get(j).name)
+         root.log(j," ",root.cameraList.get(j).name)
 
 
          model.append({obj: {
@@ -289,13 +289,13 @@ console.log("[update_from_cameraList]")
 
       }
 
-      console.log(" ")
-      console.log("model:")
+      root.log(" ")
+      root.log("model:")
       for(j=0;j< model.count;j++){
 
-         console.log(j," ",model.get(j).obj.name)
+         root.log(j," ",model.get(j).obj.name)
       }
-      console.log(" ")
+      root.log(" ")
 
 head.set_count(Math.floor(model.count/page_size)+1)
 go_to_page(current_page)
@@ -304,18 +304,18 @@ go_to_page(current_page)
 
 function add_this_camera()
 {
-    console.log("[add to space]")
-    //console.log("container.current ",container.current)
+    root.log("[add to space]")
+    //root.log("container.current ",container.current)
 if(container.current>(-1))
 {
-console.log("container.current ",container.current)
+root.log("container.current ",container.current)
 var x=container.page_model.get(container.current)
- //console.log("profit")
-    console.log("name ",x.obj.id)
-    console.log("name ",x.obj.name)
-   // console.log("point ",x.obj.point)
-   //  console.log("telemetryControlID ",x.obj.telemetryControlID)
-      //console.log("serviceId ",x.obj.serviceId)
+ //root.log("profit")
+    root.log("name ",x.obj.id)
+    root.log("name ",x.obj.name)
+   // root.log("point ",x.obj.point)
+   //  root.log("telemetryControlID ",x.obj.telemetryControlID)
+      //root.log("serviceId ",x.obj.serviceId)
 
 
 add_to_space(x.obj.id)
@@ -331,32 +331,32 @@ add_to_space(x.obj.name,
 
 function go_to_page(page){
 
-    //console.log("[go_to_page] ",page)
+    //root.log("[go_to_page] ",page)
 
-    //console.log("container.page_model всего слотов: ",container.page_model.count)
+    //root.log("container.page_model всего слотов: ",container.page_model.count)
 
-    //console.log("нужно отобразить страницу: ",page)
+    //root.log("нужно отобразить страницу: ",page)
 
-    //console.log("она последняя? ",page," ",model.count/page_size)
+    //root.log("она последняя? ",page," ",model.count/page_size)
 
     var sz=0
     if (page>(model.count/page_size)){
 
-        // console.log("ДА")
+        // root.log("ДА")
         sz=model.count%page_size
 
     }else{
 
-        //  console.log("НЕТ")
+        //  root.log("НЕТ")
         sz=page_size
 
     }
-     // console.log("Нам нужно слотов: ",sz," а у нас ",container.page_model.count)
+     // root.log("Нам нужно слотов: ",sz," а у нас ",container.page_model.count)
 
     var size=sz-container.page_model.count
     if(container.page_model.count<sz){
 
-     //console.log("У нас МЕНЬШЕ чем надо на ",size)
+     //root.log("У нас МЕНЬШЕ чем надо на ",size)
         size=sz-container.page_model.count
 
 
@@ -369,23 +369,23 @@ function go_to_page(page){
             name: "" ,
             frash_snapshot:"",
             }})
-            //console.log("добавил на позицию: ",ind," теперь слотов: ",container.page_model.count)
+            //root.log("добавил на позицию: ",ind," теперь слотов: ",container.page_model.count)
         }
     }
     size=container.page_model.count-sz
     if(container.page_model.count>sz){
 
-        //  console.log("У нас БОЛЬШЕ чем надо на",size)
+        //  root.log("У нас БОЛЬШЕ чем надо на",size)
 
         for(i=0;i<size;i++){
 
             var ind=container.page_model.count-1
             container.page_model.remove(ind)
-               //     console.log("убрал позицию: ",ind," теперь слотов: ",container.page_model.count)
+               //     root.log("убрал позицию: ",ind," теперь слотов: ",container.page_model.count)
         }
     }
 
-     // console.log("Теперь у на слотов: ",container.page_model.count)
+     // root.log("Теперь у на слотов: ",container.page_model.count)
 
 
     for(i=0;i<container.page_model.count;i++){
@@ -395,16 +395,16 @@ function go_to_page(page){
     }
 
 
-     console.log(" ")
-     console.log("container.page_model: ")
+     root.log(" ")
+     root.log("container.page_model: ")
     for(i=0;i<container.page_model.count;i++)
     {
         var yy=container.page_model.get(i)
 
-        console.log(i," ",yy.obj.id)
+        root.log(i," ",yy.obj.id)
 
     }
-     console.log(" ")
+     root.log(" ")
 
 
 
@@ -413,29 +413,29 @@ function go_to_page(page){
 
 function do_refresh(i){
 
-    console.log("do_refresh ",i)
+    root.log("do_refresh ",i)
 
     var ind=i+page_size*(current_page-1)
     var x=model.get(ind)
     var y=container.page_model.get(i)
 /*
-    //console.log("...",ind," из",model.count)
-    console.log(" ")
+    //root.log("...",ind," из",model.count)
+    root.log(" ")
 
-    console.log("x.obj.id ",x.obj.id)
-    console.log("x.obj.name ",x.obj.name)
-    console.log("x.obj.serviceId ",x.obj.serviceId)
-    console.log("x.obj.frash_snapshot ",x.obj.frash_snapshot)
+    root.log("x.obj.id ",x.obj.id)
+    root.log("x.obj.name ",x.obj.name)
+    root.log("x.obj.serviceId ",x.obj.serviceId)
+    root.log("x.obj.frash_snapshot ",x.obj.frash_snapshot)
 
-    console.log(" ")
+    root.log(" ")
 
-    console.log("y.obj.preview_id ",y.obj.preview_id)
-    console.log("y.obj.id ",container.page_model.get(i).obj.id)
-    console.log("y.obj.name ",container.page_model.get(i).obj.name)
-    console.log("y.obj.serviceId ",container.page_model.get(i).obj.serviceId)
-    console.log("y.obj.frash_snapshot ",container.page_model.get(i).obj.frash_snapshot)
+    root.log("y.obj.preview_id ",y.obj.preview_id)
+    root.log("y.obj.id ",container.page_model.get(i).obj.id)
+    root.log("y.obj.name ",container.page_model.get(i).obj.name)
+    root.log("y.obj.serviceId ",container.page_model.get(i).obj.serviceId)
+    root.log("y.obj.frash_snapshot ",container.page_model.get(i).obj.frash_snapshot)
 
-    console.log(" ")
+    root.log(" ")
 
 */
     container.page_model.set(i,{obj:{"preview_id":i,"id":x.obj.id,"name":x.obj.name}})
@@ -445,13 +445,13 @@ function do_refresh(i){
     container.page_model.get(i).obj.frash_snapshot=x.obj.frash_snapshot
 
     */
-    console.log("y.obj.preview_id ",y.obj.preview_id)
-    console.log("y.obj.id ",container.page_model.get(i).obj.id)
-    console.log("y.obj.name ",container.page_model.get(i).obj.name)
-    console.log("y.obj.serviceId ",container.page_model.get(i).obj.serviceId)
-    console.log("y.obj.frash_snapshot ",container.page_model.get(i).obj.frash_snapshot)
+    root.log("y.obj.preview_id ",y.obj.preview_id)
+    root.log("y.obj.id ",container.page_model.get(i).obj.id)
+    root.log("y.obj.name ",container.page_model.get(i).obj.name)
+    root.log("y.obj.serviceId ",container.page_model.get(i).obj.serviceId)
+    root.log("y.obj.frash_snapshot ",container.page_model.get(i).obj.frash_snapshot)
 
-    console.log(" ")
+    root.log(" ")
 
 
     container.refresh({"obj":{"preview_id":i,"id":x.obj.id,"name":x.obj.name,"frash_snapshot":x.obj.frash_snapshot}})

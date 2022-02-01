@@ -13,12 +13,12 @@ var handlers = {
     },
 
     UpdateRule: function (msg) {
-        //console.log(JSON.stringify(msg))
+        //root.log(JSON.stringify(msg))
         if (rules) // check rules are used by operator
             rules.update(msg.data)
     },
     DeleteRule: function (msg) {
-        //console.log("DEL:", JSON.stringify(msg))
+        //root.log("DEL:", JSON.stringify(msg))
         if (rules) // check rules are used by operator
             rules.delete(msg.data)
     }
@@ -48,7 +48,7 @@ function Rules(model) {
 
 Rules.prototype.updateTree = function (data) {
     var i
-    //console.log("Rules.updateTree", JSON.stringify(data))
+    //root.log("Rules.updateTree", JSON.stringify(data))
 
     // TODO: update tree only if required
     this.model.clear()
@@ -64,7 +64,7 @@ Rules.prototype.updateTree = function (data) {
 }
 
 function getRanges(list) {
-    //console.log("RANGES:", JSON.stringify(list))
+    //root.log("RANGES:", JSON.stringify(list))
     var i, n,
         from, to, label,
         timeStart, timeEnd,
@@ -102,8 +102,8 @@ function getRanges(list) {
                 timeEnd: timeEnd,
                 direction: list[i].direction})
         }
-//console.log("REG:", JSON.stringify(regDays))
-//console.log("SPEC:", JSON.stringify(specDays))
+//root.log("REG:", JSON.stringify(regDays))
+//root.log("SPEC:", JSON.stringify(specDays))
     // TODO: check for stdWeek - 7 days max!
     //n = Math.max.apply(null, Object.keys(regDays))
     for (i = 1; i <= 31; i++)
@@ -114,7 +114,7 @@ function getRanges(list) {
 
     for (label in specDays)
         res.specialDays.push({id: tid++, label: label, form: 'time', date: label, icon: 'fa_circle', children: specDays[label]})
-    //console.log("RES:", JSON.stringify(res))
+    //root.log("RES:", JSON.stringify(res))
     return res
     /*return [
             {label: '02.12.2020', date: '02.12.2020', icon: 'fa_circle', tid: tid++, children: []},
@@ -127,14 +127,14 @@ Rules.prototype.delete = function (id) {
 }
 
 Rules.prototype.update = function (data) {
-    //console.log("RulesJS:UPD", JSON.stringify(data))
+    //root.log("RulesJS:UPD", JSON.stringify(data))
     // {"name":"sdfsdf","description":"23423rsdvw","startDate":"2021-01-29T00:00:00.000Z","endDate":"2021-01-30T00:00:00.000Z","stdWeek":false,"priority":20,"id":-20,"timeRanges":[]}
     if (data.id === 0)
         return
     var i,
         item = newItem(data),
         rule = Utils.findItem(this.model, item.id)
-    //console.log("RulesJS:ITEM", JSON.stringify(item))
+    //root.log("RulesJS:ITEM", JSON.stringify(item))
     //if (Utils.replaceItem(this.model, item)) {
     if (rule) {
         // UPDATE

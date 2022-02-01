@@ -13,7 +13,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     connect(this->m_starter->m_player,SIGNAL(new_frame()),this,SLOT(new_frame()));
     connect(this->m_starter->m_player,SIGNAL(lost_connection()),this,SLOT(lost_connection()));
     connect(this->m_starter->m_player,SIGNAL(playing()), this, SLOT(slot_playing()));
-
+    connect(this->m_starter,SIGNAL(tick()), this, SLOT(clear_timer()));
 
 
     connect(&thread_starter, &QThread::started, m_starter, &Starter::run);
@@ -25,9 +25,10 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
     timer = new QTimer(this);
 
- //   connect(timer, SIGNAL(timeout()), this, SLOT(timeout()));
+    connect(timer, SIGNAL(timeout()), this, SLOT(restart()));
 
-  //  timer->start(200);
+
+   timer->start(200);
   //  timer->singleShot(200, this, SLOT(timeout()));
  //   QTimer::singleShot(200, this, SLOT(timeout()));
  //   m_player->start();
@@ -52,7 +53,7 @@ QString VideoPlayer::source() const
 
 void VideoPlayer::setSource(const QString source)
 {
-    qDebug()<<"setSource";
+    qDebug()<<"setSource: "<<source;
     m_source=source;
   //  m_player->setRunning(false);
  //   m_player->set_URL(m_source);
@@ -66,6 +67,8 @@ void VideoPlayer::start()
 {
     qDebug()<<"start";
 
+    qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
+
 
 
     m_starter->setURL(m_source);
@@ -78,6 +81,8 @@ void VideoPlayer::start()
 
 void VideoPlayer::stop()
 {
+    qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
+
     m_starter->setStep(201);
 
 }
@@ -89,9 +94,15 @@ void VideoPlayer::check()
 
 void VideoPlayer::shot()
 {
+    qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
+
     m_starter->setURL(m_source);
 
-    m_starter->setStep(100);
+
+
+    m_starter->setStep(0);
+
+
 
 }
 
@@ -129,6 +140,35 @@ void VideoPlayer::slot_playing()
 
     emit playing();
 
+}
+
+void VideoPlayer::restart()
+{
+    timer->stop();
+    qDebug()<<"[!!! RESTART !!!]";
+ //   thread_starter.quit();
+ //   thread_starter.exit();
+    thread_starter.terminate();
+    while(!thread_starter.isFinished()){
+        qDebug()<<thread_starter.isRunning()<<" "<<thread_starter.isFinished();
+        thread_starter.quit();
+        thread_starter.exit();
+        thread_starter.terminate();
+
+
+    }
+    qDebug()<<"thread_master is finished";
+
+
+    thread_starter.start();
+    timer->start();
+
+}
+
+void VideoPlayer::clear_timer()
+{
+    qDebug()<<"clear_timer";
+    timer->start();
 }
 
 void VideoPlayer::new_frame()

@@ -21,13 +21,13 @@ Map {
     //activeMapType: supportedMapTypes[1]
     gesture.enabled: true// !tooltipActive //  -2 === currentAnchor
     gesture.acceptedGestures: MapGestureArea.PinchGesture | (-2 === currentAnchor /* && !tooltipActive*/ ? MapGestureArea.PanGesture : 0)
-    //gesture.onPanStarted: console.log("MAP pan started")
+    //gesture.onPanStarted: root.log("MAP pan started")
     //gesture.preventStealing: true
 
     //center: QtPositioning.coordinate(0, 10.74) // Equator
     //center: QtPositioning.coordinate(59.91, 10.75) // Oslo
     center: QtPositioning.coordinate(55.745, 37.576) // Moscow
-    //onZoomLevelChanged: console.log(zoomLevel)
+    //onZoomLevelChanged: root.log(zoomLevel)
     onCenterChanged: arrangeAnchors() // TODO: link anchors to currentItem.x and y
     onZoomLevelChanged: arrangeAnchors() // TODO: link anchors to currentItem.x and y
 
@@ -42,7 +42,7 @@ Map {
                 property var handlers: ({icon: 'MapIcon', text: 'MapText'})
                 source: (handlers[model.type] || 'MapShape') + '.qml'
             }
-            //Component.onCompleted: console.log(JSON.stringify(model))
+            //Component.onCompleted: root.log(JSON.stringify(model))
         }
     }
 
@@ -76,7 +76,7 @@ Map {
                         }),
                         n = points.length
                     coord = map.toCoordinate(Qt.point(center.x + sum.x / n * currentScale, center.y + sum.y / n * currentScale))
-                    //console.log(JSON.stringify(coord))
+                    //root.log(JSON.stringify(coord))
                     return {x: coord.longitude, y: coord.latitude}
                 } else {
                     return {x: model.x, y: model.y}

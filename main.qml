@@ -54,7 +54,7 @@ ApplicationWindow {
     onActivePaneChanged: layout.currentIndex = activePane
 
     onEventSelected: {
-        //console.log('Event selected', JSON.stringify(event))
+        //root.log('Event selected', JSON.stringify(event))
     }
 
     onPanesChanged: initPanes()
@@ -150,18 +150,18 @@ ApplicationWindow {
       /*Repeater { // repeat panes
           id: rep1
           model: panes
-          //Component.onCompleted: console.log("REP-1", count)
+          //Component.onCompleted: root.log("REP-1", count)
           delegate: SplitView { // create pane split
-              Component.onCompleted: console.log("INS-1", panes.count, mL.count)
+              Component.onCompleted: root.log("INS-1", panes.count, mL.count)
               property int panePosition
               property ListModel mL: model.layout
               orientation: Qt.Horizontal
               Layout.minimumWidth: 300
               Repeater { // repeat left & right
                   model: mL
-                  Component.onCompleted: console.log("REP-2", count)
+                  Component.onCompleted: root.log("REP-2", count)
                   delegate: SplitView {
-                      Component.onCompleted: console.log("INS-2", model.index)
+                      Component.onCompleted: root.log("INS-2", model.index)
                       property int panePosition
                       property ListModel lst: model.list
                       orientation: Qt.Vertical
@@ -171,7 +171,7 @@ ApplicationWindow {
                           delegate: Loader {
                               //anchors.fill: parent
                               source: model.component + ".qml"
-                              Component.onCompleted: console.log("INS-3", model.component)
+                              Component.onCompleted: root.log("INS-3", model.component)
                           }
                       }
 
@@ -201,7 +201,7 @@ ApplicationWindow {
          url: "ws://" + serverHost + "/echo" // "?login=" + userLogin + "&token=" + userToken
 
          onTextMessageReceived: {
-             //console.log("[RECV]", message)
+             //root.log("[RECV]", message)
              var msg = JSON.parse(message)
              Services.message(msg) // regular action first
              if (msg.task) {
@@ -211,16 +211,16 @@ ApplicationWindow {
              //newMessage(msg)
          }
          onStatusChanged: if (socket.status === WebSocket.Error) {
-                              //console.log("Error: " + socket.errorString)
+                              //root.log("Error: " + socket.errorString)
                               goOffline()
                               socket.active = false
                           } else if (socket.status === WebSocket.Open) {
                               menu.linkStatus = 'online'
-                              console.log("Socket ready, sending credentials")
+                              root.log("Socket ready, sending credentials")
                               sendTextMessage('{"login": "' + userLogin + '", "token": "' + userToken + '"}')
                           } else if (socket.status === WebSocket.Closed) {
                               if (menu.linkStatus != 'offline')
-                                console.log("Socket closed")
+                                root.log("Socket closed")
                               menu.linkStatus = 'offline'
                               socket.active = false
                           }
@@ -259,7 +259,7 @@ ApplicationWindow {
     }
 
     function initPanes() {
-        console.log('INIT PANES!')
+        root.log('INIT PANES!')
         var i
         for (i = 0; i < panes.length; i++)
             makePane(panes[i].views, 1 + i)
@@ -286,19 +286,19 @@ ApplicationWindow {
             }
         ]
         panes.append(panesList)
-        console.log('DUMP')
+        root.log('DUMP')
         Utils.dumpModel(panes)
-        console.log('DUMP')
+        root.log('DUMP')
         Utils.dumpModel(panes.get(0).layout)
-        console.log('DUMP')
+        root.log('DUMP')
         Utils.dumpModel(panes.get(0).layout.get(0).list)*/
     }
 
     function sendMessage(service, action, data) {
-        //console.log("DATA:", arguments.length, data)
+        //root.log("DATA:", arguments.length, data)
         var message = {service: service, action: action, data: data},
             payload = JSON.stringify(message)
-        //console.log("[SEND]", payload)
+        //root.log("[SEND]", payload)
         socket.sendTextMessage(payload)
         return false
     }
@@ -327,7 +327,7 @@ ApplicationWindow {
             for (i = 0; i < a[j].length; i++) {
                 ObjectFactory.create(a[j][i], view, function (obj, source) {
                     setMinWH(obj)
-                    //console.log("INIT:", source)
+                    //root.log("INIT:", source)
                     obj.panePosition = pos
                     view.addItem(obj)
                     //socket.newMessage.connect(obj.send)
@@ -359,5 +359,9 @@ ApplicationWindow {
             close.accepted = false
             messageBox.error("Смена не завершена")
         }
+    }
+
+    function log(str){
+//    console.log(str)
     }
 }

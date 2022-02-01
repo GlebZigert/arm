@@ -42,6 +42,7 @@ signals:
  void finished();
  void stepChanged(int step);
   void URLChanged(QString URL);
+  void tick();
 };
 
 #endif // STARTER_H

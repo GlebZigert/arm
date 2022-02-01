@@ -92,7 +92,7 @@ Rectangle {
 
     function set_disabled()
     {
-        //console.log("disable!")
+        //root.log("disable!")
     mouse.enabled=false
     }
     function set_enabled()

@@ -123,7 +123,7 @@ ColumnLayout {
             if (fileDialog.file)
                 fileDialog.reset()
 
-            console.log("USER PAYLOAD:", JSON.stringify(payload))
+            root.log("USER PAYLOAD:", JSON.stringify(payload))
             asyncWait = true
             root.newTask('configuration', 'UpdateUser', payload, done.bind(this, filename), fail)
         } else
@@ -131,13 +131,13 @@ ColumnLayout {
     }
 
     function fail() {
-        //console.log('UpdateUser failed')
+        //root.log('UpdateUser failed')
         asyncWait = false
         messageBox.error("Операция не выполнена")
     }
 
     function done(filename, msg) {
-        //console.log("ErWar:", JSON.stringify(msg.data.warnings))
+        //root.log("ErWar:", JSON.stringify(msg.data.warnings))
         if (msg.data.errors) {
             messageBox.error(msg.data.errors.join('\n'))
         } else {
@@ -149,10 +149,10 @@ ColumnLayout {
         }
 
             //tree.findItem(msg.data.id)
-        //console.log('done', JSON.stringify(msg))
+        //root.log('done', JSON.stringify(msg))
     }
     function saveDone(filename) {
-        console.log("UserForm upload:", filename)
+        root.log("UserForm upload:", filename)
         var url = "http://" + serverHost + "/0/user?id=" + savedId;
         if (filename) { // upload user image
             Upload.readFile(filename, function (arrayBuffer) {
@@ -171,7 +171,7 @@ ColumnLayout {
         if (success) {
             nocache = Math.round(Math.random() * 2e9)
             fileDialog.ready = false
-            //console.log("Upload done!", nocache)
+            //root.log("Upload done!", nocache)
         } else {
             messageBox.error("Не удаётся загрузить выбранный файл с изображением на сервер")
         }

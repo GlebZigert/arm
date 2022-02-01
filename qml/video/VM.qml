@@ -47,31 +47,31 @@ Item {
          //       )
          //   {
             /*
-        console.log(".")
-        console.log(".")
-        console.log(".")
-        console.log(".")
-        console.log(".")
-        console.log(".")
-            console.log("live_player.source: ",live_player.source)
-            console.log("live_player.status: ",live_player.status)
-            console.log("live_player.playbackState: ",live_player.playbackState)
-            console.log("live_player.hasVideo: ",live_player.hasVideo)
-            console.log("live_player.error: ",live_player.error)
-            console.log("live_player.errorString: ",live_player.errorString)
-            console.log("live_player.availability: ",live_player.availability)
-         console.log(".")
-         console.log(".")
-         console.log(".")
-         console.log(".")
-         console.log(".")
-         console.log(".")
+        root.log(".")
+        root.log(".")
+        root.log(".")
+        root.log(".")
+        root.log(".")
+        root.log(".")
+            root.log("live_player.source: ",live_player.source)
+            root.log("live_player.status: ",live_player.status)
+            root.log("live_player.playbackState: ",live_player.playbackState)
+            root.log("live_player.hasVideo: ",live_player.hasVideo)
+            root.log("live_player.error: ",live_player.error)
+            root.log("live_player.errorString: ",live_player.errorString)
+            root.log("live_player.availability: ",live_player.availability)
+         root.log(".")
+         root.log(".")
+         root.log(".")
+         root.log(".")
+         root.log(".")
+         root.log(".")
 */
             if((live_player.error==1)||
                (live_player.hasVideo==false))
             {
                 count++
-         // console.log(".......................count ",count )
+         // root.log(".......................count ",count )
                 if(count>41)
                 {
                     if(current_camera==""){
@@ -123,7 +123,7 @@ Item {
                 live_videoOutput.visible=false
                 image.visible=false
 
-                //console.log("[playing]")
+                //root.log("[playing]")
             }
 
 
@@ -141,7 +141,7 @@ Item {
             onPlaying: {
 
 
-console.log("[LIVE playing]")
+root.log("[LIVE playing]")
 
                 if(live_player.source!="")
                 {
@@ -155,22 +155,22 @@ console.log("[LIVE playing]")
              //   live_videoOutput.visible=true
             //    image.visible=false
             //    storage_videoOutput.visible=false
-            //console.log("[LIVE playing]")
+            //root.log("[LIVE playing]")
 
             }
             }
 
             onStopped:{
                 /*
-                 console.log(" ")
-                    console.log(" ")
-                    console.log(" ")
-                    console.log(" ")
-                    console.log("onStopped ")
-                    console.log(" ")
-                    console.log(" ")
-                    console.log(" ")
-                    console.log(" ")
+                 root.log(" ")
+                    root.log(" ")
+                    root.log(" ")
+                    root.log(" ")
+                    root.log("onStopped ")
+                    root.log(" ")
+                    root.log(" ")
+                    root.log(" ")
+                    root.log(" ")
                 live_player.source=""
                 live_player.play()
                 */
@@ -179,15 +179,15 @@ console.log("[LIVE playing]")
             }
 
             onPlaybackStateChanged:{
-            /*  console.log(" ")
-                console.log(" ")
-                console.log(" ")
-                console.log(" ")
-                console.log("onPlaybackStateChanged ", live_player.playbackState)
-                console.log(" ")
-                console.log(" ")
-                console.log(" ")
-                console.log(" ")*/
+            /*  root.log(" ")
+                root.log(" ")
+                root.log(" ")
+                root.log(" ")
+                root.log("onPlaybackStateChanged ", live_player.playbackState)
+                root.log(" ")
+                root.log(" ")
+                root.log(" ")
+                root.log(" ")*/
             }
 
 
@@ -234,18 +234,18 @@ Rectangle{
                         property double factor: 2.0
                         onWheel:
                         {
-                              //console.log("---------------------" )
+                              //root.log("---------------------" )
                             if(wheel.angleDelta.y > 0)  // zoom in
                                 var zoomFactor = factor
                             else                        // zoom out
                                 zoomFactor = 1/factor
 
-         //console.log("zoomFactor ",zoomFactor )
+         //root.log("zoomFactor ",zoomFactor )
 
                     }
 
                         onEntered: {
-                            //console.log("[onEntered 2]")
+                            //root.log("[onEntered 2]")
                             Tlmtr.capture_session(point)
 
                         //    mouse.accepted = false
@@ -275,18 +275,18 @@ Rectangle{
                         property double factor: 2.0
                         onWheel:
                         {
-                              //console.log("---------------------" )
+                              //root.log("---------------------" )
                             if(wheel.angleDelta.y > 0)  // zoom in
                                 var zoomFactor = factor
                             else                        // zoom out
                                 zoomFactor = 1/factor
 
-         //console.log("zoomFactor ",zoomFactor )
+         //root.log("zoomFactor ",zoomFactor )
 
                     }
 
                         onEntered: {
-                            //console.log("[onEntered 1]")
+                            //root.log("[onEntered 1]")
                             //Tlmtr.capture_session(point)
                            // timer.start()
                         //    mouse.accepted = false
@@ -346,7 +346,7 @@ function reload_livestream()
 }
 
 function set_live_stop(){
- //   console.log("..............................[set_live_stop]")
+ //   root.log("..............................[set_live_stop]")
  //   live_player.pause()
  //   live_player.stop()
     live_player.source="no any fucking source"
@@ -361,14 +361,14 @@ function set_live_play(){
  //   timer.stop()
 //    set_live_stop()
  /*
-        console.log("..............................[set_live_play]")
-    console.log("live_player.source: ",live_player.source)
-    console.log("live_player.status: ",live_player.status)
-    console.log("live_player.playbackState: ",live_player.playbackState)
-    console.log("live_player.hasVideo: ",live_player.hasVideo)
-    console.log("live_player.error: ",live_player.error)
-    console.log("live_player.errorString: ",live_player.errorString)
-    console.log("live_player.availability: ",live_player.availability)
+        root.log("..............................[set_live_play]")
+    root.log("live_player.source: ",live_player.source)
+    root.log("live_player.status: ",live_player.status)
+    root.log("live_player.playbackState: ",live_player.playbackState)
+    root.log("live_player.hasVideo: ",live_player.hasVideo)
+    root.log("live_player.error: ",live_player.error)
+    root.log("live_player.errorString: ",live_player.errorString)
+    root.log("live_player.availability: ",live_player.availability)
 */
     current_camera=live_player.source
 
@@ -378,7 +378,7 @@ function set_live_play(){
 
     live_player.source=url_livestream
 
-  console.log("..............................url_livestream: ",url_livestream)
+  root.log("..............................url_livestream: ",url_livestream)
     live_player.play()
 
     live_videoOutput.visible=true
@@ -388,12 +388,12 @@ function set_live_play(){
 
 
 
-console.log("[LIVE playing]")
+root.log("[LIVE playing]")
     var pb=live_player.playbackState
-    //console.log("playbackState:", pb)
+    //root.log("playbackState:", pb)
 
 
-    console.log("live_player.hasVideo: ",live_player.hasVideo)
+    root.log("live_player.hasVideo: ",live_player.hasVideo)
 
 
         }
@@ -401,7 +401,7 @@ console.log("[LIVE playing]")
 
 function set_live_pause(){
     timer.stop()
-        //console.log("..............................[set_live_pause]")
+        //root.log("..............................[set_live_pause]")
 
         live_player.pause()
 
@@ -410,12 +410,12 @@ function set_live_pause(){
 
 function set_storage_pause(dt){
     timer.stop()
-        console.log("..............................[set_storage_pause]")
+        root.log("..............................[set_storage_pause]")
 
 
 
             var pb=storage_player.playbackState
-            console.log("playbackState:", pb)
+            root.log("playbackState:", pb)
 
 
             if(pb==2)
@@ -431,7 +431,7 @@ function set_storage_pause(dt){
                 }
                  image.visible=false
 
-                //console.log("current_dt!=dt")
+                //root.log("current_dt!=dt")
 
                 background.source=image.source
           //      background.visible=true
@@ -447,7 +447,7 @@ function set_storage_pause(dt){
 
 
 
-                //console.log(image.source)
+                //root.log(image.source)
                 image.visible=true
 
             //    background.visible=false
@@ -480,7 +480,7 @@ storage_player.source=""
 
  function set_storage_play(dt,speed){
      timer.stop()
-       console.log("..............................[set_storage_play]")
+       root.log("..............................[set_storage_play]")
 
 
 
@@ -503,7 +503,7 @@ storage_player.source=""
 
 
             var pb=storage_player.playbackState
-            //console.log("playbackState:", pb)
+            //root.log("playbackState:", pb)
 
 
             if(pb==2)
@@ -526,8 +526,8 @@ storage_player.source=""
             image.visible=false
 
 
-            //console.log(storage_player.source)
-            //console.log(storage_player.status)
+            //root.log(storage_player.source)
+            //root.log(storage_player.status)
 
 
 

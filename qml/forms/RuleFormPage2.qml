@@ -28,7 +28,7 @@ ColumnLayout {
             model: timeRanges
 
             Component.onCompleted: {
-                selected.connect(function (v) {current = v; /*console.log(JSON.stringify(v))*/})
+                selected.connect(function (v) {current = v; /*root.log(JSON.stringify(v))*/})
                 timeRanges.countChanged.connect(function (v) {
                     if (timeRanges && 0 === timeRanges.count) {
                         tree.clearSelection();
@@ -149,7 +149,7 @@ ColumnLayout {
         title: "Ошибка"
         icon: StandardIcon.Critical
         text: "Форма заполнена неправильно."
-        //onAccepted: console.log("OK")
+        //onAccepted: root.log("OK")
     }
 
     //

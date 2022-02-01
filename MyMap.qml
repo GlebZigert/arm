@@ -52,7 +52,7 @@ RowLayout {
     property real blinkOpacity: 0.8
 
     onCurrentMapChanged: {
-        console.log('Selected ', currentMap.type, currentMap.id, map.zoomLevel)
+        root.log('Selected ', currentMap.type, currentMap.id, map.zoomLevel)
         planScale = 'plan' === currentMap.type && mapPosition[currentMap.id] && mapPosition[currentMap.id].scale || 1
         anchorsModel.clear()
         currentItem = null
@@ -83,7 +83,7 @@ RowLayout {
             anchors.top: parent.top
             width: (!currentMap || currentMap.type === "map") ? parent.width : 0
             height: width > 0 ? parent.height : 0
-            //onZoomLevelChanged: console.log("ZLC:", zoomLevel)
+            //onZoomLevelChanged: root.log("ZLC:", zoomLevel)
         }
         MyMap.Plan{
             id: plan
@@ -111,7 +111,7 @@ RowLayout {
             onCountChanged: activateMap()
 
             function activateMap() {
-                //console.log('Activate map #', currentIndex, 'of', count)
+                //root.log('Activate map #', currentIndex, 'of', count)
                 var newMap
                 if (currentIndex >= count || currentIndex < 0)
                     currentIndex = count - 1
@@ -209,7 +209,7 @@ RowLayout {
                 m.z = currentOrder++
                 currentItem = m
                 arrangeAnchors()
-                console.log("Selected", m.color, m.type, m.z, m.state, '(' + m.sid + ',' + m.did + ')')
+                root.log("Selected", m.color, m.type, m.z, m.state, '(' + m.sid + ',' + m.did + ')')
                 break
             }
         }
@@ -217,7 +217,7 @@ RowLayout {
         if (i >= shapes.count) {
             anchorsModel.clear()
             currentItem = null
-            console.log(item.color, item.type, "not found")
+            root.log(item.color, item.type, "not found")
         }
     }
 
@@ -229,28 +229,28 @@ RowLayout {
 
     function equal(m1, m2) {
         var i, fields = ['x', 'y', 'w', 'h', 'r', 'z', 'data']
-        //console.log(m1.color, m1.type, "<=>", m2.color, m2.type)
+        //root.log(m1.color, m1.type, "<=>", m2.color, m2.type)
 
         if (!m1 || !m2 || m1.type !== m2.type)
             return false
         for (i = 0; i < fields.length; i++)
             if (m1[fields[i]] !== m2[fields[i]])
                 return false
-        //console.log('YES')
+        //root.log('YES')
         return true;
         //return m1.longitude === m2.longitude && m1.latitude === m2.latitude && m1.width === m2.width && m1.height === m2.height && m1.rotation === m2.rotation
     }
 
     function dumpModel(m) {
         for (var i = 0; i < m.count; i++)
-            console.log(i, JSON.stringify(m.get(i)))
+            root.log(i, JSON.stringify(m.get(i)))
     }
     function purgeModel(m) {
         var item
         for (var i = m.count-1; i >= 0 ; i--) {
             item = m.get(i)
             if (!item.visible) {
-                console.log("remove", i, JSON.stringify(item))
+                root.log("remove", i, JSON.stringify(item))
                 m.remove(i)
             }
         }

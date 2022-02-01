@@ -8,11 +8,11 @@ FileDialog {
     nameFilters: [ "Изображения (*.jpg *.png)"]
     onAccepted: {
         ready = true
-      //console.log("You chose", fileUrls)
+      //root.log("You chose", fileUrls)
     }
     onRejected: {
         ready = false
-        //console.log("Canceled", fileUrls)
+        //root.log("Canceled", fileUrls)
     }
     function reset() {
         ready = false

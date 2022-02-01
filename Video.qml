@@ -51,12 +51,12 @@ Item{
 
     onPanePositionChanged: {
 
-        // console.log("panePosition: ",panePosition)
-        // console.log("root.videoPane: ",root.videoPane)
+        // root.log("panePosition: ",panePosition)
+        // root.log("root.videoPane: ",root.videoPane)
 
 
         root.videoPane=panePosition
-        // console.log("root.videoPane: ",root.videoPane)
+        // root.log("root.videoPane: ",root.videoPane)
     }
 
 
@@ -65,16 +65,16 @@ Item{
         interval: 5000; running: false; repeat: true
         onTriggered:
         {
-        //// console.log(".")
+        //// root.log(".")
         if((root.storage_live==live)&&(root.pause_play==play))
         {
-        //console.log("+")
+        //root.log("+")
         Tlmtr.hold_session()
         timer.start()
         }
         else
         {
-            //console.log("-")
+            //root.log("-")
         timer.stop()
         }
         }
@@ -86,7 +86,7 @@ Item{
         property int msec:0
         onTriggered:
         {
-            //console.log("zoom_timer_timeout")
+            //root.log("zoom_timer_timeout")
             Tlmtr.stop_zoom()
             vm_area.zoom_prev=0
         }
@@ -97,7 +97,7 @@ Item{
         interval: 5000; running: true; repeat: true
         onTriggered:
         {
-           // console.log("[!!]")
+           // root.log("[!!]")
             if(current_cameraId!="")
             Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
 
@@ -182,9 +182,9 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
                onPressed: {
                     if((root.storage_live==live)&&(root.pause_play==play)){
-                   //console.log("[onPressed!!!]")
+                   //root.log("[onPressed!!!]")
 
-                //console.log("prev: ",mouseX_prev," ",mouseY_prev)
+                //root.log("prev: ",mouseX_prev," ",mouseY_prev)
 
 
                    var mx=mouseX-parent.width/2
@@ -192,7 +192,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
 
                    var arctn=Math.abs(Math.atan(my/mx))
-                       //console.log("arctn: ",arctn)
+                       //root.log("arctn: ",arctn)
                    move(mx,my)
                     }
                }
@@ -223,11 +223,11 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                function move(mx,my)
                {
 
-               //console.log("-----------")
+               //root.log("-----------")
                var value=Math.sqrt(mx*mx+my*my)
 
 
-              //console.log("value: ",value)
+              //root.log("value: ",value)
 
                var val=0
                    if(value===0)
@@ -243,8 +243,8 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                        val=1
 
                    var arctn=Math.abs(Math.atan(my/mx))
-                //  //console.log(xx-mouseX," ",yy-mouseY)
-                //  //console.log("arctn: ",arctn)
+                //  //root.log(xx-mouseX," ",yy-mouseY)
+                //  //root.log("arctn: ",arctn)
            var x=0
                    var y=0
                       if(arctn<0.2)
@@ -256,7 +256,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                           rect.color="yellow"
                            else
                             rect.color="lightgray"
-                      //console.log("(1)")
+                      //root.log("(1)")
                           if(mx>0)
                           {
                          x=1
@@ -279,7 +279,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                                               rect.color="lightgreen"
                                           else
                                            rect.color="lightgray"
-                      //console.log("(2)")
+                      //root.log("(2)")
                           if(my>0)
                           {
                               if(mx>0)
@@ -320,7 +320,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                                                         rect.color="lightblue"
                                                          else
                                                           rect.color="lightgray"
-                      //console.log("(3)")
+                      //root.log("(3)")
                           if(my>0)
                           {
                               x=0
@@ -343,11 +343,11 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                           str=str+String(val)
                           str=str+" "
 
-                          //console.log("[str] ",str)
+                          //root.log("[str] ",str)
 
                           Tlmtr.move(str)
-                 //console.log("[value] ", value)
-                 //console.log("[",x," ",y," ",val,"]")
+                 //root.log("[value] ", value)
+                 //root.log("[",x," ",y," ",val,"]")
 
                       x_prev=x
                       y_prev=y
@@ -357,16 +357,16 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
 
                onEntered: {
-               //console.log("onEntered")
+               //root.log("onEntered")
                }
                property var zoom: 0
                property var zoom_prev: 0
                onWheel:
                {
                    if((root.storage_live==live)&&(root.pause_play==play)){
-                       //console.log("telemetry")
+                       //root.log("telemetry")
 
-                       //console.log("---------------------" )
+                       //root.log("---------------------" )
 
 
                      if(wheel.angleDelta.y > 0)  // zoom in
@@ -400,13 +400,13 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                    else
                    {
 
-                     //console.log("---------------------" )
+                     //root.log("---------------------" )
                    if(wheel.angleDelta.y > 0)  // zoom in
                        var zoomFactor = factor
                    else                        // zoom out
                        zoomFactor = 1/factor
 
-           //console.log("zoomFactor ",zoomFactor )
+           //root.log("zoomFactor ",zoomFactor )
                    if(!(tform1.xScale *zoomFactor<1))
                    {
 
@@ -422,12 +422,12 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                    tform1.yScale *=zoomFactor
 
 
-                   //console.log("realX ",realX )
-                   //console.log("realY ",realY )
-                   //console.log("rect.x ", x )
-                   //console.log("rect.y ", y )
-                   //console.log("tform1.xScale ",tform1.xScale )
-                   //console.log("tform1.yScale ",tform1.yScale )
+                   //root.log("realX ",realX )
+                   //root.log("realY ",realY )
+                   //root.log("rect.x ", x )
+                   //root.log("rect.y ", y )
+                   //root.log("tform1.xScale ",tform1.xScale )
+                   //root.log("tform1.yScale ",tform1.yScale )
                      }
                     else
                     {
@@ -447,16 +447,16 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
                         vm.x =(vm_rect.width- (vm_rect.height/1080)*1920)/2
                         vm.y =0
 
-                        console.log("rect.x ", vm.x )
-                        console.log("rect.y ",vm.y )
+                        root.log("rect.x ", vm.x )
+                        root.log("rect.y ",vm.y )
                         }
 
-                        //console.log("realX ",realX )
-                        //console.log("realY ",realY )
-                        //console.log("rect.x ", x )
-                        //console.log("rect.y ",y )
-                        //console.log("tform1.xScale ",tform1.xScale )
-                        //console.log("tform1.yScale ",tform1.yScale )
+                        //root.log("realX ",realX )
+                        //root.log("realY ",realY )
+                        //root.log("rect.x ", x )
+                        //root.log("rect.y ",y )
+                        //root.log("tform1.xScale ",tform1.xScale )
+                        //root.log("tform1.yScale ",tform1.yScale )
                     }
                    }
                }
@@ -472,7 +472,7 @@ width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
 
        onTriggered:
        {
-           //console.log("delay timeout")
+           //root.log("delay timeout")
        }
 
 
@@ -608,12 +608,12 @@ anchors.fill:parent
        hoverEnabled: true
 
                        onMouseXChanged: {
-                           //console.log(".")
-                                              ////console.log("configPanel show: root width: " + root.width + " mouseX: " + mouseX + "panel width: " + configPanel.width)
+                           //root.log(".")
+                                              ////root.log("configPanel show: root width: " + root.width + " mouseX: " + mouseX + "panel width: " + configPanel.width)
                             //   configPanel.state = "show"
 
                            f_loaded_cameras_on_off()
-                               //console.log("profit")
+                               //root.log("profit")
 
 
                        }
@@ -636,7 +636,7 @@ anchors.fill:parent
                 }
 
                 onMouseXChanged: {
-                //    console.log(rect.width - mouseX," ",configPanel.width)
+                //    root.log(rect.width - mouseX," ",configPanel.width)
 
 
                //     if(flag==1)
@@ -645,7 +645,7 @@ anchors.fill:parent
                     {
                         flag=0
                         configPanel.state = "hide"
-                        ////console.log("configPanel hide: root width: " + root.width + " mouseX: " + mouseX + "panel width: " + configPanel.width)
+                        ////root.log("configPanel hide: root width: " + root.width + " mouseX: " + mouseX + "panel width: " + configPanel.width)
                     }
                     */
 mouse.accepted = false
@@ -803,7 +803,7 @@ Timer {
     property int msec:0
     onTriggered:
     {
-        //console.log("zoom_timer_timeout")
+        //root.log("zoom_timer_timeout")
         another_user_rect.visible=false
     }
 }
@@ -897,9 +897,9 @@ onClicked: {
 
 srv.hide_or_show_menu()
 
-    // console.log("------------------ 1")
+    // root.log("------------------ 1")
     root.test.qwerty()
-    // console.log("------------------ 2")
+    // root.log("------------------ 2")
 
 }
 }
@@ -921,12 +921,12 @@ Component.onCompleted: {
 
 
 Axxon.get_service_id()
-console.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
+root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
     /*
-    console.log("Ищем вкладку где Axxon")
-    console.log("кол-во вкладок: ",root.layouts.count)
+    root.log("Ищем вкладку где Axxon")
+    root.log("кол-во вкладок: ",root.layouts.count)
     for (var i = 0; i < root.panes.length; i++){
-    console.log(root.panes[i].symbol," ",root.panes[i].it_s_video)
+    root.log(root.panes[i].symbol," ",root.panes[i].it_s_video)
 
     if(root.panes[i].it_s_video==1)
     root.videoPane=i+1
@@ -1026,13 +1026,13 @@ function to_update_intervals_handler()
 
 function to_update_intervals_handler_and_go_to_this_dt()
 {
-    console.log("to_update_intervals_handler_and_go_to_this_dt")
+    root.log("to_update_intervals_handler_and_go_to_this_dt")
 //to_update_intervals_handler()
     var dt=timeline.current_dt()
 
 
-  //  console.log(dt)
-  //  console.log("[2]")
+  //  root.log(dt)
+  //  root.log("[2]")
     root.storage_live=storage
     timeline.to_storage()
 
@@ -1044,7 +1044,7 @@ request_URL(lcl.id,lcl.serviceId,dt)
 
 function  f_show_or_hide_calendar()
 {
-  //  console.log("----------show_or_hide_calendar")
+  //  root.log("----------show_or_hide_calendar")
 if(calendar.enabled==true)
 {
 calendar.enabled=false
@@ -1062,7 +1062,7 @@ else
 
 function hide_or_show_menu()
 {
-  //  console.log("[hide_or_show_menu] ",container.interfase_visible )
+  //  root.log("[hide_or_show_menu] ",container.interfase_visible )
 
      if(srv.interfase_visible)
      {
@@ -1080,9 +1080,9 @@ function hide_or_show_menu()
 }
 /*
 function f_update_intervals(x){
-console.log("[update intervals]")
-console.log(JSON.stringify(x))
-console.log(JSON.stringify(x.intervals.length))
+root.log("[update intervals]")
+root.log(JSON.stringify(x))
+root.log(JSON.stringify(x.intervals.length))
     timeline.update_slider_intervals(x)
 }
 */
@@ -1102,7 +1102,7 @@ function f_event_on_camera(id){
  f_change_camera(id)
  }
  else{
- console.log("совпадает")
+ root.log("совпадает")
  }
 }
 
@@ -1112,13 +1112,13 @@ function f_change_camera(id){
     cid=id
     var lcl
     lcl=Axxon.camera(cid)
-    console.log(lcl.name)
+    root.log(lcl.name)
     configPanel.state="hide"
 
     telemetry.set_serviceId(lcl.serviceId)
     preset_list.serviceId=lcl.serviceId
 
-    console.log("telemetryControlID: ",lcl.telemetryControlID)
+    root.log("telemetryControlID: ",lcl.telemetryControlID)
     root.telemetryPoint=lcl.telemetryControlID
 
     //запрашиваем у сервера всю нужную нам инфу по этой камере
@@ -1149,8 +1149,8 @@ function f_current_camera_update(){
     var lcl
     lcl=Axxon.camera(cid)
 
-    console.log("")
-    console.log("Обновляем камеру")
+    root.log("")
+    root.log("Обновляем камеру")
 
 
 
@@ -1214,7 +1214,8 @@ function f_pause(){
 }
 
 function f_paused_and_moved_at_dt(dt){
-f_pause()
+//f_pause()
+root.pause_play=pause
 f_moved_at_dt(dt)
 }
 
@@ -1235,7 +1236,7 @@ Axxon.request_URL(cameraId, serviceId, dt,"utc")
 
 function f_set_live_play()
 {
-    console.log("[f_set_live_play]")
+    root.log("[f_set_live_play]")
 root.storage_live=live
 root.pause_play=play
 var dt=""
@@ -1248,16 +1249,16 @@ function  update_vm(id)
  {
     var lcl=Axxon.camera(cid)
 
-    //console.log("[",dt,"]")
- //   console.log("-------------update vm")
+    //root.log("[",dt,"]")
+ //   root.log("-------------update vm")
  if(root.pause_play==pause)
      {
-   //  console.log("pause")
+   //  root.log("pause")
      if(root.storage_live==storage)
          {
          vm.source=lcl.snapshot
          vm.shot()
-      //   console.log("storage")
+      //   root.log("storage")
 
          }
      else
@@ -1270,7 +1271,7 @@ function  update_vm(id)
  else
  if(root.pause_play==play)
      {
-   //  console.log("play")
+   //  root.log("play")
      if(root.storage_live==storage)
          {
          vm.source=lcl.storageStream
@@ -1294,7 +1295,7 @@ function  update_vm(id)
 
      //    rect.x =0
      //    rect.y =0
-        console.log("live")
+        root.log("live")
          vm.source=lcl.liveStream
          vm.start()
          }
@@ -1316,12 +1317,12 @@ if(telemetry_on_off_value)
 }
 
 function show_another_user(message){
-//console.log(" ")
+//root.log(" ")
 //    var str
 //    var user=root.another_user.get(0)
 //    str="Управление забрал "+user.name+" "+user.surename
-//console.log(str)
-//console.log(" ")
+//root.log(str)
+//root.log(" ")
    var user=root.another_user.get(0)
     another_user_text.text=user.message
     another_user_rect.visible=true
@@ -1330,7 +1331,7 @@ function show_another_user(message){
 
 function eventSelected_handler(event){
 
-    console.log("[ eventSelected_handler]")
+    root.log("[ eventSelected_handler]")
     var str=event.commands
     str=str.replace(/(\[)/g, "")
     str=str.replace(/(\])/g,"")
@@ -1358,7 +1359,7 @@ function eventSelected_handler(event){
     var lcl=Axxon.camera(cid)
     telemetry.set_serviceId(lcl.serviceId)
     preset_list.serviceId=lcl.serviceId
-    console.log("telemetryControlID: ",lcl.telemetryControlID)
+    root.log("telemetryControlID: ",lcl.telemetryControlID)
     root.telemetryPoint=lcl.telemetryControlID
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)

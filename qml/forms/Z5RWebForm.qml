@@ -65,7 +65,7 @@ GridLayout {
                     tree.findItem({id: msg.data.id, serviceId: msg.service})
                 }
 
-                //console.log(model.serviceId, Helpers.readForm(form, payload), JSON.stringify(payload))
+                //root.log(model.serviceId, Helpers.readForm(form, payload), JSON.stringify(payload))
                 if (Helpers.readForm(form, payload)) {
                     if (payload.internalZone)
                         payload.zones.push([0, payload.internalZone, 1])
@@ -74,8 +74,8 @@ GridLayout {
 
                     delete payload.externalZone
                     delete payload.internalZone
-                    console.log(model.id, model.id, JSON.stringify(payload))
-                    root.newTask(model.serviceId, 'UpdateDevice', payload, done, function (){console.log('Update Z5RWeb failed')})
+                    root.log(model.id, model.id, JSON.stringify(payload))
+                    root.newTask(model.serviceId, 'UpdateDevice', payload, done, function (){root.log('Update Z5RWeb failed')})
                 } else
                     messageBox.error("Заполните форму")
             }

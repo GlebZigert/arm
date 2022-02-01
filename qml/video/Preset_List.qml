@@ -41,7 +41,7 @@ Item {
              MouseArea{
                  anchors.fill: parent
              onClicked: {
-                 //console.log("1")
+                 //root.log("1")
                  var res
                  res =true
                  for(var i=0;i<model.count;i++)
@@ -102,7 +102,7 @@ Item {
              anchors.fill: parent
              propagateComposedEvents: true
              onClicked: {
-             //console.log("+")
+             //root.log("+")
                  mouse.accepted=false
              }
              }
@@ -194,8 +194,8 @@ anchors.fill: parent
              property int ind: index
 
               onAccepted:{
-              //console.log("[PROFIT]")
-                  //console.log("ind: ", ind)
+              //root.log("[PROFIT]")
+                  //root.log("ind: ", ind)
 
               if(ind<0)
               {
@@ -211,7 +211,7 @@ anchors.fill: parent
 
               Keys.onPressed: {
                       if (event.key == Qt.Key_Enter) {
-                          //console.log('Key Enter was pressed')
+                          //root.log('Key Enter was pressed')
                           text_field.visible=false
                           event.accepted = true
 
@@ -237,8 +237,8 @@ anchors.fill: parent
                  else
                  {
 
-                 //console.log(list.selected)
-                 //console.log(parent.number)
+                 //root.log(list.selected)
+                 //root.log(parent.number)
                  list.selected=parent.number
 
                  }
@@ -265,18 +265,18 @@ Tlmtr.edit(text_field.text,serviceId)
 
 function show_text_field(fl)
 {
- //   //console.log("show_text_field ",fl)
+ //   //root.log("show_text_field ",fl)
     if(fl)
     {
     if(text_field.visible)
     {
-     //            //console.log("NO 1 ")
+     //            //root.log("NO 1 ")
         text_field.visible=false
         area.enabled=true
     }
     else
     {
-     //       //console.log("PROFIT ")
+     //       //root.log("PROFIT ")
      text_field.visible=true
      text_field.focus=true
      text_field.forceActiveFocus()
@@ -286,7 +286,7 @@ function show_text_field(fl)
     }
     else
     {
-   //                      //console.log("NO 2 ")
+   //                      //root.log("NO 2 ")
     text_field.visible=false
         area.enabled=true
     }
@@ -296,7 +296,7 @@ function show_text_field(fl)
          {
              if(fl)
              {
-             //console.log("[go_to_preset]")
+             //root.log("[go_to_preset]")
              Tlmtr.go_to_preset(index,container.serviceId)
        //      border.color="black"
        //      border.width=2
@@ -310,7 +310,7 @@ function show_text_field(fl)
 
          function set_normal()
          {
-         //console.log("set_normal()")
+         //root.log("set_normal()")
          border.width=0
          color="lightblue"
 
@@ -355,16 +355,16 @@ function show_text_field(fl)
     anchors.fill: parent
     propagateComposedEvents: true
     onClicked: {
-    //console.log("!")
+    //root.log("!")
         mouse.accepted=false
     }
     onPressed: {
-    //console.log("!")
+    //root.log("!")
         mouse.accepted=false
     }
 
     onReleased: {
-    //console.log("!")
+    //root.log("!")
         mouse.accepted=false
     }
     }
@@ -382,14 +382,14 @@ function show_text_field(fl)
         {
 
         var x=list.itemAt(i)
-          //console.log(x.number," ",list.selected)
+          //root.log(x.number," ",list.selected)
             if(x.number==list.selected)
             {
-                //console.log("================================")
-                //console.log("=")
-                //console.log("=            ",x.ind)
-                //console.log("=")
-                //console.log("================================")
+                //root.log("================================")
+                //root.log("=")
+                //root.log("=            ",x.ind)
+                //root.log("=")
+                //root.log("================================")
             Tlmtr.remove(x.ind,serviceId)
 
             }
@@ -404,7 +404,7 @@ function show_text_field(fl)
            {
 
            var x=list.itemAt(i)
-             //console.log(x.number," ",list.selected)
+             //root.log(x.number," ",list.selected)
            x.show_text_field(x.number==list.selected?true:false)
 
            }
@@ -437,7 +437,7 @@ function show_text_field(fl)
        var x=list.itemAt(i)
  x.show_text_field(0)
            var res=0
-           //console.log(x.number," ",list.current)
+           //root.log(x.number," ",list.current)
            x.select(x.number==list.selected?true:false)
            x.set_current(x.number==list.current?true:false)
 
@@ -469,20 +469,20 @@ function show_text_field(fl)
         {
             var x=root.camera_presets.get(i)
 
-            //console.log("[x.index] ",x.index)
-            //console.log("[x.name] ",x.name)
+            //root.log("[x.index] ",x.index)
+            //root.log("[x.name] ",x.name)
 
         model.append({num: i,index:x.index,
                      name:x.name
                       })
         }
 
-//console.log("model.count ",model.count)
+//root.log("model.count ",model.count)
         for(var i=0;i<model.count;i++)
         {
 
-            ////console.log("[x.index] ",model[i].index)
-            ////console.log("[x.name] ",model[i].name)
+            ////root.log("[x.index] ",model[i].index)
+            ////root.log("[x.name] ",model[i].name)
         }
 
 

@@ -1,5 +1,5 @@
 #include "clockcircle.h"
-#include <vlc/vlc.h>
+//#include <vlc/vlc.h>
 
 ClockCircle::ClockCircle(QQuickItem *parent) :
     QQuickPaintedItem(parent),

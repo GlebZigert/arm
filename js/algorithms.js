@@ -11,7 +11,7 @@ var algos
 //////////////////////////////////////////////////////////////
 
 function listAlgos(msg) {
-    //console.log("ALGOS:", JSON.stringify(msg))
+    //root.log("ALGOS:", JSON.stringify(msg))
 
     if (!msg.data)
         msg.data = []
@@ -28,11 +28,11 @@ function listAlgos(msg) {
     algos.clear()
     algos.append(msg.data)
 
-    console.log('Rebuild algos tree')
+    root.log('Rebuild algos tree')
 }
 
 function updateAlgo(msg) {
-    console.log("Upd ALGOS:", JSON.stringify(msg))
+    root.log("Upd ALGOS:", JSON.stringify(msg))
     if (!msg.data)
         return
 

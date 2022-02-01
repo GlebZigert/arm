@@ -23,7 +23,7 @@ Audio {
             audio.stop()
             lastAlarm = -1
         } else if (i < 0)
-            console.log("Unknown alarm name:", name)
+            root.log("Unknown alarm name:", name)
         else if (i > lastAlarm) {
             playlist.currentIndex = i
             audio.play()

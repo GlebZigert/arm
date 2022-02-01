@@ -40,7 +40,7 @@ function init() {
 }
 
 function getService(id) {
-    console.log('GET SERVICE:', id, services[id])
+    root.log('GET SERVICE:', id, services[id])
     return services[id]
 }
 
@@ -48,20 +48,20 @@ function message(msg) {
     if (!qml) init()
 
     if (0 === msg.service && msg.action in handlers) {
-        console.log('Running CORE action:', msg.action)
+        root.log('Running CORE action:', msg.action)
         if ("function" === typeof handlers[msg.action])
             handlers[msg.action](msg)
         else if (msg.action in handlers[msg.action].handlers)
             handlers[msg.action].handlers[msg.action](msg) // WTF?
         else
-            console.log('Handler not found:', msg.action)
-        console.log('Done action:', msg.action)
+            root.log('Handler not found:', msg.action)
+        root.log('Done action:', msg.action)
     } else if (msg.service in services && msg.action in services[msg.service].handlers) {
-        console.log('Running action', msg.action, 'on', msg.service)
+        root.log('Running action', msg.action, 'on', msg.service)
         services[msg.service].handlers[msg.action](msg.data, !msg.task)
-        console.log('Done action', msg.action)
+        root.log('Done action', msg.action)
      } else //if (!msg.task)
-        console.log('Unknown action:', msg.action, 'on', msg.service/*, JSON.stringify(msg.data)*/)
+        root.log('Unknown action:', msg.action, 'on', msg.service/*, JSON.stringify(msg.data)*/)
     if ("Events" === msg.action)
         scanEvents(msg.data)
 }
@@ -118,17 +118,17 @@ var handlers = {
     },
 
     DeleteService: function (msg) {
-        console.log('[DeleteService]', JSON.stringify(msg))
+        root.log('[DeleteService]', JSON.stringify(msg))
         if (msg.data in services) {
             deleteService(msg.data)
         } else
-            console.log('[DeleteService] unknown service', msg.data)
+            root.log('[DeleteService] unknown service', msg.data)
     },
     //////////////////////////////////////////////////////
     ////////////////////// E X T R A /////////////////////
     //////////////////////////////////////////////////////
     Error: function (msg) {
-        //console.log('LF', JSON.stringify(msg))
+        //root.log('LF', JSON.stringify(msg))
         //if ([2, 3].indexOf(msg.data.class) >= 0)
         messageBox.error(msg.data.text)
         socket.stopped = true
@@ -161,7 +161,7 @@ var handlers = {
         } else { // cleaning up models
             root.events.clear()
             /*for (i = 0; i < cleanup.length; i++) {
-                console.log("Cleaning", cleanup[i])
+                root.log("Cleaning", cleanup[i])
                 root[cleanup[i]].clear()
             }*/
         }
@@ -180,7 +180,7 @@ function armCommands() {
 
 function newService(service) {
     //{"id":2,"type":"rif","title":"Риф ДЕМО","host":"127.0.0.1:1978","login":"","password":"","keepAlive":5,"dbHost":"192.168.0.1:3306","dbName":"","dbLogin":"","dbPassword":"","status":{"tcp":"online","db":""}}
-    //console.log("newService():", JSON.stringify(service))
+    //root.log("newService():", JSON.stringify(service))
     var item
     if (service.type in factory) {
         service.serviceId = service.id
@@ -200,7 +200,7 @@ function newService(service) {
         services[service.serviceId] = new factory[service.type](item)
 /*
         if(service.type=="axxon"){
-            console.log("[service.type==Axxon.Axxon]")
+            root.log("[service.type==Axxon.Axxon]")
         root.axxon_service_id=service.serviceId
         }
         */
@@ -224,7 +224,7 @@ function updateService(service, data) {
 
 function deleteService(id) {
     for (var i = 0; i < qml.devices.count; i++) {
-        console.log(JSON.stringify(qml.devices.get(i)))
+        root.log(JSON.stringify(qml.devices.get(i)))
         if (qml.devices.get(i).serviceId === id) {
             if (id in services && ('shutdown' in services[id]))
                 services[id].shutdown()
@@ -243,7 +243,7 @@ function reconnectUser(msg) {
     if (i >= msg.data.length)
         return
 
-    console.log("Reload all dev-trees")
+    root.log("Reload all dev-trees")
     root.send(0, "ListServices", "")
     /*for (i in services)
         if ('reloadTree' in services[i])
@@ -251,7 +251,7 @@ function reconnectUser(msg) {
 }
 
 function listServices(msg) {
-//        console.log("LIST SVC:", JSON.stringify(msg))
+//        root.log("LIST SVC:", JSON.stringify(msg))
         var i,
             id,
             service,
@@ -274,7 +274,7 @@ function listServices(msg) {
 
 function scanEvents(events) {
     var eventList = []
-    //console.log("ScanEvents", JSON.stringify(events))
+    //root.log("ScanEvents", JSON.stringify(events))
     if (!events)
         return
     for (var i = 0; i < events.length; i++) {

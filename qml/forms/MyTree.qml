@@ -44,7 +44,7 @@ Item {
             path = Utils.findPath(model, keys)
 
         if (path.length) {
-            //console.log("PATH:", JSON.stringify(path))
+            //root.log("PATH:", JSON.stringify(path))
             item = path.pop()
             selectedTNID = getTNID(item)
             for (i = 0; i < path.length; i++) {
@@ -92,14 +92,14 @@ Item {
         }
 
         if (event.key === Qt.Key_Up)
-            console.log("up")
+            root.log("up")
         if (event.key === Qt.Key_Down) {
 
-            console.log("down")
+            root.log("down")
         } if (event.key === Qt.Key_Left)
-            console.log("left")
+            root.log("left")
         if (event.key === Qt.Key_Right) {
-            console.log("right")
+            root.log("right")
             if (node.children)
                 node.expanded = true
         }

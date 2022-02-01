@@ -110,7 +110,7 @@ Popup {
         var payload = {id: event.id},
             ok = Helpers.readForm(eventForm, payload)
         if (ok) {
-            console.log("Desc event:", JSON.stringify(payload))
+            root.log("Desc event:", JSON.stringify(payload))
             root.newTask(0, "DescribeEvent", payload, descDone, fail)
         }
     }
@@ -122,19 +122,19 @@ Popup {
     function reset(msg) {
         alarmsCount = Journal.activeAlarms(event)
         if (alarmsCount === 0) {
-            console.log("Reset alarm:", event.deviceId)
+            root.log("Reset alarm:", event.deviceId)
             root.newTask(event.serviceId, "ResetAlarm", event.deviceId, resetDone, fail)
         }
     }
 
     function resetDone(msg) {
-        console.log("AlarmPopup: reset done", msg.data)
+        root.log("AlarmPopup: reset done", msg.data)
         if (true === msg.data)
             popup.close()
     }
 
     function fail() {
-        console.log("AlarmPopup task failed")
+        root.log("AlarmPopup task failed")
     }
 
 }

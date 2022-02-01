@@ -29,7 +29,7 @@ Grid {
            height:container.side
 
            onClicked: {
-               //console.log("[do_it]")
+               //root.log("[do_it]")
                do_it()
 
            }
@@ -110,7 +110,7 @@ model.clear()
 function add_page()
 {
 model.append({number:(combo.count+1)})
-//console.log("[add_page] ",combo.count)
+//root.log("[add_page] ",combo.count)
 
 }
 */
@@ -122,7 +122,7 @@ combo.activated.connect(current_page_changed)
 function current_page_changed()
 {
     var dt=new Date();
-console.log("------------------------------------------------------------------------------------- ",dt," current_page_changed ")
+root.log("------------------------------------------------------------------------------------- ",dt," current_page_changed ")
 current_page(combo.currentIndex+1)
 }
 

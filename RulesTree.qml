@@ -94,9 +94,9 @@ RowLayout {
     function selected(item) {
         // TODO: QT BUG? item <> node from model
         /*try {
-            console.log(JSON.stringify(item))
+            root.log(JSON.stringify(item))
         } catch (e) {
-            console.log(item)
+            root.log(item)
         }*/
 
         if (item && item.id)

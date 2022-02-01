@@ -13,11 +13,11 @@ if (root.storage_live=="live") root.send(Axxon.get_serviceId(), 'Telemetry_captu
 
 function hold_session()
 {
-//    console.log("[hold_session]")
-//      console.log("root.telemetryId: ",root.telemetryId)
-//      console.log("root.telemetryPoint: ",root.telemetryPoint)
+//    root.log("[hold_session]")
+//      root.log("root.telemetryId: ",root.telemetryId)
+//      root.log("root.telemetryPoint: ",root.telemetryPoint)
     var data=root.telemetryId+" "+root.telemetryPoint
-//    console.log("id: ",id," data: ",data)
+//    root.log("id: ",id," data: ",data)
      if(root.telemetryId>0)
     Axxon.tlmtr_cmd(data)
 }
@@ -33,12 +33,12 @@ function hold_session()
 
 function move(_data)
 {
-    console.log("Telemetry_move")
+    root.log("Telemetry_move")
 
  var data="Telemetry_move "+ root.telemetryPoint+" "+_data
-console.log("Axxon.get_serviceId() ", Axxon.get_serviceId())
+root.log("Axxon.get_serviceId() ", Axxon.get_serviceId())
 
-    console.log(data)
+    root.log(data)
     Axxon.tlmtr_cmd(data)
 }
 
@@ -48,7 +48,7 @@ console.log("Axxon.get_serviceId() ", Axxon.get_serviceId())
 
 function stop_moving()
 {
-    console.log("stop_moving")
+    root.log("stop_moving")
 
  var data="Telemetry_move "+ root.telemetryPoint+" "+"0 0 0"
     Axxon.tlmtr_cmd(data)
@@ -108,9 +108,9 @@ function stop_focus()
 
 function preset_info(point)
 {
-   console.log("[preset_info] ")
+   root.log("[preset_info] ")
     var data= "Telemetry_preset_info "+ root.telemetryPoint
-    console.log("data: ",data)
+    root.log("data: ",data)
 
     Axxon.tlmtr_cmd(data)
 
@@ -118,8 +118,8 @@ function preset_info(point)
 
 function go_to_preset(value)
 {
-    console.log("[go_to_preset]")
-    //console.log("id ",id)
+    root.log("[go_to_preset]")
+    //root.log("id ",id)
       var data="Telemetry_go_to_preset "+ root.telemetryPoint+" "+value
     Axxon.tlmtr_cmd(data)
 }
@@ -128,7 +128,7 @@ function edit(ind,name)
 {
 
     var data="Telemetry_edit_preset "+ root.telemetryPoint+" "+ind.toString()+" "+name
-    //console.log("str: ",str)
+    //root.log("str: ",str)
 
     Axxon.tlmtr_cmd(data)
 
@@ -139,9 +139,9 @@ function edit(ind,name)
 function remove(value)
 {
 
-//console.log("Telemetry_remove_preset: ",value)
+//root.log("Telemetry_remove_preset: ",value)
     var data="Telemetry_remove_preset "+ root.telemetryPoint+" "+" "+value
-    //console.log("str: ",str)
+    //root.log("str: ",str)
 
     Axxon.tlmtr_cmd(data)
 
@@ -152,7 +152,7 @@ function remove(value)
 
 function add(name)
 {
-//console.log("Telemetry_add_preset: ",name)
+//root.log("Telemetry_add_preset: ",name)
     var data= "Telemetry_add_preset "+root.telemetryPoint+" "+ name
 
     Axxon.tlmtr_cmd(data)

@@ -25,10 +25,10 @@ function createDone()
         if (obj !== null)
             _callback(obj, _source);
         else
-            console.log("Error creating object: " + _source);
+            root.log("Error creating object: " + _source);
         
         _component.destroy();
     }
     else if (_component.status === Component.Error)
-        console.log("Error creating component: " + _component.errorString());
+        root.log("Error creating component: " + _component.errorString());
 }

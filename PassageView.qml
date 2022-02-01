@@ -70,7 +70,7 @@ Rectangle {
 
     function newPassage(event) {
         var user = Utils.findItem(root.users, event.userId)
-        console.log("pass events:", root.activePane, JSON.stringify(event), JSON.stringify(user))
+        root.log("pass events:", root.activePane, JSON.stringify(event), JSON.stringify(user))
         if (user) {
             model = {
                 id: user.id,

@@ -33,10 +33,10 @@ Flickable {
             scale = Math.min(sx, sy),
             position = currentMap && mapPosition[currentMap.id]
 
-        //console.log("SIZE0:", realWidth, realHeight, contentWidth, contentHeight)
-        //console.log("SIZE1:", contentItem.childrenRect.width, contentItem.childrenRect.height)
-        //console.log("SCALE:", sx, sy, scale)
-        //console.log("F-SIZE:", width, height)
+        //root.log("SIZE0:", realWidth, realHeight, contentWidth, contentHeight)
+        //root.log("SIZE1:", contentItem.childrenRect.width, contentItem.childrenRect.height)
+        //root.log("SCALE:", sx, sy, scale)
+        //root.log("F-SIZE:", width, height)
 
         //flickable.contentWidth = realWidth * scale
         //flickable.contentHeight = realHeight * scale
@@ -53,9 +53,9 @@ Flickable {
             flickable.contentHeight = realHeight * scale
             flickable.contentX = x
             flickable.contentY = y
-            console.log("SIZE:", realWidth, realHeight, flickable.contentWidth, flickable.contentHeight)
+            root.log("SIZE:", realWidth, realHeight, flickable.contentWidth, flickable.contentHeight)
         })
-        //console.log(x, y, sx, sy, scale)*/
+        //root.log(x, y, sx, sy, scale)*/
     }
 
     Image {
@@ -87,12 +87,12 @@ Flickable {
                 flickable.contentHeight = sourceSize.height * scale
                 flickable.contentX = x
                 flickable.contentY = y
-                //console.log("SIZE:", flickable.contentItem.width, flickable.contentItem.height, flickable.contentWidth, flickable.contentHeight)
-                console.log("SIZE:", flickable.contentItem.children.length)
+                //root.log("SIZE:", flickable.contentItem.width, flickable.contentItem.height, flickable.contentWidth, flickable.contentHeight)
+                root.log("SIZE:", flickable.contentItem.children.length)
                 listChildren()
             })
 
-            //console.log(x, y, sx, sy, scale)
+            //root.log(x, y, sx, sy, scale)
 
         }*/
 
@@ -108,7 +108,7 @@ Flickable {
             source: (handlers[model.type] || 'MapShape') + '.qml'
         }
         onModelChanged: Qt.callLater(setDrawingSize, model)
-        //onItemAdded: console.log("+++++++++++++++++", index, count, realWidth, realHeight)
+        //onItemAdded: root.log("+++++++++++++++++", index, count, realWidth, realHeight)
     }
 
     ShapeAnchors{}
@@ -118,7 +118,7 @@ Flickable {
         onWheel: {
             var normOne
             if (wheel.modifiers & Qt.ControlModifier) {
-                //console.log("WHEEL", contentWidth, contentHeight, realWidth, realHeight)
+                //root.log("WHEEL", contentWidth, contentHeight, realWidth, realHeight)
                 normOne = wheel.angleDelta.y / 120
                 //planScale *= (1 + .1 * normOne)
                 flickable.setPosition(planScale * (1 + .1 * normOne), wheel.x, wheel.y)
@@ -135,14 +135,14 @@ Flickable {
         repeat: true
         triggeredOnStart: true
         onTriggered: {
-            console.log('TIMER', realWidth, realHeight)
+            root.log('TIMER', realWidth, realHeight)
         }
     }*/
 
     function savePosition() {
         if (!moving && currentMap) {
             var data = {x: contentX, y: contentY, scale: planScale}
-            //console.log("*** STORE DATA:", JSON.stringify(data), '#', currentMap.id)
+            //root.log("*** STORE DATA:", JSON.stringify(data), '#', currentMap.id)
             mapPosition[currentMap.id] = data
         }
     }
@@ -190,7 +190,7 @@ Flickable {
         realWidth = sx / planScale
         realHeight = sy / planScale
         restorePosition()
-        //console.log("+++ SetDrwSize", realWidth, realHeight)
+        //root.log("+++ SetDrwSize", realWidth, realHeight)
     }
 
     function setImageSize(size) {
@@ -201,7 +201,7 @@ Flickable {
             realHeight = size.height
 
         restorePosition()
-        //console.log("+++ SetImgSize", realWidth, realHeight)
+        //root.log("+++ SetImgSize", realWidth, realHeight)
     }
 
     function restorePosition() {
@@ -212,7 +212,7 @@ Flickable {
             x = position.x
             y = position.y
             scale = position.scale
-            //console.log("*** RESTORE DATA:", JSON.stringify(position), '#', currentMap.id)
+            //root.log("*** RESTORE DATA:", JSON.stringify(position), '#', currentMap.id)
         }
 
         // don't check constraints for saved values

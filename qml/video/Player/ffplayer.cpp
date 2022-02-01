@@ -256,9 +256,11 @@ void FFPlayer::run()
                  //   image.save("/home/gleb/img","jpg",-1);
                    // img=image;
                     emit new_frame();
+                    /*
                     if(m_running==mode::Snapshot){
                         m_running=mode::turnOff;
                     }
+                    */
                //     emit sig_GetOneFrame(image);
                //     qDebug() << "emit!!!!!";
                 }
@@ -298,12 +300,11 @@ mode FFPlayer::running() const
 
 void FFPlayer::setRunning(mode running)
 {
-    if (m_running == running)
-        return;
-
+    if (m_running != running){
     m_running = running;
     qDebug()<<"m_running: "<<m_running;
     emit runningChanged(running);
+    }
 }
 
 

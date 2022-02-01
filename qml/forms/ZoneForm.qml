@@ -21,7 +21,7 @@ ColumnLayout {
         folder: {text: faFont.fa_folder, color: 'gray'},
         ban: {text: faFont.fa_ban, color: 'orange'}})
 
-    onDevicesChanged: fakeDevices.clear()//console.log('DC', devices)
+    onDevicesChanged: fakeDevices.clear()//root.log('DC', devices)
 
     GridLayout {
         columns: 2
@@ -70,7 +70,7 @@ ColumnLayout {
                 form.devicesChanged.connect(redrawIcons)
                 //update()
                 //redrawIcons()
-                console.log('ZoneForm INIT COMPLETED')
+                root.log('ZoneForm INIT COMPLETED')
             }
 
             function redrawIcons() {
@@ -92,7 +92,7 @@ ColumnLayout {
                     currentItem.id = item.id
                     currentItem.serviceId = item.serviceId
                     currentItem.scopeId = item.scopeId
-                    //console.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
+                    //root.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
                     return
                 }
 
@@ -138,8 +138,8 @@ ColumnLayout {
                 if (Helpers.readForm(form, payload, transforms)) {
                     //payload.name += " = A"
                     payload.devices = Helpers.getLinks(devices)
-                    console.log("Zones payload:", JSON.stringify(payload))
-                    root.newTask('configuration', 'UpdateZone', payload, done, function (){console.log('UpdateZone failed')})
+                    root.log("Zones payload:", JSON.stringify(payload))
+                    root.newTask('configuration', 'UpdateZone', payload, done, function (){root.log('UpdateZone failed')})
                 } else
                     messageBox.error("Заполните форму")
             }

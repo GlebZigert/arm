@@ -3,7 +3,7 @@ function postData(url, arrayBuffer, callback) {
     xhr.open("POST", url, false)
 
     xhr.onreadystatechange = function() {
-        //console.log(JSON.stringify(xhr.getAllResponseHeaders()))
+        //root.log(JSON.stringify(xhr.getAllResponseHeaders()))
         if (xhr.readyState === XMLHttpRequest.DONE)
             callback(200 === xhr.status)
     }
@@ -17,12 +17,12 @@ function readFile(file, callback) {
     xhr.responseType = "arraybuffer"
 
     xhr.onreadystatechange = function() {
-        //console.log("state", xhr.readyState, xhr.status)
+        //root.log("state", xhr.readyState, xhr.status)
         if (xhr.readyState === XMLHttpRequest.DONE) {
             if (200 === xhr.status && xhr.response) {
                 callback(xhr.response)
             } else {
-                //console.log('XMLHttpRequest.status =', xhr.status)
+                //root.log('XMLHttpRequest.status =', xhr.status)
                 callback(null)
             }
         }

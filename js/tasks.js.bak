@@ -4,7 +4,7 @@ function Tasks() {
     timer.interval = 3e3;
     timer.repeat = false;
     timer.triggered.connect(function () {
-        console.log("I'm triggered once every second");
+        root.log("I'm triggered once every second");
     })
     timer.start();
 
@@ -24,7 +24,7 @@ function init(sock) {
 
 function newTask(service, action, data, done, fail) {
     var payload = JSON.stringify({service: service, action: action, task: ++taskId, data: data})
-    console.log("[SEND]", payload)
+    root.log("[SEND]", payload)
     if (socket.active)
         //socket.sendTextMessage(payload)
     if (taskId%2)

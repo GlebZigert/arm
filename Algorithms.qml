@@ -63,6 +63,6 @@ RowLayout {
     }
 
     function contextMenu(item, x, y) {
-        console.log(x, y)
+        root.log(x, y)
     }
 }

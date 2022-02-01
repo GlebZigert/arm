@@ -17,7 +17,7 @@ Repeater {
 
         x: model.x - handleSize / 2
         y: model.y - handleSize / 2
-        //Component.onCompleted: console.log(index, JSON.stringify(coords1))
+        //Component.onCompleted: root.log(index, JSON.stringify(coords1))
 
         MouseArea {
             anchors.fill: parent
@@ -31,7 +31,7 @@ Repeater {
 
             onPressed: {
                 if (mouse.button === Qt.LeftButton) {
-                    console.log('left press, a', index)
+                    root.log('left press, a', index)
                     currentAnchor = index
                     startPhi = NaN
                     mouse.accepted = false

@@ -59,7 +59,7 @@ ColumnLayout {
 
 
     function done(msg) {
-        //console.log('task done')
+        //root.log('task done')
         if (0 === itemId)
             tree.findItem(msg.data.id)
         //stack.currentIndex = 0
@@ -83,18 +83,18 @@ ColumnLayout {
             payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(1).children, 2)) // week day
             payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(2).children, 1)) // month's day
             //root.send('configuration', 'UpdateRule', payload)
-            root.newTask('configuration', 'UpdateRule', payload, done, function (){console.log('UpdateRule failed')})
+            root.newTask('configuration', 'UpdateRule', payload, done, function (){root.log('UpdateRule failed')})
         }
 
-        console.log("RULES==>", JSON.stringify(payload))
+        root.log("RULES==>", JSON.stringify(payload))
 
-        //console.log(JSON.stringify(form2.model.get(1)))
-        //console.log("!!!", form2.model.count)
-        //console.log(JSON.stringify(reModel(form2.model, [])))
-        //console.log(JSON.stringify(payload))
+        //root.log(JSON.stringify(form2.model.get(1)))
+        //root.log("!!!", form2.model.count)
+        //root.log(JSON.stringify(reModel(form2.model, [])))
+        //root.log(JSON.stringify(payload))
         /*if (ok) {
-            console.log(JSON.stringify(payload))
-            //root.newTask('configuration', 'UpdateUser', payload, done, function (){console.log('fail')})
+            root.log(JSON.stringify(payload))
+            //root.newTask('configuration', 'UpdateUser', payload, done, function (){root.log('fail')})
             //root.send('configuration', 'UpdateUser', payload)
         } else
             popup.open()*/

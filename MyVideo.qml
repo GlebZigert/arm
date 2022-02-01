@@ -90,7 +90,7 @@ camera_storage.add_to_space.connect(space.add_camera_to_space)
 //Добавляем камеру из хранилища камер в рабочее пространство
 function add_on_big_screen(name,point)
 {
-   console.log("Добавляю камеру на большой экран:",name," ",point)
+   root.log("Добавляю камеру на большой экран:",name," ",point)
 //    space.add_camera_to_space(name,point)
 }
 

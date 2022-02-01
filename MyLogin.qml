@@ -99,7 +99,7 @@ Item {
         for (i = 0; i < services.count; i++) {
             svc = services.get(i)
             alarms = Journal.pendingAlarms(svc.serviceId)
-            //console.log("Alarms:", svc.title, JSON.stringify(alarms))
+            //root.log("Alarms:", svc.title, JSON.stringify(alarms))
             if (alarms.length > 0)
                 pending.push(svc.title)
         }
@@ -107,7 +107,7 @@ Item {
         if (alarms.length > 0)
             pending.push("Система")
 
-        console.log("Pending:", JSON.stringify(pending))
+        root.log("Pending:", JSON.stringify(pending))
         if (pending.length > 0) {
             msg = "Есть необработанные тревоги в следующих подсистемах:\n• "
                     + pending.join('\n• ')
@@ -122,18 +122,18 @@ Item {
     }
 
     function done(msg) {
-        //console.log("MyLogin:", JSON.stringify(msg))
+        //root.log("MyLogin:", JSON.stringify(msg))
     }
 
     function failed(msg) {
-        console.log("Сбой при выполнении команды")
+        root.log("Сбой при выполнении команды")
     }
 
     function change() {
         var payload = {},
             ok = Helpers.readForm(form, payload)
         if (ok) {
-            //console.log(JSON.stringify(payload))
+            //root.log(JSON.stringify(payload))
             password.text = ''
             payload.token = Crypto.md5(root.authSalt + payload.password)
             delete payload.password
@@ -147,7 +147,7 @@ Item {
         var payload = {},
             ok = Helpers.readForm(form, payload)
         if (ok) {
-            //console.log(JSON.stringify(payload))
+            //root.log(JSON.stringify(payload))
             password.text = ''
             root.serverHost = payload.server + ':' + root.serverPort
             root.userLogin = payload.login

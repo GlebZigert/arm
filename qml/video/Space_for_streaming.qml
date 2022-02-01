@@ -40,13 +40,13 @@ signal take_it_on_big_screen(string name,string point)
         onTriggered:
         {
 
-            //console.log("mouse timer timeout")
+            //root.log("mouse timer timeout")
             var mode=work_model.get(rpt.current)._mode
 
             if(mode=="live")
             {
                 var point=  work_model.get(rpt.current)._telemetryControlID
-               //console.log("work_model.get(rpt.current).telemetryControlID : ",work_model.get(rpt.current)._telemetryControlID)
+               //root.log("work_model.get(rpt.current).telemetryControlID : ",work_model.get(rpt.current)._telemetryControlID)
                Tlmtr.capture_session(point)
                container.move=true
             }
@@ -211,23 +211,23 @@ signal take_it_on_big_screen(string name,string point)
 
                             if(mouse_timer.running)
                             {
-                            //console.log("+")
+                            //root.log("+")
                                 if (_id==rpt.current)
                                 {
-                                    //console.log("[current]")
+                                    //root.log("[current]")
                                     container.play_or_pause()
                                 }
 
-                                //console.log("area onClicked")
+                                //root.log("area onClicked")
                                 rpt.current=_id
-                                //console.log(rpt.current)
+                                //root.log(rpt.current)
                                 rpt.mode=2
                                 space.update()
 
                             }
                             else
                             {
-                            //console.log("-")
+                            //root.log("-")
 
                          Tlmtr.stop_moving()
                             }
@@ -238,7 +238,7 @@ signal take_it_on_big_screen(string name,string point)
                         }
 
                         onMoveChanged: {
-                            //console.log("[onMoveChanged]")
+                            //root.log("[onMoveChanged]")
                         mouse_x_y()
 
                         }
@@ -258,19 +258,19 @@ signal take_it_on_big_screen(string name,string point)
                             {
                              var mx= xx-mouseX
                                 var my=yy-mouseY
-                   //     //console.log(mx," ",mx)
+                   //     //root.log(mx," ",mx)
 
                                 if((Math.abs(mx)>10)||
                                 (Math.abs(my)>10))
                                 {
 
                              var arctn=Math.abs(Math.atan(my/mx))
-                     //       //console.log(xx-mouseX," ",yy-mouseY)
-                            //console.log("arctn: ",arctn)
+                     //       //root.log(xx-mouseX," ",yy-mouseY)
+                            //root.log("arctn: ",arctn)
 
                                 if(arctn<0.2)
                                 {
-                                //console.log("(1)")
+                                //root.log("(1)")
                                     if(mx>0)
                                     {
                                     Tlmtr.left()
@@ -283,7 +283,7 @@ signal take_it_on_big_screen(string name,string point)
                                 else
                                 if(arctn<0.8)
                                 {
-                                //console.log("(2)")
+                                //root.log("(2)")
                                     if(my>0)
                                     {
                                         if(mx>0)
@@ -314,7 +314,7 @@ signal take_it_on_big_screen(string name,string point)
                                 }
                                 else
                                 {
-                                //console.log("(3)")
+                                //root.log("(3)")
                                     if(my>0)
                                     {
                                     Tlmtr.top()
@@ -327,7 +327,7 @@ signal take_it_on_big_screen(string name,string point)
                             }
                                 else
                                 {
-                              //   console.log(mx," ",my)
+                              //   root.log(mx," ",my)
                                 }
                             }
                         }
@@ -352,15 +352,15 @@ signal take_it_on_big_screen(string name,string point)
 
 
 
-                   //console.log("добавлен:  ",name)
-                   //console.log("добавлен:  ",point)
-                   //console.log("добавлен:  ",visible)
-                   //console.log("добавлен:  ",color)
+                   //root.log("добавлен:  ",name)
+                   //root.log("добавлен:  ",point)
+                   //root.log("добавлен:  ",visible)
+                   //root.log("добавлен:  ",color)
                }
 
                function set_size(x,y)
                {
-               //console.log("[vm] ",x," ",y)
+               //root.log("[vm] ",x," ",y)
                unit.width=x
                unit.height=y
 
@@ -375,13 +375,13 @@ signal take_it_on_big_screen(string name,string point)
 }
 //------------------------------------------------
        onWidthChanged: {
-           //console.log("onWidthChanged:")
+           //root.log("onWidthChanged:")
        update()
        }
 
 
        onHeightChanged: {
-            //console.log("onHeightChanged:")
+            //root.log("onHeightChanged:")
        update()
        }
        Component.onCompleted: {
@@ -414,7 +414,7 @@ signal take_it_on_big_screen(string name,string point)
        {
        var mode=rpt.mode
            mode=2
-           //console.log("mode:",mode)
+           //root.log("mode:",mode)
            switch(mode)
            {
            case 1:
@@ -430,9 +430,9 @@ signal take_it_on_big_screen(string name,string point)
 
        function table()
        {
-       //console.log("table")
-       //console.log("Math.sqrt(work_model.count) :  ",Math.sqrt(work_model.count))
-       //console.log("Math.sqrt(work_model.count)*2+1 :  ",Math.sqrt(work_model.count)*2+1)
+       //root.log("table")
+       //root.log("Math.sqrt(work_model.count) :  ",Math.sqrt(work_model.count))
+       //root.log("Math.sqrt(work_model.count)*2+1 :  ",Math.sqrt(work_model.count)*2+1)
 
        var sz=Math.sqrt((space.width*space.height)/(6*(work_model.count+Math.sqrt(work_model.count)*2+1)))
        var row=0
@@ -442,10 +442,10 @@ signal take_it_on_big_screen(string name,string point)
 
 
 
-       //console.log("sz: ",sz)
+       //root.log("sz: ",sz)
 
-       //console.log("space.width/sz: ",Math.floor((space.width/sz)/3)*3)
-       //console.log("space.height/sz: ",space.height/sz)
+       //root.log("space.width/sz: ",Math.floor((space.width/sz)/3)*3)
+       //root.log("space.height/sz: ",space.height/sz)
 
 
        var xxx=Math.floor((space.width/sz)/3)*3
@@ -461,7 +461,7 @@ signal take_it_on_big_screen(string name,string point)
        for(var i=0;i<work_model.count;i++)
        {
 
-           //console.log(model.get(i).name)
+           //root.log(model.get(i).name)
 
        work_model.set(i,{"_x":sz*3*column,
                     "_y":sz*2*row,
@@ -483,7 +483,7 @@ signal take_it_on_big_screen(string name,string point)
 
        function main_in_centr()
        {
-       //console.log("main_in_centr")
+       //root.log("main_in_centr")
         var ll=rpt.ll
        var sz=space.width/((ll+2)*3)
 
@@ -493,13 +493,13 @@ signal take_it_on_big_screen(string name,string point)
        var rows=ll
        var cashback=space.width%((ll+2)*3)
 
-       //console.log("space.width: ",space.width)
-       //console.log("((ll+2)*3): ",((ll+2)*3))
-       //console.log("space.width/((ll+2)*3): ",space.width/((ll+2)*3))
-       //console.log("Math.floor(space.width/((ll+2)*3)): ",Math.floor(space.width/((ll+2)*3)))
+       //root.log("space.width: ",space.width)
+       //root.log("((ll+2)*3): ",((ll+2)*3))
+       //root.log("space.width/((ll+2)*3): ",space.width/((ll+2)*3))
+       //root.log("Math.floor(space.width/((ll+2)*3)): ",Math.floor(space.width/((ll+2)*3)))
 
-       //console.log("space.width%((ll+2)*3): ",space.width%((ll+2)*3))
-       //console.log(": ")
+       //root.log("space.width%((ll+2)*3): ",space.width%((ll+2)*3))
+       //root.log(": ")
            for(var i=0;i<work_model.count;i++)
            {
            var id=work_model.get(i)._id
@@ -515,10 +515,10 @@ signal take_it_on_big_screen(string name,string point)
            }
            else
            {
-               //console.log("name ",work_model.get(i).name)
-               //console.log("row",row)
-               //console.log("_x",sz*3*(ll+1)*column)
-               //console.log("_y",sz*2*row)
+               //root.log("name ",work_model.get(i).name)
+               //root.log("row",row)
+               //root.log("_x",sz*3*(ll+1)*column)
+               //root.log("_y",sz*2*row)
 
                work_model.set(i,{"_width":sz*3,
                             "_height":sz*2,
@@ -569,17 +569,17 @@ function update_work_model()
 for(var i1=0;i1<model.count;i1++)
 {
 var x=model.get(i1)
-    //console.log("добавить? ",x.name)
+    //root.log("добавить? ",x.name)
 
 
     var res=false
     for(var j=0;j<work_model.count;j++)
     {
-        //console.log("--",j)
+        //root.log("--",j)
     var y=work_model.get(j).name
         if(y===x.name)
         {
-                //console.log("уже есть! ")
+                //root.log("уже есть! ")
         res=true
         }
 
@@ -589,11 +589,11 @@ var x=model.get(i1)
 
     if(res===false)
    {
-    //console.log("добавляю:  ",x.name)
-    //console.log("добавляю:  ",x.point)
-    //console.log("добавляю: telemetryControlID: ",x.telemetryControlID)
-    //console.log("добавляю:  ",x._visible)
-    //console.log("добавляю:  ",x._color)
+    //root.log("добавляю:  ",x.name)
+    //root.log("добавляю:  ",x.point)
+    //root.log("добавляю: telemetryControlID: ",x.telemetryControlID)
+    //root.log("добавляю:  ",x._visible)
+    //root.log("добавляю:  ",x._color)
     work_model.append({name: x.name,
                           point: x.point,
 
@@ -627,7 +627,7 @@ var x=model.get(i1)
 function on_screen()
 {
 
-    //console.log("[hide_camera]------------------------------")
+    //root.log("[hide_camera]------------------------------")
 
 var name=work_model.get(current).name
 var point=work_model.get(current).point
@@ -640,16 +640,16 @@ var speed= work_model.get(current).speed
 
 
     /*
-//console.log(work_model.get(current).cost)
-//console.log(work_model.get(current).name)
-    //console.log(work_model.get(current).color)
+//root.log(work_model.get(current).cost)
+//root.log(work_model.get(current).name)
+    //root.log(work_model.get(current).color)
 //work_model.get(current).name="12345"
 work_model.set(current,{"cost":"12345"})
 work_model.set(current,{"visible":false})
 work_model.set(current,{"_color":"purple"})
-//console.log(work_model.get(current).cost)
-//console.log(work_model.get(current).name)
-//console.log(work_model.get(current).color)
+//root.log(work_model.get(current).cost)
+//root.log(work_model.get(current).name)
+//root.log(work_model.get(current).color)
 */
 
 
@@ -660,7 +660,7 @@ work_model.set(current,{"_color":"purple"})
 //Добавляем камеру из хранилища камер в рабочее пространство
 function add_camera_to_space(x)
 {
-//console.log("!!Добавляю камеру:",x.obj.name," ",x.obj.point,x.obj.telemetryControlID)
+//root.log("!!Добавляю камеру:",x.obj.name," ",x.obj.point,x.obj.telemetryControlID)
  //   camera.add_to_space(name,point)
    model.append({name: x.obj.name,
                       point: x.obj.point,
@@ -677,7 +677,7 @@ function add_camera_to_space(x)
 
 function set_size(x,y)
 {
-//console.log("[grid] ",x," ",y)
+//root.log("[grid] ",x," ",y)
 //dndGrid.cellWidth=x
 //dndGrid.cellHeight=y
 
@@ -732,9 +732,9 @@ set_storage_play(dt,speed)
 }
 function f_pause()
 {
-    //console.log("[f_pause]")
+    //root.log("[f_pause]")
     var mode=work_model.get(0)._mode
-        //console.log(mode)
+        //root.log(mode)
     if(mode=="live")
     {
     set_live_pause()
@@ -807,7 +807,7 @@ work_model.set(i,{"_dt":_dt})
 
 function f_play_live_stream()
 {
-    //console.log("[ f_play_live_stream]")
+    //root.log("[ f_play_live_stream]")
 
 
 

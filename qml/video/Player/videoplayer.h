@@ -22,6 +22,8 @@ public:
 
     QImage mImage;
 
+    QTimer *tmr;
+
     QString source() const;
     void setSource(const QString source);
 
@@ -46,6 +48,8 @@ public slots:
     void timeout();
     void lost_connection();
     void slot_playing();
+    void restart();
+    void clear_timer();
 };
 
 #endif // VIDEOPLAYER_H

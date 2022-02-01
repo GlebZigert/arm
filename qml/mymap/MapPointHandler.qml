@@ -40,7 +40,7 @@ PointHandler {
 
     function onRelease() {
         if (Qt.RightButton === pressedButtons) {
-            console.log('ConMen:', model.sid, model.did)
+            root.log('ConMen:', model.sid, model.did)
             contextMenu.show(model.sid, model.did)
         } else {
 
@@ -56,7 +56,7 @@ PointHandler {
     function dragHandler() {
         // TODO: control bounds
         // TODO: use translation instead of dx & dy?
-        //console.log('dragHandler', point.pressedButtons)
+        //root.log('dragHandler', point.pressedButtons)
         if (point.pressedButtons === 0)
             onRelease()
         else
@@ -74,10 +74,10 @@ PointHandler {
         var coord,
             dx = poi.scenePosition.x - poi.scenePressPosition.x,
             dy = poi.scenePosition.y - poi.scenePressPosition.y
-        //console.log(currentAnchor, flickable.interactive, JSON.stringify(poi))
+        //root.log(currentAnchor, flickable.interactive, JSON.stringify(poi))
         if (['polyline', 'polygon'].indexOf(model.type) >= 0) {
             if (0 === dx && 0 === dy) {
-                //console.log(model.color, model.type)
+                //root.log(model.color, model.type)
                 currentAnchor = -1
                 startP = model.data.split(' ').map(function (v) {
                     return v.split(',').map(function (n) {return parseInt(n)})
@@ -90,7 +90,7 @@ PointHandler {
             }
         } else { // ellipse & rect
             if (0 === dx && 0 === dy) {
-                //console.log(model.color, model.type)
+                //root.log(model.color, model.type)
                 currentAnchor = -1
                 if ('map' === currentMap.type) {
                     coord = getCenter()

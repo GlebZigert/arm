@@ -57,7 +57,7 @@ GridLayout {
         readOnly: true
         onPressed: userSelector.display(userId, selected)
         function selected(item) {
-            //console.log("Selected user:", item.name, item.id)
+            //root.log("Selected user:", item.name, item.id)
             if (item && item.id) {
                 userId = item.id
                 text = item.label
@@ -163,12 +163,12 @@ GridLayout {
             payload.start = makeDate(payload.startDate, payload.startTime + ':00')
             payload.end = makeDate(payload.endDate, payload.endTime + ':59')
             'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-            console.log("EventFilter PRINT", JSON.stringify(payload))
+            root.log("EventFilter PRINT", JSON.stringify(payload))
             for (key in payload)
                 query.push(key + "=" + encodeURIComponent(payload[key]))
 
             url = "http://" + serverHost + "/0/journal?" + query.join('&')
-            //console.log("URL:", url)
+            //root.log("URL:", url)
             Qt.openUrlExternally(url);
         }
 
@@ -179,15 +179,15 @@ GridLayout {
                 payload.start = makeDate(payload.startDate, payload.startTime + ':00')
                 payload.end = makeDate(payload.endDate, payload.endTime + ':59')
                 'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-                console.log("EventFilter SHOW", JSON.stringify(payload))
-                root.newTask('configuration', 'ListEvents', payload, done, function (){console.log('ListEvents failed')})
+                root.log("EventFilter SHOW", JSON.stringify(payload))
+                root.newTask('configuration', 'ListEvents', payload, done, function (){root.log('ListEvents failed')})
             }
         }
 
 
         function done(msg) {
             var i, d
-            //console.log(JSON.stringify(msg))
+            //root.log(JSON.stringify(msg))
             if (!msg.data) {
                 eventsList.clear()
                 return

@@ -55,7 +55,7 @@ Rectangle {
 
 
     Component.onCompleted: {
-        //console.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y)
+        //root.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y)
     }
 
 }

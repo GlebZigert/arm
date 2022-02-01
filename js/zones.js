@@ -13,7 +13,7 @@ var zones
 //////////////////////////////////////////////////////////////
 
 function listZones(msg) {
-    //console.log("ListZONES:", JSON.stringify(msg))
+    //root.log("ListZONES:", JSON.stringify(msg))
     //var ext = complement({id: 0, name: 'Внешняя территория'})
     //delete ext.form
 
@@ -31,14 +31,14 @@ function listZones(msg) {
     zones = root.zones.get(0).children
     zones.clear()
     //zones.append(ext)
-    //console.log("Zones.JS Zone data", JSON.stringify(msg.data))
+    //root.log("Zones.JS Zone data", JSON.stringify(msg.data))
     zones.append(msg.data)
 
-   // console.log('Rebuild zones tree')
+   // root.log('Rebuild zones tree')
 }
 
 function updateZone(msg) {
-    //console.log("UpdZONES:", JSON.stringify(msg))
+    //root.log("UpdZONES:", JSON.stringify(msg))
     if (!msg.data)
         return
 
@@ -86,7 +86,7 @@ function complement(data) {
 }
 
 function enterZone(event) {
-    console.log("enterZONE:", JSON.stringify(event))
+    root.log("enterZONE:", JSON.stringify(event))
     var zone,
         del = false,
         add = false,
@@ -98,12 +98,12 @@ function enterZone(event) {
             if (event.userId === zone.entranceEvents.get(j).userId) {
                 zone.entranceEvents.remove(j)
                 del = true
-                console.log('DEL')
+                root.log('DEL')
             }
         if (zone.id === event.zoneId) {
             zone.entranceEvents.append(event)
             add = true
-            console.log('ADD')
+            root.log('ADD')
         }
     }
 }

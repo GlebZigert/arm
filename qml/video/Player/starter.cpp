@@ -40,21 +40,33 @@ void Starter::run()
     m_step=-1;
     prev=0;
     //bool res=false;
+    int i=0;
+    QString current_URL;
     while(1){
 int val=step();
    //    qDebug()<<m_step<<" URL "<<m_URL;
 
+        if((-1==val)||(3==val)||(103==val)||(200==val))
         if(prev!=val){
     qDebug()<<"step "<<m_step;
 
         prev=m_step;
+        current_URL=m_URL;
         }
 
+        if(i>1000000){
+         qDebug()<<m_step;
+         i=0;
+         emit tick();
+
+        }
+           i++;
 
         switch (val) {
 
         case 0:
        //     if(m_URL!=""){
+            qDebug()<<"m_thread.isRunnin? "<<m_thread.isRunning();
             qDebug()<<"Отдаем команду остановить поток";
             m_player->setRunning(mode::turnOff);
             m_step=1;
@@ -64,9 +76,10 @@ int val=step();
         case 1:
           //  qDebug()<<"Ждем остановку потока";
          //   qDebug()<<player->thread.isRunning();
-            if(m_thread.isRunning()==false)
+            if(m_thread.isRunning()==false){
+                qDebug()<<"Поток остановлен";
                 m_step=2;
-            else{
+            }else{
                 m_thread.quit();
                 m_thread.exit();
                 m_thread.terminate();
@@ -77,12 +90,14 @@ int val=step();
         break;
 
         case 2:
-            qDebug()<<"Задаю новый URL: "<<m_URL;
+            qDebug()<<"Задаю новый URL: "<<current_URL;
 
-            qDebug()<<"URL: "<<m_URL;
+            qDebug()<<"URL: "<<current_URL;
 
            m_player->URL=m_URL;
            m_player->setRunning(mode::Streaming);
+           qDebug()<<"is running? "<<m_thread.isRunning();
+           qDebug()<<"is finished? "<<m_thread.isFinished();
            m_thread.start();
 
             m_step=3;
@@ -101,11 +116,16 @@ int val=step();
 //------------------------------------------------------------
 
         case 100:
+            if(m_thread.isRunning()==true){
        //     if(m_URL!=""){
+            qDebug()<<"m_thread.isRunnin? "<<m_thread.isRunning();
             qDebug()<<"Отдаем команду остановить поток";
             m_player->setRunning(mode::turnOff);
             m_step=101;
-      //      }
+           }else{
+                m_step=102;
+            }
+
         break;
 
         case 101:
@@ -124,11 +144,11 @@ int val=step();
         break;
 //test!!
         case 102:
-            qDebug()<<"Задаю новый URL: "<<m_URL;
+            qDebug()<<"Задаю новый URL: "<<current_URL;
 
-            qDebug()<<"URL: "<<m_URL;
+            qDebug()<<"URL: "<<current_URL;
 
-           m_player->URL=m_URL;
+           m_player->URL=current_URL;
            m_player->setRunning(mode::Snapshot);
            m_thread.start();
 
@@ -147,6 +167,8 @@ int val=step();
             else
                 m_player->setRunning(mode::turnOff);
         break;
+
+
 
 
         }

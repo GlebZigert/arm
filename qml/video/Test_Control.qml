@@ -26,7 +26,7 @@ Item {
         property int msec:0
         onTriggered:
         {
-            //console.log("zoom_timer_timeout")
+            //root.log("zoom_timer_timeout")
             Tlmtr.stop_zoom()
 
         }
@@ -45,11 +45,11 @@ Item {
     function move(mx,my)
     {
 
- //   //console.log("-----------")
+ //   //root.log("-----------")
     var value=Math.sqrt(mx*mx+my*my)
 
 
-   //console.log("value: ",value)
+   //root.log("value: ",value)
 
     var val=0
         if(value===0)
@@ -83,8 +83,8 @@ Item {
             val=1
 
         var arctn=Math.abs(Math.atan(my/mx))
-//       //console.log(xx-mouseX," ",yy-mouseY)
-//       //console.log("arctn: ",arctn)
+//       //root.log(xx-mouseX," ",yy-mouseY)
+//       //root.log("arctn: ",arctn)
 var x=0
         var y=0
            if(arctn<0.2)
@@ -96,7 +96,7 @@ var x=0
                rect.color="yellow"
                 else
                  rect.color="lightgray"
-      //     //console.log("(1)")
+      //     //root.log("(1)")
                if(mx>0)
                {
               x=1
@@ -119,7 +119,7 @@ var x=0
                                    rect.color="lightgreen"
                                else
                                 rect.color="lightgray"
-     //      //console.log("(2)")
+     //      //root.log("(2)")
                if(my>0)
                {
                    if(mx>0)
@@ -160,7 +160,7 @@ var x=0
                                              rect.color="lightblue"
                                               else
                                                rect.color="lightgray"
-     //      //console.log("(3)")
+     //      //root.log("(3)")
                if(my>0)
                {
                    x=0
@@ -183,11 +183,11 @@ var x=0
                str=str+String(val)
                str=str+" "
 
-               //console.log("[str] ",str)
+               //root.log("[str] ",str)
 
                Tlmtr.move(str)
-      //console.log("[value] ", value)
-      //console.log("[",x," ",y," ",val,"]")
+      //root.log("[value] ", value)
+      //root.log("[",x," ",y," ",val,"]")
 
            x_prev=x
            y_prev=y

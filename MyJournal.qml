@@ -106,7 +106,7 @@ QC1.TableView {
         var event = tableView.model.get(row),
             count = Journal.activeAlarms(event)
         if (count >= 0) {
-            console.log("ACTIVE ALARMS", count)
+            root.log("ACTIVE ALARMS", count)
             popup.event = event
             popup.alarmsCount = count
             popup.open()

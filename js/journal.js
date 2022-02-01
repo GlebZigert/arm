@@ -18,7 +18,7 @@ function pendingAlarms(serviceId) {
                 events[ev.deviceId] = ev.class
         }
     }
-    //console.log("PeAl-1:", serviceId, JSON.stringify(events))
+    //root.log("PeAl-1:", serviceId, JSON.stringify(events))
     for (i in events)
         if (Const.EC_INFO_ALARM_RESET !== events[i])
             devices.push(parseInt(i))
@@ -27,7 +27,7 @@ function pendingAlarms(serviceId) {
 }
 
 function describeEvent(msg) {
-    //console.log("DE", JSON.stringify(msg))
+    //root.log("DE", JSON.stringify(msg))
     var i,
         item,
         event = msg.data
@@ -79,7 +79,7 @@ function activeAlarms(event) {
 }
 
 function loadJournal(msg) {
-    //console.log("JRN:", JSON.stringify(msg.data))
+    //root.log("JRN:", JSON.stringify(msg.data))
     if (!msg.data)
         return
     var i,
@@ -88,10 +88,10 @@ function loadJournal(msg) {
         events,
         known = {}
 
-    console.log("LoadJournal:", msg.data.length, "events")
+    root.log("LoadJournal:", msg.data.length, "events")
     if (msg.data.length > maxJournalSize) {
         msg.data = msg.data.slice(-maxJournalSize)
-        console.log("... truncate to last", msg.data.length, "events")
+        root.log("... truncate to last", msg.data.length, "events")
     }
 
     for (i = 0; i < root.events.count; i++)
@@ -120,7 +120,7 @@ function loadJournal(msg) {
 
 function logEvents(events, silent) {
     //if (!silent)
-        //console.log("EvLog:", JSON.stringify(events))
+        //root.log("EvLog:", JSON.stringify(events))
     complementEvents(events)
     root.events.append(events)
     if (!silent)
@@ -147,7 +147,7 @@ function complementEvents(events) {
         events[i].color = Utils.stateColor(events[i].class)
         events[i].sticky = checkSticky ? checkSticky(events[i]) : false
     }
-//console.log(":", JSON.stringify(events))
+//root.log(":", JSON.stringify(events))
     return events
 }
 
@@ -156,7 +156,7 @@ function complementEvents(events) {
 function colorizeEvents(serviceId) {
     var i, event,
         svc = root.services[serviceId]
-    console.log("COLORIZE", serviceId)
+    root.log("COLORIZE", serviceId)
     for (i = 0; i < root.events.count; i++) {
         event = root.events.get(i)
         if (event.serviceId === serviceId && '' === event.color) {

@@ -14,8 +14,8 @@ Sigur.prototype.updateTree = function (data) {
         model = this.model.children
 
     for (i in data) {
-        //console.log('Seeding Sigur:', JSON.stringify(data[i]), model)
-        console.log(data[i].state)
+        //root.log('Seeding Sigur:', JSON.stringify(data[i]), model)
+        root.log(data[i].state)
 
         list[data[i].id] = {
             id: data[i].id,
@@ -38,7 +38,7 @@ Sigur.prototype.updateTree = function (data) {
 }
 
 Sigur.prototype.update = function (data) {
-    console.log('Sigur: UPDATE')
+    root.log('Sigur: UPDATE')
     var maxRecords = 200
     for (var i in data) {
         var color = "gray" // s2c(data[i].states)
@@ -50,5 +50,5 @@ Sigur.prototype.update = function (data) {
 }
 
 Sigur.prototype.validateTree = function (data) {
-    console.log('Sigur: validateTree')
+    root.log('Sigur: validateTree')
 }

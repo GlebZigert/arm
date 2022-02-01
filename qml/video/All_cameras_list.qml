@@ -52,7 +52,7 @@ MouseArea {
 
     onReleased:
     {
-        //console.log("[onReleased]")
+        //root.log("[onReleased]")
 
     }
 

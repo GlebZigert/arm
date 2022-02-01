@@ -50,7 +50,7 @@ function readDate(str) {
 
 function dumpModel(m) {
     for (var i = 0; i < m.count; i++)
-        console.log(i, JSON.stringify(m.get(i)))
+        root.log(i, JSON.stringify(m.get(i)))
 }
 
 
@@ -64,7 +64,7 @@ function findItemWithoutPath(model, keys) {
 
     for (i = 0; i < model.count && !res; i++) {
         item = model.get(i)
-        //console.log("\t", JSON.stringify(keys), JSON.stringify(item))
+        //root.log("\t", JSON.stringify(keys), JSON.stringify(item))
         //if (item.serviceId === serviceId) {
         found = true
         for (k in keys)
@@ -153,7 +153,7 @@ function replaceDevice(model, serviceId, data) {
         item;
     for (i = 0; i < model.count; i++) {
         item = model.get(i)
-//        console.log("\t", serviceId, deviceId, JSON.stringify(item))
+//        root.log("\t", serviceId, deviceId, JSON.stringify(item))
         if (item.serviceId === serviceId) {
             if (item.id === deviceId) {
                 model.set(i, data)
@@ -176,7 +176,7 @@ function findDevice(model, serviceId, deviceId) {
         item = model.get(i)
             if (item.id === deviceId && item.serviceId === serviceId) {
                 res = item
-                //console.log("AAAAAAAAAAAAAA\t", serviceId, deviceId, JSON.stringify(item))
+                //root.log("AAAAAAAAAAAAAA\t", serviceId, deviceId, JSON.stringify(item))
             } else
                 res = findDevice(item.children || [], serviceId, deviceId)
     }
@@ -251,7 +251,7 @@ function setServiceStatus(model, sid) {
     var max = Math.max(model.status.self, model.status.tcp, model.status.db),
         color = stateColor(max)
     model.color = color
-    //console.log(max, color, JSON.stringify(model.status))
+    //root.log(max, color, JSON.stringify(model.status))
 }
 
 function makeCache(model, cache) {

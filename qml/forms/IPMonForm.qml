@@ -63,7 +63,7 @@ ColumnLayout {
         var payload = {id: embedded ? 0 : model.id},
             ok = Helpers.readForm(devForm, payload)
         if (ok && itemId > 0) {
-            console.log("UPD ping:", itemId, JSON.stringify(payload))
+            root.log("UPD ping:", itemId, JSON.stringify(payload))
             root.send(model.serviceId, "UpdateDevice", payload)
         }
 

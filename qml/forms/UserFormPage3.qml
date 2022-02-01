@@ -42,16 +42,16 @@ Rectangle {
             pageRoot.devicesChanged.connect(update)
             pageRoot.currentModelChanged.connect(update) // TODO: not used on page2 for zones
             update()
-            console.log('UF PAGE-3 INIT COMPLETED')
+            root.log('UF PAGE-3 INIT COMPLETED')
         }
 
         // populate values
         function update() {
             if (!tree) { // TODO: WTF?!
-                console.log('UP3-UPD not ready')
+                root.log('UP3-UPD not ready')
                 return
             }
-            console.log('UP3-UPD started')
+            root.log('UP3-UPD started')
             if (values)
                 values = {}
             if (!devices || !devicesTree) {
@@ -66,20 +66,20 @@ Rectangle {
             for (i = 0; i < devices.count; i++) {
                 item = devices.get(i)
                 flags = item.flags & 3
-                //console.log(item.id, flags)
+                //root.log(item.id, flags)
                 if (flags) {
                     key = [item.id , item.scope, 0].join(':')
                     values[key] = flags
                 }
             }
-            //console.log('=== VAL UPDATE ==>', JSON.stringify(values))
+            //root.log('=== VAL UPDATE ==>', JSON.stringify(values))
             tree.iconProvider = getIcon // trigger update
         }
 
         function getIcon(item) {
             //return values[item.id % values.length].value
             var key = [item.id || 0, item.serviceId || 0, item.scopeId || 0].join(':')
-            //console.log('>>>>>>>>>', JSON.stringify(value))
+            //root.log('>>>>>>>>>', JSON.stringify(value))
             if (item.isGroup)
                 return folderIcon
             else if (key in values)
@@ -95,7 +95,7 @@ Rectangle {
                 currentItem.id = item.id
                 currentItem.serviceId = item.serviceId
                 currentItem.scopeId = item.scopeId
-                //console.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
+                //root.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
                 return
             }
 
@@ -111,7 +111,7 @@ Rectangle {
             //changeSubnodes(realItem.children, values[key])
 
             iconProvider = getIcon // trigger update
-            //console.log(JSON.stringify(values))
+            //root.log(JSON.stringify(values))
         }
 
         function changeSubnodes(model, n) {

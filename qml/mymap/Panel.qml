@@ -253,7 +253,7 @@ Rectangle {
 
     function delDone() {
         /*for (var i = 0; i < root.maps.count; i++) {
-            console.log(root.maps.get(i).id)
+            root.log(root.maps.get(i).id)
             if (0 === root.maps.get(i).id)
                 root.maps.remove(i)
         }*/
@@ -285,7 +285,7 @@ Rectangle {
             o = currentMap.shapes.get(i)
             payload.shapes.push({type: o.type, x: o.x, y: o.y, z: o.z, w: o.w, h: o.h, r: o.r, data: o.data, sid: o.sid, did: o.did})
         }
-        //console.log(JSON.stringify(payload))
+        //root.log(JSON.stringify(payload))
         asyncWait = true
         root.newTask('configuration', 'UpdateMap', payload, saveDone, saveFailed)
     }
@@ -297,7 +297,7 @@ Rectangle {
 
     function saveDone(msg) {
         // {"service":0,"action":"UpdateMap","task":2,"data":{"id":26,"type":"map","name":"gfhgfh","cx":0,"cy":0,"zoom":0,"shapes":[],"zoomLevel":3}}
-        console.log("Map saveDone", JSON.stringify(msg))
+        root.log("Map saveDone", JSON.stringify(msg))
         var i,
             url = "http://" + serverHost + "/0/plan?id=" + msg.data.id;
 
@@ -336,13 +336,13 @@ Rectangle {
     }
 
     /*function savePosition() {
-        console.log('save pos')
+        root.log('save pos')
     }*/
 
     function deviceSelected(pane, serviceId, deviceId) {
         if (pane !== panePosition)
             return
-        //console.log(">> SelDev >>", pane, serviceId, deviceId)
+        //root.log(">> SelDev >>", pane, serviceId, deviceId)
         tree.findItem({serviceId: serviceId, id: deviceId})
     }
 
@@ -352,12 +352,12 @@ Rectangle {
 
         if (currentItem && currentItem.sid === model.serviceId && currentItem.did === model.id)
             return // already selected
-        //console.log(JSON.stringify(currentItem), JSON.stringify(model))
+        //root.log(JSON.stringify(currentItem), JSON.stringify(model))
 
         for (i = 0; i < shapes.count; i++) {
             m = shapes.get(i)
             if (model.id === m.did && model.serviceId === m.sid) {
-                //console.log("Selected shape:", model.serviceId, model.id)
+                //root.log("Selected shape:", model.serviceId, model.id)
                 selectItem(m)
                 break
             }
@@ -369,19 +369,19 @@ Rectangle {
             currentItem = null
         }
 
-        //console.log("Seeking dev:", JSON.stringify(root.devices.children))
+        //root.log("Seeking dev:", JSON.stringify(root.devices.children))
         currentDevice = model.serviceId && model.id && Utils.findItem(
            root.devices, {serviceId: model.serviceId, id: model.id}
         ) || null
-        //console.log("Selected dev:", JSON.stringify(currentDevice))
+        //root.log("Selected dev:", JSON.stringify(currentDevice))
     }
 
     function treeContextMenu(item, x, y) {
-        console.log(x, y)
+        root.log(x, y)
     }
 
     function deleteShape() {
-        console.log('deleting...')
+        root.log('deleting...')
         for (var i = 0; i < currentMap.shapes.count; i++)
             if (equal(currentItem, currentMap.shapes.get(i))) {
                 selectItem({})
@@ -415,12 +415,12 @@ Rectangle {
         if (action in handlers) {
             item = handlers[action](x, y, size)
             seed(item, x, y, size)
-            console.log("New shape:", JSON.stringify(item))
+            root.log("New shape:", JSON.stringify(item))
             appendFinished = false
             currentMap.shapes.append(item)
             selectItem(currentMap.shapes.get(currentMap.shapes.count - 1))
         } else {
-            console.log('Unknown new shape action')
+            root.log('Unknown new shape action')
             //currentMap.shapes.setProperty(5, 'state', 'flash')
         }
 
@@ -428,7 +428,7 @@ Rectangle {
 
     function seed(data, x, y, size) {
         //var colors = 'red green blue orange magenta cyan'.split(' ')
-        //console.log(currentDevice.name, currentDevice.color)
+        //root.log(currentDevice.name, currentDevice.color)
         data.x = x
         data.y = y
         data.r = 0
@@ -480,7 +480,7 @@ Rectangle {
                 data = [(-w2) + ',' + (-h2),
                         w2 + ',' + (-h2),
                         0 + ',' + h2].join(' ')
-            console.log(data)
+            root.log(data)
             return {type: 'polygon', data: data, color: 'red'}
         },
         'plan.polygon': function (x, y, size) {
@@ -497,7 +497,7 @@ Rectangle {
                 h2 = size / 2,
                 data = [(-w2) + ',0',
                         w2 + ',0'].join(' ')
-            console.log(data)
+            root.log(data)
             return {type: 'polyline', data: data, color: 'red'}
         },
         'plan.polyline': function (x, y, size) {
@@ -512,7 +512,7 @@ Rectangle {
 
     function dumpModel(m) {
         for (var i = 0; i < m.count; i++)
-            console.log(i, JSON.stringify(m.get(i)))
+            root.log(i, JSON.stringify(m.get(i)))
     }
 
 }

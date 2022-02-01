@@ -32,7 +32,7 @@ Grid {
            text:"+"
 
            onClicked: {
-               //console.log("[do_it]")
+               //root.log("[do_it]")
                do_it()
 
            }
@@ -132,7 +132,7 @@ combo.activated.connect(scale_changed)
 
 function scale_changed()
 {
-console.log("[scale_change] ",scale_model.get(combo.currentIndex).data.x,
+root.log("[scale_change] ",scale_model.get(combo.currentIndex).data.x,
             " ",
             scale_model.get(combo.currentIndex).data.y)
 

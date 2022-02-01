@@ -11,7 +11,7 @@ Menu {
               text: model.text
               onTriggered: {
                   var payload = {deviceId: model.deviceId, command: model.command, argument: model.argument || 0}
-                  console.log('ContextMenu: Sending', JSON.stringify(payload), 'to #', model.serviceId)
+                  root.log('ContextMenu: Sending', JSON.stringify(payload), 'to #', model.serviceId)
                   root.send(model.serviceId, "ExecCommand", payload);
               }
           }
@@ -28,7 +28,7 @@ Menu {
               service = root.services[serviceId || deviceId]
           if (service && ('contextMenu' in service)) {
               list = service.contextMenu(serviceId ? deviceId : 0) // 0 for subsystem root
-              //console.log("ContextMenu:", JSON.stringify(list))
+              //root.log("ContextMenu:", JSON.stringify(list))
               if (list.length > 0) {
                   menuItemsModel.clear()
                   menuItemsModel.append(list)

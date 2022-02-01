@@ -10,7 +10,7 @@ function init(q) {
 
 function onSend(msg) {
     //var msg = JSON.parse(message)
-    //console.log('Action: ', msg.action)
+    //root.log('Action: ', msg.action)
     if (msg.action in handlers)
         handlers[msg.action](msg.service, msg.data)
 }
@@ -18,7 +18,7 @@ function onSend(msg) {
 var handlers = {
     ListServices: function (service, list) {
         for (var i = 0; i < list.length; i++) {
-            //console.log(JSON.stringify(list[i]))
+            //root.log(JSON.stringify(list[i]))
             qml.send(list[i].Name, 'ListDevices', '')
         }
     },
