@@ -27,15 +27,9 @@ GridLayout {
     onSourceTypeChanged: 0 === sourceType ? updateDevEvents() : updateZoneEvents()
     onTargetTypeChanged: 0 === targetType? updateDevCommands() : updateZoneCommands()
 
-    /*property var model0: model
-    onModel0Changed: if (itemId) {
-        //toEvent.model.clear()
-        //fromState.model.clear()
-    }*/
-
-    onUserIdChanged: if (0 !== userId) Qt.callLater(updateUser)
-    onDeviceIdChanged: if (0 !== deviceId) Qt.callLater(updateSource)
-    onTargetDeviceIdChanged: if (0 !== targetDeviceId) Qt.callLater(updateTarget)
+    onUserIdChanged: 0 !== userId ? Qt.callLater(updateUser) : srcUser.text = ''
+    onDeviceIdChanged: 0 !== deviceId ? Qt.callLater(updateSource) : sourceDevice.text = ''
+    onTargetDeviceIdChanged: 0 !== targetDeviceId ? Qt.callLater(updateTarget) : targetDevice.text = ''
     //onTargetServiceIdChanged: updateCommands() // TODO: double call?
 
     ///////////////////////////////////////////
@@ -89,11 +83,11 @@ GridLayout {
         function selected(item) {
             //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                /*model.serviceId = item.serviceId
+                model.serviceId = item.serviceId
                 model.deviceId = item.id
-                model = model // force update*/
-                serviceId = item.serviceId
-                deviceId = item.id
+                model = model // force update
+                //serviceId = item.serviceId
+                //deviceId = item.id
             }
         }
     }
@@ -170,11 +164,11 @@ GridLayout {
         onPressed: deviceSelector.display(targetServiceId, targetDeviceId, function (item) {
             //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                /*model.targetServiceId = item.serviceId
+                model.targetServiceId = item.serviceId
                 model.targetDeviceId = item.id
-                model = model  // force update*/
-                targetServiceId = item.serviceId
-                targetDeviceId = item.id
+                model = model  // force update
+                //model.targetServiceId = item.serviceId
+                //model.targetDeviceId = item.id
             }
         })
     }
@@ -234,15 +228,8 @@ GridLayout {
             text: "Удалить"
             enabled: itemId !== 0 && !asyncWait
             //onClicked: root.send('configuration', 'DeleteAlgorithm', model.id)
-            onClicked: {
-                asyncWait = true
-                root.newTask('configuration', 'DeleteAlgorithm', model.id, done, errorMessage)
-            }
-            function done(msg) {
-                asyncWait = false
-                console.log(JSON.stringify(msg))
-                messageBox.information(msg.data)
-            }
+            // INFO: don't use asyncWait due to nothing destructive happens when clicked twice
+            onClicked: root.newTask('configuration', 'DeleteAlgorithm', model.id, null, errorMessage)
         }
     }
 
