@@ -15,10 +15,8 @@ layouts[1] = [
 commands[1] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal"]
 config[1] = {
     DevicesTree: 1,
-    //UserTree: 7, // FOR TEST ONLY
-    UserTree: 4, // bit mask for tab's #
-    //RulesTree: 1, // FOR TEST ONLY
-    RulesTree: 0, // view only
+    UserTree: 7, // GOD mode
+    RulesTree: 1, // GOD mode
     ZonesTree: 1,
     MyMap: 1,
     Algorithms: 1,
