@@ -52,8 +52,10 @@ RowLayout {
     property real blinkOpacity: 0.8
 
     onCurrentMapChanged: {
-        console.log('Selected ', currentMap.type, currentMap.id, map.zoomLevel)
-        planScale = 'plan' === currentMap.type && mapPosition[currentMap.id] && mapPosition[currentMap.id].scale || 1
+        if (currentMap) {
+            console.log('Selected ', currentMap.type, currentMap.id, map.zoomLevel)
+            planScale = 'plan' === currentMap.type && mapPosition[currentMap.id] && mapPosition[currentMap.id].scale || 1
+        }
         anchorsModel.clear()
         currentItem = null
     }

@@ -26,7 +26,8 @@ function planImagePath(id) {
 }
 
 function listMaps(msg) {
-    //console.log(JSON.stringify(msg))
+//    console.log("############# LIST MAPS:", JSON.stringify((msg.data)))
+    root.maps.clear()
     if (!msg.data)
         return
 
@@ -38,8 +39,6 @@ function listMaps(msg) {
         injectExtra(msg.data[i])
     }
 
-    //console.log("MAPS:", JSON.stringify((msg.data)))
-    root.maps.clear()
     root.maps.append(msg.data)
     //console.log("Maps COUNT after list", root.maps.count)
 }
