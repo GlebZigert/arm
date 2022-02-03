@@ -244,9 +244,9 @@ function reconnectUser(msg) {
 
 
     console.log("Reload user-affected data")
-    var reload = ["ListServices", "ListMaps"]
+    var reload = ["ListServices", "ListMaps", "ListZones"]
     for (i = 0; i < reload.length; i++)
-        if (ARM.commands[currentUser.id].indexOf(reload[i]) >= 0)
+        if (ARM.commands[root.armRole].indexOf(reload[i]) >= 0)
             root.send(0, reload[i], "")
 
     /*for (i in services)
