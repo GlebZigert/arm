@@ -12,6 +12,11 @@
 
 int main(int argc, char *argv[])
 {
+    // disable debug output
+    #ifdef QT_NO_DEBUG
+    qputenv("QT_LOGGING_RULES", "*.debug=false;qml=false");
+    #endif
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     //QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D12);
     //QCoreApplication::setAttribute(Qt::ApplicationAttribute::AA_UseOpenGLES, true);
