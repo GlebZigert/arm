@@ -120,10 +120,12 @@ ColumnLayout {
                 payload.devices = Helpers.getLinks(model.devices)//.reduce(function (acc, v) {if (v.flags > 0) acc.push(v); return acc}, [])
             }
 
-            if (fileDialog.file)
+            if (fileDialog.file) {
+                filename = fileDialog.file
                 fileDialog.reset()
+            }
 
-            console.log("USER PAYLOAD:", JSON.stringify(payload))
+            //console.log("USER PAYLOAD:", filename, JSON.stringify(payload))
             asyncWait = true
             root.newTask('configuration', 'UpdateUser', payload, done.bind(this, filename), fail)
         } else
@@ -137,7 +139,7 @@ ColumnLayout {
     }
 
     function done(filename, msg) {
-        //console.log("ErWar:", JSON.stringify(msg.data.warnings))
+        //console.log("User Err & Warn:", JSON.stringify(msg.data.warnings))
         if (msg.data.errors) {
             messageBox.error(msg.data.errors.join('\n'))
         } else {
