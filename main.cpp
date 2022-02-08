@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 {
     // disable debug output
     #ifdef QT_NO_DEBUG
-    qputenv("QT_LOGGING_RULES", "*.debug=false;qml=false");
+    //qputenv("QT_LOGGING_RULES", "*.debug=false;qml=false");
     #endif
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
