@@ -57,10 +57,10 @@ RowLayout {
       id: layout
       //currentIndex: 0 // devices
       //currentIndex: 1 // users
-      currentIndex: 2 // rules
+      //currentIndex: 2 // rules
       //currentIndex: 3 // zones
       //currentIndex: 4 // maps
-      //currentIndex: 5 // algos
+      currentIndex: 5 // algos
       //currentIndex: 6 // events
       Layout.fillWidth: true
       Layout.fillHeight: true
