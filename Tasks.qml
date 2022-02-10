@@ -25,9 +25,10 @@ Timer {
     }
 
     onNewTask: {
-        var payload = JSON.stringify({service: service, action: action, task: nextId, data: data})
+        var payload = JSON.stringify({service: service, action: action, task: nextId, data: data}),
+            len = encodeURI(payload).split(/%..|./).length - 1 // UTF-8 string length in bytes
 
-        if (socket.active && socket.sendTextMessage(payload) === payload.length)
+        if (socket.active && socket.sendTextMessage(payload) === len)
             tasks[nextId] = {done: done, fail: fail, time: Date.now()}
         else
             fail(true) // fail - no connection
