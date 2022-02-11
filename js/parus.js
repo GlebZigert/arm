@@ -27,7 +27,7 @@ Parus.prototype.reloadDevices = function () {
 }
 
 Parus.prototype.statusUpdate = function (sid) {
-    //root.log("##################### Z5R SUP", JSON.stringify(data))
+    //console.log("##################### Z5R SUP", JSON.stringify(data))
     if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
@@ -37,7 +37,7 @@ Parus.prototype.statusUpdate = function (sid) {
 }
 
 Parus.prototype.shutdown = function () {
-    root.log(this.model.type, this.model.id, 'shutdown')
+    console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Parus.prototype.reloadTree = function (id) {
@@ -47,7 +47,7 @@ Parus.prototype.reloadTree = function (id) {
 
 
 Parus.prototype.rebuildTree = function (data) {
-    //root.log("Parus tree:", JSON.stringify(data))
+    //console.log("Parus tree:", JSON.stringify(data))
     var i,
         list = [],
         model = this.model.children
@@ -55,7 +55,7 @@ Parus.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     } else {
-        root.log('Parus: rebuild whole tree')
+        console.log('Parus: rebuild whole tree')
         for (i = 0; i < data.length; i++) {
             list.push(this.complement(data[i]))
             setState(data[i], data[i].stateClass, data[i].stateText, 0)
@@ -71,7 +71,7 @@ Parus.prototype.checkSticky = function (event) {
 }
 
 Parus.prototype.processEvents = function (events) {
-    //root.log("Parus Events", JSON.stringify(events))
+    //console.log("Parus Events", JSON.stringify(events))
     var i, dev
     Journal.logEvents(events)
 
@@ -91,7 +91,7 @@ Parus.prototype.processEvents = function (events) {
 }
 
 Parus.prototype.update = function (dev) {
-    //root.log("Parus upd.dev", JSON.stringify(dev))
+    //console.log("Parus upd.dev", JSON.stringify(dev))
     var item = this.cache[dev.id],
         model = this.model.children
     if (item) { // update existing
@@ -111,7 +111,7 @@ Parus.prototype.deleteDev = function (id) {
 
 
 Parus.prototype.validateTree = function (data) {
-    root.log('Parus: validateTree stub')
+    console.log('Parus: validateTree stub')
     return false
 }
 
@@ -134,7 +134,7 @@ Parus.prototype.complement = function (data) {
     var i,
         menu = [],
         device = this.cache[id]
-    root.log("Parus-CM", JSON.stringify(device))
+    console.log("Parus-CM", JSON.stringify(device))
 
     menu.push({
           text: "Открыть вход",

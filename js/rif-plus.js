@@ -180,14 +180,14 @@ Rif.prototype.reloadDevices = function () {
 }
 
 Rif.prototype.statusUpdate = function (sid) {
-    //root.log("==============1 RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
+    //console.log("==============1 RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
     if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid)
         root.send(this.serviceId, 'ListDevices', '')
     if (Const.EC_DATABASE_READY === sid && this.model.status.db !== sid)
         root.send(0, 'LoadJournal', this.serviceId)
 
     Utils.setServiceStatus(this.model, sid)
-    //root.log("==============2 RIF-STATUS", "=>", this.model.color, JSON.stringify(this.model.status))
+    //console.log("==============2 RIF-STATUS", "=>", this.model.color, JSON.stringify(this.model.status))
 }
 
 
@@ -200,7 +200,7 @@ Rif.prototype.listStates = function (deviceId) {
     if (device && device.type in states)
         for (i = 0; i < states[device.type].length; i++) {
             state = states[device.type][i]
-            //root.log(typeof state)
+            //console.log(typeof state)
             name = stateName[state]
             if (name)
                 list[state] = name
@@ -226,7 +226,7 @@ Rif.prototype.contextMenu = function (id) {
         menu = [],
         trans = [], // combined transitions
         device = this.cache[id]
-    root.log("Rif-CM", JSON.stringify(device))
+    console.log("Rif-CM", JSON.stringify(device))
     if (!device) {
         menu.push({
               text: "Общий ДК",
@@ -276,14 +276,14 @@ Rif.prototype.contextMenu = function (id) {
 
 
 Rif.prototype.shutdown = function () {
-    root.log(this.model.type, this.model.id, 'shutdown')
+    console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Rif.prototype.rebuildTree = function (data0) {
-    //root.log("Rif Tree:", JSON.stringify(data0))
+    //console.log("Rif Tree:", JSON.stringify(data0))
     if (!data0)
         return
-    //root.log("MODEL:", this.serviceId, JSON.stringify(this.model))
+    //console.log("MODEL:", this.serviceId, JSON.stringify(this.model))
     var i,
         item,
         state,
@@ -293,20 +293,20 @@ Rif.prototype.rebuildTree = function (data0) {
         path = [list],
         model = this.model.children;
     if (this.validateTree(data0)) {
-        root.log('Update RIF tree')
+        console.log('Update RIF tree')
         this.update(data0)
     } else {
         this.nextGroupId = 9e15 // ~Number.MAX_SAFE_INTEGER
-        root.log("Rebuild RIF tree")
+        console.log("Rebuild RIF tree")
         for (i = 0; i < data0.length; i++)
             data.push(data0[i])
         data.sort(function(a, b) {
             return a.order - b.order;
         })
-        //root.log("Rif Tree:", JSON.stringify(data))
+        //console.log("Rif Tree:", JSON.stringify(data))
         for (i = 0; i < data.length; i++) {
             //sType = getClassName(data[i].type, data[i].states[0].id)
-            //root.log(data[i].id, ":", typeof data[i].id)
+            //console.log(data[i].id, ":", typeof data[i].id)
             item = {
                 id: data[i].id, // || this.nextGroupId--,
                 accessMode: data[i].accessMode,
@@ -342,7 +342,7 @@ Rif.prototype.rebuildTree = function (data0) {
         /*for (i in this.cache) {
             //Utils.updateMaps(this.cache[i])
         }*/
-        //root.log(Object.keys(this.cache))
+        //console.log(Object.keys(this.cache))
     }
 }
 
@@ -351,7 +351,7 @@ Rif.prototype.checkSticky = function (event) {
 }
 
 Rif.prototype.processEvents = function (events) {
-    //root.log("RIF Events", JSON.stringify(events))
+    //console.log("RIF Events", JSON.stringify(events))
     // [{"fromState":0,"state":1004,"data":"","text":"Удал.ком. Открыть","deviceId":1,"userId":0,"time":"2021-05-25T10:08:05Z"},{"fromState":0,"state":111,"data":"","text":"Открыто","deviceId":1,"userId":0,"time":"2021-05-25T10:08:05Z"}]
     var dev,
         sType
@@ -371,7 +371,7 @@ Rif.prototype.processEvents = function (events) {
 
 /*
 Rif.prototype.update = function (data) {
-    root.log("UPD:", JSON.stringify(data))
+    console.log("UPD:", JSON.stringify(data))
     var color, state, text,
         sType,
         updates = {}
@@ -400,7 +400,7 @@ Rif.prototype.update = function (data) {
 */
 // validate new data against existing tree
 Rif.prototype.validateTree = function (data) {
-    root.log('RifValidateTreeStub')
+    console.log('RifValidateTreeStub')
     return false
     /*var id,
         ok = true
