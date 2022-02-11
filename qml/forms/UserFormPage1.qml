@@ -247,7 +247,7 @@ GridLayout {
                     for (i = 0; i < model.count - 1; i++)
                         value.push(model.get(i).card)
                 cardsCombo.fieldValue = value
-                //root.log(cardsCombo.fieldValue)
+                //console.log(cardsCombo.fieldValue)
             }
 
             function apply() {
