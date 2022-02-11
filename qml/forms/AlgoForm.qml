@@ -87,7 +87,7 @@ GridLayout {
         visible: 0 === sourceType
         onPressed: deviceSelector.display(serviceId, deviceId, selected)
         function selected(item) {
-            //root.log("Selected:", item.name, item.serviceId, item.id)
+            //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
                 /*model.serviceId = item.serviceId
                 model.deviceId = item.id
@@ -168,7 +168,7 @@ GridLayout {
         readOnly: true
         Layout.fillWidth: true
         onPressed: deviceSelector.display(targetServiceId, targetDeviceId, function (item) {
-            //root.log("Selected:", item.name, item.serviceId, item.id)
+            //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
                 /*model.targetServiceId = item.serviceId
                 model.targetDeviceId = item.id
@@ -240,7 +240,7 @@ GridLayout {
             }
             function done(msg) {
                 asyncWait = false
-                root.log(JSON.stringify(msg))
+                console.log(JSON.stringify(msg))
                 messageBox.information(msg.data)
             }
         }
@@ -286,7 +286,7 @@ GridLayout {
         commands.model.clear()
         if (service && 'listCommands' in service) {
             list = service.listCommands(targetDeviceId)
-            //root.log("Commands:", JSON.stringify(list))
+            //console.log("Commands:", JSON.stringify(list))
             if (list) {
                 for (k in list)
                     model.push({id: Number(k), text: list[k]})
@@ -312,7 +312,7 @@ GridLayout {
     }
 
     function updateSource() {
-        //root.log('UPD SOURCE!')
+        //console.log('UPD SOURCE!')
         var device = Utils.findItem(root.devices, {id: deviceId, serviceId: serviceId})
         sourceDevice.text = device ? device.name : ''
         updateDevEvents()
@@ -329,13 +329,13 @@ GridLayout {
         fromState.model.clear()
         if (service && 'listStates' in service) {
             list = service.listStates(deviceId)
-            //root.log("States:", JSON.stringify(list))
+            //console.log("States:", JSON.stringify(list))
             if (list) {
                 model = []
                 for (k in list)
                     model.push({id: Number(k), text: list[k]})
 
-                //root.log("MODEL:", JSON.stringify(model))
+                //console.log("MODEL:", JSON.stringify(model))
                 model.unshift({id: -1, text: 'Любое'})
                 toEvent.model.append(model)
                 fromState.model.append(model)
@@ -354,7 +354,7 @@ GridLayout {
         var payload = {id: itemId},
             ok = Helpers.readForm(form, payload) && 0 < payload.command
 
-        root.log("OK-1", ok)
+        console.log("OK-1", ok)
         if (0 === sourceType) {
             // source - device
             payload.serviceId = serviceId
@@ -366,7 +366,7 @@ GridLayout {
             //payload.zoneId = zoneId
             ok = ok && userId > 0 && payload.zoneId > 0
         }
-        root.log("OK-2", ok)
+        console.log("OK-2", ok)
         if (0 === targetType) {
             // target - device
             payload.targetServiceId = targetServiceId
@@ -377,10 +377,10 @@ GridLayout {
             ok = ok && payload.targetZoneId > 0
         }
 
-        root.log("OK-3", ok)
+        console.log("OK-3", ok)
         if (ok) {
             payload.argument = parseInt(payload.argument)
-            root.log("AlgoForm payload:", JSON.stringify(payload))
+            console.log("AlgoForm payload:", JSON.stringify(payload))
             asyncWait = true
             root.newTask('configuration', 'UpdateAlgorithm', payload, done, errorMessage)
         } else
