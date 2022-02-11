@@ -43,9 +43,10 @@ Item {
             enabled: !root.currentUser;
             Layout.fillWidth: true
             placeholderText: "IP сервера"
-            validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/ }
+            validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{2,5})?/ }
             color: acceptableInput ? palette.text : "red"
-            text: "127.0.0.1"
+            text: "192.168.0.189:3973"
+            //text: "127.0.0.1"
         }
         ///////////////////////////////////////////
         Text { text: ""; visible: !!root.currentUser; Layout.alignment: Qt.AlignLeft }
@@ -63,7 +64,7 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-            text: "11"
+            text: "Администратор"
         }
         ///////////////////////////////////////////
         Text { text: "Пароль"; Layout.alignment: Qt.AlignRight}
@@ -149,7 +150,10 @@ Item {
         if (ok) {
             //console.log(JSON.stringify(payload))
             password.text = ''
-            root.serverHost = payload.server + ':' + root.serverPort
+            if (payload.server.indexOf(':') > 0)
+                root.serverHost = payload.server
+            else
+                root.serverHost = payload.server + ':' + root.serverPort
             root.userLogin = payload.login
             root.userToken = Crypto.md5(root.authSalt + payload.password)
             socket.stopped = false

@@ -12,12 +12,18 @@ GridLayout {
     anchors.fill: parent
     //anchors.margins: 5
 
+    property var mid: model.id
+    onMidChanged: $ = {}
+    //onMidChanged: {for (var k in this) if ('$' === k[0] && 'number' == typeof this[k]) this[k] = 0} // reset shadow variables
+
+    property var $: ({}) // shadow model
+
+    property int serviceId: $.serviceId || model.serviceId || 0
+    property int deviceId: $.deviceId || model.deviceId || 0
+    property int targetServiceId: $.targetServiceId || model.targetServiceId || 0
+    property int targetDeviceId: $.targetDeviceId || model.targetDeviceId || 0
+
     property int userId: model.userId || 0
-    //property int zoneId: model.zoneId || 0
-    property int serviceId: model.serviceId || 0
-    property int deviceId: model.deviceId || 0
-    property int targetServiceId: model.targetServiceId || 0
-    property int targetDeviceId: model.targetDeviceId || 0
 
     property alias sourceType: sourceCombo.currentIndex
     property alias targetType: targetCombo.currentIndex
@@ -83,11 +89,9 @@ GridLayout {
         function selected(item) {
             //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                model.serviceId = item.serviceId
-                model.deviceId = item.id
-                model = model // force update
-                //serviceId = item.serviceId
-                //deviceId = item.id
+                $.serviceId = item.serviceId
+                $.deviceId = item.id
+                $ = $ // apply shadow
             }
         }
     }
@@ -164,11 +168,9 @@ GridLayout {
         onPressed: deviceSelector.display(targetServiceId, targetDeviceId, function (item) {
             //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                model.targetServiceId = item.serviceId
-                model.targetDeviceId = item.id
-                model = model  // force update
-                //model.targetServiceId = item.serviceId
-                //model.targetDeviceId = item.id
+                $targetServiceId = item.serviceId
+                $targetDeviceId = item.id
+                $ = $ // apply shadow
             }
         })
     }

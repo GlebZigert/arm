@@ -128,7 +128,12 @@ Rectangle {
                 getTNID: Utils.getDeviceTNID
             }
         }
-
+        Button {
+            enabled: !asyncWait && (!currentMap || currentMap.id > 0)
+            Layout.fillWidth: true
+            text: "Новый план"
+            onClicked: newMap("plan")
+        }
         RowLayout {
             visible: !!currentMap
             Layout.fillWidth: true
@@ -137,6 +142,7 @@ Rectangle {
                 //Layout.preferredWidth: parent.width / 2
                 id: mapName
                 enabled: !asyncWait
+                Layout.preferredWidth: parent.width / 2
                 placeholderText: 'Название ' + (!!currentMap && currentMap.type === 'map' ? 'карты' : 'плана')
                 text: !!currentMap && currentMap.name || ''
                 validator: RegExpValidator { regExp: /\S+.*/ }
@@ -151,28 +157,28 @@ Rectangle {
             }
         }
 
-        RowLayout {
+        /*RowLayout {
             Layout.fillWidth: true
             Button {
                 enabled: !asyncWait && (!currentMap || currentMap.id > 0)
                 Layout.preferredWidth: parent.width / 2
-                text: "Создать карту"
+                text: "Новая карта"
                 onClicked: newMap("map")
             }
             Button {
                 enabled: !asyncWait && (!currentMap || currentMap.id > 0)
                 Layout.fillWidth: true
-                text: "Создать план"
+                text: "Новый план"
                 onClicked: newMap("plan")
             }
-        }
+        }*/
 
         RowLayout {
             Layout.fillWidth: true
             Button {
                 enabled: !asyncWait
                 visible: !!currentMap
-                Layout.fillWidth: true
+                Layout.preferredWidth: parent.width / 2
                 //Layout.preferredWidth: parent.width / 2
                 text: "Сохранить"
                 onClicked: saveMap()

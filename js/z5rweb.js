@@ -133,11 +133,11 @@ Z5RWeb.prototype.contextMenu = function (id) {
         menu.push({text: "Открыть вход", command: 8})
         menu.push({text: "Открыть выход", command: 9})
         if (0 !== device.mode)
-            menu.push({text: "Нормальный режим", command: 37, argument: 0})
+            menu.push({text: "Нормальный режим", command: 370}) // 370+0
         if (1 !== device.mode)
-            menu.push({text: "Заблокировать", command: 37, argument: 1})
+            menu.push({text: "Заблокировать", command: 371}) // 370+1
         if (2 !== device.mode)
-            menu.push({text: "Свободный проход", command: 37, argument: 2})
+            menu.push({text: "Свободный проход", command: 372}) // 370+2
     }
     //console.log(JSON.stringify(menu))
 
@@ -146,6 +146,24 @@ Z5RWeb.prototype.contextMenu = function (id) {
         v.deviceId = id
         return v
     })
+}
+
+// list of all states per each device for algorithms form
+/*Z5RWeb.prototype.listStates = function (deviceId) {
+    return {
+
+    }
+}*/
+
+// list of available commands per each device for algorithms form
+Z5RWeb.prototype.listCommands = function (deviceId) {
+    return {
+            8: "Открыть вход",
+            9: "Открыть выход",
+            370: "Нормальный режим", // 370+0
+            371: "Заблокировать", // 370+1
+            372: "Свободный проход", // 370+2
+    }
 }
 
 // priority: 0 - state, 1 - event

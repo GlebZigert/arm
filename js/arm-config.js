@@ -1,10 +1,15 @@
+.import "constants.js" as Const
+
 var layouts = {},
     commands = {},
     config = {}
 
+// who can control zones
+var zoneOperators = [Const.ARM_ADMIN, Const.ARM_UNIT, Const.ARM_GUARD]
+
 ///////////////////////////////////
 //{id: 1, text: "Администратор"},
-layouts[1] = [
+layouts[Const.ARM_ADMIN] = [
     {symbol: 'fa_users_cog', views: [['MyConfig']]},
     //{symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
     {symbol: '2', views: [['MyMap', 'PassageView'], ['MyJournal', 'ZonesTree']]},
@@ -12,8 +17,8 @@ layouts[1] = [
     {symbol: '4', views: [['EventLog']]},
     {symbol: '5', views: [['Video']]},
 ]
-commands[1] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal"]
-config[1] = {
+commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal"]
+config[Const.ARM_ADMIN] = {
     DevicesTree: 1,
     UserTree: 7, // GOD mode
     RulesTree: 1, // GOD mode
@@ -26,55 +31,55 @@ config[1] = {
 /////////////////////////////////// read-only?
 //{id: 2, text: "Дежурный по ВЧ"},
 ///////////////////////////////////
-layouts[2] = [
+layouts[Const.ARM_UNIT] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
     {symbol: '2', views: [['Video']]},
     {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
 ]
-commands[2] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
-config[2] = {}
+commands[Const.ARM_UNIT] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
+config[Const.ARM_UNIT] = {}
 
 /////////////////////////////////////////
 //{id: 3, text: "Дежурный по КПП и КТП"},
 /////////////////////////////////////////
-layouts[3] = [
+layouts[Const.ARM_CHECKPOINT] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
     {symbol: '2', views: [['Test']]},
     {symbol: '3', views: [['DevicesTree', 'PassageView'], ['MyJournal']]},
 ]
-commands[3] = ["ListServices", "ListMaps", "LoadJournal"]
-config[3] = {}
+commands[Const.ARM_CHECKPOINT] = ["ListServices", "ListMaps", "LoadJournal"]
+config[Const.ARM_CHECKPOINT] = {}
 
 /////////////////////////////////////
 //{id: 4, text: "Начальник Караула"},
 ///////////////////////////////////
-layouts[4] = [
+layouts[Const.ARM_GUARD] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
     {symbol: '3', views: [['Test']]},
     {symbol: '2', views: [['ZonesTree'], ['MyJournal']]},
 ]
-commands[4] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
-config[4] = {}
+commands[Const.ARM_GUARD] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
+config[Const.ARM_GUARD] = {}
 
 //////////////////////////////////// read-only?
 //{id: 5, text: "Оператор ТСО"},
-layouts[5] = [
+layouts[Const.ARM_OPERATOR] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
     {symbol: '2', views: [['Test']]},
 ]
-commands[5] = ["ListServices", "ListMaps", "LoadJournal"]
-config[5] = {}
+commands[Const.ARM_OPERATOR] = ["ListServices", "ListMaps", "LoadJournal"]
+config[Const.ARM_OPERATOR] = {}
 
 ///////////////////////////////////
 //{id: 6, text: "Защита ГосТайны"},
 ///////////////////////////////////
-layouts[6] = [
+layouts[Const.ARM_SECRET] = [
     {symbol: 'fa_users_cog', views: [['MyConfig']]},
     {symbol: '1', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '2', views: [['EventLog']]}
 ]
-commands[6] = ["ListServices", "ListUsers", "ListRules", "ListZones", "LoadJournal"]
-config[6] = {
+commands[Const.ARM_SECRET] = ["ListServices", "ListUsers", "ListRules", "ListZones", "LoadJournal"]
+config[Const.ARM_SECRET] = {
     UserTree: 2, // bit mask for tab's #
     RulesTree: 1,
     ZonesTree: 0,
@@ -84,11 +89,11 @@ config[6] = {
 ///////////////////////////////////
 //{id: 7, text: "Бюро Пропусков"}])
 ///////////////////////////////////
-layouts[7] = [
+layouts[Const.ARM_BUREAU] = [
     {symbol: 'fa_users_cog', views: [['MyConfig']]}
 ]
-commands[7] = ["ListUsers", "ListRules", "ListZones"]
-config[7] = {
+commands[Const.ARM_BUREAU] = ["ListUsers", "ListRules", "ListZones"]
+config[Const.ARM_BUREAU] = {
     UserTree: 3, // bit mask for tab's #
     RulesTree: 1,
     ZonesTree: 0,

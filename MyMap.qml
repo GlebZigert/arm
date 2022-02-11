@@ -83,7 +83,7 @@ RowLayout {
             zoomLevel: initialZoom
             anchors.left: parent.left
             anchors.top: parent.top
-            width: (!currentMap || currentMap.type === "map") ? parent.width : 0
+            width: (currentMap && currentMap.type === "map") ? parent.width : 0
             height: width > 0 ? parent.height : 0
             //onZoomLevelChanged: console.log("ZLC:", zoomLevel)
         }

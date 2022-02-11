@@ -13,15 +13,15 @@ var zones
 //////////////////////////////////////////////////////////////
 
 function listZones(msg) {
-    //console.log("ListZONES:", JSON.stringify(msg))
+    console.log("ListZONES:", JSON.stringify(msg))
     //var ext = complement({id: 0, name: 'Внешняя территория'})
     //delete ext.form
 
     if (!msg.data)
         msg.data = []
 
-    if (zones && validateTree(msg.data))
-        return
+    //if (zones && validateTree(msg.data))
+        //return
 
     for (var i = 0; i < msg.data.length; i++) {
         complement(msg.data[i])
