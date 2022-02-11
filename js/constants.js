@@ -49,7 +49,7 @@ const   EC_NA = 0,  //iota
         EC_LOGIN_TIMEOUT        = 107,
         EC_USER_SHIFT_STARTED   = 108,
         EC_USER_SHIFT_COMPLETED = 109,
-        EC_SERVICE_READY        = 110,
+        //EC_SERVICE_READY        = 110,
         EC_SERVICE_SHUTDOWN     = 111,
         EC_ARMED                = 112,
         EC_DISARMED             = 113,
@@ -66,6 +66,7 @@ const   EC_NA = 0,  //iota
         EC_DATABASE_READY         = 204,
         EC_ONLINE                 = 205,
         EC_UPS_PLUGGED            = 206,
+        EC_SERVICE_READY          = 207,
 
         // ERROR
         EC_ERROR                = 300,

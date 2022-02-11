@@ -216,10 +216,9 @@ function updateService(service, data) {
             service.model[key] = data[key]
 
     service.model.label = data.title
-    /*if ('statusUpdate' in service) {
-        service.statusUpdate({db: "", tcp: ""})
-        service.statusUpdate(data.status)
-    }*/
+    if ('reloadDevices' in service) {
+        service.reloadDevices()
+    }
 }
 
 function deleteService(id) {
@@ -243,8 +242,13 @@ function reconnectUser(msg) {
     if (i >= msg.data.length)
         return
 
-    console.log("Reload all dev-trees")
-    root.send(0, "ListServices", "")
+
+    console.log("Reload user-affected data")
+    var reload = ["ListServices", "ListMaps"]
+    for (i = 0; i < reload.length; i++)
+        if (ARM.commands[currentUser.id].indexOf(reload[i]) >= 0)
+            root.send(0, reload[i], "")
+
     /*for (i in services)
         if ('reloadTree' in services[i])
             services[i].reloadTree()*/

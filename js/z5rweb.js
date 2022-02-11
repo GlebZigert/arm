@@ -7,9 +7,6 @@ var stickyStates = [102, 103, 12, 13, 14, 15/*, 8, 9*/]
 
 
 function Z5RWeb(model) {
-    var status = model.status
-    model.status = {db: "", tcp: ""}
-
     this.model = model
     this.serviceId = this.model.serviceId
     this.handlers = {
@@ -18,7 +15,14 @@ function Z5RWeb(model) {
         DeleteDevice: this.deleteDev.bind(this),
         Events: this.processEvents.bind(this),
     }
+
     Utils.setInitialStatus(model, this.statusUpdate.bind(this))
+}
+
+// called from outside when user's devices visibility changed
+Z5RWeb.prototype.reloadDevices = function () {
+    if (Const.EC_SERVICE_READY === this.model.status.self)
+        root.send(this.serviceId, 'ListDevices', '')
 }
 
 Z5RWeb.prototype.shutdown = function () {
@@ -26,7 +30,7 @@ Z5RWeb.prototype.shutdown = function () {
 }
 
 Z5RWeb.prototype.statusUpdate = function (sid) {
-    if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid) {
+    if (Const.EC_SERVICE_READY === sid && this.model.status.self !== sid) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
     }
@@ -35,7 +39,7 @@ Z5RWeb.prototype.statusUpdate = function (sid) {
 }
 
 Z5RWeb.prototype.rebuildTree = function (data) {
-    console.log("Z5RWeb tree:", JSON.stringify(data))
+    //console.log("Z5RWeb tree:", JSON.stringify(data))
     var i,
         list = [],
         model = this.model.children
@@ -43,7 +47,7 @@ Z5RWeb.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     } else {
-        console.log('Z5RWeb: rebuild whole tree')
+        //console.log('Z5RWeb: rebuild whole tree')
         for (i = 0; i < data.length; i++) {
             list.push(this.complement(data[i]))
         }
@@ -94,7 +98,7 @@ Z5RWeb.prototype.checkSticky = function (event) {
 }
 
 Z5RWeb.prototype.validateTree = function (data) {
-    console.log('Z5RWeb: validateTree stub')
+    //console.log('Z5RWeb: validateTree stub')
     return false
 }
 
@@ -146,7 +150,7 @@ Z5RWeb.prototype.contextMenu = function (id) {
 
 // priority: 0 - state, 1 - event
 function setState(dev, event, priority) {
-    console.log("Z5R SetState", JSON.stringify(event))
+    //console.log("Z5R SetState", JSON.stringify(event))
     var mode,
         text,
         animation,

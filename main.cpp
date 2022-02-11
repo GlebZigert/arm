@@ -3,8 +3,12 @@
 #include <QQmlApplicationEngine>
 #include <QNetworkProxy>
 #include <QQuickWindow>
-#include "qml/video/Player/videoplayer.h"
 #include "qml/video/Preview/Preview.h"
+
+#ifndef WIN32
+#include "qml/video/Player/videoplayer.h"
+#endif
+
 
 int main(int argc, char *argv[])
 {
@@ -27,8 +31,10 @@ int main(int argc, char *argv[])
     QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::NoProxy));
 
     //Глеб - регистрирую свои классы
-        qmlRegisterType<Preview>("Preview",1,0,"Preview");
-        qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
+    #ifndef WIN32
+    qmlRegisterType<Preview>("Preview",1,0,"Preview");
+    qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
+    #endif
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
