@@ -38,7 +38,7 @@ int FFPlayer::interrupt_cb(void *ctx)
 
         if(delay>1000000)
         {
-            qDebug()<<"[TIMEOUT]";
+         //   qDebug()<<"[TIMEOUT]";
             emit pl->lost_connection();
             pl->m_running=mode::turnOff;
             return 1;
@@ -52,7 +52,7 @@ int FFPlayer::interrupt_cb(void *ctx)
 
 void FFPlayer::run()
 {
-    qDebug()<<"RUN";
+ //   qDebug()<<"RUN";
     prev=clock();
     //variable
     AVFormatContext *pFormatCtx;
@@ -79,10 +79,10 @@ void FFPlayer::run()
     pFormatCtx = avformat_alloc_context();
 
 
-    qDebug()<<"     1";
+  //  qDebug()<<"     1";
         pFormatCtx->interrupt_callback.callback=interrupt_cb;
         pFormatCtx->interrupt_callback.opaque = this;
-    qDebug()<<"     2";
+//    qDebug()<<"     2";
 
 
     AVDictionary* options = NULL;
@@ -115,7 +115,7 @@ void FFPlayer::run()
     //Open network stream or file stream
     if (avformat_open_input(&pFormatCtx, filepath, NULL, &options) != 0)
     {
-        qDebug()<<"=================Couldn't open input stream.\n";
+  //      qDebug()<<"=================Couldn't open input stream.\n";
         emit lost_connection();
         emit finished();
         return;
@@ -128,7 +128,7 @@ void FFPlayer::run()
     pFormatCtx->max_analyze_duration = AV_TIME_BASE;
     if (avformat_find_stream_info(pFormatCtx, NULL)<0)
     {
-        qDebug()<<"Couldn't find stream information.\n";
+   //     qDebug()<<"Couldn't find stream information.\n";
         emit finished();
         emit lost_connection();
         return;
@@ -145,14 +145,14 @@ void FFPlayer::run()
 
     if (videoindex == -1)
     {
-        qDebug()<<"Didn't find a video stream.\n";
+//        qDebug()<<"Didn't find a video stream.\n";
         emit lost_connection();
         emit finished();
         return;
     }
-    qDebug()<<"-----------rtsp stream input information --------------\n";
+  //  qDebug()<<"-----------rtsp stream input information --------------\n";
     av_dump_format(pFormatCtx, 0, filepath,0);
-    qDebug()<<"---------------------------------------\n";
+  //  qDebug()<<"---------------------------------------\n";
     /*********************************************/
     AVCodecContext *pAVCodecContext;
        AVFrame *pAVFrame;
@@ -173,24 +173,24 @@ void FFPlayer::run()
      //   pAVCodec = avcodec_find_decoder("h264_qsv");
 
 
-        qDebug()<<"videoWidth: "<<videoWidth;
-        qDebug()<<"videoHeight: "<<videoHeight;
+       // qDebug()<<"videoWidth: "<<videoWidth;
+       // qDebug()<<"videoHeight: "<<videoHeight;
         if((videoWidth==0)&&(videoHeight==0))
         {
-            qDebug()<<"Failed just failed";
+          //  qDebug()<<"Failed just failed";
             emit lost_connection();
             emit finished();
             return;
 
         }
         pSwsContext = sws_getContext(videoWidth,videoHeight,pAVCodecContext->pix_fmt,videoWidth,videoHeight,AV_PIX_FMT_RGB32,SWS_BICUBIC,0,0,0);
-        qDebug()<<"[12]";
+     //   qDebug()<<"[12]";
         //Open the corresponding decoder
         pAVCodecContext->thread_count=10;
         int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
 
         if (result<0){
-            qDebug()<<"Failed to open decoder";
+        //    qDebug()<<"Failed to open decoder";
             emit lost_connection();
             emit finished();
             return;
@@ -202,7 +202,7 @@ void FFPlayer::run()
         int y_size = pAVCodecContext->width * pAVCodecContext->height;
             AVPacket *packet = (AVPacket *) malloc(sizeof(AVPacket)); //Assign a packet
             av_new_packet(packet, y_size); //Assign packet data
-        qDebug()<<"Successfully initialized video stream" <<","<<videoWidth << "," << videoHeight << "," ;
+    //    qDebug()<<"Successfully initialized video stream" <<","<<videoWidth << "," << videoHeight << "," ;
     //
       //  return;
     //Save video stream for a period of time and write to file

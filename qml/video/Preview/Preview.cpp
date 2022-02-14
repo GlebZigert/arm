@@ -63,8 +63,7 @@ void Preview::setURL(const QString &URL)
 
 void Preview::paint(QPainter *painter)
 {
-    qDebug()<<"update";
-    // Отрисовка объекта
+
     if(!(this->current.isNull())){
     painter->drawImage(QRect(0, 0, width(), height()), this->current);
     }

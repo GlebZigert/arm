@@ -53,7 +53,7 @@ QString VideoPlayer::source() const
 
 void VideoPlayer::setSource(const QString source)
 {
-    qDebug()<<"setSource: "<<source;
+ //   qDebug()<<"setSource: "<<source;
     m_source=source;
   //  m_player->setRunning(false);
  //   m_player->set_URL(m_source);
@@ -65,9 +65,9 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start()
 {
-    qDebug()<<"start";
+ //   qDebug()<<"start";
 
-    qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
+  //  qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
 
 
 
@@ -81,7 +81,7 @@ void VideoPlayer::start()
 
 void VideoPlayer::stop()
 {
-    qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
+ //   qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
 
     m_starter->setStep(201);
 
@@ -89,12 +89,12 @@ void VideoPlayer::stop()
 
 void VideoPlayer::check()
 {
-    qDebug()<<" running: "<<m_starter->m_thread.isRunning()<<" ;finished: "<<m_starter->m_thread.isFinished();
+ //   qDebug()<<" running: "<<m_starter->m_thread.isRunning()<<" ;finished: "<<m_starter->m_thread.isFinished();
 }
 
 void VideoPlayer::shot()
 {
-    qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
+  //  qDebug()<<"starter is running? "<<thread_starter.isRunning()<<"; is finished? "<<thread_starter.isFinished();
 
     m_starter->setURL(m_source);
 
@@ -107,18 +107,18 @@ void VideoPlayer::shot()
 }
 
 void VideoPlayer::onWidthChanged(){
-qDebug()<<width();
+//qDebug()<<width();
 update();
 }
 
 void VideoPlayer::onheightChanged(){
-qDebug()<<height();
+//qDebug()<<height();
 update();
 }
 
 void VideoPlayer::timeout()
 {
-    qDebug()<<"---------------  timeout";
+ //   qDebug()<<"---------------  timeout";
     timer->stop();
    // m_player->m_thread.quit();
 
@@ -128,9 +128,9 @@ void VideoPlayer::timeout()
 
 void VideoPlayer::lost_connection()
 {
-    qDebug()<<"[lost_connection]";
+
 mImage=QImage(":/qml/video/no_signal.jpeg");
-qDebug()<<mImage.size();
+//qDebug()<<mImage.size();
 this->update();
 timer->stop();
 }
@@ -145,19 +145,19 @@ void VideoPlayer::slot_playing()
 void VideoPlayer::restart()
 {
     timer->stop();
-    qDebug()<<"[!!! RESTART !!!]";
+
  //   thread_starter.quit();
  //   thread_starter.exit();
     thread_starter.terminate();
     while(!thread_starter.isFinished()){
-        qDebug()<<thread_starter.isRunning()<<" "<<thread_starter.isFinished();
+   //     qDebug()<<thread_starter.isRunning()<<" "<<thread_starter.isFinished();
         thread_starter.quit();
         thread_starter.exit();
         thread_starter.terminate();
 
 
     }
-    qDebug()<<"thread_master is finished";
+   // qDebug()<<"thread_master is finished";
 
 
     thread_starter.start();
@@ -167,7 +167,7 @@ void VideoPlayer::restart()
 
 void VideoPlayer::clear_timer()
 {
-    qDebug()<<"clear_timer";
+
     timer->start();
 }
 

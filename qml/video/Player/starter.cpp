@@ -19,7 +19,7 @@ Starter::Starter(QObject *parent) : QObject(parent)
 
 void Starter::run()
 {
-    qDebug()<<"starter run";
+//    qDebug()<<"starter run";
 
 
 
@@ -48,14 +48,14 @@ int val=step();
 
         if((-1==val)||(3==val)||(103==val)||(200==val))
         if(prev!=val){
-    qDebug()<<"step "<<m_step;
+ //   qDebug()<<"step "<<m_step;
 
         prev=m_step;
         current_URL=m_URL;
         }
 
         if(i>1000000){
-         qDebug()<<m_step;
+ //        qDebug()<<m_step;
          i=0;
          emit tick();
 
@@ -66,8 +66,8 @@ int val=step();
 
         case 0:
        //     if(m_URL!=""){
-            qDebug()<<"m_thread.isRunnin? "<<m_thread.isRunning();
-            qDebug()<<"Отдаем команду остановить поток";
+       //     qDebug()<<"m_thread.isRunnin? "<<m_thread.isRunning();
+       //     qDebug()<<"Отдаем команду остановить поток";
             m_player->setRunning(mode::turnOff);
             m_step=1;
       //      }
@@ -90,14 +90,14 @@ int val=step();
         break;
 
         case 2:
-            qDebug()<<"Задаю новый URL: "<<current_URL;
+      //      qDebug()<<"Задаю новый URL: "<<current_URL;
 
-            qDebug()<<"URL: "<<current_URL;
+     //       qDebug()<<"URL: "<<current_URL;
 
            m_player->URL=m_URL;
            m_player->setRunning(mode::Streaming);
-           qDebug()<<"is running? "<<m_thread.isRunning();
-           qDebug()<<"is finished? "<<m_thread.isFinished();
+        //   qDebug()<<"is running? "<<m_thread.isRunning();
+         //  qDebug()<<"is finished? "<<m_thread.isFinished();
            m_thread.start();
 
             m_step=3;
@@ -107,7 +107,7 @@ int val=step();
         case 3:
 
             if(m_thread.isRunning()==false){
-                qDebug()<<"-------- перезапускаю поток";
+            //    qDebug()<<"-------- перезапускаю поток";
                 m_step=0;
             }
 
@@ -118,8 +118,8 @@ int val=step();
         case 100:
             if(m_thread.isRunning()==true){
        //     if(m_URL!=""){
-            qDebug()<<"m_thread.isRunnin? "<<m_thread.isRunning();
-            qDebug()<<"Отдаем команду остановить поток";
+       //     qDebug()<<"m_thread.isRunnin? "<<m_thread.isRunning();
+       //     qDebug()<<"Отдаем команду остановить поток";
             m_player->setRunning(mode::turnOff);
             m_step=101;
            }else{
@@ -144,9 +144,9 @@ int val=step();
         break;
 //test!!
         case 102:
-            qDebug()<<"Задаю новый URL: "<<current_URL;
+     //       qDebug()<<"Задаю новый URL: "<<current_URL;
 
-            qDebug()<<"URL: "<<current_URL;
+     //       qDebug()<<"URL: "<<current_URL;
 
            m_player->URL=current_URL;
            m_player->setRunning(mode::Snapshot);
@@ -178,7 +178,7 @@ int val=step();
     }
 
 
-    qDebug("[starter finished]");
+//    qDebug("[starter finished]");
     emit finished();
 }
 
@@ -190,7 +190,7 @@ int Starter::step() const
 void Starter::setStep(int value)
 {
     m_step=value;
-    qDebug()<<"m_step: "<<m_step<<" prev "<<prev;
+//    qDebug()<<"m_step: "<<m_step<<" prev "<<prev;
 
     emit stepChanged(value);
 
@@ -215,5 +215,5 @@ void Starter::new_frame()
 
 void Starter::slot_timeout()
 {
-    qDebug()<<"timeout";
+//    qDebug()<<"timeout";
 }
