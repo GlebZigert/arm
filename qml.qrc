@@ -5,7 +5,6 @@
         <file>MyVideo.qml</file>
         <file>ZonesTree.qml</file>
         <file>images/angle-right-solid.svg</file>
-        <file>js/devices-tree.js.0</file>
         <file>js/object-factory.js</file>
         <file>MyJournal.qml</file>
         <file>js/rif-plus.js</file>
@@ -23,7 +22,6 @@
         <file>UserTree.qml</file>
         <file>js/users.js</file>
         <file>qml/forms/UserForm.qml</file>
-        <file>js/tasks.js.bak</file>
         <file>Tasks.qml</file>
         <file>js/rules.js</file>
         <file>RulesTree.qml</file>
