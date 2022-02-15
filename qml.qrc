@@ -16,7 +16,6 @@
         <file>MyConfig.qml</file>
         <file>js/services.js</file>
         <file>qml/form-fields/TextInputRow.qml</file>
-        <file>js/sigur.js</file>
         <file>qml/forms/RifForm.qml</file>
         <file>qml/forms/ServiceForm.qml</file>
         <file>UserTree.qml</file>
@@ -36,7 +35,6 @@
         <file>js/z5rweb.js</file>
         <file>js/shapes.js</file>
         <file>qml/mymap/Panel.qml</file>
-        <file>js/map-worker-script.js</file>
         <file>qml/mymap/Map.qml</file>
         <file>qml/mymap/Plan.qml</file>
         <file>images/devices/t1/alarm.svg</file>
@@ -300,13 +298,11 @@
         <file>MyLogin.qml</file>
         <file>images/s7-logo.png</file>
         <file>js/arm-config.js</file>
-        <file>js/ipmon.js</file>
         <file>qml/forms/IPMonForm.qml</file>
         <file>qml/forms/AlarmPopup.qml</file>
         <file>qml/video/tree.png</file>
         <file>qml/forms/UserSelector.qml</file>
         <file>qml/forms/DeviceSelector.qml</file>
-        <file>js/parus.js</file>
         <file>qml/forms/ParusForm.qml</file>
         <file>qml/video/check_camera.jpeg</file>
         <file>qml/video/no_signal.jpeg</file>
