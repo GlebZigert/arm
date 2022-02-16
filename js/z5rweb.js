@@ -46,7 +46,7 @@ Z5RWeb.prototype.rebuildTree = function (data) {
 
     if (this.validateTree()) {
         this.update(data)
-    } else {
+    } else if (data) {
         //console.log('Z5RWeb: rebuild whole tree')
         for (i = 0; i < data.length; i++) {
             list.push(this.complement(data[i]))
@@ -67,11 +67,8 @@ Z5RWeb.prototype.processEvents = function (events) {
     var i, item
     Journal.logEvents(events)
 
-    if (!this.cache)
-        return // just created, no devices yet
-
     for (i = 0; i < events.length; i++) {
-        item = this.cache[events[i].deviceId]
+        item = this.cache && this.cache[events[i].deviceId]
         if (item) {
             //events[i].class >= 200 ? data.states[0].class : data.states[1].class
             if (Const.EC_INFO_ALARM_RESET === events[i].class) {
