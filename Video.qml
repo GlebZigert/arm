@@ -974,7 +974,7 @@ root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
 
     timeline.eventlog_on_off.connect( f_eventlog_on_off)
 /* */
-        vm.playing.connect(timeline.timer_start)
+        vm.playing.connect(start_timer_if_its_needed)
     //    vm.live_playing.connect(vm_live_playing_handler)
 
     timeline.update_timelist.connect(timelist.set_current)
@@ -1012,6 +1012,13 @@ root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
 
     root.storage_live=live
     root.pause_play=play
+
+}
+
+function start_timer_if_its_needed(){
+    if ( play==root.pause_play){
+    timeline.timer_start()
+    }
 
 }
 
@@ -1214,7 +1221,9 @@ function f_pause(){
 }
 
 function f_paused_and_moved_at_dt(dt){
-//f_pause()
+f_pause()
+
+    console.log("=============================================   ",dt)
 root.pause_play=pause
 f_moved_at_dt(dt)
 }

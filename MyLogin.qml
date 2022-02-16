@@ -45,7 +45,7 @@ Item {
             placeholderText: "IP сервера"
             validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{2,5})?/ }
             color: acceptableInput ? palette.text : "red"
-            text: "192.168.0.188:2973"
+            text: "127.0.0.1"
             //text: "127.0.0.1"
         }
         ///////////////////////////////////////////

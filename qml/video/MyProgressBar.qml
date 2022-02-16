@@ -60,12 +60,12 @@ Item {
         {
 
             var date=new Date().getTime()
-     //       //root.log(prev_date," ",date)
+            //root.log(prev_date," ",date)
 
 
         msec=msec+date-prev_date;
             prev_date=date
-//root.log("msec: ",msec)
+root.log("msec: ",msec)
             if(msec>1000)
             {
 
@@ -736,6 +736,7 @@ time_rect.color="lightgray"
 
 function timer_start()
 {
+    console.log("timer_start()")
 
     var dt=datetime(slider.value)
     Qt.formatTime(dt,"ss")
@@ -803,6 +804,8 @@ Component.onCompleted: {
 //livestream_button_clicked()
     timer.prev_date=new Date().getTime()
 //to_live()
+
+    console.log("[myprogressbar]")
 
 
  //   root.stream_from_storage.updated.connect(update)
