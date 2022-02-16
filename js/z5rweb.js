@@ -7,9 +7,6 @@ var stickyStates = [102, 103, 12, 13, 14, 15/*, 8, 9*/]
 
 
 function Z5RWeb(model) {
-    var status = model.status
-    model.status = {db: "", tcp: ""}
-
     this.model = model
     this.serviceId = this.model.serviceId
     this.handlers = {
@@ -18,15 +15,22 @@ function Z5RWeb(model) {
         DeleteDevice: this.deleteDev.bind(this),
         Events: this.processEvents.bind(this),
     }
+
     Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
 
+// called from outside when user's devices visibility changed
+Z5RWeb.prototype.reloadDevices = function () {
+    if (Const.EC_SERVICE_READY === this.model.status.self)
+        root.send(this.serviceId, 'ListDevices', '')
+}
+
 Z5RWeb.prototype.shutdown = function () {
-    root.log(this.model.type, this.model.id, 'shutdown')
+    console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Z5RWeb.prototype.statusUpdate = function (sid) {
-    if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid) {
+    if (Const.EC_SERVICE_READY === sid && this.model.status.self !== sid) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
     }
@@ -35,7 +39,7 @@ Z5RWeb.prototype.statusUpdate = function (sid) {
 }
 
 Z5RWeb.prototype.rebuildTree = function (data) {
-    root.log("Z5RWeb tree:", JSON.stringify(data))
+    //console.log("Z5RWeb tree:", JSON.stringify(data))
     var i,
         list = [],
         model = this.model.children
@@ -43,12 +47,12 @@ Z5RWeb.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     } else {
-        root.log('Z5RWeb: rebuild whole tree')
+        //console.log('Z5RWeb: rebuild whole tree')
         for (i = 0; i < data.length; i++) {
             list.push(this.complement(data[i]))
         }
 
-        //root.log("Z5RWeb list:", JSON.stringify(list))
+        //console.log("Z5RWeb list:", JSON.stringify(list))
         model.clear()
         model.append(list)
         this.cache = Utils.makeCache(model, {})
@@ -58,7 +62,7 @@ Z5RWeb.prototype.rebuildTree = function (data) {
 }
 
 Z5RWeb.prototype.processEvents = function (events) {
-    //root.log("Z5R Events", JSON.stringify(events))
+    //console.log("Z5R Events", JSON.stringify(events))
     // [{"fromState":0,"state":2,"data":"","text":"ключ не найден в банке ключей (вход), #000000929F4C","deviceId":1,"userId":0,"time":"2021-04-22T16:35:20Z"}]
     var i, item
     Journal.logEvents(events)
@@ -94,7 +98,7 @@ Z5RWeb.prototype.checkSticky = function (event) {
 }
 
 Z5RWeb.prototype.validateTree = function (data) {
-    root.log('Z5RWeb: validateTree stub')
+    //console.log('Z5RWeb: validateTree stub')
     return false
 }
 
@@ -123,19 +127,19 @@ Z5RWeb.prototype.contextMenu = function (id) {
         menu = [],
         serviceId = this.model.serviceId,
         device = this.cache[id]
-    //root.log("z5rweb-CM", JSON.stringify(device))
+    //console.log("z5rweb-CM", JSON.stringify(device))
 
     if (device && 2 === device.accessMode) {
         menu.push({text: "Открыть вход", command: 8})
         menu.push({text: "Открыть выход", command: 9})
         if (0 !== device.mode)
-            menu.push({text: "Нормальный режим", command: 37, argument: 0})
+            menu.push({text: "Нормальный режим", command: 370}) // 370+0
         if (1 !== device.mode)
-            menu.push({text: "Заблокировать", command: 37, argument: 1})
+            menu.push({text: "Заблокировать", command: 371}) // 370+1
         if (2 !== device.mode)
-            menu.push({text: "Свободный проход", command: 37, argument: 2})
+            menu.push({text: "Свободный проход", command: 372}) // 370+2
     }
-    //root.log(JSON.stringify(menu))
+    //console.log(JSON.stringify(menu))
 
     return menu.map(function (v) {
         v.serviceId = serviceId
@@ -144,9 +148,27 @@ Z5RWeb.prototype.contextMenu = function (id) {
     })
 }
 
+// list of all states per each device for algorithms form
+/*Z5RWeb.prototype.listStates = function (deviceId) {
+    return {
+
+    }
+}*/
+
+// list of available commands per each device for algorithms form
+Z5RWeb.prototype.listCommands = function (deviceId) {
+    return {
+            8: "Открыть вход",
+            9: "Открыть выход",
+            370: "Нормальный режим", // 370+0
+            371: "Заблокировать", // 370+1
+            372: "Свободный проход", // 370+2
+    }
+}
+
 // priority: 0 - state, 1 - event
 function setState(dev, event, priority) {
-    root.log("Z5R SetState", JSON.stringify(event))
+    //console.log("Z5R SetState", JSON.stringify(event))
     var mode,
         text,
         animation,
@@ -173,12 +195,12 @@ function setState(dev, event, priority) {
         if (sticky && priority > 0)
             animation = 'blink'; // continuous
 
-        //root.log('Z5R check-3', dev.stickyState, dev.state, sid)
+        //console.log('Z5R check-3', dev.stickyState, dev.state, sid)
         if (priority < 0 || !dev.stickyState && dev.state !== sid) {
-            //root.log('Z5R check-1')
+            //console.log('Z5R check-1')
             // update map
             if (sticky && priority > 0) {
-                //root.log('Z5R check-2')
+                //console.log('Z5R check-2')
                 dev.stickyState = true
                 //event.sticky = true
                 root.playAlarm(className)

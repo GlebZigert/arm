@@ -12,12 +12,18 @@ GridLayout {
     anchors.fill: parent
     //anchors.margins: 5
 
+    property var mid: model.id
+    onMidChanged: $ = {}
+    //onMidChanged: {for (var k in this) if ('$' === k[0] && 'number' == typeof this[k]) this[k] = 0} // reset shadow variables
+
+    property var $: ({}) // shadow model
+
+    property int serviceId: $.serviceId || model.serviceId || 0
+    property int deviceId: $.deviceId || model.deviceId || 0
+    property int targetServiceId: $.targetServiceId || model.targetServiceId || 0
+    property int targetDeviceId: $.targetDeviceId || model.targetDeviceId || 0
+
     property int userId: model.userId || 0
-    //property int zoneId: model.zoneId || 0
-    property int serviceId: model.serviceId || 0
-    property int deviceId: model.deviceId || 0
-    property int targetServiceId: model.targetServiceId || 0
-    property int targetDeviceId: model.targetDeviceId || 0
 
     property alias sourceType: sourceCombo.currentIndex
     property alias targetType: targetCombo.currentIndex
@@ -27,15 +33,9 @@ GridLayout {
     onSourceTypeChanged: 0 === sourceType ? updateDevEvents() : updateZoneEvents()
     onTargetTypeChanged: 0 === targetType? updateDevCommands() : updateZoneCommands()
 
-    /*property var model0: model
-    onModel0Changed: if (itemId) {
-        //toEvent.model.clear()
-        //fromState.model.clear()
-    }*/
-
-    onUserIdChanged: if (0 !== userId) Qt.callLater(updateUser)
-    onDeviceIdChanged: if (0 !== deviceId) Qt.callLater(updateSource)
-    onTargetDeviceIdChanged: if (0 !== targetDeviceId) Qt.callLater(updateTarget)
+    onUserIdChanged: 0 !== userId ? Qt.callLater(updateUser) : srcUser.text = ''
+    onDeviceIdChanged: 0 !== deviceId ? Qt.callLater(updateSource) : sourceDevice.text = ''
+    onTargetDeviceIdChanged: 0 !== targetDeviceId ? Qt.callLater(updateTarget) : targetDevice.text = ''
     //onTargetServiceIdChanged: updateCommands() // TODO: double call?
 
     ///////////////////////////////////////////
@@ -87,13 +87,11 @@ GridLayout {
         visible: 0 === sourceType
         onPressed: deviceSelector.display(serviceId, deviceId, selected)
         function selected(item) {
-            //root.log("Selected:", item.name, item.serviceId, item.id)
+            //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                /*model.serviceId = item.serviceId
-                model.deviceId = item.id
-                model = model // force update*/
-                serviceId = item.serviceId
-                deviceId = item.id
+                $.serviceId = item.serviceId
+                $.deviceId = item.id
+                $ = $ // apply shadow
             }
         }
     }
@@ -168,13 +166,11 @@ GridLayout {
         readOnly: true
         Layout.fillWidth: true
         onPressed: deviceSelector.display(targetServiceId, targetDeviceId, function (item) {
-            //root.log("Selected:", item.name, item.serviceId, item.id)
+            //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                /*model.targetServiceId = item.serviceId
-                model.targetDeviceId = item.id
-                model = model  // force update*/
-                targetServiceId = item.serviceId
-                targetDeviceId = item.id
+                $targetServiceId = item.serviceId
+                $targetDeviceId = item.id
+                $ = $ // apply shadow
             }
         })
     }
@@ -234,15 +230,8 @@ GridLayout {
             text: "Удалить"
             enabled: itemId !== 0 && !asyncWait
             //onClicked: root.send('configuration', 'DeleteAlgorithm', model.id)
-            onClicked: {
-                asyncWait = true
-                root.newTask('configuration', 'DeleteAlgorithm', model.id, done, errorMessage)
-            }
-            function done(msg) {
-                asyncWait = false
-                root.log(JSON.stringify(msg))
-                messageBox.information(msg.data)
-            }
+            // INFO: don't use asyncWait due to nothing destructive happens when clicked twice
+            onClicked: root.newTask('configuration', 'DeleteAlgorithm', model.id, null, errorMessage)
         }
     }
 
@@ -286,7 +275,7 @@ GridLayout {
         commands.model.clear()
         if (service && 'listCommands' in service) {
             list = service.listCommands(targetDeviceId)
-            //root.log("Commands:", JSON.stringify(list))
+            //console.log("Commands:", JSON.stringify(list))
             if (list) {
                 for (k in list)
                     model.push({id: Number(k), text: list[k]})
@@ -312,7 +301,7 @@ GridLayout {
     }
 
     function updateSource() {
-        //root.log('UPD SOURCE!')
+        //console.log('UPD SOURCE!')
         var device = Utils.findItem(root.devices, {id: deviceId, serviceId: serviceId})
         sourceDevice.text = device ? device.name : ''
         updateDevEvents()
@@ -329,13 +318,13 @@ GridLayout {
         fromState.model.clear()
         if (service && 'listStates' in service) {
             list = service.listStates(deviceId)
-            //root.log("States:", JSON.stringify(list))
+            //console.log("States:", JSON.stringify(list))
             if (list) {
                 model = []
                 for (k in list)
                     model.push({id: Number(k), text: list[k]})
 
-                //root.log("MODEL:", JSON.stringify(model))
+                //console.log("MODEL:", JSON.stringify(model))
                 model.unshift({id: -1, text: 'Любое'})
                 toEvent.model.append(model)
                 fromState.model.append(model)
@@ -354,7 +343,7 @@ GridLayout {
         var payload = {id: itemId},
             ok = Helpers.readForm(form, payload) && 0 < payload.command
 
-        root.log("OK-1", ok)
+        console.log("OK-1", ok)
         if (0 === sourceType) {
             // source - device
             payload.serviceId = serviceId
@@ -366,7 +355,7 @@ GridLayout {
             //payload.zoneId = zoneId
             ok = ok && userId > 0 && payload.zoneId > 0
         }
-        root.log("OK-2", ok)
+        console.log("OK-2", ok)
         if (0 === targetType) {
             // target - device
             payload.targetServiceId = targetServiceId
@@ -377,10 +366,10 @@ GridLayout {
             ok = ok && payload.targetZoneId > 0
         }
 
-        root.log("OK-3", ok)
+        console.log("OK-3", ok)
         if (ok) {
             payload.argument = parseInt(payload.argument)
-            root.log("AlgoForm payload:", JSON.stringify(payload))
+            console.log("AlgoForm payload:", JSON.stringify(payload))
             asyncWait = true
             root.newTask('configuration', 'UpdateAlgorithm', payload, done, errorMessage)
         } else

@@ -10,6 +10,7 @@ import QtQuick.Layouts 1.5
 import "qml/forms" as Forms
 import "js/utils.js" as Utils
 import "js/constants.js" as Const
+import "js/arm-config.js" as ARM
 
 Item {
     property int panePosition
@@ -110,7 +111,7 @@ Item {
                   text: model.text
                   onTriggered: {
                       var payload = {zoneId: model.zoneId, command: model.command}
-                      root.log('Zone ContextMenu: Sending', JSON.stringify(payload))
+                      console.log('Zone ContextMenu: Sending', JSON.stringify(payload))
                       root.send(0, 'ZoneCommand', payload);
                   }
               }
@@ -137,7 +138,7 @@ Item {
         if (item && item.id) {
             zone = Utils.findItem(treeModel.get(0).children, item.id)
             loader.model = zone
-            //root.log("ZonesTree EntEv:", zone.entranceEvents)
+            //console.log("ZonesTree EntEv:", zone.entranceEvents)
             tableView.model = zone.entranceEvents || userList
         } else {
             loader.model = item
@@ -149,8 +150,8 @@ Item {
     function contextMenu(item, x, y) {
         if (1 === item.id)
             return
-        // TODO: move settings to arm-config.js
-        if ([Const.ARM_UNIT, Const.ARM_GUARD].indexOf(root.armRole) < 0)
+
+        if (ARM.zoneOperators.indexOf(root.armRole) < 0)
             return
 
         var list = [

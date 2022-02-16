@@ -43,9 +43,10 @@ Item {
             enabled: !root.currentUser;
             Layout.fillWidth: true
             placeholderText: "IP сервера"
-            validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/ }
+            validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{2,5})?/ }
             color: acceptableInput ? palette.text : "red"
-            text: "127.0.0.1"
+            text: "192.168.0.188:2973"
+            //text: "127.0.0.1"
         }
         ///////////////////////////////////////////
         Text { text: ""; visible: !!root.currentUser; Layout.alignment: Qt.AlignLeft }
@@ -63,7 +64,7 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-            text: "root"
+            text: "Администратор"
         }
         ///////////////////////////////////////////
         Text { text: "Пароль"; Layout.alignment: Qt.AlignRight}
@@ -75,7 +76,7 @@ Item {
             echoMode: TextInput.Password
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
-            text: "root"
+            text: "Start7"
         }
         ///////////////////////////////////////////
         Text { text: ""; Layout.alignment: Qt.AlignLeft }
@@ -87,7 +88,7 @@ Item {
         }
     }
     // TODO: remove next line in production
-    //Component.onCompleted: login()
+    Component.onCompleted: login()
 
     function logout() {
         var i,
@@ -99,7 +100,7 @@ Item {
         for (i = 0; i < services.count; i++) {
             svc = services.get(i)
             alarms = Journal.pendingAlarms(svc.serviceId)
-            //root.log("Alarms:", svc.title, JSON.stringify(alarms))
+            //console.log("Alarms:", svc.title, JSON.stringify(alarms))
             if (alarms.length > 0)
                 pending.push(svc.title)
         }
@@ -107,7 +108,7 @@ Item {
         if (alarms.length > 0)
             pending.push("Система")
 
-        root.log("Pending:", JSON.stringify(pending))
+        console.log("Pending:", JSON.stringify(pending))
         if (pending.length > 0) {
             msg = "Есть необработанные тревоги в следующих подсистемах:\n• "
                     + pending.join('\n• ')
@@ -122,18 +123,18 @@ Item {
     }
 
     function done(msg) {
-        //root.log("MyLogin:", JSON.stringify(msg))
+        //console.log("MyLogin:", JSON.stringify(msg))
     }
 
     function failed(msg) {
-        root.log("Сбой при выполнении команды")
+        console.log("Сбой при выполнении команды")
     }
 
     function change() {
         var payload = {},
             ok = Helpers.readForm(form, payload)
         if (ok) {
-            //root.log(JSON.stringify(payload))
+            //console.log(JSON.stringify(payload))
             password.text = ''
             payload.token = Crypto.md5(root.authSalt + payload.password)
             delete payload.password
@@ -147,9 +148,12 @@ Item {
         var payload = {},
             ok = Helpers.readForm(form, payload)
         if (ok) {
-            //root.log(JSON.stringify(payload))
+            //console.log(JSON.stringify(payload))
             password.text = ''
-            root.serverHost = payload.server + ':' + root.serverPort
+            if (payload.server.indexOf(':') > 0)
+                root.serverHost = payload.server
+            else
+                root.serverHost = payload.server + ':' + root.serverPort
             root.userLogin = payload.login
             root.userToken = Crypto.md5(root.authSalt + payload.password)
             socket.stopped = false

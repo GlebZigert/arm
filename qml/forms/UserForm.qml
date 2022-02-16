@@ -120,10 +120,12 @@ ColumnLayout {
                 payload.devices = Helpers.getLinks(model.devices)//.reduce(function (acc, v) {if (v.flags > 0) acc.push(v); return acc}, [])
             }
 
-            if (fileDialog.file)
+            if (fileDialog.file) {
+                filename = fileDialog.file
                 fileDialog.reset()
+            }
 
-            root.log("USER PAYLOAD:", JSON.stringify(payload))
+            //console.log("USER PAYLOAD:", filename, JSON.stringify(payload))
             asyncWait = true
             root.newTask('configuration', 'UpdateUser', payload, done.bind(this, filename), fail)
         } else
@@ -131,13 +133,13 @@ ColumnLayout {
     }
 
     function fail() {
-        //root.log('UpdateUser failed')
+        //console.log('UpdateUser failed')
         asyncWait = false
         messageBox.error("Операция не выполнена")
     }
 
     function done(filename, msg) {
-        //root.log("ErWar:", JSON.stringify(msg.data.warnings))
+        //console.log("User Err & Warn:", JSON.stringify(msg.data.warnings))
         if (msg.data.errors) {
             messageBox.error(msg.data.errors.join('\n'))
         } else {
@@ -149,10 +151,10 @@ ColumnLayout {
         }
 
             //tree.findItem(msg.data.id)
-        //root.log('done', JSON.stringify(msg))
+        //console.log('done', JSON.stringify(msg))
     }
     function saveDone(filename) {
-        root.log("UserForm upload:", filename)
+        console.log("UserForm upload:", filename)
         var url = "http://" + serverHost + "/0/user?id=" + savedId;
         if (filename) { // upload user image
             Upload.readFile(filename, function (arrayBuffer) {
@@ -171,7 +173,7 @@ ColumnLayout {
         if (success) {
             nocache = Math.round(Math.random() * 2e9)
             fileDialog.ready = false
-            //root.log("Upload done!", nocache)
+            //console.log("Upload done!", nocache)
         } else {
             messageBox.error("Не удаётся загрузить выбранный файл с изображением на сервер")
         }

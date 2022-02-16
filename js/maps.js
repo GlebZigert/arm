@@ -5,12 +5,12 @@ var handlers = {
     ListMaps: listMaps,
     UpdateMap: updateMap,
     DeleteMap: function (msg) {
-        root.log("Maps COUNT before del", root.maps.count)
+        console.log("Maps COUNT before del", root.maps.count)
         Utils.deleteItem(root.maps, msg.data)
-        root.log("Maps COUNT after del", root.maps.count)
+        console.log("Maps COUNT after del", root.maps.count)
     }
     /*DeleteMap: function (msg) {
-        root.log(JSON.stringify(msg))
+        console.log(JSON.stringify(msg))
         for (var i = 0; i < root.maps.count; i++)
             if (root.maps.get(i).id === msg.data) {
                 root.maps.remove(i)
@@ -26,7 +26,8 @@ function planImagePath(id) {
 }
 
 function listMaps(msg) {
-    //root.log(JSON.stringify(msg))
+//    console.log("############# LIST MAPS:", JSON.stringify((msg.data)))
+    root.maps.clear()
     if (!msg.data)
         return
 
@@ -38,14 +39,12 @@ function listMaps(msg) {
         injectExtra(msg.data[i])
     }
 
-    //root.log("MAPS:", JSON.stringify((msg.data)))
-    root.maps.clear()
     root.maps.append(msg.data)
-    //root.log("Maps COUNT after list", root.maps.count)
+    //console.log("Maps COUNT after list", root.maps.count)
 }
 
 function updateMap(msg) {
-    root.log("UPD MAP:", JSON.stringify(msg.data))
+    console.log("UPD MAP:", JSON.stringify(msg.data))
     if (!msg.data)
         return
 
@@ -53,7 +52,7 @@ function updateMap(msg) {
     for (var i = 0; i < root.maps.count; i++)
         if ((map = root.maps.get(i)).id === msg.data.id)
             break
-    //root.log("=====================")
+    //console.log("=====================")
     //dumpModel(root.maps)
 
     // if map_updated && !admin && no_shapes_in_map
@@ -69,7 +68,7 @@ function updateMap(msg) {
             root.maps.append(msg.data)
     }
     //dumpModel(root.maps)
-    //root.log("Maps COUNT after update", root.maps.count)
+    //console.log("Maps COUNT after update", root.maps.count)
 }
 
 function mergeShapes(model, updates) {
@@ -96,10 +95,10 @@ function injectExtra(map) {
         shapes = {}
     map.zoomLevel = 3
     for (j = 0; map.shapes && j < map.shapes.length; j++) {
-        //root.log("%%%%%%%%%%%%%%%%%", JSON.stringify(map.shapes[j]))
+        //console.log("%%%%%%%%%%%%%%%%%", JSON.stringify(map.shapes[j]))
         device = Utils.findDevice(root.devices, map.shapes[j].sid, map.shapes[j].did)
         //device = Utils.findItem(root.devices, {serviceId: map.shapes[j].sid, id: map.shapes[j].did})
-        //root.log("$$$$$$$$$$$$$$", JSON.stringify(device))
+        //console.log("$$$$$$$$$$$$$$", JSON.stringify(device))
         Utils.updateShape(map.shapes[j], device)
         /*device = device || {color: '#808080', display: '', stateType: 'na'}
         map.shapes[j].name = device.name

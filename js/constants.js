@@ -49,7 +49,7 @@ const   EC_NA = 0,  //iota
         EC_LOGIN_TIMEOUT        = 107,
         EC_USER_SHIFT_STARTED   = 108,
         EC_USER_SHIFT_COMPLETED = 109,
-        EC_SERVICE_READY        = 110,
+        //EC_SERVICE_READY        = 110,
         EC_SERVICE_SHUTDOWN     = 111,
         EC_ARMED                = 112,
         EC_DISARMED             = 113,
@@ -66,6 +66,7 @@ const   EC_NA = 0,  //iota
         EC_DATABASE_READY         = 204,
         EC_ONLINE                 = 205,
         EC_UPS_PLUGGED            = 206,
+        EC_SERVICE_READY          = 207,
 
         // ERROR
         EC_ERROR                = 300,
@@ -95,6 +96,14 @@ var stickyStates = [
 ]
 
 var serviceStatuses = {}
-
+serviceStatuses[EC_SERVICE_READY] = "self"
+serviceStatuses[EC_SERVICE_SHUTDOWN] = "self"
+serviceStatuses[EC_SERVICE_FAILURE] = "self"
+serviceStatuses[EC_SERVICE_ONLINE] = "tcp"
+serviceStatuses[EC_SERVICE_OFFLINE] = "tcp"
+serviceStatuses[EC_SERVICE_ERROR] = "tcp"
+serviceStatuses[EC_DATABASE_READY] = "db"
+serviceStatuses[EC_DATABASE_UNAVAILABLE] = "db"
+serviceStatuses[EC_DATABASE_ERROR] = "db"
 
 var useAlarms = [ARM_UNIT, ARM_CHECKPOINT, ARM_GUARD, ARM_OPERATOR]

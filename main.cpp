@@ -3,11 +3,20 @@
 #include <QQmlApplicationEngine>
 #include <QNetworkProxy>
 #include <QQuickWindow>
-#include "qml/video/Player/videoplayer.h"
 #include "qml/video/Preview/Preview.h"
+
+#ifndef WIN32
+#include "qml/video/Player/videoplayer.h"
+#endif
+
 
 int main(int argc, char *argv[])
 {
+    // disable debug output
+    #ifdef QT_NO_DEBUG
+    //qputenv("QT_LOGGING_RULES", "*.debug=false;qml=false");
+    #endif
+
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     //QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D12);
     //QCoreApplication::setAttribute(Qt::ApplicationAttribute::AA_UseOpenGLES, true);
@@ -27,8 +36,10 @@ int main(int argc, char *argv[])
     QNetworkProxy::setApplicationProxy(QNetworkProxy(QNetworkProxy::NoProxy));
 
     //Глеб - регистрирую свои классы
-        qmlRegisterType<Preview>("Preview",1,0,"Preview");
-        qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
+    #ifndef WIN32
+    qmlRegisterType<Preview>("Preview",1,0,"Preview");
+    qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
+    #endif
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

@@ -3,18 +3,67 @@
 .import "journal.js" as Journal
 
 // command list for each device type, used for algorithms form
-var commands = {
+/*var commands = {
     12: {100: 'Выключить', 101: 'Включить'},
-    10011: {110: 'Закрыть', 111: 'Открыть'} // lock
+    10011: {110: 'Закрыть', 111: 'Открыть'}, // lock
+    10044: {110: 'Закрыть', 111: 'Открыть'}, // ССОИ-IP lock
+}*/
+var commands = {
+    1: [100, 101, 136, 137], // РИФ-РЛМ, Трасса
+    2: [100, 101, 136, 137], // СД КЛ1
+    44: [136, 137], // СД ССОИ-IP
+    45: [100, 101], // ИУ ССОИ-IP
+    10: [136, 137], // Точка/Гарда
+    11: [100, 101, 136, 137], // СД БЛ-IP
+    12: [100, 101], // ИУ БЛ-IP
+    26: [136, 137], // БОД Точка-М / Гарда-М
+    27: [136, 137], // Участок Точка-М / Гарда-М
+    28: [136, 137], // ДД Точка-М / Гарда-М
+    29: [136, 137], // БОД Сота / Сота-М
+    30: [136, 137], // Участок Сота / Сота-М
+    31: [136, 137], // ДД Сота / Сота-М
+    99: [100, 101, 136, 137],
+    7: [100, 101], // ИУ Адам-4ххх
+
+    10011: [110, 111], // lock, custom type (1e4 + 11)
+    10044: [0, 1, 21], // БЛ ССОИ-IP, custom type (1e4 + 44)
 }
 
+var commandName = {
+    100: 'Выключить',
+    101: 'Включить',
+    110: 'Закрыть',
+    111: 'Открыть',
+    136: 'Снять с контроля',
+    137: 'Включить контроль'
+}
+
+// ССОИ     type="3" num3="9"
+// ССОИ-М   type="33" num3="9"
+// ССОИ-IP  type="44" num2="9"
 // all available states for each device type, used for algorithms form
 var states = {
-    11: [0, 1, 3, 10, 11, 20, 100, 101, 136, 137],
-    12: [0, 10, 100, 101, 130, 131],
-    111: [0, 1, 3, 10, 11, 12, 20, 22, 25, 100, 101, 136, 137],
-    10011: [1, 3, 11, 110, 111, 112, 113, 150, 151, 2, 17, 136, 137] // lock, custom type (1e4 + 11)
+    1: [0, 1, 3, 10, 11, 12, 20, 21, 22, 100, 101, 136, 137], // РИФ-РЛМ, Трасса
+    2: [0, 1, 3, 10, 11, 20, 21, 100, 101, 136, 137], // СД КЛ1
+    44: [0, 1, 3, 10, 11, 20, 21, 136, 137], // СД ССОИ-IP
+    45: [0, 10, 100, 101], // ИУ ССОИ-IP
+    10: [0, 1, 3, 10, 11, 18, 20, 21, 23, 136, 137], // Точка/Гарда
+    11: [0, 1, 3, 10, 11, 20, 100, 101, 136, 137], // СД БЛ-IP
+    12: [0, 10, 100, 101, 130, 131], // ИУ БЛ-IP
+    26: [0, 1, 3, 10, 11, 20, 21, 136, 137], // БОД Точка-М / Гарда-М
+    27: [0, 136, 137], // Участок Точка-М / Гарда-М
+    28: [0, 1, 5, 6, 10, 12, 13, 20, 22, 23, 136, 137], // ДД Точка-М / Гарда-М
+    29: [0, 1, 3, 10, 11, 12, 20, 21, 136, 137], // БОД Сота / Сота-М
+    30: [0, 136, 137], // Участок Сота / Сота-М
+    31: [0, 1, 10, 12, 20, 136, 137], // ДД Сота / Сота-М
+    99: [0, 1, 3, 10, 11, 12, 20, 22, 25, 100, 101, 136, 137],
+    7: [0, 10, 100, 101], // ИУ Адам-4ххх
+
+    10011: [0, 1, 3, 11, 110, 111, 112, 113, 150, 151, 2, 17], // lock, custom type (1e4 + 11)
+    10044: [0, 1, 21], // БЛ ССОИ-IP, custom type (1e4 + 44)
 }
+
+
 
 var stickyStates = [10, 11, 12, 13, 18, 20, 21, 22, 23, 25, 113, 143, 1143, 145]
 
@@ -170,19 +219,24 @@ function Rif(model) {
         ListDevices: this.rebuildTree.bind(this),
         Events: this.processEvents.bind(this),
     }
+    Utils.setInitialStatus(this.model, this.statusUpdate.bind(this))
+}
 
-    Utils.setInitialStatus(model, this.statusUpdate.bind(this))
+// called from outside when user's devices visibility changed
+Rif.prototype.reloadDevices = function () {
+    if (Const.EC_SERVICE_ONLINE === this.model.status.tcp)
+        root.send(this.serviceId, 'ListDevices', '')
 }
 
 Rif.prototype.statusUpdate = function (sid) {
-    //root.log("==============1 RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
+    //console.log("==============1 RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
     if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid)
         root.send(this.serviceId, 'ListDevices', '')
     if (Const.EC_DATABASE_READY === sid && this.model.status.db !== sid)
         root.send(0, 'LoadJournal', this.serviceId)
 
     Utils.setServiceStatus(this.model, sid)
-    //root.log("==============2 RIF-STATUS", "=>", this.model.color, JSON.stringify(this.model.status))
+    //console.log("==============2 RIF-STATUS", "=>", this.model.color, JSON.stringify(this.model.status))
 }
 
 
@@ -195,7 +249,7 @@ Rif.prototype.listStates = function (deviceId) {
     if (device && device.type in states)
         for (i = 0; i < states[device.type].length; i++) {
             state = states[device.type][i]
-            //root.log(typeof state)
+            //console.log(typeof state)
             name = stateName[state]
             if (name)
                 list[state] = name
@@ -206,8 +260,16 @@ Rif.prototype.listStates = function (deviceId) {
 
 
 Rif.prototype.listCommands = function (deviceId) {
-    var device = this.cache[deviceId] || {type: 0}
-    return commands[device.type]
+    var i,
+        list = {},
+        type = this.cache[deviceId] && this.cache[deviceId].type
+    if (!type)
+        return
+
+    for (i = 0; i < commands[type].length; i++)
+        list[commands[type][i]] = commandName[commands[type][i]]
+
+    return list
 }
 
 Rif.prototype.reloadTree = function (id) {
@@ -221,7 +283,7 @@ Rif.prototype.contextMenu = function (id) {
         menu = [],
         trans = [], // combined transitions
         device = this.cache[id]
-    root.log("Rif-CM", JSON.stringify(device))
+    console.log("Rif-CM", JSON.stringify(device))
     if (!device) {
         menu.push({
               text: "Общий ДК",
@@ -271,14 +333,14 @@ Rif.prototype.contextMenu = function (id) {
 
 
 Rif.prototype.shutdown = function () {
-    root.log(this.model.type, this.model.id, 'shutdown')
+    console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Rif.prototype.rebuildTree = function (data0) {
-    //root.log("Rif Tree:", JSON.stringify(data0))
+    //console.log("Rif Tree:", JSON.stringify(data0))
     if (!data0)
         return
-    //root.log("MODEL:", this.serviceId, JSON.stringify(this.model))
+    //console.log("MODEL:", this.serviceId, JSON.stringify(this.model))
     var i,
         item,
         state,
@@ -288,20 +350,20 @@ Rif.prototype.rebuildTree = function (data0) {
         path = [list],
         model = this.model.children;
     if (this.validateTree(data0)) {
-        root.log('Update RIF tree')
+        console.log('Update RIF tree')
         this.update(data0)
     } else {
         this.nextGroupId = 9e15 // ~Number.MAX_SAFE_INTEGER
-        root.log("Rebuild RIF tree")
+        console.log("Rebuild RIF tree")
         for (i = 0; i < data0.length; i++)
             data.push(data0[i])
         data.sort(function(a, b) {
             return a.order - b.order;
         })
-        //root.log("Rif Tree:", JSON.stringify(data))
+        //console.log("Rif Tree:", JSON.stringify(data))
         for (i = 0; i < data.length; i++) {
             //sType = getClassName(data[i].type, data[i].states[0].id)
-            //root.log(data[i].id, ":", typeof data[i].id)
+            //console.log(data[i].id, ":", typeof data[i].id)
             item = {
                 id: data[i].id, // || this.nextGroupId--,
                 accessMode: data[i].accessMode,
@@ -315,7 +377,7 @@ Rif.prototype.rebuildTree = function (data0) {
 
                 children: [],
                 num: data[i].num,
-                type: (data[i].option === 1 ? 1e4 : 0) + data[i].type,
+                type: customType(data[i]),
                 isGroup: data[i].type === 0,
                 form: 'rif'
             }
@@ -337,8 +399,15 @@ Rif.prototype.rebuildTree = function (data0) {
         /*for (i in this.cache) {
             //Utils.updateMaps(this.cache[i])
         }*/
-        //root.log(Object.keys(this.cache))
+        //console.log(Object.keys(this.cache))
     }
+}
+
+function customType(dev) {
+    var custom = 1 === dev.option
+             || 44 === dev.type && 9 === dev.num[1]
+
+    return (custom ? 1e4 : 0) + dev.type
 }
 
 Rif.prototype.checkSticky = function (event) {
@@ -346,7 +415,7 @@ Rif.prototype.checkSticky = function (event) {
 }
 
 Rif.prototype.processEvents = function (events) {
-    //root.log("RIF Events", JSON.stringify(events))
+    //console.log("RIF Events", JSON.stringify(events))
     // [{"fromState":0,"state":1004,"data":"","text":"Удал.ком. Открыть","deviceId":1,"userId":0,"time":"2021-05-25T10:08:05Z"},{"fromState":0,"state":111,"data":"","text":"Открыто","deviceId":1,"userId":0,"time":"2021-05-25T10:08:05Z"}]
     var dev,
         sType
@@ -366,7 +435,7 @@ Rif.prototype.processEvents = function (events) {
 
 /*
 Rif.prototype.update = function (data) {
-    root.log("UPD:", JSON.stringify(data))
+    console.log("UPD:", JSON.stringify(data))
     var color, state, text,
         sType,
         updates = {}
@@ -395,7 +464,7 @@ Rif.prototype.update = function (data) {
 */
 // validate new data against existing tree
 Rif.prototype.validateTree = function (data) {
-    root.log('RifValidateTreeStub')
+    console.log('RifValidateTreeStub')
     return false
     /*var id,
         ok = true
