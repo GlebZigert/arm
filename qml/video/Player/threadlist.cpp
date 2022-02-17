@@ -8,7 +8,7 @@ tmr = new QTimer(this);
 //       tmr->start(1000);
 }
 
-bool threadList::append(QString str)
+bool threadList::append(QString str, int mode)
 {
 
     foreach(MyThread* val, list.values()){
@@ -57,7 +57,7 @@ qDebug()<<val->runner.URL<<" "<<val->runner.m_running<<" "<<val->runner.thread()
     qDebug("append");
 
     if(str!=0){
-         MyThread*  mm=new MyThread(img,str);
+         MyThread*  mm=new MyThread(img,str,mode);
        //  connect(mm->runner,&Runner::new_frame,this,receiveFrame());
 
         connect(&mm->runner,SIGNAL(new_frame()),this,SLOT(receiveFrame()));
@@ -85,23 +85,26 @@ MyThread* current= list.value(str);
 
 void threadList::process()
 {
-  //  qDebug()<<"step "<<step;
+    qDebug()<<"step "<<step;
     switch(step){
 
     case 0:
-    append(URL);
-    step=1;
-    cnt1=0;
-    firstFrame=false;
+     this->firstFrame=false;
+     step=1;
+     cnt1=0;
+    append(URL,mode);
+
+
     tmr->start(100);
     break;
 
     case 1:
 
     if(firstFrame){
-        firstFrame=false;
         tmr->stop();
-    }
+     //   this->firstFrame=false;
+
+    }else{
 
     cnt1++;
  //   qDebug()<<"cnt1 "<<cnt1;
@@ -110,6 +113,8 @@ void threadList::process()
     tmr->start(100);
     }else
     step=0;
+    }
+
     break;
 
     case 2:
@@ -123,8 +128,8 @@ void threadList::process()
 
 void threadList::receiveFrame()
 {
-    firstFrame=true;
-  //  qDebug()<<"receiveFrame()";
+    this->firstFrame=true;
+    qDebug()<<"receiveFrame()";
     emit frame();
 
 

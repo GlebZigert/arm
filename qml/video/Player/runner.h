@@ -28,15 +28,15 @@ class Runner : public QObject
     Q_OBJECT
 
     // Свойство, управляющее работой потока
-    Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
+    Q_PROPERTY(int running READ running WRITE setRunning NOTIFY runningChanged)
 
 public:
     explicit Runner( QObject *parent = nullptr);
 
     void output();
 
-bool m_running;
-    bool running() const;
+int m_running;
+    int running() const;
     int count;  // Счётчик, по которому будем ориентироваться на то,
 
     QString str;

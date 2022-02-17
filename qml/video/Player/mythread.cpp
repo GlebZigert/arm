@@ -1,9 +1,11 @@
 #include "mythread.h"
 #include "QDebug"
 
-MyThread::MyThread(QImage* img, QString str, QObject *parent) : QObject(parent)
+MyThread::MyThread(QImage* img, QString str,int mode, QObject *parent) : QObject(parent)
 {
 this->str=str;
+
+    if(mode!=mode::turnOff){
     qDebug()<<"создаю "<<str;
 
     runner.str=str;
@@ -12,11 +14,12 @@ this->str=str;
     connect(&runner, &Runner::finished, &thread, &QThread::quit);
 
 
+    runner.m_running=mode;
     runner.img=img;
     runner.URL=str;
     runner.moveToThread(&thread);
 //    thread.start();
-
+}
 
 }
 

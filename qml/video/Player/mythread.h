@@ -10,7 +10,7 @@ class MyThread : public QObject
     Q_OBJECT
 
 public:
-    explicit MyThread(QImage* img,QString str, QObject *parent = nullptr);
+    explicit MyThread(QImage* img,QString str,int mode, QObject *parent = nullptr);
 
     ~MyThread();
 

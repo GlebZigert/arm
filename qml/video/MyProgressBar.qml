@@ -381,6 +381,9 @@ Row {
         MouseArea {
             anchors.fill: parent
         onClicked: {
+            if(!delay.running){
+
+
 
             timer.stop()
           //      timer.msec=0
@@ -402,7 +405,10 @@ Row {
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
              paused_and_moved_at_dt(get_dt(dt))
-
+   delay.start()
+        }else{
+                console.log("running")
+                }
         }
         }
     }
@@ -485,7 +491,7 @@ Row {
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
          paused_and_moved_at_dt(get_dt(dt))
-       // delay.start()
+        delay.start()
 
         }else{
         console.log("running")

@@ -9,7 +9,7 @@ this->str=str;
     m_running=true;
 }
 
-bool Runner::running() const
+int Runner::running() const
 {
 
 }
@@ -45,7 +45,7 @@ int Runner::interrupt_cb(void *ctx)
 void Runner::run()
 {
 
-        qDebug()<<"RUN";
+        qDebug()<<"RUN "<<m_running;
         prev=clock();
         //variable
         AVFormatContext *pFormatCtx;
@@ -207,28 +207,28 @@ void Runner::run()
 
            while(m_running!=mode::turnOff)
            {
-               qDebug()<<"averror "<<AVERROR(EAGAIN);
+        //       qDebug()<<"averror "<<AVERROR(EAGAIN);
 
-    qDebug()<<"..."<<clock();
+ //   qDebug()<<"..."<<clock();
                 prev=clock();
                int res=(av_read_frame(pFormatCtx, packet));
-               qDebug()<<"res "<<res;
+          //     qDebug()<<"res "<<res;
                  if(res<0){
                      emit lost_connection(URL);
                      emit finished();
                      return;
                  }
-                      qDebug()<<"     1";
+             //         qDebug()<<"     1";
                 if (packet->stream_index == videoindex)
                 {
-                        qDebug()<<"     2";
+                 //       qDebug()<<"     2";
                     //qDebug()<<"pts : %d     size :%d one pkt\n",packet->pts,packet->size);
                     //fwrite(packet->data, 1, packet->size, fpSave);
                 //    qDebug() << "pkt pts:" << packet->pts;
                     ret = avcodec_decode_video2(pAVCodecContext, pAVFrame, &m_i_frameFinished, packet);
                     if(ret < 0)
                     {
-                            qDebug()<<"     3";
+                   //         qDebug()<<"     3";
                         qDebug() << "Decoding failed!!";
                         emit lost_connection(URL);
                         emit finished();
@@ -236,7 +236,7 @@ void Runner::run()
                     }
                     if (m_i_frameFinished)
                     {
-                            qDebug()<<"     4";
+                   //         qDebug()<<"     4";
 
                         sws_scale(pSwsContext,(const uint8_t* const *)pAVFrame->data,pAVFrame->linesize,0,videoHeight,pAVPicture.data,pAVPicture.linesize);
                         //Send to get a frame of image signal
@@ -249,20 +249,20 @@ void Runner::run()
                      //   image.save("/home/gleb/img","jpg",-1);
                        // img=image;
                         emit new_frame();
-                        /*
+
                         if(m_running==mode::Snapshot){
                             m_running=mode::turnOff;
                         }
-                        */
+
                    //     emit sig_GetOneFrame(image);
                    //     qDebug() << "emit!!!!!";
                     }
-                        qDebug()<<"     5";
+                  //      qDebug()<<"     5";
                  }
-                    qDebug()<<"     6";
+                 //   qDebug()<<"     6";
 
              }
-        qDebug()<<"     7";
+     //   qDebug()<<"     7";
 
            // av_packet_unref(packet);
             av_free_packet(packet);
@@ -282,7 +282,7 @@ void Runner::run()
             sws_freeContext(pSwsContext);
             av_free(pAVFrame);
             //  qDebug()<<"is end  !!! \n");
-            qDebug()<<"[finished]";
+          //  qDebug()<<"[finished]";
             emit finished();
             return;
 

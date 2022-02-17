@@ -13,7 +13,7 @@ public:
 
     QMap<QString, MyThread* > list;
 
-    bool append(QString);
+    bool append(QString,int);
 
     void remove(QString str);
 
@@ -23,6 +23,7 @@ public:
 
 
     QString URL;
+    int mode;
     int step;
     int cnt1;
     int firstFrame;

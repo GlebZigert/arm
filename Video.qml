@@ -1264,7 +1264,7 @@ function  update_vm(id)
     var lcl=Axxon.camera(cid)
 
     //root.log("[",dt,"]")
- //   root.log("-------------update vm")
+    root.log("-------------update vm")
  if(root.pause_play==pause)
      {
    //  root.log("pause")
