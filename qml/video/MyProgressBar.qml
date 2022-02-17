@@ -135,7 +135,7 @@ root.log("msec: ",msec)
 
     Timer {
         id: delay
-        interval: 500; running: false; repeat: false
+        interval: 250; running: false; repeat: false
         onTriggered:
         {
 
