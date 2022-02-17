@@ -4,8 +4,8 @@
 #include <QtQuick/QQuickPaintedItem>
 #include <QImage>
 #include <QThread>
-#include "starter.h"
 #include <QTimer>
+#include "threadlist.h"
 
 
 class VideoPlayer : public QQuickPaintedItem
@@ -17,12 +17,7 @@ class VideoPlayer : public QQuickPaintedItem
 public:
     explicit  VideoPlayer(QQuickItem *parent = 0);
     void paint(QPainter *painter) override;
-    //Container *m_player;
-    Starter *m_starter;
 
-    QImage mImage;
-
-    QTimer *tmr;
 
     QString source() const;
     void setSource(const QString source);
@@ -33,23 +28,25 @@ public:
     Q_INVOKABLE void check();
     Q_INVOKABLE void shot();
 
-    QThread thread_starter;
-    QTimer *timer;
+
+
+
 private:
+
     QString     m_source;
-    bool it_s_a_shot;
+
+    QImage img;
+
+    threadList* list;
+
 signals:
     void playing();
 
 public slots:
-    void new_frame();
+
     void onWidthChanged();
     void onheightChanged();
-    void timeout();
-    void lost_connection();
-    void slot_playing();
-    void restart();
-    void clear_timer();
+    void paint();
 };
 
 #endif // VIDEOPLAYER_H
