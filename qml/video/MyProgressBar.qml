@@ -133,6 +133,17 @@ root.log("msec: ",msec)
 
     }
 
+    Timer {
+        id: delay
+        interval: 500; running: false; repeat: false
+        onTriggered:
+        {
+
+
+
+        }
+    }
+
 
 
 
@@ -452,6 +463,7 @@ Row {
         MouseArea {
             anchors.fill: parent
         onClicked: {
+            if(!delay.running){
 
 
             timer.stop()
@@ -473,7 +485,11 @@ Row {
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
          paused_and_moved_at_dt(get_dt(dt))
+       // delay.start()
 
+        }else{
+        console.log("running")
+        }
         }
         }
     }

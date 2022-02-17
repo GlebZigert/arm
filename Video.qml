@@ -104,6 +104,9 @@ Item{
 
         }
     }
+
+
+
 SplitView{
     anchors.fill:parent
     orientation: Qt.Vertical
