@@ -46,7 +46,7 @@ public slots:
 
     void onWidthChanged();
     void onheightChanged();
-    void paint();
+
 };
 
 #endif // VIDEOPLAYER_H

@@ -64,9 +64,6 @@ void VideoPlayer::onheightChanged(){
     update();
 }
 
-void VideoPlayer::paint()
-{
 
-}
 
 
