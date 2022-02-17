@@ -20,6 +20,8 @@ import "qml/video" as Video
 import "js/axxon_telemetry_control.js" as Tlmtr
 import "js/axxon.js" as Axxon
 
+//Another player
+
 Item{
     id: srv
     anchors.fill: parent
