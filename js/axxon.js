@@ -163,6 +163,8 @@ for (var i = 0; i < events.length; i++) {
          var globalDeviceId=events[i].deviceId
          var cameraId="";
 
+         root.restored(globalDeviceId)
+
 
          root.log("DeviceId: ",globalDeviceId)
 
@@ -286,8 +288,10 @@ root.log(data.objects[i])
                 var color="gray"
                 if(state=="signal lost")
                     color="red"
-                if(state=="signal restored")
+                if(state=="signal restored"){
                     color="green"
+                    root.restored(id)
+                }
               Utils.replaceItem(root.devices, {
                                                 id: device.id,
                                                 serviceId: device.serviceId,

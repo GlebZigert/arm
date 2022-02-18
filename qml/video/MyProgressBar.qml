@@ -60,7 +60,7 @@ Item {
         {
 
             var date=new Date().getTime()
-     //       //root.log(prev_date," ",date)
+            //root.log(prev_date," ",date)
 
 
         msec=msec+date-prev_date;
@@ -131,6 +131,17 @@ Item {
 
             }
 
+    }
+
+    Timer {
+        id: delay
+        interval: 250; running: false; repeat: false
+        onTriggered:
+        {
+
+
+
+        }
     }
 
 
@@ -370,6 +381,9 @@ Row {
         MouseArea {
             anchors.fill: parent
         onClicked: {
+            if(!delay.running){
+
+
 
             timer.stop()
           //      timer.msec=0
@@ -391,7 +405,10 @@ Row {
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
              paused_and_moved_at_dt(get_dt(dt))
-
+   delay.start()
+        }else{
+                console.log("running")
+                }
         }
         }
     }
@@ -452,6 +469,7 @@ Row {
         MouseArea {
             anchors.fill: parent
         onClicked: {
+            if(!delay.running){
 
 
             timer.stop()
@@ -473,7 +491,11 @@ Row {
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
          paused_and_moved_at_dt(get_dt(dt))
+        delay.start()
 
+        }else{
+        console.log("running")
+        }
         }
         }
     }
@@ -736,6 +758,7 @@ time_rect.color="lightgray"
 
 function timer_start()
 {
+    console.log("timer_start()")
 
     var dt=datetime(slider.value)
     Qt.formatTime(dt,"ss")
@@ -803,6 +826,8 @@ Component.onCompleted: {
 //livestream_button_clicked()
     timer.prev_date=new Date().getTime()
 //to_live()
+
+    console.log("[myprogressbar]")
 
 
  //   root.stream_from_storage.updated.connect(update)

@@ -120,6 +120,8 @@ ApplicationWindow {
     signal update_intervals(var x)
     signal event_on_camera(var x)
 
+     signal restored(int id)
+
     FontAwesome {
         id: faFont
     }
@@ -362,6 +364,6 @@ ApplicationWindow {
     }
 
     function log(str){
-//    console.log(str)
+    console.log(str)
     }
 }

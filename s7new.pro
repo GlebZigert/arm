@@ -15,11 +15,11 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        qml/video/Player/clockcircle.cpp
+        qml/video/Player/mythread.cpp \
+        qml/video/Player/runner.cpp \
+        qml/video/Player/threadlist.cpp
 !win32 {
     SOURCES += \
-           qml/video/Player/ffplayer.cpp \
-           qml/video/Player/starter.cpp \
            qml/video/Player/videoplayer.cpp \
            qml/video/Preview/Preview.cpp
 }
@@ -37,11 +37,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    qml/video/Player/clockcircle.h
+    qml/video/Player/mythread.h \
+    qml/video/Player/runner.h \
+    qml/video/Player/threadlist.h
 !win32 {
     HEADERS += \
-        qml/video/Player/ffplayer.h \
-        qml/video/Player/starter.h \
         qml/video/Player/videoplayer.h \
         qml/video/Preview/Preview.h
 }

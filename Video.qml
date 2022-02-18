@@ -20,6 +20,8 @@ import "qml/video" as Video
 import "js/axxon_telemetry_control.js" as Tlmtr
 import "js/axxon.js" as Axxon
 
+//Another player
+
 Item{
     id: srv
     anchors.fill: parent
@@ -104,6 +106,9 @@ Item{
 
         }
     }
+
+
+
 SplitView{
     anchors.fill:parent
     orientation: Qt.Vertical
@@ -943,6 +948,7 @@ root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
      timeline.to_live()
     // configPanel.state = "hide"
     //root.requestVideo.connect(request)
+    root.restored.connect(f_restored)
 
     root.event_on_camera.connect(f_event_on_camera)
 
@@ -974,7 +980,7 @@ root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
 
     timeline.eventlog_on_off.connect( f_eventlog_on_off)
 /* */
-        vm.playing.connect(timeline.timer_start)
+        vm.playing.connect(start_timer_if_its_needed)
     //    vm.live_playing.connect(vm_live_playing_handler)
 
     timeline.update_timelist.connect(timelist.set_current)
@@ -1012,6 +1018,23 @@ root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
 
     root.storage_live=live
     root.pause_play=play
+
+}
+
+function start_timer_if_its_needed(){
+    if ( play==root.pause_play){
+    timeline.timer_start()
+    }
+
+}
+
+function f_restored(id){
+console.log("Восстановлен сигнал с камеры ",id)
+    if(cid==id){
+
+ //   update_vm()
+    }
+
 
 }
 
@@ -1214,7 +1237,9 @@ function f_pause(){
 }
 
 function f_paused_and_moved_at_dt(dt){
-//f_pause()
+f_pause()
+
+    console.log("=============================================   ",dt)
 root.pause_play=pause
 f_moved_at_dt(dt)
 }
@@ -1250,7 +1275,7 @@ function  update_vm(id)
     var lcl=Axxon.camera(cid)
 
     //root.log("[",dt,"]")
- //   root.log("-------------update vm")
+    root.log("-------------update vm")
  if(root.pause_play==pause)
      {
    //  root.log("pause")
