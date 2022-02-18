@@ -25,7 +25,7 @@ int Runner::interrupt_cb(void *ctx)
 
 
 
-        if(delay>100000)
+        if(delay>150000)
         {
 
             pl->prev=clock();
