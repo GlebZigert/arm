@@ -6,7 +6,7 @@ MyThread::MyThread(QImage* img, QString str,int mode, QObject *parent) : QObject
 this->str=str;
 
     if(mode!=mode::turnOff){
-    qDebug()<<"создаю "<<str;
+    //qDebug()<<"создаю "<<str;
 
     runner.str=str;
 //connect(thread, &QThread::started, runner, &Runner::run);
@@ -26,7 +26,7 @@ this->str=str;
 MyThread::~MyThread()
 {
 
-    qDebug()<<"удаляю "<<str;
+    //qDebug()<<"удаляю "<<str;
 
 }
 

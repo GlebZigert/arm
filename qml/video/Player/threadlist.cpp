@@ -18,11 +18,11 @@ bool threadList::append(QString str, int mode)
       val->stop();
 
     }
-qDebug()<<"всего потоков: "<<list.values().count();
+//qDebug()<<"всего потоков: "<<list.values().count();
     foreach(MyThread* val, list.values()){
 
 
-qDebug()<<val->runner.URL<<" "<<val->runner.m_running<<" "<<val->runner.thread()->isFinished();
+//qDebug()<<val->runner.URL<<" "<<val->runner.m_running<<" "<<val->runner.thread()->isFinished();
 
 
 
@@ -38,7 +38,7 @@ list.remove(list.key(val));
    //     list.remove(list.key(val));
    //     delete val;
  //   }else{
-  //  qDebug()<<"kill em!! "<<list.key(val);
+  //  //qDebug()<<"kill em!! "<<list.key(val);
 
 
   //  val->thread.quit();
@@ -53,7 +53,7 @@ list.remove(list.key(val));
 
        if(val==str){
 
-           qDebug()<<"уже есть такой";
+           //qDebug()<<"уже есть такой";
            return false;
 
 
@@ -94,7 +94,7 @@ MyThread* current= list.value(str);
 
 void threadList::process()
 {
-  //  qDebug()<<"step "<<step;
+  //  //qDebug()<<"step "<<step;
     switch(step){
 
     case 0:
@@ -106,7 +106,7 @@ void threadList::process()
     append(URL,mode);
 
 
-  //  qDebug()<<"cnt2 "<<cnt2;
+  //  //qDebug()<<"cnt2 "<<cnt2;
      if(cnt2<10){
     tmr->start(100);
      }else
@@ -134,14 +134,14 @@ void threadList::process()
 
 
     cnt1++;
-  //  qDebug()<<"cnt1 "<<cnt1;
+  //  //qDebug()<<"cnt1 "<<cnt1;
 
     if(cnt1<20){
     tmr->start(100);
     }else{
         *img=QImage(":/qml/video/no_signal.jpeg");
         emit frame();
-        qDebug()<<"cnt2++";
+        //qDebug()<<"cnt2++";
         cnt2++;
     step=0;
     }
@@ -162,7 +162,7 @@ void threadList::process()
 void threadList::receiveFrame(QString URL)
 {
     this->firstFrame=true;
-    qDebug()<<"receiveFrame "<<URL;
+    //qDebug()<<"receiveFrame "<<URL;
     emit frame();
 
 
@@ -171,7 +171,7 @@ void threadList::receiveFrame(QString URL)
 void threadList::lost_connection(QString URL)
 {
     if(URL==this->URL){
-     qDebug()<<" !!! !!! CONNECTION LOST "<<URL;
+     //qDebug()<<" !!! !!! CONNECTION LOST "<<URL;
  //    remove(URL);
      step=0;
      *img=QImage(":/qml/video/no_signal.jpeg");

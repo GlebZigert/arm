@@ -33,7 +33,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start()
 {
-qDebug()<<"[start]";
+//qDebug()<<"[start]";
 
 list->tmr->stop();
 list->step=0;
@@ -47,7 +47,7 @@ list->process();
 void VideoPlayer::stop()
 {
     list->tmr->stop();
-qDebug()<<"[stop]";
+//qDebug()<<"[stop]";
 foreach(QString str, list->list.keys()){
 
 
@@ -65,7 +65,7 @@ void VideoPlayer::check()
 
 void VideoPlayer::shot()
 {
-qDebug()<<"[shot]";
+//qDebug()<<"[shot]";
 list->tmr->stop();
 list->cnt3=0;
 list->step=0;
@@ -75,12 +75,12 @@ list->process();
 }
 
 void VideoPlayer::onWidthChanged(){
-//qDebug()<<width();
+////qDebug()<<width();
 update();
 }
 
 void VideoPlayer::onheightChanged(){
-//qDebug()<<height();
+////qDebug()<<height();
     update();
 }
 
