@@ -25,12 +25,12 @@ public:
     QString URL;
     int mode;
     int step;
-    int cnt1;
+    int cnt1,cnt2,cnt3;
     int firstFrame;
 
 
 public slots:
-    void receiveFrame();
+    void receiveFrame(QString);
     void lost_connection(QString URL);
     void process();
 

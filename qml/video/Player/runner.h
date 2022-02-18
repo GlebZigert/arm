@@ -51,7 +51,7 @@ signals:
     void finished();    // Сигнал, по которому будем завершать поток, после завершения метода run
     void runningChanged(bool running);
     void lost_connection(QString URL);
-    void new_frame();
+    void new_frame(QString);
     void playing();
 
 public slots:

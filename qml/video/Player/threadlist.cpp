@@ -24,18 +24,27 @@ qDebug()<<"всего потоков: "<<list.values().count();
 
 qDebug()<<val->runner.URL<<" "<<val->runner.m_running<<" "<<val->runner.thread()->isFinished();
 
-    if(val->runner.thread()->isFinished()){
 
 
-        list.remove(list.key(val));
-        delete val;
-    }else{
-    qDebug()<<"kill em!! "<<list.key(val);
+
+if(val->runner.thread()->isFinished()){
+delete val;
+
+list.remove(list.key(val));
+}
+  //  if(val->runner.thread()->isFinished()){
 
 
-    val->thread.quit();
-    val->thread.terminate();
-    }
+   //     list.remove(list.key(val));
+   //     delete val;
+ //   }else{
+  //  qDebug()<<"kill em!! "<<list.key(val);
+
+
+  //  val->thread.quit();
+  //  val->thread.terminate();
+  //  }
+
 
     }
 
@@ -60,7 +69,7 @@ qDebug()<<val->runner.URL<<" "<<val->runner.m_running<<" "<<val->runner.thread()
          MyThread*  mm=new MyThread(img,str,mode);
        //  connect(mm->runner,&Runner::new_frame,this,receiveFrame());
 
-        connect(&mm->runner,SIGNAL(new_frame()),this,SLOT(receiveFrame()));
+        connect(&mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
         connect(&mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lost_connection(QString)));
         //list.append(str);
         list.insert(str,mm);
@@ -85,39 +94,63 @@ MyThread* current= list.value(str);
 
 void threadList::process()
 {
-    qDebug()<<"step "<<step;
+  //  qDebug()<<"step "<<step;
     switch(step){
 
     case 0:
+
+
      this->firstFrame=false;
      step=1;
      cnt1=0;
     append(URL,mode);
 
 
+  //  qDebug()<<"cnt2 "<<cnt2;
+     if(cnt2<10){
     tmr->start(100);
+     }else
+     {
+         tmr->start(1000);
+     }
+
     break;
 
     case 1:
 
     if(firstFrame){
+
+        if(mode==mode::Snapshot){
         tmr->stop();
+        }else{
+            firstFrame=false;
+            tmr->start(100);
+
+        }
      //   this->firstFrame=false;
 
     }else{
 
+
+
     cnt1++;
- //   qDebug()<<"cnt1 "<<cnt1;
+  //  qDebug()<<"cnt1 "<<cnt1;
 
     if(cnt1<20){
     tmr->start(100);
-    }else
+    }else{
+        *img=QImage(":/qml/video/no_signal.jpeg");
+        emit frame();
+        qDebug()<<"cnt2++";
+        cnt2++;
     step=0;
+    }
     }
 
     break;
 
     case 2:
+
 
     break;
 
@@ -126,10 +159,10 @@ void threadList::process()
 
 }
 
-void threadList::receiveFrame()
+void threadList::receiveFrame(QString URL)
 {
     this->firstFrame=true;
-    qDebug()<<"receiveFrame()";
+    qDebug()<<"receiveFrame "<<URL;
     emit frame();
 
 
@@ -137,11 +170,18 @@ void threadList::receiveFrame()
 
 void threadList::lost_connection(QString URL)
 {
-     qDebug()<<" !!! !!! CONNECTION LOST";
+    if(URL==this->URL){
+     qDebug()<<" !!! !!! CONNECTION LOST "<<URL;
  //    remove(URL);
      step=0;
+     *img=QImage(":/qml/video/no_signal.jpeg");
+     emit frame();
+     cnt3++;
 
-     process();
-
+     if(cnt3<10)
+     tmr->start(100);
+     else
+     tmr->start(1000);
+}
 
 }

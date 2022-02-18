@@ -35,7 +35,10 @@ void VideoPlayer::start()
 {
 qDebug()<<"[start]";
 
+list->tmr->stop();
 list->step=0;
+list->cnt2=0;
+list->cnt3=0;
 list->URL=m_source;
 list->mode=mode::Streaming;
 list->process();
@@ -43,6 +46,7 @@ list->process();
 
 void VideoPlayer::stop()
 {
+    list->tmr->stop();
 qDebug()<<"[stop]";
 foreach(QString str, list->list.keys()){
 
@@ -62,6 +66,8 @@ void VideoPlayer::check()
 void VideoPlayer::shot()
 {
 qDebug()<<"[shot]";
+list->tmr->stop();
+list->cnt3=0;
 list->step=0;
 list->URL=m_source;
 list->mode=mode::Snapshot;

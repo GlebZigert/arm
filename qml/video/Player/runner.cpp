@@ -34,7 +34,7 @@ int Runner::interrupt_cb(void *ctx)
             pl->m_running=mode::turnOff;
 
 
-       //     return 1;
+            return 1;
 }
 
 
@@ -60,7 +60,7 @@ void Runner::run()
           char *filepath = ba.data();
 
 
-
+ qDebug()<<"001";
         av_register_all();
 
         avformat_network_init();
@@ -69,6 +69,7 @@ void Runner::run()
 
 
 
+        qDebug()<<"002";
 
 
 
@@ -85,6 +86,13 @@ void Runner::run()
    //    av_dict_set_int(&options, "timeout", (int64_t)10, 0);
        //       av_dict_set_int(&options, "rw_timeout", (int64_t)10, 0);
 
+        qDebug()<<"003";
+
+        prev=clock();
+       pFormatCtx->interrupt_callback.callback=interrupt_cb;
+       pFormatCtx->interrupt_callback.opaque = this;
+
+
         if (avformat_open_input(&pFormatCtx, filepath, NULL, &options) != 0)
         {
             qDebug()<<"=================Couldn't open input stream.\n";
@@ -96,6 +104,7 @@ void Runner::run()
 
         }
 
+        qDebug()<<"004";
 
         //Find stream information
         //Set search time to avoid taking too long
@@ -110,6 +119,7 @@ void Runner::run()
 
         }
 
+        qDebug()<<"005";
         //Find if there is a video stream in the code stream
         int videoindex = -1;
         for (int i = 0; i<pFormatCtx->nb_streams; i++)
@@ -119,6 +129,7 @@ void Runner::run()
                 break;
             }
 
+        qDebug()<<"006";
         if (videoindex == -1)
         {
             qDebug()<<"Didn't find a video stream.\n";
@@ -127,10 +138,16 @@ void Runner::run()
             return;
 
         }
+
+        qDebug()<<"007";
         qDebug()<<"-----------rtsp stream input information --------------\n";
         av_dump_format(pFormatCtx, 0, filepath,0);
         qDebug()<<"---------------------------------------\n";
         /*********************************************/
+
+
+        qDebug()<<"008";
+
         AVCodecContext *pAVCodecContext;
            AVFrame *pAVFrame;
            SwsContext * pSwsContext;
@@ -145,11 +162,14 @@ void Runner::run()
 
             AVCodec *pAVCodec;
 
+
+            qDebug()<<"009";
             //Get the video stream decoder
             pAVCodec = avcodec_find_decoder(pAVCodecContext->codec_id);
          //   pAVCodec = avcodec_find_decoder("h264_qsv");
 
 
+            qDebug()<<"010";
             qDebug()<<"videoWidth: "<<videoWidth;
             qDebug()<<"videoHeight: "<<videoHeight;
             if((videoWidth==0)&&(videoHeight==0))
@@ -165,12 +185,13 @@ void Runner::run()
 
 
             }
+                        qDebug()<<"011";
             pSwsContext = sws_getContext(videoWidth,videoHeight,pAVCodecContext->pix_fmt,videoWidth,videoHeight,AV_PIX_FMT_RGB32,SWS_BICUBIC,0,0,0);
             qDebug()<<"[12]";
             //Open the corresponding decoder
             pAVCodecContext->thread_count=10;
             int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
-
+qDebug()<<"012";
             if (result<0){
                 qDebug()<<"Failed to open decoder";
                 emit lost_connection(URL);
@@ -178,14 +199,16 @@ void Runner::run()
                 return;
 
             }
-
+qDebug()<<"013";
             pAVFrame = av_frame_alloc();
 
-
+qDebug()<<"014";
             int y_size = pAVCodecContext->width * pAVCodecContext->height;
                 AVPacket *packet = (AVPacket *) malloc(sizeof(AVPacket)); //Assign a packet
                 av_new_packet(packet, y_size); //Assign packet data
             qDebug()<<"Successfully initialized video stream" <<","<<videoWidth << "," << videoHeight << "," ;
+
+            qDebug()<<"015";
         //
           //  return;
         //Save video stream for a period of time and write to file
@@ -195,21 +218,19 @@ void Runner::run()
             int ret =-1;
     // for (int i = 0; i <1000; i++) // here can adjust the size of i to change the video time in the file
     //    {
-             prev=clock();
-            pFormatCtx->interrupt_callback.callback=interrupt_cb;
-            pFormatCtx->interrupt_callback.opaque = this;
+
 
 
             if(m_running==mode::Streaming){
 
                 emit playing();
             }
-
+qDebug()<<"016";
            while(m_running!=mode::turnOff)
            {
         //       qDebug()<<"averror "<<AVERROR(EAGAIN);
-
- //   qDebug()<<"..."<<clock();
+ // qDebug()<<".";
+    qDebug()<<"..."<<clock();
                 prev=clock();
                int res=(av_read_frame(pFormatCtx, packet));
           //     qDebug()<<"res "<<res;
@@ -218,17 +239,17 @@ void Runner::run()
                      emit finished();
                      return;
                  }
-             //         qDebug()<<"     1";
+                      qDebug()<<"     1";
                 if (packet->stream_index == videoindex)
                 {
-                 //       qDebug()<<"     2";
+                        qDebug()<<"     2";
                     //qDebug()<<"pts : %d     size :%d one pkt\n",packet->pts,packet->size);
                     //fwrite(packet->data, 1, packet->size, fpSave);
                 //    qDebug() << "pkt pts:" << packet->pts;
                     ret = avcodec_decode_video2(pAVCodecContext, pAVFrame, &m_i_frameFinished, packet);
                     if(ret < 0)
                     {
-                   //         qDebug()<<"     3";
+                            qDebug()<<"     3";
                         qDebug() << "Decoding failed!!";
                         emit lost_connection(URL);
                         emit finished();
@@ -236,7 +257,7 @@ void Runner::run()
                     }
                     if (m_i_frameFinished)
                     {
-                   //         qDebug()<<"     4";
+                            qDebug()<<"     4";
 
                         sws_scale(pSwsContext,(const uint8_t* const *)pAVFrame->data,pAVFrame->linesize,0,videoHeight,pAVPicture.data,pAVPicture.linesize);
                         //Send to get a frame of image signal
@@ -248,7 +269,7 @@ void Runner::run()
                    //     qDebug() << image.size();
                      //   image.save("/home/gleb/img","jpg",-1);
                        // img=image;
-                        emit new_frame();
+                        emit new_frame(URL);
 
                         if(m_running==mode::Snapshot){
                             m_running=mode::turnOff;
@@ -257,12 +278,12 @@ void Runner::run()
                    //     emit sig_GetOneFrame(image);
                    //     qDebug() << "emit!!!!!";
                     }
-                  //      qDebug()<<"     5";
+                        qDebug()<<"     5";
                  }
-                 //   qDebug()<<"     6";
+                    qDebug()<<"     6";
 
              }
-     //   qDebug()<<"     7";
+        qDebug()<<"     7";
 
            // av_packet_unref(packet);
             av_free_packet(packet);
@@ -272,18 +293,21 @@ void Runner::run()
           //}
            // fclose(fpSave);
             if(pFormatCtx){
-                //    qDebug()<<"     8";
+                    qDebug()<<"     8";
                 avformat_close_input(&pFormatCtx);
                  //   qDebug()<<"     1";
             }
-             //   qDebug()<<"     9";
+                qDebug()<<"     9";
             //av_free(packet);
             av_frame_free(&pAVFrame);
             sws_freeContext(pSwsContext);
             av_free(pAVFrame);
             //  qDebug()<<"is end  !!! \n");
-          //  qDebug()<<"[finished]";
+             qDebug()<<" ";
+            qDebug()<<"[finished"<<URL<<"]";
+             qDebug()<<" ";
             emit finished();
+
             return;
 
 

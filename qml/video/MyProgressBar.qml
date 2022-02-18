@@ -65,7 +65,7 @@ Item {
 
         msec=msec+date-prev_date;
             prev_date=date
-root.log("msec: ",msec)
+//root.log("msec: ",msec)
             if(msec>1000)
             {
 

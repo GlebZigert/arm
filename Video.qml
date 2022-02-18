@@ -948,6 +948,7 @@ root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
      timeline.to_live()
     // configPanel.state = "hide"
     //root.requestVideo.connect(request)
+    root.restored.connect(f_restored)
 
     root.event_on_camera.connect(f_event_on_camera)
 
@@ -1024,6 +1025,16 @@ function start_timer_if_its_needed(){
     if ( play==root.pause_play){
     timeline.timer_start()
     }
+
+}
+
+function f_restored(id){
+console.log("Восстановлен сигнал с камеры ",id)
+    if(cid==id){
+
+ //   update_vm()
+    }
+
 
 }
 
