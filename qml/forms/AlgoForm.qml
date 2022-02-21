@@ -168,8 +168,8 @@ GridLayout {
         onPressed: deviceSelector.display(targetServiceId, targetDeviceId, function (item) {
             //console.log("Selected:", item.name, item.serviceId, item.id)
             if (item && item.id && item.serviceId) {
-                $targetServiceId = item.serviceId
-                $targetDeviceId = item.id
+                $.targetServiceId = item.serviceId
+                $.targetDeviceId = item.id
                 $ = $ // apply shadow
             }
         })
