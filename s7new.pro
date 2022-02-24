@@ -14,12 +14,12 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp \
-        qml/video/Player/mythread.cpp \
-        qml/video/Player/runner.cpp \
-        qml/video/Player/threadlist.cpp
+        main.cpp
 !win32 {
     SOURCES += \
+            qml/video/Player/mythread.cpp \
+            qml/video/Player/runner.cpp \
+            qml/video/Player/threadlist.cpp \
            qml/video/Player/videoplayer.cpp \
            qml/video/Preview/Preview.cpp
 }
@@ -36,12 +36,12 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-HEADERS += \
-    qml/video/Player/mythread.h \
-    qml/video/Player/runner.h \
-    qml/video/Player/threadlist.h
+HEADERS +=
 !win32 {
     HEADERS += \
+        qml/video/Player/mythread.h \
+        qml/video/Player/threadlist.h \
+        qml/video/Player/runner.h \
         qml/video/Player/videoplayer.h \
         qml/video/Preview/Preview.h
 }
