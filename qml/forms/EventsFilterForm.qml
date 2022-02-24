@@ -39,32 +39,45 @@ GridLayout {
             onCurrentIndexChanged: fieldValue = currentIndex < 0 ? -1 : model.get(currentIndex).scopeId
         }
         Button {
-            id: button
             width: height
+            implicitWidth: height
             font.family: faFont.name
             text: faFont.fa_times
             font.pixelSize: 18
             ToolTip.text: "Очистить"
             ToolTip.visible: hovered
             onClicked: typeCombo.currentIndex = -1
-            implicitWidth: height
         }
     }
     ///////////////////////////////////////////
     Text { text: "Пользователь";  Layout.alignment: Qt.AlignRight }
-    TextField {
-        id: sourceDevice
-        readOnly: true
-        onPressed: userSelector.display(userId, selected)
-        function selected(item) {
-            //root.log("Selected user:", item.name, item.id)
-            if (item && item.id) {
-                userId = item.id
-                text = item.label
-            } else {
-                userId = 0
-                text = ''
+    RowLayout {
+        Layout.fillWidth: true
+        TextField {
+            id: userField
+            Layout.fillWidth: true
+            readOnly: true
+            onPressed: userSelector.display(userId, selected)
+            function selected(item) {
+                //root.log("Selected user:", item.name, item.id)
+                if (item && item.id) {
+                    userId = item.id
+                    text = item.label
+                } else {
+                    userId = 0
+                    text = ''
+                }
             }
+        }
+        Button {
+            width: height
+            implicitWidth: height
+            font.family: faFont.name
+            text: faFont.fa_times
+            font.pixelSize: 18
+            ToolTip.text: "Очистить"
+            ToolTip.visible: hovered
+            onClicked: {userField.selected(null)}
         }
     }
     ///////////////////////////////////////////
