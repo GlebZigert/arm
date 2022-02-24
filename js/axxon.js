@@ -814,13 +814,7 @@ Axxon.prototype.handler_for_Telemetry_capture_session = function (data) {
 
 function request_URL(cameraId, serviceId, dt, format_dt)
 {
-    root.log("")
-    root.log("")
-    root.log("")
-        root.log("[request_URL]")
-    root.log("")
-    root.log("")
-    root.log("")
+
 
     var data={
     cameraId: cameraId,

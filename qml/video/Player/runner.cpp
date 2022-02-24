@@ -2,6 +2,7 @@
 #define AVIO_FLAG_NONBLOCK   8
 Runner::Runner( QObject *parent) : QObject(parent)
 {
+av_log_set_level(AV_LOG_QUIET);
 this->str=str;
 
 
@@ -25,7 +26,7 @@ int Runner::interrupt_cb(void *ctx)
 
 
 
-        if(delay>50000)
+        if(delay>150000)
         {
 
             pl->prev=clock();
