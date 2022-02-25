@@ -50,10 +50,20 @@ Item {
                 //onModelChanged: itemId = model && model['id'] || 0
 
                 function makeNewUser(parentId) {
-                    console.log("NEW:", parentId)
                     newUser.clear()
                     newUser.append([Users.newItem({parentId: parentId})])
                     model = newUser.get(0)
+                }
+
+                function reloadPic() {
+                    nocache = Math.round(Math.random() * 2e9)
+                }
+
+                Component.onCompleted: {
+                    root.userUpload.connect(function (id) {
+                        if (model && model.id === id)
+                            loader.reloadPic()
+                    })
                 }
 
                 /*Connections {
@@ -84,7 +94,7 @@ Item {
     function reloadForm(id) {
         if (loader.model && loader.model.id === id) {
             console.log("RELOAD!")
-            loader.nocache = Math.round(Math.random() * 2e9)
+            loader.reloadPic()
             loader.model = loader.model
         }
     }

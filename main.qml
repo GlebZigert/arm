@@ -48,6 +48,8 @@ ApplicationWindow {
     signal eventSelected(var event)
     signal newEvents(var events)
     signal newPassage(var event)
+    signal mapUpload(int id)
+    signal userUpload(int id)
 
     onNewTask: tasks.newTask(service, action, data, done, fail)
     onPlayAlarm: if (Utils.useAlarms()) alarmPlayer.playAlarm(name)

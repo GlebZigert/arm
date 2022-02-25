@@ -13,6 +13,10 @@ var handlers = {
         userTree.updateTree(msg.data)
     },
 
+    UserUpload: function (msg) {
+        root.userUpload(msg.data)
+    },
+
     UpdateUser: function (msg) {
         // TODO: update root.currentUser if needed
         if (userTree)// check that operator have user list

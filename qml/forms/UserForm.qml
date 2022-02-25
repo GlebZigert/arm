@@ -171,7 +171,7 @@ ColumnLayout {
 
     function uploadDone(success) {
         if (success) {
-            nocache = Math.round(Math.random() * 2e9)
+            //nocache = Math.round(Math.random() * 2e9)
             fileDialog.ready = false
             //console.log("Upload done!", nocache)
         } else {
