@@ -67,19 +67,19 @@ Item {
     }
 
     function deviceSelected(pane, serviceId, deviceId) {
-        //root.log("DEVICE SEL:", pane, serviceId, deviceId)
+        //console.log("DEVICE SEL:", pane, serviceId, deviceId)
         if (pane === panePosition)
             tree.findItem({serviceId: serviceId, id: deviceId})
     }
 
     function showMenu(item) {
-        //root.log('SHOW:', item.serviceId, item.id)
+        //console.log('SHOW:', item.serviceId, item.id)
         // serviceId is undefined for subsystem node
         contextMenu.show(item.serviceId, item.id)
     }
 
     function selected(item) {
-        //root.log("SELECTED DEV:", item.serviceId + '->' + item.id)
+        //console.log("SELECTED DEV:", item.serviceId + '->' + item.id)
         if (item && (item.id || item.serviceId))
             loader.model = Utils.findItem(treeModel.get(0).children, {id: item.id, serviceId: item.serviceId})
         else

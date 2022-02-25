@@ -59,7 +59,7 @@ GridLayout {
             readOnly: true
             onPressed: userSelector.display(userId, selected)
             function selected(item) {
-                //root.log("Selected user:", item.name, item.id)
+                //console.log("Selected user:", item.name, item.id)
                 if (item && item.id) {
                     userId = item.id
                     text = item.label
@@ -176,12 +176,12 @@ GridLayout {
             payload.start = makeDate(payload.startDate, payload.startTime + ':00')
             payload.end = makeDate(payload.endDate, payload.endTime + ':59')
             'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-            root.log("EventFilter PRINT", JSON.stringify(payload))
+            console.log("EventFilter PRINT", JSON.stringify(payload))
             for (key in payload)
                 query.push(key + "=" + encodeURIComponent(payload[key]))
 
             url = "http://" + serverHost + "/0/journal?" + query.join('&')
-            //root.log("URL:", url)
+            //console.log("URL:", url)
             Qt.openUrlExternally(url);
         }
 
@@ -192,15 +192,15 @@ GridLayout {
                 payload.start = makeDate(payload.startDate, payload.startTime + ':00')
                 payload.end = makeDate(payload.endDate, payload.endTime + ':59')
                 'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-                root.log("EventFilter SHOW", JSON.stringify(payload))
-                root.newTask('configuration', 'ListEvents', payload, done, function (){root.log('ListEvents failed')})
+                console.log("EventFilter SHOW", JSON.stringify(payload))
+                root.newTask('configuration', 'ListEvents', payload, done, function (){console.log('ListEvents failed')})
             }
         }
 
 
         function done(msg) {
             var i, d
-            //root.log(JSON.stringify(msg))
+            //console.log(JSON.stringify(msg))
             if (!msg.data) {
                 eventsList.clear()
                 return

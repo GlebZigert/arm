@@ -3,7 +3,7 @@
 
 
 function listLocations(msg) {
-    root.log("LOC:", JSON.stringify(msg.data))
+    console.log("LOC:", JSON.stringify(msg.data))
     var i, list = []
     for (i in msg.data)
         list.push()

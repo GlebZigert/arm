@@ -43,7 +43,7 @@ Text {
     Component.onCompleted: {
         model.w = width / currentScale// Text.paintedWidth ?
         appendFinished = true
-        root.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y, model.w, model.h)
+        console.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y, model.w, model.h)
     }
 
 }

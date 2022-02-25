@@ -73,14 +73,14 @@ ColumnLayout {
     }
 
     function useRule() {
-        //root.log(currentZone, currentRule)
+        //console.log(currentZone, currentRule)
         if (currentZone === 0 || currentRule === 0)
             return
         // 1. find rule
         if (!removeZR(currentZone, currentRule)) {
             model.zones.append({scope: 0, id: currentZone, flags: currentRule})
-            root.log('ADDED')
-        } else root.log('REMOVED')
+            console.log('ADDED')
+        } else console.log('REMOVED')
         zTree.resetIcons()
     }
 

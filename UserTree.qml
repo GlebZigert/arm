@@ -50,7 +50,7 @@ Item {
                 //onModelChanged: itemId = model && model['id'] || 0
 
                 function makeNewUser(parentId) {
-                    root.log("NEW:", parentId)
+                    console.log("NEW:", parentId)
                     newUser.clear()
                     newUser.append([Users.newItem({parentId: parentId})])
                     model = newUser.get(0)
@@ -60,7 +60,7 @@ Item {
                     target: loader.item
                     onSelectNode: {
                         tree.selectNode(id)
-                        root.log("Connection", id)
+                        console.log("Connection", id)
                     }
                 }
                 Binding {
@@ -83,7 +83,7 @@ Item {
 
     function reloadForm(id) {
         if (loader.model && loader.model.id === id) {
-            root.log("RELOAD!")
+            console.log("RELOAD!")
             loader.nocache = Math.round(Math.random() * 2e9)
             loader.model = loader.model
         }
@@ -93,7 +93,7 @@ Item {
         // TODO: QT BUG? item <> node from model
         if (item.id) { // existing user
             if (item.zones.count === 0 || item.devices.count === 0)
-                root.newTask('configuration', 'UserInfo', item.id, infoDone, function (){root.log('UserInfo failed')})
+                root.newTask('configuration', 'UserInfo', item.id, infoDone, function (){console.log('UserInfo failed')})
             else
                 loader.model = Utils.findItem(treeModel.get(0).children, item.id)
         } else {// new user
@@ -104,7 +104,7 @@ Item {
     }
 
     function infoDone(msg) {
-        //root.log("INFO DONE:", JSON.stringify(msg))
+        //console.log("INFO DONE:", JSON.stringify(msg))
         var user,
             id = msg.data.id
         if (id) {

@@ -55,7 +55,7 @@ Shape {
                     return lineAsPolygon(model.x, model.y, model.data, currentScale) + ' z'
                     //return polylinePath(polyCoords(model.x, model.y, model.data, currentScale))
                 default:
-                    root.log("ERROR: unknown shape type", model.type)
+                    console.log("ERROR: unknown shape type", model.type)
                     return ''
              }
         }
@@ -80,7 +80,7 @@ Shape {
     MapPointHandler{}
 
     Component.onCompleted: {
-        //root.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y)
+        //console.log(currentMap.type, ":", currentMap.shapes.count, model.type, model.x, model.y)
     }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -106,7 +106,7 @@ Shape {
             var pair = v.split(',')
             return scale * parseFloat(pair[0]) + ',' + scale * parseFloat(pair[1])
         })
-        //root.log(JSON.stringify(points))
+        //console.log(JSON.stringify(points))
         return points
     }
 
@@ -138,7 +138,7 @@ Shape {
                 //coord = map.toCoordinate(Qt.point(center.x + parseFloat(pair[0]), center.y + parseFloat(pair[1])))
                 return (point.x - center.x) + ',' + (point.y - center.y)
             }).join(' ')
-        //root.log(JSON.stringify(points))
+        //console.log(JSON.stringify(points))
         return points
     }*/
 

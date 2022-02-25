@@ -38,7 +38,7 @@ function polygon(points) {
         var pair = v.split(',')
         return {latitude: parseFloat(pair[0]), longitude: parseFloat(pair[1])}
     })
-    //root.log("POLY:", JSON.stringify(res))
+    //console.log("POLY:", JSON.stringify(res))
     return res
 }
 

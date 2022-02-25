@@ -22,7 +22,7 @@ MouseArea { // whole image
             return
 
         if (isPoly()) {
-            root.log('MP:', mouse.x, mouse.y)
+            console.log('MP:', mouse.x, mouse.y)
             moveAnchor(mouse.x, mouse.y)
         } else if (currentAnchor === 8)
             rotate(mouse.x, mouse.y)
@@ -45,12 +45,12 @@ MouseArea { // whole image
         for (i = 0; i < currentMap.shapes.count; i++) {
             item = currentMap.shapes.get(i)
             if ('polyline' === item.type) {
-                root.log(item.data)
+                console.log(item.data)
                 p = item.data.split(/,| /).map(function (v) {return parseInt(v)})
                 for (j = 0; j < p.length - 3; j += 2) {
                     //yes = checkPoint({x: p[j], y: p[j+1]}, {x: mx, y: my}, {x: p[j+2], y: p[j+3]})
                     yes = pDistance(mx, my, p[j], p[j+1], p[j+2], p[j+3])
-                    root.log(mx, my, p[j], p[j+1], p[j+2], p[j+3], yes)
+                    console.log(mx, my, p[j], p[j+1], p[j+2], p[j+3], yes)
 
                 }
 

@@ -230,14 +230,14 @@ ColumnLayout {
                 ok = Helpers.readForm(form, payload, transforms)
                 payload.type = payload.type || model['type']
                 if (ok && payload.type) {
-                    root.log(JSON.stringify(payload))
+                    console.log(JSON.stringify(payload))
                     //root.send('configuration', 'UpdateService', payload)
-                    root.newTask('configuration', 'UpdateService', payload, done, function (){root.log('UpdateService failed')})
+                    root.newTask('configuration', 'UpdateService', payload, done, function (){console.log('UpdateService failed')})
                 } else
                     popup.open()
             }
             function done(msg) {
-                //root.log("SVC done >>>", JSON.stringify((msg)))
+                //console.log("SVC done >>>", JSON.stringify((msg)))
                 // INFO: s.serviceId is setted once, during the new service creation and s.id becomes 0
                 tree.findItem({serviceId: msg.data.serviceId || msg.data.id})
             }
@@ -262,6 +262,6 @@ ColumnLayout {
         title: "Ошибка"
         icon: StandardIcon.Critical
         text: "Форма заполнена не полностью, либо неправильно."
-        onAccepted: root.log("OK")
+        onAccepted: console.log("OK")
     }
 }

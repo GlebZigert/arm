@@ -35,7 +35,7 @@ function readForm(form, payload, tr) {
             }
             if (name)
                 payload[name] = name in transforms ? transforms[name](value): value
-            root.log(name + ' is instance of ' + inst + ' - ' + (ok ? 'OK' : 'FAIL'))
+            console.log(name + ' is instance of ' + inst + ' - ' + (ok ? 'OK' : 'FAIL'))
         }
         if (input.children.length)
             ok = ok && readForm(input, payload, tr)

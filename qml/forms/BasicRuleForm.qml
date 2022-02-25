@@ -108,9 +108,9 @@ GridLayout {
                     }
                     delete payload.from
                     delete payload.to
-                    root.log("UpdRule >", JSON.stringify(payload))
+                    console.log("UpdRule >", JSON.stringify(payload))
                     if (payload.timeRanges.length > 0)
-                        root.newTask('configuration', 'UpdateRule', payload, done, function (){root.log('UpdateRule failed')})
+                        root.newTask('configuration', 'UpdateRule', payload, done, function (){console.log('UpdateRule failed')})
                     else
                         messageBox.error("Укажите дни недели")
                 }

@@ -5,7 +5,7 @@ var userTree
 var handlers = {
     ListUsers: function (msg) {
         var id
-        //root.log("LIST USERS", JSON.stringify(msg.data))
+        //console.log("LIST USERS", JSON.stringify(msg.data))
         if (null === msg.data)
             return
         if (!userTree)
@@ -19,7 +19,7 @@ var handlers = {
             userTree.updateUser(msg.data)
     },
     DeleteUser: function (msg) {
-        //root.log(JSON.stringify(msg))
+        //console.log(JSON.stringify(msg))
         // TODO: what if deleted current user?
         if (userTree) // check that operator have user list
             userTree.deleteUser(msg.data)
@@ -40,7 +40,7 @@ UserTree.prototype.updateTree = function (data) {
         item,
         list = {},
         root = [];
-    //root.log("User tree:", JSON.stringify(data))
+    //console.log("User tree:", JSON.stringify(data))
     for (i in data) {
         list[data[i].id] = newItem(data[i])
         list[data[i].id].tid = this.tid++ // treeID
@@ -54,7 +54,7 @@ UserTree.prototype.updateTree = function (data) {
     this.model.clear()
     this.model.append(root)
     //this.cache = makeCache(model.children, {}) // TODO: maybe just {}?
-    //root.log("UserTree", JSON.stringify(root))
+    //console.log("UserTree", JSON.stringify(root))
 }
 
 UserTree.prototype.deleteUser = function (id) {
@@ -70,7 +70,7 @@ UserTree.prototype.append = function (list, item) {
 UserTree.prototype.updateUser = function (data) {
     // TODO: maybe rewrite using model.set()?
     //{"id":13,"parentId":2,"type":4,"name":"7358t","surename":"Sdsfgdfgdf","login":""}
-    root.log("UPD USER", JSON.stringify(data))
+    console.log("UPD USER", JSON.stringify(data))
     var i,
         exclude = ['id', 'type', 'role', 'icon', 'form', 'cards', 'zones', 'devices'],
         item = findUserOrParent(this.model, data.id, data.parentId)
@@ -98,12 +98,12 @@ UserTree.prototype.updateUser = function (data) {
 }
 
 UserTree.prototype.userInfo = function (data) {
-    //root.log("USER INFO", JSON.stringify(data))
+    //console.log("USER INFO", JSON.stringify(data))
     var user = Utils.findItem(this.model, data.id)
     if (user) {
-        //root.log("USER INFO", JSON.stringify(user))
+        //console.log("USER INFO", JSON.stringify(user))
         fillInfo(user, data)
-        //root.log("USER INFO UPD", JSON.stringify(user.devices))
+        //console.log("USER INFO UPD", JSON.stringify(user.devices))
         root.users.updated(data.id)
     }
 }
