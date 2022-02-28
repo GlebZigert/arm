@@ -15,12 +15,6 @@ signal send_time(var time)
         dynamicRoles: true
 
 
- //       ListElement {ind: 1 }
- //       ListElement {ind: 2 }
- //       ListElement {ind: 3 }
- //       ListElement {ind: 4 }
- //       ListElement {ind: 5 }
-
     }
 
     Rectangle {
@@ -42,7 +36,7 @@ signal send_time(var time)
     model: model
 
 
-    //interactive: false
+
 
     delegate: Rectangle {
         color:"lightblue"
@@ -59,15 +53,12 @@ signal send_time(var time)
             onClicked: {
 
                 var str=time
-            //root.log(str)
 
                 var strings=str.split(":")
-                //root.log(strings[0])
-                //root.log(strings[1])
-                //root.log(strings[2])
+
 
                 var value=Number(strings[0])*60*60+Number(strings[1])*60+Number(strings[2])
-                //root.log(value)
+
 
                 container.current=time
    update_view()
@@ -108,45 +99,13 @@ signal send_time(var time)
         else                        // zoom out
             zoomFactor = -1
 
-        //root.log(zoomFactor)
 
         slider.value=slider.value+zoomFactor
 
-        //root.log("===onWheel")
+
 
                container.update_all()
- /*
-//--------
-        var xx=list.height/30
-        //root.log("count ",model.count)
-        while(model.count<xx)
-        {
-                    //root.log("count ",model.count)
-            model.append({time: "" })
 
-        }
-
-        //root.log("count ",list.model.count)
-
-
-        var howmutch=1440-(list.height/30)+1
-
-        slider.to=howmutch
-
-        //root.log("slider.to ",slider.to)
-
-        //root.log("slider.value ",slider.value)
-
-        //root.log("count ",model.count)
-
-        for(var i=0;i<model.count;i++)
-        {
-            //root.log("--dt ",datetime((i+(slider.to-slider.value))*60))
-        model.set(i,{time:datetime((i+(slider.to-slider.value))*60)})
-        }
-
-        update_view()
-*/
     }
 
 
@@ -172,45 +131,9 @@ signal send_time(var time)
        wheelEnabled: true
 
        onMoved: {
-           //root.log("[onMoved]")
+
 
            container.update_all()
-           /*
-           var xx=list.height/30
-
-           while(model.count<xx)
-           {
-               model.append({time: "" })
-           }
-
-
-           //root.log("count ",list.model.count)
-
-
-           var howmutch=1440-(list.height/30)+1
-
-           slider.to=howmutch
-
-           //root.log("slider.to ",slider.to)
-
-           //root.log("slider.value ",slider.value)
-
-           for(var i=0;i<model.count;i++)
-           {
-               //root.log(datetime((i+(slider.to-slider.value))*60))
-           model.set(i,{time:datetime((i+(slider.to-slider.value))*60)})
-           }
-
-           update_view()
-*/
-
-
-
-
-
-
-
-
 
        }
 
@@ -242,8 +165,6 @@ signal send_time(var time)
        root.log("sec: ",sec)
 
 
-
-        //root.log(hours,":",min,":",sec)
 
         var str_hour
         if(hours<10)
@@ -278,43 +199,19 @@ signal send_time(var time)
         else
         str_date =    hours.toString()+":"+min.toString()+":00"//+str_sec//+"."+str_msec
 
-
-
-  //root.log("str_date: ",str_date)
-
-
-
-
         var date=Date.fromLocaleString(locale, str_date, "hh:mm:ss")
-
-
-        //root.log("DATE: ",date)
 
         var res=Qt.formatTime(date,"hh:mm:ss")
 
-        //root.log("Qt.formatTime(date,hh:mm:ss): ",res)
-
-
-
-
-
-
-
-
-
-
         container.current=res
-
-
-
-          update_view()
+        update_view()
 
     }
 
     function update_view()
     {
 var res=0
-//root.log(" container.current", container.current)
+
         for(var i=0;i<model.count;i++)
         {
 
@@ -325,48 +222,6 @@ var res=0
                   res=1
 
         }
-    /*
-        if(res==0)
-        {
-          var date=Date.fromLocaleString(locale, container.current, "hh:mm:ss")
-            //root.log("================================================")
-
-            var hh=Qt.formatTime(date,"hh")
-            var mm=Qt.formatTime(date,"mm")
-            //root.log("hh "+Qt.formatTime(date,"hh"))
-            //root.log("mm "+Qt.formatTime(date,"mm"))
-            //root.log("ss "+Qt.formatTime(date,"ss"))
-
-            slider.value=1440-hh*60-mm
-
-            var hhh=Math.floor((list.height/30))
-
-            if(slider.value>hhh)
-             {
-               var newval=Math.floor(hhh/2)
-                slider.value=slider.value-newval
-
-             }
-
-            for(var i=0;i<model.count;i++)
-            {
-                //root.log(datetime((i+(slider.to-slider.value))*60))
-            model.set(i,{time:datetime((i+(slider.to-slider.value))*60)})
-            }
-
-            for(var i=0;i<model.count;i++)
-            {
-
-         //
-            list.itemAt(i).set_current((model.get(i).time==container.current) ? 1 : 0)
-
-                  if(model.get(i).time==container.current)
-                      res=1
-
-            }
-
-        }
-    */
 
     }
 
@@ -378,10 +233,6 @@ var res=0
          var min=Math.floor((value-hours*3600)/60)
          var sec=Math.floor((value-hours*3600)-min*60)
 
-    //    //root.log("datetime(value)")
-   //     //root.log("hour: ",hour)
-    //    //root.log("min: ",min)
-    //    //root.log("min: ",sec)
 
         var str_hour
         if(hours<10)
@@ -425,9 +276,6 @@ var res=0
 
         var dateTimeString= "2013-09-17 09:56:06"
 
-        //root.log("str_date ",str_date)
-
-
         var date=Date.fromLocaleString(locale, str_date, "yyyy-MM-dd hh:mm:ss")
 
 
@@ -439,30 +287,21 @@ var res=0
   function  update_all()
     {
         var xx=list.height/30
-        //root.log("count ",model.count)
+
         while(model.count<xx)
         {
-                    //root.log("count ",model.count)
+
             model.append({time: "" })
 
         }
-
-        //root.log("count ",list.model.count)
-
 
         var howmutch=1440-(list.height/30)+1
 
         slider.to=howmutch
 
-        //root.log("slider.to ",slider.to)
-
-        //root.log("slider.value ",slider.value)
-
-        //root.log("count ",model.count)
-
         for(var i=0;i<model.count;i++)
         {
-            //root.log("--dt ",datetime((i+(slider.to-slider.value))*60))
+
         model.set(i,{time:datetime((i+(slider.to-slider.value))*60)})
         }
 

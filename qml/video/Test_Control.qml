@@ -6,9 +6,9 @@ Item {
     property int serviceId:-1
 
 
-    property var x_prev:0
-    property var y_prev:0
-    property var val_prev:0
+    property int x_prev:0
+    property int y_prev:0
+    property int val_prev:0
     Rectangle{
         id: rect
     anchors.fill:parent
@@ -26,7 +26,7 @@ Item {
         property int msec:0
         onTriggered:
         {
-            //root.log("zoom_timer_timeout")
+
             Tlmtr.stop_zoom()
 
         }
@@ -45,11 +45,8 @@ Item {
     function move(mx,my)
     {
 
- //   //root.log("-----------")
+
     var value=Math.sqrt(mx*mx+my*my)
-
-
-   //root.log("value: ",value)
 
     var val=0
         if(value===0)
@@ -83,8 +80,7 @@ Item {
             val=1
 
         var arctn=Math.abs(Math.atan(my/mx))
-//       //root.log(xx-mouseX," ",yy-mouseY)
-//       //root.log("arctn: ",arctn)
+
 var x=0
         var y=0
            if(arctn<0.2)
@@ -96,7 +92,7 @@ var x=0
                rect.color="yellow"
                 else
                  rect.color="lightgray"
-      //     //root.log("(1)")
+
                if(mx>0)
                {
               x=1
@@ -119,7 +115,7 @@ var x=0
                                    rect.color="lightgreen"
                                else
                                 rect.color="lightgray"
-     //      //root.log("(2)")
+
                if(my>0)
                {
                    if(mx>0)
@@ -160,7 +156,7 @@ var x=0
                                              rect.color="lightblue"
                                               else
                                                rect.color="lightgray"
-     //      //root.log("(3)")
+
                if(my>0)
                {
                    x=0
@@ -183,11 +179,8 @@ var x=0
                str=str+String(val)
                str=str+" "
 
-               //root.log("[str] ",str)
-
                Tlmtr.move(str)
-      //root.log("[value] ", value)
-      //root.log("[",x," ",y," ",val,"]")
+
 
            x_prev=x
            y_prev=y

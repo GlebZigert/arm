@@ -6,7 +6,7 @@ import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.5
 
 import "../../js/axxon.js" as Tlmtr
-//Место с окнами камер  в которые идет стрим и откуда можно увеличить размер окна
+
 
 Item {
     id:container
@@ -40,19 +40,14 @@ signal take_it_on_big_screen(string name,string point)
         onTriggered:
         {
 
-            //root.log("mouse timer timeout")
             var mode=work_model.get(rpt.current)._mode
 
             if(mode=="live")
             {
                 var point=  work_model.get(rpt.current)._telemetryControlID
-               //root.log("work_model.get(rpt.current).telemetryControlID : ",work_model.get(rpt.current)._telemetryControlID)
                Tlmtr.capture_session(point)
                container.move=true
             }
-
-
-
         }
     }
 
@@ -77,9 +72,6 @@ signal take_it_on_big_screen(string name,string point)
         }
      }
 
-
-
-
     Rectangle{
         anchors.fill:parent
         color: "#9adbda"
@@ -87,7 +79,7 @@ signal take_it_on_big_screen(string name,string point)
         Column{
         anchors.fill:parent
 
-        //Шапка
+
         Head_of_space_for_streaming {
         id: head
         width:parent.width
@@ -95,14 +87,14 @@ signal take_it_on_big_screen(string name,string point)
 
 
         }
-        //Основная часть
+
 
 
         Rectangle{
             id: space
             width:parent.width
             height: parent.height-head.height
-//------------------------------------------------
+
        Repeater{
             id: rpt
             property int mode: 1
@@ -115,10 +107,6 @@ signal take_it_on_big_screen(string name,string point)
 
 
             delegate:
-
-
-
-
 
                 Rectangle {
 
@@ -156,19 +144,12 @@ signal take_it_on_big_screen(string name,string point)
                     height: parent.height-20
                     color:"lightblue"
 
-                    /*
 
-                    Test_Repeater{
-                     anchors.fill: parent
-                    }
-*/
 
                     VM{
 
                     id: rpt_vm
                     anchors.fill: parent
-             //       width: 300
-             //       height: 250
 
                     accesspoint: point
 
@@ -211,23 +192,23 @@ signal take_it_on_big_screen(string name,string point)
 
                             if(mouse_timer.running)
                             {
-                            //root.log("+")
+
                                 if (_id==rpt.current)
                                 {
-                                    //root.log("[current]")
+
                                     container.play_or_pause()
                                 }
 
-                                //root.log("area onClicked")
+
                                 rpt.current=_id
-                                //root.log(rpt.current)
+
                                 rpt.mode=2
                                 space.update()
 
                             }
                             else
                             {
-                            //root.log("-")
+
 
                          Tlmtr.stop_moving()
                             }
@@ -238,7 +219,7 @@ signal take_it_on_big_screen(string name,string point)
                         }
 
                         onMoveChanged: {
-                            //root.log("[onMoveChanged]")
+
                         mouse_x_y()
 
                         }
@@ -258,19 +239,18 @@ signal take_it_on_big_screen(string name,string point)
                             {
                              var mx= xx-mouseX
                                 var my=yy-mouseY
-                   //     //root.log(mx," ",mx)
+
 
                                 if((Math.abs(mx)>10)||
                                 (Math.abs(my)>10))
                                 {
 
                              var arctn=Math.abs(Math.atan(my/mx))
-                     //       //root.log(xx-mouseX," ",yy-mouseY)
-                            //root.log("arctn: ",arctn)
+
 
                                 if(arctn<0.2)
                                 {
-                                //root.log("(1)")
+
                                     if(mx>0)
                                     {
                                     Tlmtr.left()
@@ -283,7 +263,7 @@ signal take_it_on_big_screen(string name,string point)
                                 else
                                 if(arctn<0.8)
                                 {
-                                //root.log("(2)")
+
                                     if(my>0)
                                     {
                                         if(mx>0)
@@ -314,7 +294,7 @@ signal take_it_on_big_screen(string name,string point)
                                 }
                                 else
                                 {
-                                //root.log("(3)")
+
                                     if(my>0)
                                     {
                                     Tlmtr.top()
@@ -325,10 +305,7 @@ signal take_it_on_big_screen(string name,string point)
                                     }
                                 }
                             }
-                                else
-                                {
-                              //   root.log(mx," ",my)
-                                }
+
                             }
                         }
 
@@ -348,24 +325,16 @@ signal take_it_on_big_screen(string name,string point)
                Component.onCompleted:
                {
                container.signal_to_set_size.connect(set_size)
-               //set_size(dndGrid.cellWidth,dndGrid.cellHeight)
 
-
-
-                   //root.log("добавлен:  ",name)
-                   //root.log("добавлен:  ",point)
-                   //root.log("добавлен:  ",visible)
-                   //root.log("добавлен:  ",color)
                }
 
                function set_size(x,y)
                {
-               //root.log("[vm] ",x," ",y)
+
                unit.width=x
                unit.height=y
 
-         //      rpt_vm.width=x
-         //      rpt_vm.height=y
+
                }
 
 
@@ -373,41 +342,18 @@ signal take_it_on_big_screen(string name,string point)
 
 
 }
-//------------------------------------------------
+
        onWidthChanged: {
-           //root.log("onWidthChanged:")
+
        update()
        }
 
 
        onHeightChanged: {
-            //root.log("onHeightChanged:")
+
        update()
        }
        Component.onCompleted: {
-/*
-           var sz=rpt.sz
-           for(var i=0;i<9;i++)
-           {
-
-           model.append({_x:sz*3*i,
-                            _y:sz*2*i,
-                            _width:sz*3,
-                            _height:sz*2,
-                            _text:i.toString(),
-                            _id:i,
-                      //      _image:image_model.get(i).imagePath
-
-                        })
-           }
-           */
-
-
-
-
-    //   model.append({_x:100,_y:0,_width:100,_height:100})
-    //   model.append({_x:200,_y:200,_width:150,_height:150})
-
 
        }
        function update()
@@ -430,24 +376,11 @@ signal take_it_on_big_screen(string name,string point)
 
        function table()
        {
-       //root.log("table")
-       //root.log("Math.sqrt(work_model.count) :  ",Math.sqrt(work_model.count))
-       //root.log("Math.sqrt(work_model.count)*2+1 :  ",Math.sqrt(work_model.count)*2+1)
 
        var sz=Math.sqrt((space.width*space.height)/(6*(work_model.count+Math.sqrt(work_model.count)*2+1)))
        var row=0
        var column=0
        var columns= space.width/(sz*3)
-
-
-
-
-       //root.log("sz: ",sz)
-
-       //root.log("space.width/sz: ",Math.floor((space.width/sz)/3)*3)
-       //root.log("space.height/sz: ",space.height/sz)
-
-
        var xxx=Math.floor((space.width/sz)/3)*3
 
        sz=width/xxx
@@ -461,7 +394,6 @@ signal take_it_on_big_screen(string name,string point)
        for(var i=0;i<work_model.count;i++)
        {
 
-           //root.log(model.get(i).name)
 
        work_model.set(i,{"_x":sz*3*column,
                     "_y":sz*2*row,
@@ -483,7 +415,7 @@ signal take_it_on_big_screen(string name,string point)
 
        function main_in_centr()
        {
-       //root.log("main_in_centr")
+
         var ll=rpt.ll
        var sz=space.width/((ll+2)*3)
 
@@ -493,19 +425,12 @@ signal take_it_on_big_screen(string name,string point)
        var rows=ll
        var cashback=space.width%((ll+2)*3)
 
-       //root.log("space.width: ",space.width)
-       //root.log("((ll+2)*3): ",((ll+2)*3))
-       //root.log("space.width/((ll+2)*3): ",space.width/((ll+2)*3))
-       //root.log("Math.floor(space.width/((ll+2)*3)): ",Math.floor(space.width/((ll+2)*3)))
-
-       //root.log("space.width%((ll+2)*3): ",space.width%((ll+2)*3))
-       //root.log(": ")
            for(var i=0;i<work_model.count;i++)
            {
            var id=work_model.get(i)._id
            if(id==rpt.current)
            {
-       //Увеличиваем его и помещаем в центр
+
             work_model.set(i,{"_width":sz*3*ll,
                          "_height":sz*2*ll,
                          "_x":sz*3,
@@ -515,10 +440,6 @@ signal take_it_on_big_screen(string name,string point)
            }
            else
            {
-               //root.log("name ",work_model.get(i).name)
-               //root.log("row",row)
-               //root.log("_x",sz*3*(ll+1)*column)
-               //root.log("_y",sz*2*row)
 
                work_model.set(i,{"_width":sz*3,
                             "_height":sz*2,
@@ -532,25 +453,12 @@ signal take_it_on_big_screen(string name,string point)
                column=1
                row=0
                }
-
-
-
            }
-
-
            }
-
-
-
        }
-
-
 }
 }
 }
-
-
-
 
     Component.onCompleted:
     {
@@ -561,7 +469,6 @@ signal take_it_on_big_screen(string name,string point)
 
     }
 
-//обновлям рабочую модель
 function update_work_model()
 {
 
@@ -569,17 +476,17 @@ function update_work_model()
 for(var i1=0;i1<model.count;i1++)
 {
 var x=model.get(i1)
-    //root.log("добавить? ",x.name)
+
 
 
     var res=false
     for(var j=0;j<work_model.count;j++)
     {
-        //root.log("--",j)
+
     var y=work_model.get(j).name
         if(y===x.name)
         {
-                //root.log("уже есть! ")
+
         res=true
         }
 
@@ -589,11 +496,7 @@ var x=model.get(i1)
 
     if(res===false)
    {
-    //root.log("добавляю:  ",x.name)
-    //root.log("добавляю:  ",x.point)
-    //root.log("добавляю: telemetryControlID: ",x.telemetryControlID)
-    //root.log("добавляю:  ",x._visible)
-    //root.log("добавляю:  ",x._color)
+
     work_model.append({name: x.name,
                           point: x.point,
 
@@ -623,11 +526,9 @@ var x=model.get(i1)
 }
 
 
-//Делаем одну из камер невидимой
+
 function on_screen()
 {
-
-    //root.log("[hide_camera]------------------------------")
 
 var name=work_model.get(current).name
 var point=work_model.get(current).point
@@ -637,31 +538,14 @@ var speed= work_model.get(current).speed
 
 
 
-
-
-    /*
-//root.log(work_model.get(current).cost)
-//root.log(work_model.get(current).name)
-    //root.log(work_model.get(current).color)
-//work_model.get(current).name="12345"
-work_model.set(current,{"cost":"12345"})
-work_model.set(current,{"visible":false})
-work_model.set(current,{"_color":"purple"})
-//root.log(work_model.get(current).cost)
-//root.log(work_model.get(current).name)
-//root.log(work_model.get(current).color)
-*/
-
-
 }
 
 
 
-//Добавляем камеру из хранилища камер в рабочее пространство
+
 function add_camera_to_space(x)
 {
-//root.log("!!Добавляю камеру:",x.obj.name," ",x.obj.point,x.obj.telemetryControlID)
- //   camera.add_to_space(name,point)
+
    model.append({name: x.obj.name,
                       point: x.obj.point,
                       telemetryControlID:x.obj.telemetryControlID,
@@ -677,9 +561,7 @@ function add_camera_to_space(x)
 
 function set_size(x,y)
 {
-//root.log("[grid] ",x," ",y)
-//dndGrid.cellWidth=x
-//dndGrid.cellHeight=y
+
 
 signal_to_set_size(x,y)
 }
@@ -700,10 +582,6 @@ f_storage_play(dt,speed)
 
 function f_storage_play(dt,speed)
 {
-//storage_stop()
-
-
-
 for(var i=0;i<work_model.count;i++)
     {
     work_model.set(i,{"_mode":"streaming"})
@@ -732,9 +610,9 @@ set_storage_play(dt,speed)
 }
 function f_pause()
 {
-    //root.log("[f_pause]")
+
     var mode=work_model.get(0)._mode
-        //root.log(mode)
+
     if(mode=="live")
     {
     set_live_pause()
@@ -745,13 +623,6 @@ function f_pause()
     }
 
 
-/*
-set_storage_pause()
-    for(var i=0;i<work_model.count;i++)
-        {
-//        work_model.set(i,{"_mode":"snapshot"})
-        }
-    */
 
 }
 function f_storage_stop()
@@ -768,8 +639,7 @@ storage_stop()
 }
 function f_storage_snapshot(dt)
 {
-// storage_stop()
-//storage_snapshot(dt)
+
 
         for(var i=0;i<work_model.count;i++)
             {
@@ -796,7 +666,7 @@ work_model.set(i,{"_dt":_dt})
         var _name=work_model.get(current).name
         var _point=work_model.get(current).point
         var _mode=work_model.get(current).mode
-        var _dt= work_model.get(current).dt
+        _dt= work_model.get(current).dt
         var _speed= work_model.get(current).speed
 
         screen.add(_name,_point,_mode,_dt,_speed)
@@ -831,16 +701,9 @@ function f_play_live_stream()
         var _dt= work_model.get(current).dt
         var _speed= work_model.get(current).speed
 
-     //  screen.add(_name,_point,_mode,_dt,_speed)
+
     }
-
-
-
-
 }
-
-//---------------------------------
-
 }
 
 

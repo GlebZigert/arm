@@ -25,7 +25,6 @@ public:
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
-    Q_INVOKABLE void check();
     Q_INVOKABLE void shot();
 
 
