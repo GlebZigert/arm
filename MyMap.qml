@@ -140,6 +140,17 @@ RowLayout {
 
     DevContextMenu {id: contextMenu}
 
+    function resetCache(id) {
+        console.log("TRY RESET MAP CACHE:", id)
+        if (currentMap && currentMap.id === id) {
+            console.log(":::", id)
+            anticache = Math.round(Math.random() * 2e9)
+        }
+    }
+    Component.onCompleted: {
+        root.planUpload.connect(resetCache)
+    }
+
     /*Component.onCompleted: {
         if (root.maps.count === 0)
             initMap()

@@ -11,7 +11,7 @@ var zoneOperators = [Const.ARM_ADMIN, Const.ARM_UNIT, Const.ARM_GUARD]
 //{id: 1, text: "Администратор"},
 layouts[Const.ARM_ADMIN] = [
     {symbol: 'fa_users_cog', views: [['MyConfig']]},
-    //{symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
+    {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
     {symbol: '2', views: [['MyMap', 'PassageView'], ['MyJournal', 'ZonesTree']]},
     {symbol: '3', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},

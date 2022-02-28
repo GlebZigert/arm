@@ -334,7 +334,7 @@ Rectangle {
     function uploadDone(success) {
         if (success) {
             fileDialog.reset()
-            anticache = Math.round(Math.random() * 2e9)
+            //anticache = Math.round(Math.random() * 2e9)
         } else {
             messageBox.error("Не удаётся загрузить выбранный файл с изображением на сервер")
         }
@@ -354,7 +354,7 @@ Rectangle {
 
 
     function selectDevice(model) {
-        var m, i, shapes = currentMap.shapes || {count: -1};
+        var m, i, shapes = currentMap && currentMap.shapes || {count: -1};
 
         if (currentItem && currentItem.sid === model.serviceId && currentItem.did === model.id)
             return // already selected

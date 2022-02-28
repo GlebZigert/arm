@@ -222,8 +222,4 @@ Flickable {
         contentY = y
         planScale = scale
     }
-
-    function reload() {
-        anticache = Math.round(Math.random() * 2e9)
-    }
 }

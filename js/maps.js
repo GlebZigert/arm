@@ -8,7 +8,10 @@ var handlers = {
         console.log("Maps COUNT before del", root.maps.count)
         Utils.deleteItem(root.maps, msg.data)
         console.log("Maps COUNT after del", root.maps.count)
-    }
+    },
+    PlanUpload: function (msg) {
+        root.planUpload(msg.data)
+    },
     /*DeleteMap: function (msg) {
         console.log(JSON.stringify(msg))
         for (var i = 0; i < root.maps.count; i++)
