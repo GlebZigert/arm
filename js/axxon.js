@@ -12,12 +12,7 @@ root.axxon_service_id=this.serviceId
     this.handlers = {
         ListDevices: this.rebuildTree.bind(this),
         UpdateDevices: this.update.bind(this),
-//      StatusUpdate: this.statusUpdate.bind(this),
         DateTime: this.receive_strorage_stream.bind(this),
-   //     Telemetry_preset_info: this.receive_preset_info.bind(this),
-   //     Telemetry_edit_preset: this.receive_preset_info.bind(this),
-   //     Telemetry_remove_preset: this.receive_preset_info.bind(this),
-   //     Telemetry_add_preset: this.receive_preset_info.bind(this),
         request_URL: this.receive_URL.bind(this),
         ExecCommand: this.ExecCommand_handler.bind(this),
         request_intervals:  this.request_intervals_handler.bind(this),
@@ -34,7 +29,6 @@ Axxon.prototype.statusUpdate = function (sid) {
         root.send(this.serviceId, 'ListDevices', '')
 
     Utils.setServiceStatus(this.model, sid)
-    //root.log("============== RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
 }
 
 

@@ -261,7 +261,6 @@
         <file>sounds/ringin.mp3</file>
         <file>js/line-as-polygon.js</file>
         <file>js/axxon_telemetry_control.js</file>
-        <file>qml/video/All_cameras_list.qml</file>
         <file>qml/video/background.png</file>
         <file>qml/video/finger.png</file>
         <file>qml/video/Head.qml</file>
@@ -275,7 +274,6 @@
         <file>qml/video/Test_Telemetry.qml</file>
         <file>qml/video/TimeList.qml</file>
         <file>qml/video/virtual_joystick.qml</file>
-        <file>qml/video/VM.qml</file>
         <file>js/constants.js</file>
         <file>images/user-solid.svg</file>
         <file>qml/forms/ImageFileDialog.qml</file>

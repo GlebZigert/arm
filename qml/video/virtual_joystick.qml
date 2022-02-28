@@ -65,7 +65,7 @@ Rectangle {
                     thumb.anchors.verticalCenterOffset = Math.sin(angle) * distanceBound
                 }
 
-                // Fire the signal to indicate the joystick has moved
+
                 angle = Math.atan2(signal_y, signal_x)
 
                 if(fingerInBounds) {

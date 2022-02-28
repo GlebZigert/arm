@@ -105,7 +105,6 @@ ApplicationWindow {
 
     property ListModel current_intervals: ListModel {signal updated()}
 
-    property ListModel test: ListModel {signal qwerty()}
 
     property ListModel another_user: ListModel {signal updated()}
 

@@ -10,25 +10,24 @@ import "../../js/axxon.js" as Axxon
 Item {
 
     property int serviceId:-1
-                    // hosts/ASTRAAXXON/DeviceIpint.2/TelemetryControl.0
+
     property string point: "ASTRAAXXON/DeviceIpint.2/TelemetryControl.0"
-//  curl -i -u Gleb:Zigert "http://192.168.0.187:8000/control/telemetry/session/acquire/ASTRAAXXON/DeviceIpint.2/TelemetryControl.0?session_priority=2"
 
     Timer {
         id:timer
         interval: 5000; running: false; repeat: true
         onTriggered:
         {
-        //root.log(".")
+
         if (drop_area.containsMouse)
         {
-        //root.log("+")
+
         Tlmtr.hold_session()
-    //    timer.start()
+
         }
         else
         {
-            //root.log("-")
+
         timer.stop()
         }
 
@@ -91,7 +90,7 @@ Row{
         Tlmtr.zoom_in()
         }
         onReleased: {
-            //root.log("stop")
+
             Tlmtr.stop_zoom()
         }
     }
@@ -114,7 +113,7 @@ Row{
         Tlmtr.zoom_out()
         }
         onReleased: {
-            //root.log("stop")
+
             Tlmtr.stop_zoom()
         }
     }
@@ -151,7 +150,7 @@ Row{
             Tlmtr.focus_in()
             }
             onReleased: {
-                //root.log("stop")
+
                 Tlmtr.stop_focus()
             }
         }
@@ -174,7 +173,7 @@ Row{
             Tlmtr.focus_out()
             }
             onReleased: {
-                //root.log("stop")
+
                 Tlmtr.stop_focus()
             }
         }
@@ -205,27 +204,27 @@ Row{
     }
 
     onReleased: {
-        //root.log("stop")
+
         Tlmtr.stop_moving()
     }
 
     onEntered: {
-        //root.log("[onEntered]")
+
         Tlmtr.capture_session(point)
         timer.start()
-        //mouse.accepted=false
+
 
 
     }
 
 
 
-        property var zoom: 0
-        property var zoom_prev: 0
+        property int zoom: 0
+        property int zoom_prev: 0
 
         onWheel:
         {
-              //root.log("---------------------" )
+
 
 
             if(wheel.angleDelta.y > 0)  // zoom in
@@ -264,7 +263,7 @@ Row{
         property int msec:0
         onTriggered:
         {
-            //root.log("zoom_timer_timeout")
+
             Tlmtr.stop_zoom()
             drop_area.zoom_prev=0
         }

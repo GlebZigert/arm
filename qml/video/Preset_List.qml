@@ -41,7 +41,7 @@ Item {
              MouseArea{
                  anchors.fill: parent
              onClicked: {
-                 //root.log("1")
+
                  var res
                  res =true
                  for(var i=0;i<model.count;i++)
@@ -102,7 +102,7 @@ Item {
              anchors.fill: parent
              propagateComposedEvents: true
              onClicked: {
-             //root.log("+")
+
                  mouse.accepted=false
              }
              }
@@ -137,7 +137,6 @@ Item {
          highlightOnFocus: true
           clip: true
 
- //        width: 300; height: 300
          horizontalScrollBarPolicy: Qt.ScrollBarAlwaysOff
          verticalScrollBarPolicy: Qt.ScrollBarAsNeeded
 
@@ -153,11 +152,7 @@ anchors.fill: parent
 
      property int selected: -1
      property int current: -1
-  //   interactive: false
 
-//=========================================================================
-//                       Preset unit                                     //
-//=========================================================================
      delegate: Rectangle {
 
             id: unit
@@ -194,8 +189,7 @@ anchors.fill: parent
              property int ind: index
 
               onAccepted:{
-              //root.log("[PROFIT]")
-                  //root.log("ind: ", ind)
+
 
               if(ind<0)
               {
@@ -211,7 +205,7 @@ anchors.fill: parent
 
               Keys.onPressed: {
                       if (event.key == Qt.Key_Enter) {
-                          //root.log('Key Enter was pressed')
+
                           text_field.visible=false
                           event.accepted = true
 
@@ -236,9 +230,6 @@ anchors.fill: parent
                  }
                  else
                  {
-
-                 //root.log(list.selected)
-                 //root.log(parent.number)
                  list.selected=parent.number
 
                  }
@@ -254,7 +245,7 @@ anchors.fill: parent
              if(ind == -1)
                  text_field.visible=true
              text_field.forceActiveFocus()
-//text_field.accepted.connect(send_edit_signal)
+
 }
 
 function set_edit_signal()
@@ -265,18 +256,18 @@ Tlmtr.edit(text_field.text,serviceId)
 
 function show_text_field(fl)
 {
- //   //root.log("show_text_field ",fl)
+
     if(fl)
     {
     if(text_field.visible)
     {
-     //            //root.log("NO 1 ")
+
         text_field.visible=false
         area.enabled=true
     }
     else
     {
-     //       //root.log("PROFIT ")
+
      text_field.visible=true
      text_field.focus=true
      text_field.forceActiveFocus()
@@ -286,7 +277,7 @@ function show_text_field(fl)
     }
     else
     {
-   //                      //root.log("NO 2 ")
+
     text_field.visible=false
         area.enabled=true
     }
@@ -296,10 +287,9 @@ function show_text_field(fl)
          {
              if(fl)
              {
-             //root.log("[go_to_preset]")
+
              Tlmtr.go_to_preset(index,container.serviceId)
-       //      border.color="black"
-       //      border.width=2
+
              }
              else
              {
@@ -310,7 +300,7 @@ function show_text_field(fl)
 
          function set_normal()
          {
-         //root.log("set_normal()")
+
          border.width=0
          color="lightblue"
 
@@ -340,35 +330,17 @@ function show_text_field(fl)
      }
 
 }
-//----
 
+
+    }
+
+
+
+    }
     }
 
 
 
-    }
-    }
-
-
-    /*
-    MouseArea{
-    anchors.fill: parent
-    propagateComposedEvents: true
-    onClicked: {
-    //root.log("!")
-        mouse.accepted=false
-    }
-    onPressed: {
-    //root.log("!")
-        mouse.accepted=false
-    }
-
-    onReleased: {
-    //root.log("!")
-        mouse.accepted=false
-    }
-    }
-    */
 
     }
 
@@ -382,14 +354,10 @@ function show_text_field(fl)
         {
 
         var x=list.itemAt(i)
-          //root.log(x.number," ",list.selected)
+
             if(x.number==list.selected)
             {
-                //root.log("================================")
-                //root.log("=")
-                //root.log("=            ",x.ind)
-                //root.log("=")
-                //root.log("================================")
+
             Tlmtr.remove(x.ind,serviceId)
 
             }
@@ -404,7 +372,7 @@ function show_text_field(fl)
            {
 
            var x=list.itemAt(i)
-             //root.log(x.number," ",list.selected)
+
            x.show_text_field(x.number==list.selected?true:false)
 
            }
@@ -437,12 +405,9 @@ function show_text_field(fl)
        var x=list.itemAt(i)
  x.show_text_field(0)
            var res=0
-           //root.log(x.number," ",list.current)
+
            x.select(x.number==list.selected?true:false)
            x.set_current(x.number==list.current?true:false)
-
-
-
 
        }
 
@@ -469,22 +434,10 @@ function show_text_field(fl)
         {
             var x=root.camera_presets.get(i)
 
-            //root.log("[x.index] ",x.index)
-            //root.log("[x.name] ",x.name)
-
         model.append({num: i,index:x.index,
                      name:x.name
                       })
         }
-
-//root.log("model.count ",model.count)
-        for(var i=0;i<model.count;i++)
-        {
-
-            ////root.log("[x.index] ",model[i].index)
-            ////root.log("[x.name] ",model[i].name)
-        }
-
 
     }
 
