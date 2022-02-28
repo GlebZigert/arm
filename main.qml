@@ -15,7 +15,7 @@ import "qml/forms" as Forms
 
 ApplicationWindow {
     id: root
-    property string version: "1.0"
+    property string version: "1.03"
     title: qsTr("Риф-7 (АРМ версии " + version + ")")
     y: 50
     x: 400
