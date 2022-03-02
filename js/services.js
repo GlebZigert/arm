@@ -13,13 +13,13 @@
 .import "rif-plus.js" as RifPlus
 .import "axxon.js" as Axxon
 .import "z5rweb.js" as Z5RWeb
-//.import "sigur.js" as Sigur
+.import "parus.js" as Parus
 
 var factory = {
     rif: RifPlus.Rif,
     axxon: Axxon.Axxon,
     z5rweb: Z5RWeb.Z5RWeb,
-//    ipmon: IPMon.IPMon,
+    parus: Parus.Parus,
 }
 
 

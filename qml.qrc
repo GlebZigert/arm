@@ -306,5 +306,6 @@
         <file>qml/video/no_signal.jpeg</file>
         <file>qml/video/no_in_storage.jpeg</file>
         <file>Video.qml</file>
+        <file>js/parus.js</file>
     </qresource>
 </RCC>
