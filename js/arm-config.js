@@ -44,7 +44,7 @@ config[Const.ARM_UNIT] = {}
 /////////////////////////////////////////
 layouts[Const.ARM_CHECKPOINT] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
-    {symbol: '2', views: [['Test']]},
+    {symbol: '2', views: [['Video']]},
     {symbol: '3', views: [['DevicesTree', 'PassageView'], ['MyJournal']]},
 ]
 commands[Const.ARM_CHECKPOINT] = ["ListServices", "ListMaps", "LoadJournal"]
@@ -55,7 +55,7 @@ config[Const.ARM_CHECKPOINT] = {}
 ///////////////////////////////////
 layouts[Const.ARM_GUARD] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
-    {symbol: '3', views: [['Test']]},
+    {symbol: '3', views: [['Video']]},
     {symbol: '2', views: [['ZonesTree'], ['MyJournal']]},
 ]
 commands[Const.ARM_GUARD] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
@@ -65,7 +65,7 @@ config[Const.ARM_GUARD] = {}
 //{id: 5, text: "Оператор ТСО"},
 layouts[Const.ARM_OPERATOR] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
-    {symbol: '2', views: [['Test']]},
+    {symbol: '2', views: [['Video']]},
 ]
 commands[Const.ARM_OPERATOR] = ["ListServices", "ListMaps", "LoadJournal"]
 config[Const.ARM_OPERATOR] = {}
