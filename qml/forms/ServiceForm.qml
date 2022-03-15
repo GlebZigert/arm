@@ -4,10 +4,13 @@ import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.1
 import "helpers.js" as Helpers
 
+import "../forms" as Forms
+
 ColumnLayout {
     anchors.fill: parent
     spacing: 5
 
+    property bool asyncWait
     property string type0: model['type'] || '' // is there workaround?
     property var allTypes: ([
         {value: "", text: "= выберите тип ="},
@@ -221,6 +224,7 @@ ColumnLayout {
         Button {
             text: 0 === itemId ? "Создать" : "Обновить"
             Layout.fillWidth: true
+            enabled: !asyncWait
             onClicked: {
                 var name, value,
                     ok = true, // fields acceptable
@@ -230,24 +234,22 @@ ColumnLayout {
                 ok = Helpers.readForm(form, payload, transforms)
                 payload.type = payload.type || model['type']
                 if (ok && payload.type) {
-                    console.log(JSON.stringify(payload))
+                    //console.log(JSON.stringify(payload))
                     //root.send('configuration', 'UpdateService', payload)
-                    root.newTask('configuration', 'UpdateService', payload, done, function (){console.log('UpdateService failed')})
+                    asyncWait = true
+                    root.newTask(0, 'UpdateService', payload, done, fail)
                 } else
-                    popup.open()
-            }
-            function done(msg) {
-                //console.log("SVC done >>>", JSON.stringify((msg)))
-                // INFO: s.serviceId is setted once, during the new service creation and s.id becomes 0
-                tree.findItem({serviceId: msg.data.serviceId || msg.data.id})
+                    messageBox.error("Форма заполнена не полностью, либо неправильно.")
             }
         }
         Button {
             text: "Удалить"
+            enabled: !asyncWait
             visible: itemId != 0
             Layout.fillWidth: true
             onClicked: {
-                root.send('configuration', 'DeleteService', itemId)
+                asyncWait = true
+                root.newTask(0, 'DeleteService', itemId, null, fail)
             }
         }
     }
@@ -257,11 +259,17 @@ ColumnLayout {
         Item {}
     }
 
-    MessageDialog {
-        id: popup
-        title: "Ошибка"
-        icon: StandardIcon.Critical
-        text: "Форма заполнена не полностью, либо неправильно."
-        onAccepted: console.log("OK")
+    Forms.MessageBox {id: messageBox}
+
+    function fail(errText) {
+        asyncWait = false
+        messageBox.error("Операция не выполнена: " + errText)
     }
+
+    function done(msg) {
+        asyncWait = false
+        // INFO: s.serviceId is setted once, during the new service creation and s.id becomes 0
+        tree.findItem({serviceId: msg.data.serviceId || msg.data.id})
+    }
+
 }
