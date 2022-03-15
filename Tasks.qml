@@ -10,7 +10,7 @@ Timer {
     property int nextId: 1
     property var tasks: ({})
 
-    signal result(var reply)
+    signal result(var reply, bool isErr)
     signal newTask(int service, string action, var data, var done, var fail)
 
     onResult: {
@@ -18,7 +18,10 @@ Timer {
         if (!task)
             return
 
-        if (task.done)
+        if (isErr) {
+            if (task.fail)
+                task.fail(reply.data.errText, reply.data.errCode)
+        } else if (task.done)
             task.done(reply) // use Qt.callLater(), give some time for the magic to happen
 
         delete tasks[reply.task]
@@ -30,8 +33,8 @@ Timer {
 
         if (socket.active && socket.sendTextMessage(payload) === len)
             tasks[nextId] = {done: done, fail: fail, time: Date.now()}
-        else
-            fail(true) // fail - no connection
+        else if (fail)
+            fail("Связь с сервером отсутствует") // fail - no connection
 
         nextId++
     }
@@ -43,7 +46,7 @@ Timer {
         for (i in tasks)
             if (now - tasks[i].time > timeout) {
                 if (tasks[i].fail)
-                    tasks[i].fail(true)
+                    tasks[i].fail("Сервер не отвечает")
                 delete tasks[i]
             }
     }

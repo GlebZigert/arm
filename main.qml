@@ -205,11 +205,13 @@ ApplicationWindow {
 
          onTextMessageReceived: {
              //console.log("[RECV]", message)
-             var msg = JSON.parse(message)
-             Services.message(msg) // regular action first
+             var msg = JSON.parse(message),
+                isErr = 'object' === typeof msg.data && 'errCode' in msg.data && 'errText' in msg.data && Object.keys(msg.data).length === 2
+             if (!isErr)
+                Services.message(msg) // regular action first
              if (msg.task) {
                  // don't call immediately, give some time for the magic to happen
-                 Qt.callLater(tasks.result, msg) // personal action after
+                 Qt.callLater(tasks.result, msg, isErr) // personal action after
              }
              //newMessage(msg)
          }
