@@ -80,7 +80,7 @@ ColumnLayout {
             text: tree.current ? (tree.current.timeStart || '') : ''
             placeholderText: "Начало (ЧЧ:ММ)"
             inputMethodHints: Qt.ImhDigitsOnly
-            validator: RegExpValidator { regExp: /^([01\s]?[0-9\s]|2[0-3\s]):([0-5\s][0-9\s])$/ }
+            validator: RegExpValidator { regExp: /^([01\s]?[0-9\s]|2[0-3\s]):(([0-5\s][0-9\s])|\d)$/ }
             color: acceptableInput ? palette.text : "red"
             Layout.fillWidth: true
         }
@@ -92,7 +92,7 @@ ColumnLayout {
             text: tree.current ? (tree.current.timeEnd || '') : ''
             placeholderText: "Конец (ЧЧ:ММ)"
             inputMethodHints: Qt.ImhDigitsOnly
-            validator: RegExpValidator { regExp: /^([01\s]?[0-9\s]|2[0-3\s]):([0-5\s][0-9\s])$/ }
+            validator: RegExpValidator { regExp: /^([01\s]?[0-9\s]|2[0-3\s]):(([0-5\s][0-9\s])|\d)$/ }
             color: acceptableInput ? palette.text : "red"
             Layout.fillWidth: true
         }
@@ -112,7 +112,7 @@ ColumnLayout {
             text: faFont.fa_check
             ToolTip.text: "Сохранить интервал"
             ToolTip.visible: hovered
-            onClicked: timeStart.acceptableInput && timeEnd.acceptableInput && (updateTimerange() || newTimerange())
+            onClicked: checkTimerange() && (updateTimerange() || newTimerange())
         }
 
         Button {
@@ -161,6 +161,19 @@ ColumnLayout {
         var a = ['fa_sign_in_alt', 'fa_sign_out_alt', 'fa_people_arrows']
         return a[i % a.length]
     }*/
+
+    function checkTimerange() {
+        var t1, t2, n1, n2
+        if (!timeStart.acceptableInput || !timeEnd.acceptableInput)
+            return false
+        t1 = timeStart.text.split(':')
+        t2 = timeEnd.text.split(':')
+        if (t1.length !== 2 || t2.length !== 2)
+            return
+        n1 = parseInt(t1[0]) * 60 + parseInt(t1[1])
+        n2 = parseInt(t2[0]) * 60 + parseInt(t2[1])
+        return n1 < n2
+    }
 
     function updateTimerange() {
         var obj = tree.current
