@@ -196,6 +196,10 @@ Item {
                     Behavior on color {
                         ColorAnimation {}
                     }
+                    MouseArea {
+                        anchors.fill: parent
+                        onClicked: treeRoot.selectNode(model, tnid)
+                    }
                 }
                 Label {
                     id: lbl
