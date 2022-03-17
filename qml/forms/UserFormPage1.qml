@@ -290,6 +290,16 @@ GridLayout {
             ToolTip.visible: hovered
             onClicked: cardsCombo.remove()
         }
+        Button {
+            visible: cardsCombo.currentIndex >= 0 && cardsCombo.currentIndex !== cardsCombo.model.count - 1
+            implicitWidth: height
+            font.family: faFont.name
+            font.pixelSize: 18
+            text: faFont.fa_address_card
+            ToolTip.text: "Печатать"
+            ToolTip.visible: hovered
+            //onClicked: print()
+        }
     }
     ///////////////////////////////////////////
     Text { text: "Добавить"; visible: !!fields['add-children'] && itemId; Layout.alignment: Qt.AlignRight }
