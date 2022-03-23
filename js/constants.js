@@ -57,6 +57,7 @@ const   EC_NA = 0,  //iota
         EC_FREE_PASS            = 115,
         EC_NORMAL_ACCESS        = 116,
         EC_ALGO_STARTED         = 117,
+        EC_CONTROL_FORBIDDEN    = 118,
 
         // OK
         EC_OK                     = 200,

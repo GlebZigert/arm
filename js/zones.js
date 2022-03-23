@@ -13,7 +13,7 @@ var zones
 //////////////////////////////////////////////////////////////
 
 function listZones(msg) {
-    console.log("ListZONES:", JSON.stringify(msg))
+    //console.log("ListZONES:", JSON.stringify(msg))
     //var ext = complement({id: 0, name: 'Внешняя территория'})
     //delete ext.form
 

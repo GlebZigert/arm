@@ -220,7 +220,7 @@ function updateService(service, data) {
 
 function deleteService(id) {
     for (var i = 0; i < qml.devices.count; i++) {
-        console.log(JSON.stringify(qml.devices.get(i)))
+        //console.log(JSON.stringify(qml.devices.get(i)))
         if (qml.devices.get(i).serviceId === id) {
             if (id in services && ('shutdown' in services[id]))
                 services[id].shutdown()
@@ -280,6 +280,8 @@ function scanEvents(events) {
         return
     for (var i = 0; i < events.length; i++) {
         switch (events[i].class) {
+            // EC_CONTROL_FORBIDDEN is emitted by core, but serviceId corresponds to deviceId
+            case Const.EC_CONTROL_FORBIDDEN: eventList.push(events[i]); break
             case Const.EC_ENTER_ZONE: Zones.enterZone(events[i]); break
             case Const.EC_GLOBAL_ALARM: playAlarm("alarm"); break
             case Const.EC_ACCESS_VIOLATION: playAlarm("alarm"); break
@@ -287,6 +289,7 @@ function scanEvents(events) {
         if (0 === events[i].serviceId)
             eventList.push(events[i])
     }
-    if (eventList.length > 0)
+    if (eventList.length > 0) {
         Journal.logEvents(eventList)
+    }
 }
