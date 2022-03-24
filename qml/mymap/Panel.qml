@@ -289,9 +289,11 @@ Rectangle {
         // TODO: normalize z-order
         for (i = 0; i < currentMap.shapes.count; i++) {
             o = currentMap.shapes.get(i)
+            if ('text' === o.type && '' === o.data)
+                continue // skip emty text
             payload.shapes.push({type: o.type, x: o.x, y: o.y, z: o.z, w: o.w, h: o.h, r: o.r, data: o.data, sid: o.sid, did: o.did})
         }
-        //console.log(JSON.stringify(payload))
+        //console.log("Map payload:", JSON.stringify(payload))
         asyncWait = true
         root.newTask('configuration', 'UpdateMap', payload, saveDone, saveFailed)
     }
