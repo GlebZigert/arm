@@ -10,7 +10,7 @@ Popup {
     property int alarmsCount
     modal: true
     focus: true
-    //anchors.centerIn: Overlay.overlay
+    anchors.centerIn: Overlay.overlay
     //parent: Overlay.overlay
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     //implicitWidth: 350
