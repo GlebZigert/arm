@@ -45,8 +45,8 @@ Item {
             placeholderText: "IP сервера"
             validator: RegExpValidator { regExp: /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}(:\d{2,5})?/ }
             color: acceptableInput ? palette.text : "red"
-            //text: "192.168.1.188"
-            text: "127.0.0.1"
+            text: "192.168.0.188"
+         //   text: "127.0.0.1"
         }
         ///////////////////////////////////////////
         Text { text: ""; visible: !!root.currentUser; Layout.alignment: Qt.AlignLeft }
@@ -64,7 +64,7 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-            //text: "Администратор"
+            text: "Администратор"
             //text: "admin"
         }
         ///////////////////////////////////////////
@@ -77,7 +77,7 @@ Item {
             echoMode: TextInput.Password
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
-            //text: "Start7"
+            text: "Start7"
         }
         ///////////////////////////////////////////
         Text { text: ""; Layout.alignment: Qt.AlignLeft }
