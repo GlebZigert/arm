@@ -8,6 +8,7 @@ import "helpers.js" as Helpers
 ColumnLayout {
     property int id: model['id'] || 0 // TODO: delete it
     property bool changeable: adminMode && armConfig[activeComponent] > 0
+    property bool asyncWait
     anchors.fill: parent
     spacing: 5
 
@@ -44,25 +45,33 @@ ColumnLayout {
         Button {
             text: itemId ? "Обновить" : "Создать"
             Layout.fillWidth: true
-            enabled: changeable
+            enabled: changeable && !asyncWait
             onClicked: saveMode()
         }
         Button {
             visible: itemId
             text: "Удалить"
-            enabled: changeable
+            enabled: changeable && !asyncWait
             //Layout.alignment: Qt.AlignCenter
             Layout.fillWidth: true
-            onClicked: {root.send('configuration', 'DeleteRule', itemId)}
+            onClicked: {
+                asyncWait = true
+                root.newTask('configuration', 'DeleteRule', itemId, done, fail)
+            }
         }
     }
 
+    MessageBox {id: messageBox}
+
+    function fail(errText) {
+        asyncWait = false
+        messageBox.error("Операция не выполнена: " + errText)
+    }
 
     function done(msg) {
-        //console.log('task done')
+        asyncWait = false
         if (0 === itemId)
             tree.findItem(msg.data.id)
-        //stack.currentIndex = 0
     }
 
     function saveMode() {
@@ -71,33 +80,24 @@ ColumnLayout {
 
         var payload = {priority: 110, timeRanges: []}, // default "normal priority"
             ok = Helpers.readForm(form1, payload)
-        if (ok) {
-            Helpers.readForm(form2, payload)
-            payload.startDate = dateString(parseDate(payload.startDate))
-            payload.endDate = dateString(parseDate(payload.endDate))
-            payload.id = itemId
+        if (!ok)
+            return
 
-            //payload.rules.regularDays = reModel(form2.model.get(0).children, [])
-            //payload.rules.specialDays = reModel(form2.model.get(1).children, [])
-            payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(0).children, 0)) // spec days
-            payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(1).children, 2)) // week day
-            payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(2).children, 1)) // month's day
-            //root.send('configuration', 'UpdateRule', payload)
-            root.newTask('configuration', 'UpdateRule', payload, done, function (){console.log('UpdateRule failed')})
-        }
+        Helpers.readForm(form2, payload)
+        payload.startDate = dateString(parseDate(payload.startDate))
+        payload.endDate = dateString(parseDate(payload.endDate))
+        payload.id = itemId
 
-        console.log("RULES==>", JSON.stringify(payload))
+        //payload.rules.regularDays = reModel(form2.model.get(0).children, [])
+        //payload.rules.specialDays = reModel(form2.model.get(1).children, [])
+        payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(0).children, 0)) // spec days
+        payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(1).children, 2)) // week day
+        payload.timeRanges = payload.timeRanges.concat(getRanges(timeRanges.get(2).children, 1)) // month's day
+        //root.send('configuration', 'UpdateRule', payload)
+        asyncWait = true
+        root.newTask('configuration', 'UpdateRule', payload, done, fail)
+        //console.log("RULES==>", JSON.stringify(payload))
 
-        //console.log(JSON.stringify(form2.model.get(1)))
-        //console.log("!!!", form2.model.count)
-        //console.log(JSON.stringify(reModel(form2.model, [])))
-        //console.log(JSON.stringify(payload))
-        /*if (ok) {
-            console.log(JSON.stringify(payload))
-            //root.newTask('configuration', 'UpdateUser', payload, done, function (){console.log('fail')})
-            //root.send('configuration', 'UpdateUser', payload)
-        } else
-            popup.open()*/
     }
 
     function parseDate(str) {

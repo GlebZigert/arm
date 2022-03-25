@@ -9,6 +9,7 @@ import "../../js/journal.js" as Journal
 GridLayout {
     id: form
     property int userId
+    property bool asyncWait
     columns: 2
     //anchors.fill: parent
     anchors.left: parent.left
@@ -156,6 +157,7 @@ GridLayout {
         Button {
             Layout.fillWidth: true
             text: "Применить"
+            enabled: !asyncWait
             // anchors.centerIn: parent
             onClicked: parent.display()
 
@@ -163,6 +165,7 @@ GridLayout {
         Button {
             Layout.fillWidth: true
             text: "Печать"
+            enabled: !asyncWait
             onClicked: parent.printLog()
         }
         function printLog() {
@@ -192,27 +195,29 @@ GridLayout {
                 payload.start = makeDate(payload.startDate, payload.startTime + ':00')
                 payload.end = makeDate(payload.endDate, payload.endTime + ':59')
                 'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-                console.log("EventFilter SHOW", JSON.stringify(payload))
-                root.newTask('configuration', 'ListEvents', payload, done, function (){console.log('ListEvents failed')})
+                //console.log("EventFilter SHOW", JSON.stringify(payload))
+                asyncWait = true
+                root.newTask('configuration', 'ListEvents', payload, done, fail)
             }
         }
 
 
+        function fail(errText) {
+            asyncWait = false
+            messageBox.error("Операция не выполнена: " + errText)
+        }
+
         function done(msg) {
             var i, d
             //console.log(JSON.stringify(msg))
+            asyncWait = false
             if (!msg.data) {
                 eventsList.clear()
                 return
             }
 
             Journal.complementEvents(msg.data)
-            /*for (i = 0; i < msg.data.length; i++) {
-                d = new Date(msg.data[i].time * 1e3)
-                msg.data[i].timeString = Utils.formatDate(d) + ' ' + Utils.formatFullTime(d)
-                msg.data[i].text = msg.data[i].event + ': ' + msg.data[i].text
-                msg.data[i].color = Utils.statesColors[msg.data[i]['class']] || ''
-            }*/
+
             eventsList.clear()
             eventsList.append(msg.data)
         }
@@ -223,6 +228,9 @@ GridLayout {
             return (new Date(d.join('-') + 'T' + time)).toISOString()
         }
     }
+
+    MessageBox {id: messageBox}
+
     UserSelector {
         id: userSelector
         userTree: root.users

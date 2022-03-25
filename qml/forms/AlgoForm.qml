@@ -231,7 +231,10 @@ GridLayout {
             enabled: itemId !== 0 && !asyncWait
             //onClicked: root.send('configuration', 'DeleteAlgorithm', model.id)
             // INFO: don't use asyncWait due to nothing destructive happens when clicked twice
-            onClicked: root.newTask('configuration', 'DeleteAlgorithm', model.id, null, errorMessage)
+            onClicked: {
+                asyncWait = true
+                root.newTask('configuration', 'DeleteAlgorithm', model.id, done, fail)
+            }
         }
     }
 
@@ -245,12 +248,12 @@ GridLayout {
         userTree: root.users
     }
 
-    function errorMessage(failed) {
-        if (failed) {
-            asyncWait = false
-            messageBox.error("Операция не выполнена: сервер недоступен")
-        }
+
+    function fail(errText) {
+        asyncWait = false
+        messageBox.error("Операция не выполнена: " + errText)
     }
+
 
     function updateUser() {
         var user = Utils.findItem(root.users, userId)
@@ -371,7 +374,7 @@ GridLayout {
             payload.argument = parseInt(payload.argument)
             console.log("AlgoForm payload:", JSON.stringify(payload))
             asyncWait = true
-            root.newTask('configuration', 'UpdateAlgorithm', payload, done, errorMessage)
+            root.newTask('configuration', 'UpdateAlgorithm', payload, done, fail)
         } else
             messageBox.error("Форма заполнена некорректно")
     }

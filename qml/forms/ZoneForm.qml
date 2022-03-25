@@ -9,6 +9,7 @@ ColumnLayout {
     id: form
     //columns: 2
     anchors.fill: parent
+    property bool asyncWait
     property bool changeable: adminMode && (armConfig[activeComponent] & 1)
     property ListModel devicesTree: root.devices.get(0).children
     property ListModel fakeDevices: ListModel{}
@@ -123,23 +124,19 @@ ColumnLayout {
         //Layout.preferredHeight: 30
         Button {
             Layout.fillWidth: true
-            enabled: changeable && 1 !== itemId
+            enabled: changeable && 1 !== itemId && !asyncWait
             text: 0 === itemId ? "Создать" : "Обновить"
             // anchors.centerIn: parent
             onClicked: {
                 var payload = {id: itemId},
                     transforms = {maxVisitors: parseInt}
 
-                function done(msg) {
-                    if (0 === itemId)
-                        zonesTree.findItem(msg.data.id)
-                }
-
                 if (Helpers.readForm(form, payload, transforms)) {
                     //payload.name += " = A"
                     payload.devices = Helpers.getLinks(devices)
-                    console.log("Zones payload:", JSON.stringify(payload))
-                    root.newTask('configuration', 'UpdateZone', payload, done, function (){console.log('UpdateZone failed')})
+                    //console.log("Zones payload:", JSON.stringify(payload))
+                    asyncWait = true
+                    root.newTask(0, 'UpdateZone', payload, done, fail)
                 } else
                     messageBox.error("Заполните форму")
             }
@@ -147,9 +144,23 @@ ColumnLayout {
         Button {
             Layout.fillWidth: true
             text: "Удалить"
-            enabled: changeable && itemId >= 2
-            onClicked: root.send('configuration', 'DeleteZone', model.id)
+            enabled: changeable && itemId >= 2 && !asyncWait
+            onClicked: {
+                asyncWait = true
+                root.newTask(0, 'DeleteZone', model.id, done, fail)
+            }
         }
     }
     MessageBox {id: messageBox}
+
+    function done(msg) {
+        asyncWait = false
+        if (0 === itemId)
+            zonesTree.findItem(msg.data.id)
+    }
+
+    function fail(errText) {
+        asyncWait = false
+        messageBox.error("Операция не выполнена: " + errText)
+    }
 }
