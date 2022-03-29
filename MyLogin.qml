@@ -3,6 +3,8 @@
 import QtQuick 2.11
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.5
+import Qt.labs.settings 1.0
+
 import "qml/forms" as Forms
 import "js/utils.js" as Utils
 import "js/journal.js" as Journal
@@ -12,6 +14,10 @@ import "js/crypto.js" as Crypto
 Item {
     property int panePosition
     anchors.fill: parent
+
+    Settings {
+        property alias serverIp: serverIp.text
+    }
 
     GridLayout {
         id: form
@@ -39,6 +45,7 @@ Item {
         ///////////////////////////////////////////
         Text { text: "Сервер:"; Layout.alignment: Qt.AlignRight}
         TextField {
+            id: serverIp
             property string name: 'server'
             enabled: !root.currentUser;
             Layout.fillWidth: true
@@ -64,8 +71,8 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-            //text: "Администратор"
-            //text: "admin"
+            text: "Администратор"
+            //text: "unit"
         }
         ///////////////////////////////////////////
         Text { text: "Пароль"; Layout.alignment: Qt.AlignRight}
@@ -77,7 +84,7 @@ Item {
             echoMode: TextInput.Password
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
-            //text: "Start7"
+            text: "Start7"
         }
         ///////////////////////////////////////////
         Text { text: ""; Layout.alignment: Qt.AlignLeft }
@@ -88,6 +95,7 @@ Item {
             onClicked: root.currentUser ? change() : login()
         }
     }
+
     // TODO: remove next line in production
     //Component.onCompleted: login()
 

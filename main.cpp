@@ -26,8 +26,8 @@ int main(int argc, char *argv[])
     QApplication app(argc, argv);
 
     // fix FileDialog QML errors
-    app.setOrganizationName("Start7");
-    app.setOrganizationDomain("OrgDom");
+    app.setOrganizationName("Start-7");
+    app.setApplicationName("Rif-7");
     /*QNetworkProxy proxy;
     proxy.setType(QNetworkProxy::HttpProxy);
     proxy.setHostName("192.168.0.1");
