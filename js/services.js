@@ -150,6 +150,7 @@ var handlers = {
             return
         }
 
+        root.currentUser = msg.data
 
         if (0 === root.armRole) {
             root.armRole = msg.data.role
@@ -163,7 +164,6 @@ var handlers = {
             }*/
         }
 
-        root.currentUser = msg.data
         armCommands()
     },
 }

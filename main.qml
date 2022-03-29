@@ -6,6 +6,7 @@ import QtQuick.Controls 2.4
 import QtWebSockets 1.0
 //import QtQuick.Controls.Material 2.11
 import QtGraphicalEffects 1.0
+import Qt.labs.settings 1.0
 
 import "js/object-factory.js" as ObjectFactory
 import "js/services.js" as Services
@@ -123,6 +124,14 @@ ApplicationWindow {
 
      signal restored(int id)
 
+    Settings {
+        id: settings
+        property alias x: root.x
+        property alias y: root.y
+        property alias width: root.width
+        property alias height: root.height
+    }
+
     FontAwesome {
         id: faFont
     }
@@ -206,7 +215,7 @@ ApplicationWindow {
          onTextMessageReceived: {
              //console.log("[RECV]", message)
              var msg = JSON.parse(message),
-                isErr = 'object' === typeof msg.data && 'errCode' in msg.data && 'errText' in msg.data && Object.keys(msg.data).length === 2
+                isErr = null !== msg.data && 'object' === typeof msg.data && 'errCode' in msg.data && 'errText' in msg.data && Object.keys(msg.data).length === 2
              if (!isErr)
                 Services.message(msg) // regular action first
              if (msg.task) {
@@ -251,13 +260,14 @@ ApplicationWindow {
         SplitView {
             property int panePosition
             orientation: Qt.Vertical
+            Layout.minimumWidth: parent.width / 6
         }
     }
 
     Forms.MessageBox {id: messageBox}
 
     Component.onCompleted: {
-        makePane([["MyLogin"]], 0)
+        makePane([["MyLogin"]], 1)
         Services.init()
         activePane = 0
         root.send.connect(sendMessage)
@@ -267,7 +277,7 @@ ApplicationWindow {
         console.log('INIT PANES!')
         var i
         for (i = 0; i < panes.length; i++)
-            makePane(panes[i].views, 1 + i)
+            makePane(panes[i].views, 1 + i) // +1 due to login pane
         //layout.children[0].destroy()
 
         /*var panes = [
@@ -308,35 +318,36 @@ ApplicationWindow {
         return false
     }
 
-    /*function itemAdded(obj, source) {
-        obj.Layout.minimumHeight = Qt.binding(function() { return obj.parent.height / 4 })
-        viewA.addItem(obj)
-    }*/
-
-    function setMinWH(obj) {
-        obj.Layout.minimumHeight = Qt.binding(function() { return obj.parent.height / 8 })
-        obj.Layout.minimumWidth = Qt.binding(function() { return obj.parent.width / 8 })
-    }
-
     function makePane(a, pos) {
-        var i
-        var view,
+        var i, k, v,
+            view,
             pane = hLayout.createObject(layout)
-//        pane.visible = false
-        //pane.id = "pane"
+
         pane.panePosition = pos
+
         for (var j = 0; j < a.length; j++) {
             view = vLayout.createObject(pane)
-            setMinWH(view)
+            view.panePosition = pos
+            if (currentUser) {
+                k = 'user' + currentUser.id + '/pane' + pos + '_v' + j
+                v = settings.value(k)
+                if (v && v > 0)
+                    view.width = v
+            }
+
             pane.addItem(view)
             for (i = 0; i < a[j].length; i++) {
-                ObjectFactory.create(a[j][i], view, function (obj, source) {
-                    setMinWH(obj)
-                    //console.log("INIT:", source)
-                    obj.panePosition = pos
+                ObjectFactory.create(a[j][i], view, function (p, i, j, obj, source) {
+                    obj.Layout.minimumHeight = Qt.binding(function() { return obj.parent.height / 6 })
+                    obj.panePosition = p
+                    if (currentUser) {
+                        k = 'user' + currentUser.id + '/pane' + p + '_v' + j + '_h' + i
+                        v = settings.value(k)
+                        if (v && v > 0)
+                            obj.height = v
+                    }
                     view.addItem(obj)
-                    //socket.newMessage.connect(obj.send)
-                });
+                }.bind(this, pos, i, j));
             }
         }
     }
@@ -359,11 +370,39 @@ ApplicationWindow {
         menu.linkStatus = 'offline'
     }
 
+    function saveSplitViews() {
+        var saves = {},
+            i, j, k, l,
+            pane, vPanes, hPanes
+        for (i = 1; i < layout.count; i++) { // don't save login screen
+            pane = layout.children[i]
+            vPanes = pane.children[1].children
+            for (j = 0; j < vPanes.length; j++) {
+                if (j < vPanes.length-1) // -1 => don't store last item width
+                    saves['pane' + i + '_v' + j] = Math.round(vPanes[j].width)
+                hPanes = vPanes[j].children[1].children
+                for (k = 0; k < hPanes.length - 1; k++) // -1 => don't store last item height
+                    saves['pane' + i + '_v' + j + '_h' + k] = Math.round(hPanes[k].height)
+            }
+        }
+        //console.log("Split saves:", JSON.stringify(saves))
+
+        for (i in saves) {
+            k = "user" + currentUser.id + "/" + i
+            if (saves[i] > 100) // don't save zero (tiny) sizes
+                settings.setValue(k, saves[i])
+        }
+    }
+
     function checkClosing(close) {
         if (currentUser && Utils.useAlarms()) {
             close.accepted = false
             messageBox.error("Смена не завершена")
         }
+
+        if (currentUser)
+            saveSplitViews()
+
     }
 
     function log(str){
