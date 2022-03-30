@@ -46,7 +46,7 @@ Timer {
         for (i in tasks)
             if (now - tasks[i].time > timeout) {
                 if (tasks[i].fail)
-                    tasks[i].fail("Сервер не отвечает")
+                    Qt.callLater(tasks[i].fail, "Сервер не отвечает") // call async
                 delete tasks[i]
             }
     }
