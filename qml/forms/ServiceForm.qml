@@ -247,10 +247,10 @@ ColumnLayout {
             enabled: !asyncWait
             visible: itemId != 0
             Layout.fillWidth: true
-            onClicked: {
+            onClicked: messageBox.ask("Удалить подсистему?", function () {
                 asyncWait = true
                 root.newTask(0, 'DeleteService', itemId, null, fail)
-            }
+            })
         }
     }
 

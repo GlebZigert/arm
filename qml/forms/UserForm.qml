@@ -93,8 +93,12 @@ ColumnLayout {
             text: "Удалить"
             //Layout.alignment: Qt.AlignCenter
             Layout.fillWidth: true
-            onClicked: {root.send('configuration', 'DeleteUser', itemId)}
             enabled: !asyncWait && form1.changeable
+            onClicked: messageBox.ask("Удалить пользователя?", function () {
+                asyncWait = true
+                root.newTask(0, 'DeleteUser', itemId, null, fail)
+            })
+
         }
     }
 
@@ -132,10 +136,10 @@ ColumnLayout {
             messageBox.error("Форма заполнена не полностью, либо неправильно.")
     }
 
-    function fail() {
-        //console.log('UpdateUser failed')
+    function fail(txt) {
+        //console.log('UpdateUser failed:', txt)
         asyncWait = false
-        messageBox.error("Операция не выполнена")
+        messageBox.error("Операция не выполнена: " + txt)
     }
 
     function done(filename, msg) {

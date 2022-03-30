@@ -145,10 +145,10 @@ ColumnLayout {
             Layout.fillWidth: true
             text: "Удалить"
             enabled: changeable && itemId >= 2 && !asyncWait
-            onClicked: {
+            onClicked: messageBox.ask("Удалить зону?", function () {
                 asyncWait = true
                 root.newTask(0, 'DeleteZone', model.id, done, fail)
-            }
+            })
         }
     }
     MessageBox {id: messageBox}

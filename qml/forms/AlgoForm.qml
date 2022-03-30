@@ -231,10 +231,10 @@ GridLayout {
             enabled: itemId !== 0 && !asyncWait
             //onClicked: root.send('configuration', 'DeleteAlgorithm', model.id)
             // INFO: don't use asyncWait due to nothing destructive happens when clicked twice
-            onClicked: {
+            onClicked: messageBox.ask("Удалить алгоритм?", function () {
                 asyncWait = true
                 root.newTask('configuration', 'DeleteAlgorithm', model.id, done, fail)
-            }
+            })
         }
     }
 
@@ -246,12 +246,6 @@ GridLayout {
     UserSelector {
         id: userSelector
         userTree: root.users
-    }
-
-
-    function fail(errText) {
-        asyncWait = false
-        messageBox.error("Операция не выполнена: " + errText)
     }
 
 
@@ -340,6 +334,11 @@ GridLayout {
     function done(msg) {
         asyncWait = false
         tree.findItem(msg.data.id)
+    }
+
+    function fail(errText) {
+        asyncWait = false
+        messageBox.error("Операция не выполнена: " + errText)
     }
 
     function saveForm() {

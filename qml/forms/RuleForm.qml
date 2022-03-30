@@ -54,10 +54,10 @@ ColumnLayout {
             enabled: changeable && !asyncWait
             //Layout.alignment: Qt.AlignCenter
             Layout.fillWidth: true
-            onClicked: {
+            onClicked: messageBox.ask("Удалить режим?", function () {
                 asyncWait = true
                 root.newTask('configuration', 'DeleteRule', itemId, done, fail)
-            }
+            })
         }
     }
 
