@@ -255,14 +255,27 @@ function setServiceStatus(model, sid) {
 }
 
 function makeCache(model, cache) {
-    for (var i = 0; i < model.count; i++) {
-        var item = model.get(i)
+    var i, item
+    for (i = 0; i < model.count; i++) {
+        item = model.get(i)
         cache[item.id] = item
         if (item.children && item.children.count > 0)
             makeCache(item.children, cache)
     }
     return cache
 }
+
+function mapParents(id, model, parents) {
+    var i, item
+    for (i = 0; i < model.count; i++) {
+        item = model.get(i)
+        parents[item.id] = id
+        if (item.children && item.children.count > 0)
+            mapParents(item.id, item.children, parents)
+    }
+    return parents
+}
+
 
 /*
 function findItem(model, id, scope) {

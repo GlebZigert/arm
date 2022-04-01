@@ -4,7 +4,13 @@ var classNames = {
     200: 'ok',
     300: 'error',
     400: 'lost',
-    500: 'alarm'
+    500: 'alarm',
+    na: 0,
+    info: 100,
+    ok: 200,
+    error: 300,
+    lost: 400,
+    alarm: 500
 }
 
 var classColors = {

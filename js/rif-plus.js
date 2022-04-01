@@ -213,6 +213,7 @@ function getClassName(devType, sid) {
 function Rif(model) {
     this.model = model
     this.cache = {}
+    this.parents = {}
     this.serviceId = this.model.serviceId
 
     this.handlers = {
@@ -360,6 +361,7 @@ Rif.prototype.rebuildTree = function (data0) {
         data.sort(function(a, b) {
             return a.order - b.order;
         })
+        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         //console.log("Rif Tree:", JSON.stringify(data))
         for (i = 0; i < data.length; i++) {
             //sType = getClassName(data[i].type, data[i].states[0].id)
@@ -383,7 +385,7 @@ Rif.prototype.rebuildTree = function (data0) {
             }
             if (0 !== item.type) {
                 state = data[i].states[0]
-                setState(item, state['class'], state.id, state.name, 0)
+                setState(item, {class: state['class'],event: state.id, text: state.name}, 0)
             }
             while (data[i].level > path.length - 1)
                 path.push(list[list.length-1].children)
@@ -392,14 +394,12 @@ Rif.prototype.rebuildTree = function (data0) {
             list = path[path.length-1]
             list.push(item)
         }
+
         model.clear()
         model.append(root)
         this.cache = Utils.makeCache(model, {})
-        //Journal.colorizeEvents(this.serviceId)
-        /*for (i in this.cache) {
-            //Utils.updateMaps(this.cache[i])
-        }*/
-        //console.log(Object.keys(this.cache))
+        this.parents = Utils.mapParents(0, model, {})
+        //console.log("Rif parents map:", JSON.stringify(this.parents))
     }
 }
 
@@ -425,12 +425,76 @@ Rif.prototype.processEvents = function (events) {
             if (Const.EC_INFO_ALARM_RESET === events[i].class) {
                 resetAlarm(dev)
             } else {
-                setState(dev, events[i]['class'], events[i].event, events[i].text, 1)
+                setState(dev, events[i], 1)
+                // extra logic
+                this.sensorLogic(dev, events[i])
+                this.unitLogic(dev, events[i])
             }
-        } else this.statusUpdate(events[i].class)
+        } else this.statusUpdate(events[i].class) // service status event
     }
     Journal.logEvents(events)
 
+}
+
+// TODO: call it after init for initial colorize
+Rif.prototype.sensorLogic = function (dev, event) {
+    if ([28, 31].indexOf(dev.type) < 0)
+        return
+
+    var parentId = this.parents[dev.id]
+    if (!parentId || !this.cache[parentId])
+        return
+
+    // 1. propagate event to site preserving it's current state
+    var i,
+        ref, item,
+        site = this.cache[parentId],
+        sensors = site.children
+
+    //console.log("SITE:", JSON.stringify(parent))
+    // check all sensor's state
+    for (i = 0; i < sensors.count; i++) {
+        item = sensors.get(i)
+        if (!ref) {
+            ref = item
+            continue
+        }
+
+        if (!ref.stickyState && item.stickyState) {
+            ref = item
+        } else if (ref.stickyState && item.stickyState) {
+            // compare sticky
+            ref = classNames[ref.mapClass] > classNames[item.mapClass] ? ref : item
+        } else if (!ref.stickyState && !item.stickyState) {
+            // compare current
+            ref = ref.stateClass > item.stateClass ? ref : item
+        }
+    }
+    console.log("REF:", JSON.stringify(ref))
+    // clone ref to site
+    var props = 'mapState mapColor mapTooltip display stateClass state color tooltip'.split(' ')
+    if (ref)
+        for (i in props)
+            site[props[i]] = ref[props[i]]
+    Utils.updateMaps(dev)
+}
+
+Rif.prototype.unitLogic = function (dev, event) {
+    if ([26, 29].indexOf(dev.type) < 0)
+        return false
+
+    // TODO: 'error' too?
+    if ('lost' !== Utils.className(event['class']))
+        return
+
+    // 1. broadcast "lost" event to sites and sensors
+    var i,
+        children = Utils.makeCache(dev.children, {})
+
+    //console.log("CHLD:", JSON.stringify(children))
+
+    for (i in children)
+        setState(children[i], event, 1)
 }
 
 /*
@@ -510,7 +574,10 @@ function resetAlarm(dev) {
 //////////////////////////////////////////////////////////////////////////
 
 // priority: -1 (reset sticky), 0 (state), 1 (event)
-function setState(dev, classCode, sid, text, priority) {
+function setState(dev, event, priority) {
+    var classCode = event['class'],
+        sid = event.event,
+        text = event.text
     var i,
         color,
         animation = '',
