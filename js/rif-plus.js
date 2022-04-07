@@ -361,7 +361,7 @@ Rif.prototype.rebuildTree = function (data0) {
         data.sort(function(a, b) {
             return a.order - b.order;
         })
-        console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        //console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         //console.log("Rif Tree:", JSON.stringify(data))
         for (i = 0; i < data.length; i++) {
             //sType = getClassName(data[i].type, data[i].states[0].id)
@@ -385,7 +385,8 @@ Rif.prototype.rebuildTree = function (data0) {
             }
             if (0 !== item.type) {
                 state = data[i].states[0]
-                setState(item, {class: state['class'],event: state.id, text: state.name}, 0)
+                //states[data[i].id] = state
+                setState(item, {class: state['class'], event: state.id, text: state.name}, 0)
             }
             while (data[i].level > path.length - 1)
                 path.push(list[list.length-1].children)
@@ -400,6 +401,16 @@ Rif.prototype.rebuildTree = function (data0) {
         this.cache = Utils.makeCache(model, {})
         this.parents = Utils.mapParents(0, model, {})
         //console.log("Rif parents map:", JSON.stringify(this.parents))
+
+        // colorize sites
+        for (i in this.cache) {
+            this.siteLogic(this.cache[i])
+        }
+
+        // colorize units
+        for (i in this.cache) {
+            this.unitLogic(this.cache[i])
+        }
     }
 }
 
@@ -424,31 +435,38 @@ Rif.prototype.processEvents = function (events) {
         if (dev) {
             if (Const.EC_INFO_ALARM_RESET === events[i].class) {
                 resetAlarm(dev)
+                this.resetUnit(dev)
             } else {
                 setState(dev, events[i], 1)
-                // extra logic
-                this.sensorLogic(dev, events[i])
-                this.unitLogic(dev, events[i])
             }
+            // extra logic
+            this.sensorLogic(dev)
+            this.unitLogic(dev, Const.EC_INFO_ALARM_RESET === events[i].class)
         } else this.statusUpdate(events[i].class) // service status event
     }
     Journal.logEvents(events)
 
 }
 
-// TODO: call it after init for initial colorize
-Rif.prototype.sensorLogic = function (dev, event) {
+// check dev is sensor and run site's logic if needed
+Rif.prototype.sensorLogic = function (dev) {
     if ([28, 31].indexOf(dev.type) < 0)
         return
 
     var parentId = this.parents[dev.id]
-    if (!parentId || !this.cache[parentId])
+
+    if (parentId && this.cache[parentId])
+        this.siteLogic(this.cache[parentId])
+}
+
+// colorize site depending on it's sensors
+Rif.prototype.siteLogic = function(site) {
+    if ([27, 30].indexOf(site.type) < 0)
         return
 
-    // 1. propagate event to site preserving it's current state
+    // 1. propagate event to site respecting it's current state
     var i,
         ref, item,
-        site = this.cache[parentId],
         sensors = site.children
 
     //console.log("SITE:", JSON.stringify(parent))
@@ -464,37 +482,53 @@ Rif.prototype.sensorLogic = function (dev, event) {
             ref = item
         } else if (ref.stickyState && item.stickyState) {
             // compare sticky
-            ref = classNames[ref.mapClass] > classNames[item.mapClass] ? ref : item
+            ref = Const.classNames[ref.mapClass] > Const.classNames[item.mapClass] ? ref : item
         } else if (!ref.stickyState && !item.stickyState) {
             // compare current
             ref = ref.stateClass > item.stateClass ? ref : item
         }
     }
-    console.log("REF:", JSON.stringify(ref))
+    //console.log("REF:", JSON.stringify(ref))
     // clone ref to site
     var props = 'mapState mapColor mapTooltip display stateClass state color tooltip'.split(' ')
     if (ref)
         for (i in props)
             site[props[i]] = ref[props[i]]
-    Utils.updateMaps(dev)
+
+    Utils.updateMaps(site)
 }
 
-Rif.prototype.unitLogic = function (dev, event) {
+Rif.prototype.unitLogic = function (dev) {
     if ([26, 29].indexOf(dev.type) < 0)
-        return false
+        return
 
     // TODO: 'error' too?
-    if ('lost' !== Utils.className(event['class']))
+    if ('lost' !== Utils.className(dev.stateClass))
         return
 
     // 1. broadcast "lost" event to sites and sensors
+    var i,
+        children = Utils.makeCache(dev.children, {}),
+        event = {class: dev.stateClass, event: dev.state, text: dev.tooltip}
+
+    //console.log("CHLD:", JSON.stringify(children))
+
+    for (i in children)
+        setState(children[i], event, 1)
+}
+
+Rif.prototype.resetUnit = function (dev) {
+    if ([26, 29].indexOf(dev.type) < 0)
+        return
+
+    // broadcast "reset" event to sites and sensors
     var i,
         children = Utils.makeCache(dev.children, {})
 
     //console.log("CHLD:", JSON.stringify(children))
 
     for (i in children)
-        setState(children[i], event, 1)
+        resetAlarm(children[i])
 }
 
 /*
