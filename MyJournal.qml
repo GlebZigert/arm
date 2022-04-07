@@ -18,6 +18,11 @@ QC1.TableView {
     onRowCountChanged: Qt.callLater(positionViewAtRow, rowCount - 1, ListView.End)
     onDoubleClicked: root.eventSelected(model.get(row))
     //onClicked: showPopup(row)
+    Keys.onReturnPressed: {
+        showPopup(tableView.currentRow)
+        event.accepted = true
+    }
+
    MouseArea{
         anchors.fill: parent
         propagateComposedEvents: true

@@ -61,6 +61,7 @@ Item {
 
 
     onSelectNode: {
+        treeRoot.focus = true // get focus (remove from another widget)
         selectedTNID = tnid
         selected(item)
     }

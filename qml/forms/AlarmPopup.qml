@@ -15,6 +15,8 @@ Popup {
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
     //implicitWidth: 350
 
+    onVisibleChanged: if (visible) reason.focus = true
+
     GridLayout {
         id: eventForm
         anchors.margins: 5
@@ -88,6 +90,7 @@ Popup {
         RowLayout {
             Layout.columnSpan: 2
             Button {
+                id: saveEvent
                 text: "Записать"
                 Layout.fillWidth: true
                 onClicked: describeEvent()
@@ -104,6 +107,10 @@ Popup {
                 onClicked: popup.close()
             }
         }
+        Keys.onReturnPressed: {
+            saveEvent.clicked()
+            event.accepted = true
+        }
     }
 
     function describeEvent() {
@@ -117,6 +124,8 @@ Popup {
 
     function descDone() {
         alarmsCount = Journal.activeAlarms(event)
+        if (alarmsCount > 0)
+            popup.close()
     }
 
     function reset(msg) {
