@@ -6,8 +6,8 @@ MessageDialog {
     property var noCb
     onAccepted: if (yesCb) yesCb()
     onRejected: if (noCb) noCb()
-    onYes: onAccepted()
-    onNo: onRejected()
+    //onYes: accepted()
+    //onNo: rejected()
 
     function show(ttl, txt) {
         title = ttl
