@@ -789,6 +789,7 @@ function f_change_camera(id){
         dt=timeline.current_dt()
 
     }
+    timeline.set_camera_zone(lcl.name)
     request_URL(lcl.id,lcl.serviceId,dt)
 }
 
