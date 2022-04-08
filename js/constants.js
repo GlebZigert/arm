@@ -64,6 +64,7 @@ const   EC_NA = 0,  //iota
         EC_NORMAL_ACCESS        = 116,
         EC_ALGO_STARTED         = 117,
         EC_CONTROL_FORBIDDEN    = 118,
+        EC_DB_BACKED_UP         = 119,
 
         // OK
         EC_OK                     = 200,
@@ -81,6 +82,8 @@ const   EC_NA = 0,  //iota
         EC_SERVICE_FAILURE      = 302,  // internal error
         EC_SERVICE_ERROR        = 303,  // remote service error
         EC_DATABASE_ERROR       = 304,
+        EC_USE_DB_BACKUP        = 305, // primary db failure, use backup
+        EC_DB_BACKUP_FAILED     = 306,
 
         // LOST (no link)
         EC_LOST                 = 400,

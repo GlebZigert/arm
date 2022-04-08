@@ -25,7 +25,8 @@ config[Const.ARM_ADMIN] = {
     ZonesTree: 1,
     MyMap: 1,
     Algorithms: 1,
-    EventLog: 1}
+    EventLog: 1,
+    MySettings: 1}
 
 
 /////////////////////////////////// read-only?
