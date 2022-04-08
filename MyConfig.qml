@@ -27,7 +27,8 @@ RowLayout {
                     {label: "Контролируемые зоны", component: "ZonesTree"},
                     {label: "Карта и Планы", component: "MyMap"},
                     {label: "Алгоритмы", component: "Algorithms"},
-                    {label: "Архив событий", component: "EventLog"}
+                    {label: "Архив событий", component: "EventLog"},
+                    {label: "Настройки", component: "MySettings"},
                 ].filter(function (v){return v.component in armConfig})
                 delegate: Button {
                     property int bid: index
@@ -55,13 +56,14 @@ RowLayout {
     // right pane - "content"
     StackLayout {
       id: layout
-      currentIndex: 0 // devices
+      //currentIndex: 0 // devices
       //currentIndex: 1 // users
       //currentIndex: 2 // rules
       //currentIndex: 3 // zones
       //currentIndex: 4 // maps
       //currentIndex: 5 // algos
       //currentIndex: 6 // events
+      currentIndex: 7 // settings
       Layout.fillWidth: true
       Layout.fillHeight: true
 

@@ -94,6 +94,7 @@ ApplicationWindow {
         signal updated(int id)
         ListElement{label: "Алгоритмы"; form: "algo"; /*serviceId: 0; deviceId: 0; targetServiceId: 0; targetDeviceId: 0;*/ expanded: true; children: []}
     }
+    property ListModel databaseBackups: ListModel {}
 
     //property ListModel panes: ListModel {}
 

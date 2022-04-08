@@ -84,6 +84,7 @@ const   EC_NA = 0,  //iota
         EC_DATABASE_ERROR       = 304,
         EC_USE_DB_BACKUP        = 305, // primary db failure, use backup
         EC_DB_BACKUP_FAILED     = 306,
+        EC_FREQUENT_BACKUPS     = 307,
 
         // LOST (no link)
         EC_LOST                 = 400,

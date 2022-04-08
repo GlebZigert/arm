@@ -307,5 +307,7 @@
         <file>qml/video/no_in_storage.jpeg</file>
         <file>Video.qml</file>
         <file>js/parus.js</file>
+        <file>MySettings.qml</file>
+        <file>qml/settings/BackupDB.qml</file>
     </qresource>
 </RCC>

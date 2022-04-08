@@ -17,7 +17,7 @@ layouts[Const.ARM_ADMIN] = [
     {symbol: '4', views: [['EventLog']]},
     {symbol: '5', views: [['Video']]},
 ]
-commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal"]
+commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups"]
 config[Const.ARM_ADMIN] = {
     DevicesTree: 1,
     UserTree: 7, // GOD mode

@@ -15,13 +15,20 @@ Item {
     property ListModel treeModel: root.devices
     property bool adminMode: false
     property var forms: ({
-        'parus': Qt.createComponent('qml/forms/ParusForm.qml'),
-        'ipmon': Qt.createComponent('qml/forms/IPMonForm.qml'),
-        'z5rweb': Qt.createComponent('qml/forms/Z5RWebForm.qml'),
-        'rif': Qt.createComponent('qml/forms/RifForm.qml'),
-        'service': Qt.createComponent('qml/forms/ServiceForm.qml')
+        'backup-db': Qt.createComponent('qml/settings/BackupDB.qml'),
     })
     anchors.fill: parent
+
+    ListModel {
+        id: treeModel
+        Component.onCompleted: append({
+            id: 1, label: 'Настройки', expanded: true,
+            children: [
+              {id: 100, label: 'Архивация БД', form: 'backup-db'},
+              {id: 101, label: 'Восстановление БД', form: 'recover-db'},
+            ]
+        })
+    }
 
     RowLayout {
         anchors.fill: parent
@@ -32,14 +39,13 @@ Item {
             //anchors.fill: parent
             Layout.fillHeight: true
             Layout.fillWidth: true
-            getTNID: Utils.getDeviceTNID
         }
         // right panel
         Rectangle {
             visible: adminMode
             color: "lightgray"
             Layout.fillHeight: true
-            implicitWidth: 300
+            implicitWidth: 400
             Loader {
                 id: loader
                 property int itemId: model && model.serviceId || 0
@@ -58,31 +64,10 @@ Item {
     DevContextMenu {id: contextMenu}
 
     Component.onCompleted: {
-        //this.send.connect(Lib.onSend)
-        //Lib.init({tree: tree, send: root.send, model: root.devList})
-        //tree.model = root.devices
         tree.selected.connect(selected)
-        tree.contextMenu.connect(showMenu)
-        root.deviceSelected.connect(deviceSelected)
-    }
-
-    function deviceSelected(pane, serviceId, deviceId) {
-        //console.log("DEVICE SEL:", pane, serviceId, deviceId)
-        if (pane === panePosition)
-            tree.findItem({serviceId: serviceId, id: deviceId})
-    }
-
-    function showMenu(item) {
-        //console.log('SHOW:', item.serviceId, item.id)
-        // serviceId is undefined for subsystem node
-        contextMenu.show(item.serviceId, item.id)
     }
 
     function selected(item) {
-        //console.log("SELECTED DEV:", item.serviceId + '->' + item.id)
-        if (item && (item.id || item.serviceId))
-            loader.model = Utils.findItem(treeModel.get(0).children, {id: item.id, serviceId: item.serviceId})
-        else
-            loader.model = item
+        loader.model = item
     }
 }

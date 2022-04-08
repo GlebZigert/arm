@@ -132,6 +132,15 @@ var handlers = {
     },
 
 
+    ListBackups: function (msg) {
+        var list = (msg.data || []).map(function (v) {
+            return {file: v}
+        })
+        root.databaseBackups.clear()
+        root.databaseBackups.append(list)
+    },
+
+
     // INFO: using event
     //RunAlarm: function() {playAlarm("alarm")},
 
@@ -281,6 +290,10 @@ function scanEvents(events) {
     for (var i = 0; i < events.length; i++) {
         switch (events[i].class) {
             // EC_CONTROL_FORBIDDEN is emitted by core, but serviceId corresponds to deviceId
+            case Const.EC_DB_BACKED_UP:
+                if (Const.ARM_ADMIN === root.armRole)
+                    root.send(0, "ListBackups", "")
+                break
             case Const.EC_CONTROL_FORBIDDEN: eventList.push(events[i]); break
             case Const.EC_ENTER_ZONE: Zones.enterZone(events[i]); break
             case Const.EC_GLOBAL_ALARM: playAlarm("alarm"); break
