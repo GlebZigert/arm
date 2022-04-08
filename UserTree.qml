@@ -102,10 +102,11 @@ Item {
     function selected(item) {
         // TODO: QT BUG? item <> node from model
         if (item.id) { // existing user
-            if (item.zones.count === 0 || item.devices.count === 0)
+            // TODO: implement caching?
+            //if (item.zones.count === 0 || item.devices.count === 0)
                 root.newTask('configuration', 'UserInfo', item.id, infoDone, function (){console.log('UserInfo failed')})
-            else
-                loader.model = Utils.findItem(treeModel.get(0).children, item.id)
+            //else
+                //loader.model = Utils.findItem(treeModel.get(0).children, item.id)
         } else {// new user
             //loader.model = Utils.findItem(treeModel.get(0).children, item.id)
             loader.makeNewUser(0)
