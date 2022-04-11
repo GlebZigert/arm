@@ -124,6 +124,8 @@ ApplicationWindow {
 
      signal restored(int id)
 
+     signal select_camera(int serviceId,int id)
+
     Settings {
         id: settings
         property alias x: root.x

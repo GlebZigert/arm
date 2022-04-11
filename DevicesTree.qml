@@ -87,6 +87,8 @@ Item {
             loader.model = Utils.findItem(treeModel.get(0).children, {id: item.id, serviceId: item.serviceId})
         else
             loader.model = item
+
+        root.select_camera(item.serviceId,item.id)
     }
 
     function select_camera(lcl){
