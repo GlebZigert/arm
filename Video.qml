@@ -112,7 +112,9 @@ SplitView{
       Layout.maximumWidth: 300
 
       DevicesTree{
+          id: devTree
       anchors.fill: parent
+      panePosition: srv.panePosition
       }
 
   }
@@ -766,6 +768,7 @@ function f_event_on_camera(id){
  root.pause_play=play
  timeline.to_live()
  f_change_camera(id)
+
  }
 
 }
@@ -779,8 +782,8 @@ function f_change_camera(id){
     root.log(lcl.name)
     configPanel.state="hide"
 
-    telemetry.set_serviceId(lcl.serviceId)
-    preset_list.serviceId=lcl.serviceId
+    telemetry.set_serviceId(lcl.sid)
+    preset_list.serviceId=lcl.sid
 
     root.log("telemetryControlID: ",lcl.telemetryControlID)
     root.telemetryPoint=lcl.telemetryControlID
@@ -790,6 +793,7 @@ function f_change_camera(id){
         dt=timeline.current_dt()
 
     }
+   root.deviceSelected(panePosition,lcl.sid,lcl.id)
     timeline.set_camera_zone(lcl.name)
     request_URL(lcl.id,lcl.serviceId,dt)
 }
