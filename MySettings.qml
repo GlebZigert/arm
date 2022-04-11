@@ -25,7 +25,6 @@ Item {
             id: 1, label: 'Настройки', expanded: true,
             children: [
               {id: 100, label: 'Архивация БД', form: 'backup-db'},
-              {id: 101, label: 'Восстановление БД', form: 'recover-db'},
             ]
         })
     }

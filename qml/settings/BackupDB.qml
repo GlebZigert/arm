@@ -6,6 +6,7 @@ import "../forms/helpers.js" as Helpers
 import "../forms" as Forms
 
 ColumnLayout {
+    id: form
     property bool asyncWait
 
     anchors.fill: parent
@@ -64,13 +65,33 @@ ColumnLayout {
             text: "Восстановить"
             enabled: !asyncWait
             Layout.fillWidth: true
-            onClicked: messageBox.ask("Восстановить резервную копию?", function () {
-                asyncWait = true
-                root.newTask(0, 'RestoreBackup', null, restoreDone, fail)
-            })
+            onClicked: startBackup()
         }
     }
     Forms.MessageBox {id: messageBox}
+
+    function startBackup() {
+        var node, btn
+        for (var i = 0; i < form.children.length; i++) {
+            console.log(i)
+            node = form.children[i]
+            if (node instanceof RadioButton && node.checked) {
+                btn = node
+                break
+            }
+        }
+        if (btn) {
+            messageBox.ask("Восстановить резервную копию " + btn.text + "?", function () {
+                 // asyncWait = true
+                // root.newTask(0, 'RestoreBackup', null, restoreDone, fail)
+                // server will stop immediately
+                root.send(0, 'RestoreBackup', btn.text)
+            })
+        } else {
+            messageBox.error("Выберите резервную копию")
+        }
+
+    }
 
     function backupDone() {
         asyncWait = false
