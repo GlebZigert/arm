@@ -406,6 +406,6 @@ ApplicationWindow {
     }
 
     function log(str){
- //   console.log(str)
+    console.log(str)
     }
 }

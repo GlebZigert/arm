@@ -45,7 +45,7 @@ signal take_it_on_big_screen(string name,string point)
             if(mode=="live")
             {
                 var point=  work_model.get(rpt.current)._telemetryControlID
-               Tlmtr.capture_session(point)
+               Tlmtr.capture_session(lcl.sid,point)
                container.move=true
             }
         }

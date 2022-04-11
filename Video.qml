@@ -775,6 +775,7 @@ function f_change_camera(id){
     cid=id
     var lcl
     lcl=Axxon.camera(cid)
+    root.axxon_service_id=lcl.sid
     root.log(lcl.name)
     configPanel.state="hide"
 
@@ -909,6 +910,7 @@ function  update_vm(id)
          {
          preset_list.clear_model()
          Tlmtr.preset_info()
+
          Tlmtr.capture_session()
          timer.start()
          tform1.xScale =1
