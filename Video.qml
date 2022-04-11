@@ -708,6 +708,7 @@ Component.onCompleted: {
 function select_camera_from_deviceTree(sid,id){
 console.log("select_camera_from_deviceTree ",sid," ",id)
 
+    if(sid)
     if(id!=Axxon.camera(cid).id)
         f_change_camera(id)
 }
@@ -786,6 +787,7 @@ function f_change_camera(id){
     cid=id
     var lcl
     lcl=Axxon.camera(cid)
+    if(lcl!=-1){
     root.axxon_service_id=lcl.sid
     root.log(lcl.name)
     configPanel.state="hide"
@@ -804,6 +806,7 @@ function f_change_camera(id){
    root.deviceSelected(panePosition,lcl.sid,lcl.id)
     timeline.set_camera_zone(lcl.name)
     request_URL(lcl.id,lcl.serviceId,dt)
+    }
 }
 
 function reconnect_livestream(){
