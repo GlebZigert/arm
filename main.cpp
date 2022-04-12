@@ -9,6 +9,8 @@
 #include "qml/video/Player/videoplayer.h"
 #endif
 
+#include <backend.h>
+#include <imagemaker.h>
 
 int main(int argc, char *argv[])
 {
@@ -40,6 +42,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<Preview>("Preview",1,0,"Preview");
     qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
     #endif
+
+    qmlRegisterType<BackEnd>("io.qt.examples.backend", 1, 0, "BackEnd");
+    qmlRegisterType<imageMaker>("io.qt.examples.imageMaker", 1, 0, "ImageMaker");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

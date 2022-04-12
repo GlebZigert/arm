@@ -49,6 +49,12 @@ GridLayout {
 
     Image {
         id: image
+        width: 50
+        height: 50
+
+        Layout.maximumHeight: 50
+        Layout.maximumWidth: 50
+
         //visible: !!fields['photo'];
         property int lph: sourceSize.height / (sourceSize.width || 1) * width
         Layout.columnSpan: 2
@@ -90,15 +96,25 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: "Фотография"; visible: !!fields['photo']; Layout.alignment: Qt.AlignRight}
     Button {
+        id: photo_button
         enabled: changeable
         Layout.fillWidth: true
         visible: !!fields['photo'];
         text: !fileDialog.file ? "Выбрать файл" : fileDialog.file.split(/[/\/]/).pop()
         onClicked: fileDialog.open()
+
+        /*
+        onTextChanged: {
+         console.log("onTextChanged: ",photo_button.text)
+        imgmaker.createImage_3(photo_button.text,field_name.text,field_suname.text)
+        }
+        */
+
     }
     ///////////////////////////////////////////
     Text { text: subs['name'] || "Имя"; visible: !!fields['name']; Layout.alignment: Qt.AlignRight }
     TextField {
+        id: field_name
         property string name: 'name'
         enabled: visible && changeable
         visible: !!fields[name]
@@ -110,6 +126,7 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: subs['surename'] || 'Фамилия'; visible: !!fields['surename']; Layout.alignment: Qt.AlignRight }
     TextField {
+        id: field_suname
         property string name: 'surename'
         Layout.fillWidth: true
         enabled: visible && changeable
@@ -122,11 +139,15 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: subs['middleName'] || 'Отчество'; visible: !!fields['middleName']; Layout.alignment: Qt.AlignRight }
     TextField {
+       id: field_middlename
         property string name: 'middleName'
         Layout.fillWidth: true
         enabled: visible && changeable
         visible: !!fields[name]
         text: newItem ? '' : model[name] || ''
+    //    onTextChanged: {
+       // imgmaker.createImage_2()
+  //      }
         //validator: RegExpValidator { regExp: /\S+.*/ }
         //color: acceptableInput ? palette.text : "red"
     }

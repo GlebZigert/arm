@@ -44,6 +44,7 @@ void Preview::replyFinished(QNetworkReply *reply)
     }else{
        update();
     }
+
 }
 
 void Preview::onWidthChanged(){
