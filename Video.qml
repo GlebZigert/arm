@@ -112,8 +112,22 @@ SplitView{
       Layout.maximumWidth: 300
 
       DevicesTree{
+          id: devTree
       anchors.fill: parent
+      panePosition: srv.panePosition
+
+      Component.onCompleted: {
+      root.deviceSelected.connect(deviceSelected)
+      tree.selected.connect(selected)
       }
+      function selected(item) {
+
+      select_camera_from_deviceTree(item.serviceId,item.id)
+      }
+
+      }
+
+
 
   }
 
@@ -702,6 +716,14 @@ Component.onCompleted: {
 
 }
 
+function select_camera_from_deviceTree(sid,id){
+console.log("select_camera_from_deviceTree ",sid," ",id)
+
+    if(sid)
+    if(id!=Axxon.camera(cid).id)
+        f_change_camera(id)
+}
+
 function start_timer_if_its_needed(){
     if ( play==root.pause_play){
     timeline.timer_start()
@@ -766,6 +788,7 @@ function f_event_on_camera(id){
  root.pause_play=play
  timeline.to_live()
  f_change_camera(id)
+
  }
 
 }
@@ -775,11 +798,13 @@ function f_change_camera(id){
     cid=id
     var lcl
     lcl=Axxon.camera(cid)
+    if(lcl!=-1){
+    root.axxon_service_id=lcl.sid
     root.log(lcl.name)
     configPanel.state="hide"
 
-    telemetry.set_serviceId(lcl.serviceId)
-    preset_list.serviceId=lcl.serviceId
+    telemetry.set_serviceId(lcl.sid)
+    preset_list.serviceId=lcl.sid
 
     root.log("telemetryControlID: ",lcl.telemetryControlID)
     root.telemetryPoint=lcl.telemetryControlID
@@ -789,7 +814,10 @@ function f_change_camera(id){
         dt=timeline.current_dt()
 
     }
+   root.deviceSelected(panePosition,lcl.sid,lcl.id)
+    timeline.set_camera_zone(lcl.name)
     request_URL(lcl.id,lcl.serviceId,dt)
+    }
 }
 
 function reconnect_livestream(){
@@ -908,6 +936,7 @@ function  update_vm(id)
          {
          preset_list.clear_model()
          Tlmtr.preset_info()
+
          Tlmtr.capture_session()
          timer.start()
          tform1.xScale =1

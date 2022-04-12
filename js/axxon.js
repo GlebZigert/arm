@@ -170,7 +170,7 @@ for (var i = 0; i < events.length; i++) {
                  root.log("[PROFIT !!!]")
 
             //     root.cameraList.get(j).stickyState=false
-                 root.cameraList.get(j).mapState=data[i].State
+                 root.cameraList.get(j).mapState=data[i].state
                  root.cameraList.get(j).display="flash"
                  var x=root.cameraList.get(j)
 
@@ -644,19 +644,27 @@ var i
 }
 
 Axxon.prototype.rebuildTree = function (data) {
+
+     console.log('Axxon',this.serviceId,': rebuild tree')
+
     var i,
     list = [],
     model = this.model.children
     if (this.validateTree()) {
         this.update(data)
     }else{
-              root.log('Axxon: rebuild whole tree')
+              root.log('Axxon',this.serviceId,': rebuild whole tree')
               root.log(JSON.stringify(data))
+
+              var current_sid=data[0].sid
         for(var j=0;j< root.cameraList.count;j++){
+            if(root.cameraList.get(j).sid==current_sid)
             root.cameraList.get(j).actual=false
         }
 
         for (i in data) {
+
+            console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," от сервера ",data[i].sid)
 
             var state =data[i].state
             var color="gray"
@@ -680,14 +688,17 @@ Axxon.prototype.rebuildTree = function (data) {
 
             })
 
-            var mapState=data[i].State
+            var mapState=data[i].state
 
             var res=true
             for(var j=0;j< root.cameraList.count;j++){
 
-                if( data[i].id==root.cameraList.get(j).id){
 
-                    //root.log("[УЖЕ ЕСТЬ]")
+                if( data[i].id==root.cameraList.get(j).id)
+
+                {
+
+                    root.log("[УЖЕ ЕСТЬ]")
                     res=false
 
                     root.cameraList.get(j).actual=true
@@ -699,10 +710,10 @@ Axxon.prototype.rebuildTree = function (data) {
 
             }
             if(res){
-                //root.log("[ДОБАВЛЯЮ]")
+                console.log("ДОБАВЛЯЮ ", data[i].id)
 
                 root.cameraList.append(    {
-
+                    sid: data[i].sid ,
                     id: data[i].id ,
                     name: data[i].name ,
                     //     telemetryControlID: data[i].telemetryControlID,
@@ -731,9 +742,11 @@ Axxon.prototype.rebuildTree = function (data) {
 
         for(j=0;j< root.cameraList.count;j++){
 
-            //root.log(j,".....",root.cameraList.get(j).name,"....",root.cameraList.get(j).actual)
-            if(root.cameraList.get(j).actual==false)
+            root.log(j,".....",root.cameraList.get(j).name,"....",root.cameraList.get(j).actual)
+            if(root.cameraList.get(j).actual==false){
+              console.log("УДАЛЯЮ ", root.cameraList.get(j).id)
             root.cameraList.remove(j)
+            }
         }
 
         for(i=0;i<root.cameraList.count;i++){
@@ -749,9 +762,9 @@ Axxon.prototype.rebuildTree = function (data) {
 
         root.log(" ")
         root.log("cameraList:")
-        for(j=0;j< model.count;j++){
+        for(j=0;j< cameraList.count;j++){
 
-           root.log(j," ",root.cameraList.get(j).name)
+           root.log(j," ",root.cameraList.get(j).id," ",root.cameraList.get(j).name)
         }
         root.log(" ")
 
@@ -820,10 +833,10 @@ function request_URL(cameraId, serviceId, dt, format_dt)
         }
 
       //      cameraId+";"+dt+" "+format_dt
-    root.log("data.cameraId : ",data.cameraId)
-    root.log("data.serviceId : ",data.serviceId)
-    root.log("data.dt       : ",data.dt)
-    root.log("data.format_dt: ",data.format_dt)
+    console.log("data.cameraId : ",data.cameraId)
+    console.log("data.serviceId : ",data.serviceId)
+    console.log("data.dt       : ",data.dt)
+    console.log("data.format_dt: ",data.format_dt)
 
       root.send(serviceId, 'request_URL', data)
 
@@ -831,7 +844,7 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
 function tlmtr_cmd(data)
 {
-   root.log("tlmtr_cmd: ",data)
+   console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
 if (root.storage_live=="live") {
      root.log("...this.serviceId ",root.axxon_service_id)
     root.send(root.axxon_service_id, 'Telemetry_command', data)

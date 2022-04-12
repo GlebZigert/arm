@@ -40,7 +40,7 @@ Item {
         id: timer
         interval: 1; running: true; repeat: true
         property int msec:0
-        property int prev_date : 0
+        property var prev_date : 0
         property int sec : 0
         onTriggered:
         {
@@ -70,6 +70,8 @@ Item {
                 update_timelist(dt)
                 }
             }
+            if (msec<0)
+                msec=0;
 
 
 
