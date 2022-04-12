@@ -125,7 +125,6 @@ ApplicationWindow {
 
      signal restored(int id)
 
-
     Settings {
         id: settings
         property alias x: root.x
@@ -408,6 +407,6 @@ ApplicationWindow {
     }
 
     function log(str){
-    console.log(str)
+ //   console.log(str)
     }
 }

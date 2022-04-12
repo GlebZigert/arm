@@ -63,16 +63,13 @@ Item {
         //tree.model = root.devices
         tree.selected.connect(selected)
         tree.contextMenu.connect(showMenu)
-
+        root.deviceSelected.connect(deviceSelected)
     }
 
     function deviceSelected(pane, serviceId, deviceId) {
-        console.log("DEVICE SEL:", pane, serviceId, deviceId)
-        console.log("pane:", pane, "; panePosition: ", panePosition)
-        if (pane === panePosition){
-            console.log("+")
+        //console.log("DEVICE SEL:", pane, serviceId, deviceId)
+        if (pane === panePosition)
             tree.findItem({serviceId: serviceId, id: deviceId})
-        }
     }
 
     function showMenu(item) {
@@ -82,19 +79,10 @@ Item {
     }
 
     function selected(item) {
-        console.log("SELECTED DEV:", item.serviceId + '->' + item.id)
+        //console.log("SELECTED DEV:", item.serviceId + '->' + item.id)
         if (item && (item.id || item.serviceId))
             loader.model = Utils.findItem(treeModel.get(0).children, {id: item.id, serviceId: item.serviceId})
         else
             loader.model = item
-
-
-    }
-
-    function select_camera(lcl){
-    console.log("select_camera" ,lcl.sid," ",lcl.name )
-      var item = Utils.findItem(treeModel.get(0).children, {id: lcl.id, serviceId: lcl.sid})
-    tree.set_item(item)
-    loader.model = item
     }
 }
