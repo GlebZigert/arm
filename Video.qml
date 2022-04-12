@@ -115,7 +115,19 @@ SplitView{
           id: devTree
       anchors.fill: parent
       panePosition: srv.panePosition
+
+      Component.onCompleted: {
+      root.deviceSelected.connect(deviceSelected)
+      tree.selected.connect(selected)
       }
+      function selected(item) {
+
+      select_camera_from_deviceTree(item.serviceId,item.id)
+      }
+
+      }
+
+
 
   }
 
@@ -674,7 +686,6 @@ Component.onCompleted: {
     hide_menu()
     show_menu()
     timeline.to_live()
-    root.select_camera.connect(select_camera_from_deviceTree)
     root.event_on_camera.connect(f_event_on_camera)
     timeline.moved_at_dt.connect(f_moved_at_dt)
     timeline.paused_and_moved_at_dt.connect(f_paused_and_moved_at_dt)

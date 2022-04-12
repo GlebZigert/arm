@@ -63,7 +63,7 @@ Item {
         //tree.model = root.devices
         tree.selected.connect(selected)
         tree.contextMenu.connect(showMenu)
-        root.deviceSelected.connect(deviceSelected)
+
     }
 
     function deviceSelected(pane, serviceId, deviceId) {
@@ -88,7 +88,7 @@ Item {
         else
             loader.model = item
 
-        root.select_camera(item.serviceId,item.id)
+
     }
 
     function select_camera(lcl){
