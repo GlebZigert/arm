@@ -68,6 +68,7 @@ Item {
         TextField {
             property string name: 'login'
             Layout.fillWidth: true
+            focus: true
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
@@ -93,6 +94,10 @@ Item {
             Layout.fillWidth: true
             text: root.currentUser ? "Сменить" : "Войти"
             onClicked: root.currentUser ? change() : login()
+        }
+        Keys.onReturnPressed: if (loginBtn.enabled) {
+            loginBtn.clicked()
+            event.accepted = true
         }
     }
 
