@@ -47,7 +47,7 @@ RowLayout {
                 var list = "Понедельник Вторник Среда Четверг Пятница Суббота Воскресенье".split(' ')
                 clear()
                 for (var i = 0; i < list.length; i++)
-                    append({id: 2e9 + i, label: list[i], form: 'time', icon: 'fa_circle', children: []})
+                    append({id: 1e3 + 1e9 + i, label: list[i], form: 'time', icon: 'fa_circle', children: []})
             }
         }
         ListModel {id: dummySpec}
