@@ -658,8 +658,29 @@ Axxon.prototype.rebuildTree = function (data) {
 
               var current_sid=data[0].sid
         for(var j=0;j< root.cameraList.count;j++){
+
+            console.log("dev: ",root.cameraList.get(j).sid )
+
             if(root.cameraList.get(j).sid==current_sid)
             root.cameraList.get(j).actual=false
+
+
+
+            //список айдишников сервисов
+            var res=false
+            for(var i=0;i<root.devices.get(0).children.count;i++){
+              var scopeId=root.devices.get(0).children.get(i).scopeId
+            console.log("i: ",scopeId)
+                if(root.cameraList.get(j).sid==scopeId)
+                    res=true
+
+            }
+            if(res==false)
+              root.cameraList.get(j).actual=false
+
+            //если айди сервиса устройства нет среди имеющихся
+            //то оно не актуально. гони его насмехайся над ним.
+
         }
 
         for (i in data) {
