@@ -5,7 +5,7 @@
 
 function capture_session(sid,point)
 {
-console.log("capture ",sid," ",point)
+//console.log("capture ",sid," ",point)
 
 
 if (root.storage_live=="live") root.send(Axxon.get_serviceId(), 'Telemetry_capture_session', point)
