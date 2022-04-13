@@ -2,13 +2,17 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 
+import io.qt.examples.imageMaker 1.0
+
 GridLayout {
     id: form
     columns: 2
 //    Layout.preferredWidth: parent.width
     property var modelId: model.id
-    onModelIdChanged: fileDialog.reset()
-
+    onModelIdChanged: {
+        fileDialog.reset()
+        previewBadge()
+    }
     property bool changeable: adminMode && (armConfig[activeComponent] & 1)
 
     property alias cardsComboBox: cardsCombo
@@ -49,12 +53,6 @@ GridLayout {
 
     Image {
         id: image
-        width: 50
-        height: 50
-
-        Layout.maximumHeight: 50
-        Layout.maximumWidth: 50
-
         //visible: !!fields['photo'];
         property int lph: sourceSize.height / (sourceSize.width || 1) * width
         Layout.columnSpan: 2
@@ -96,25 +94,16 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: "Фотография"; visible: !!fields['photo']; Layout.alignment: Qt.AlignRight}
     Button {
-        id: photo_button
         enabled: changeable
         Layout.fillWidth: true
         visible: !!fields['photo'];
         text: !fileDialog.file ? "Выбрать файл" : fileDialog.file.split(/[/\/]/).pop()
         onClicked: fileDialog.open()
 
-        /*
-        onTextChanged: {
-         console.log("onTextChanged: ",photo_button.text)
-        imgmaker.createImage_3(photo_button.text,field_name.text,field_suname.text)
-        }
-        */
-
     }
     ///////////////////////////////////////////
     Text { text: subs['name'] || "Имя"; visible: !!fields['name']; Layout.alignment: Qt.AlignRight }
     TextField {
-        id: field_name
         property string name: 'name'
         enabled: visible && changeable
         visible: !!fields[name]
@@ -126,7 +115,6 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: subs['surename'] || 'Фамилия'; visible: !!fields['surename']; Layout.alignment: Qt.AlignRight }
     TextField {
-        id: field_suname
         property string name: 'surename'
         Layout.fillWidth: true
         enabled: visible && changeable
@@ -139,15 +127,11 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: subs['middleName'] || 'Отчество'; visible: !!fields['middleName']; Layout.alignment: Qt.AlignRight }
     TextField {
-       id: field_middlename
         property string name: 'middleName'
         Layout.fillWidth: true
         enabled: visible && changeable
         visible: !!fields[name]
         text: newItem ? '' : model[name] || ''
-    //    onTextChanged: {
-       // imgmaker.createImage_2()
-  //      }
         //validator: RegExpValidator { regExp: /\S+.*/ }
         //color: acceptableInput ? palette.text : "red"
     }
@@ -319,9 +303,21 @@ GridLayout {
             text: faFont.fa_address_card
             ToolTip.text: "Печатать"
             ToolTip.visible: hovered
-            //onClicked: print()
+            onClicked: imgmaker.printImage()
         }
     }
+
+    /////////////////////////////////////////////
+    property bool showBadge: !newItem && !!fields['photo'] && Image.Ready === image.status
+    Text { text: "Бейдж"; visible: showBadge; Layout.alignment: Qt.AlignRight }
+    ImageMaker {
+        visible: showBadge
+        Layout.alignment: Qt.AlignRight
+        id: imgmaker
+        width: 290
+        height: 180
+    }
+
     ///////////////////////////////////////////
     Text { text: "Добавить"; visible: !!fields['add-children'] && itemId; Layout.alignment: Qt.AlignRight }
     Button {
@@ -338,4 +334,10 @@ GridLayout {
     ///////////////////////////////////////////
     Text { text: "ID:";  Layout.alignment: Qt.AlignRight }
     Text { text: itemId}*/
+
+    function previewBadge() {
+        imgmaker.test()
+        var photo="http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id
+        imgmaker.take_photo_from_url_and_set_name_and_surename(photo, model['name'], model['surename']);
+    }
 }
