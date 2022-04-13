@@ -7,7 +7,6 @@ import "helpers.js" as Helpers
 import "../../js/upload.js" as Upload
 
 import "../forms" as Forms
-import io.qt.examples.backend 1.0
 import io.qt.examples.imageMaker 1.0
 
 ColumnLayout {
@@ -50,9 +49,6 @@ ColumnLayout {
         UserFormPage3 {id: form3}
     }
 
-    BackEnd {
-        id: backend
-    }
 
     Button {
         text: "Ok"
@@ -89,13 +85,7 @@ ColumnLayout {
 
 
 
-    TextField {
-        text: backend.userName
- //       placeholderText: qsTr("User name")
-        anchors.centerIn: parent
 
-        onTextChanged: backend.userName = text
-    }
 
     ///////////////////////////////////////////
     //Text { text: "Test:";  Layout.alignment: Qt.AlignRight }
