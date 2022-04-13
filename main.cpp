@@ -10,6 +10,8 @@
 #endif
 
 
+#include <imagemaker.h>
+
 int main(int argc, char *argv[])
 {
     // disable debug output
@@ -40,6 +42,9 @@ int main(int argc, char *argv[])
     qmlRegisterType<Preview>("Preview",1,0,"Preview");
     qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
     #endif
+
+
+    qmlRegisterType<imageMaker>("io.qt.examples.imageMaker", 1, 0, "ImageMaker");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

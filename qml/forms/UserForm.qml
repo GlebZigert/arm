@@ -7,6 +7,7 @@ import "helpers.js" as Helpers
 import "../../js/upload.js" as Upload
 
 import "../forms" as Forms
+import io.qt.examples.imageMaker 1.0
 
 ColumnLayout {
     id: column
@@ -47,6 +48,44 @@ ColumnLayout {
         UserFormPage2 {id: form2}
         UserFormPage3 {id: form3}
     }
+
+
+    Button {
+        text: "Ok"
+        onClicked: {
+            imgmaker.test();
+            var name=model['name']
+            var surename=model['surename']
+            var photo="http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id
+            console.log(model[name])
+            console.log(model[surename])
+            console.log(photo)
+
+            imgmaker.take_photo_from_url_and_set_name_and_surename(photo,name,surename);
+         //   imgmaker.createImage_3(photo,name,surename)
+
+
+  }
+        }
+    Button {
+        text: "Print"
+        onClicked: {
+
+            imgmaker.printImage()
+  }
+        }
+
+    ImageMaker {
+        width: 290
+        height: 180
+        id: imgmaker
+        visible:newItem ? false : true
+    }
+
+
+
+
+
 
     ///////////////////////////////////////////
     //Text { text: "Test:";  Layout.alignment: Qt.AlignRight }
