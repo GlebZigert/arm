@@ -246,6 +246,7 @@ void imageMaker::printImage()
 {
     qDebug()<<"printImage()";
     QPrinter printer;
+    printer.setFullPage(true);
     printer.setPrinterName("The printer");
     QPrintDialog dialog(&printer,nullptr);
     if(dialog.exec()==QDialog::Rejected) {
@@ -255,7 +256,7 @@ void imageMaker::printImage()
     QPainter painter;
          painter.begin(&printer);
 
-         painter.drawImage(QRectF(0,0,850,540),m_image);
+         painter.drawImage(QRectF(0,0,printer.paperRect().width(),printer.paperRect().height()),m_image);
 
          painter.end();
 
