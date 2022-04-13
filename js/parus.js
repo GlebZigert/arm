@@ -22,13 +22,13 @@ function Parus(model) {
 
 // called from outside when user's devices visibility changed
 Parus.prototype.reloadDevices = function () {
-    if (Const.EC_SERVICE_ONLINE === this.model.status.tcp)
+    if (Const.EC_SERVICE_READY === this.model.status.self)
         root.send(this.serviceId, 'ListDevices', '')
 }
 
 Parus.prototype.statusUpdate = function (sid) {
     //console.log("##################### Z5R SUP", JSON.stringify(data))
-    if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid) {
+    if (Const.EC_SERVICE_READY === sid && this.model.status.self !== sid) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
     }
