@@ -57,12 +57,11 @@ GridLayout {
         property int lph: sourceSize.height / (sourceSize.width || 1) * width
         Layout.columnSpan: 2
         Layout.fillWidth: true
-        Layout.preferredHeight: lph > 1.33 * width ? 1.33 * width : lph
+        Layout.preferredHeight: lph > width ? width : lph
         clip: true
         cache: false
         fillMode: Image.PreserveAspectFit
         source: !fields['photo'] ? '' : "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
-        //source: "qrc:/images/user-solid.svg"
     }
 
     ///////////////////////////////////////////
