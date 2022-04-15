@@ -157,7 +157,7 @@ Item {
         var list = [
             {zoneId: item.id, command: Const.EC_ARMED, text: "Поставить на охрану"},
             {zoneId: item.id, command: Const.EC_DISARMED, text: "Снять с охраны"},
-            {zoneId: item.id, command: Const.POINT_BLOCKED, text: "Заблокировать"},
+            {zoneId: item.id, command: Const.EC_POINT_BLOCKED, text: "Заблокировать"},
             {zoneId: item.id, command: Const.EC_FREE_PASS, text: "Свободный проход"},
             {zoneId: item.id, command: Const.EC_NORMAL_ACCESS, text: "Штатный доступ"}
         ]
