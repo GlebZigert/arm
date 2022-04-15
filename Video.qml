@@ -995,11 +995,19 @@ function eventSelected_handler(event){
     root.storage_live=storage
     cid=id
 
+    console.log("    ")
+    console.log(dt)
+    console.log("    ")
+
+
+
     var lcl=Axxon.camera(cid)
     telemetry.set_serviceId(lcl.serviceId)
     preset_list.serviceId=lcl.serviceId
     root.log("telemetryControlID: ",lcl.telemetryControlID)
     root.telemetryPoint=lcl.telemetryControlID
+
+
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
     Axxon.request_URL(cid,Axxon.camera(id).serviceId,dt,"utc")
