@@ -2,7 +2,7 @@
 .import "constants.js" as Const
 .import "journal.js" as Journal
 
-var passageEvents = [16, 17] // TODO: change to classes!
+var passageEvents = [16, 17, 4, 55, 54, 41, 32] // TODO: change to classes!
 var stickyStates = [102, 103, 12, 13, 14, 15/*, 8, 9*/]
 
 
@@ -76,8 +76,9 @@ Z5RWeb.prototype.processEvents = function (events) {
             } else {
                 setState(item, events[i], 1)
             }
-            if (passageEvents.indexOf(events[i].event) >= 0)
-                root.newPassage(events[i])
+            //if (passageEvents.indexOf(events[i].event) >= 0)
+            if (events[i].userId > 0)
+                root.userIdentified(events[i])
         } else this.statusUpdate(events[i].class)
     }
 }

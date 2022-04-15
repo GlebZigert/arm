@@ -16,7 +16,7 @@ import "qml/forms" as Forms
 
 ApplicationWindow {
     id: root
-    property string version: "1.04 beta 1"
+    property string version: "1.04 beta 2"
     title: qsTr("Риф-7 (АРМ версии " + version + ")")
     y: 50
     x: 400
@@ -48,7 +48,7 @@ ApplicationWindow {
     signal deviceSelected(int pane, int serviceId, int deviceId)
     signal eventSelected(var event)
     signal newEvents(var events)
-    signal newPassage(var event)
+    signal userIdentified(var event)
     signal planUpload(int id)
     signal userUpload(int id)
 

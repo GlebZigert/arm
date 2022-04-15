@@ -14,63 +14,79 @@ Rectangle {
     property int maxImageSize: 250
     property int maxSize: 200
     property int nocache: Date.now()
-    property int fontSize: 28
+    property int fontSize: 24
     property int panePosition
     property var empty: ({id: 0, name: "", surename: "", deviceName: "", zoneName: ""})
     property var model: empty
     onModelChanged: nocache = Date.now()
-
-    Row {
-        spacing: 15
-        Image {
-            id: placeholder
-            height: rect.height > maxImageSize ? maxImageSize : rect.height
+    Column {
+        width: parent.width
+        Label {
             clip: true
-            cache: false
-            fillMode: Image.PreserveAspectFit
-            source: "qrc:/images/user-solid.svg"
-            visible: image.status !== 1
+            width: parent.width
+            padding: 3
+            text: model.message
+            font.pixelSize: fontSize
+            background: Rectangle {
+               color: "#ddd"
+            }
+        }
+        //Text {text: model.message; font.pixelSize: fontSize}
+        Row {
+            spacing: 15
+            Image {
+                id: placeholder
+                height: rect.height > maxImageSize ? maxImageSize : rect.height
+                clip: true
+                cache: false
+                fillMode: Image.PreserveAspectFit
+                source: "qrc:/images/user-solid.svg"
+                visible: image.status !== 1
+            }
+
+            Image {
+                id: image
+                height: rect.height > maxImageSize ? maxImageSize : rect.height
+                clip: true
+                cache: false
+                fillMode: Image.PreserveAspectFit
+                //source: "qrc:/images/user-solid.svg"
+                source: "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
+            }
+
+            GridLayout {
+                columns: 2
+                //Rectangle {Layout.columnSpan: 2; Layout.fillWidth: true; height: 2; color: "#e0e0e0"}
+                ///////////////////////////////////////////
+                Text { text: "Время:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.time; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+                ///////////////////////////////////////////
+                Text { text: "Субъект:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.name + ' ' + model.surename; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+                ///////////////////////////////////////////
+                Text { text: "Звание:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.rank; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+                ///////////////////////////////////////////
+                Text { text: "Организация:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.organization; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+                ///////////////////////////////////////////
+                Text { text: "Должность:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.position; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+                ///////////////////////////////////////////
+                Text { text: "Проход в:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.zoneName; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+                ///////////////////////////////////////////
+                Text { text: "Через:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
+                Text { text: model.deviceName; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
+            }
         }
 
-        Image {
-            id: image
-            height: rect.height > maxImageSize ? maxImageSize : rect.height
-            clip: true
-            cache: false
-            fillMode: Image.PreserveAspectFit
-            //source: "qrc:/images/user-solid.svg"
-            source: "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
-        }
-
-        GridLayout {
-            columns: 2
-            ///////////////////////////////////////////
-            Text { text: "Субъект:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
-            Text { text: model.name + ' ' + model.surename; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
-            Rectangle {Layout.columnSpan: 2; Layout.fillWidth: true; height: 2; color: "#e0e0e0"}
-            ///////////////////////////////////////////
-            Text { text: "Звание:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
-            Text { text: model.rank; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
-            ///////////////////////////////////////////
-            Text { text: "Организация:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
-            Text { text: model.organization; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
-            ///////////////////////////////////////////
-            Text { text: "Должность:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
-            Text { text: model.position; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
-            ///////////////////////////////////////////
-            Text { text: "Проход в:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
-            Text { text: model.zoneName; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
-            ///////////////////////////////////////////
-            Text { text: "Через:"; Layout.alignment: Qt.AlignLeft; font.pixelSize: fontSize}
-            Text { text: model.deviceName; Layout.alignment: Qt.AlignRight; font.pixelSize: fontSize}
-        }
     }
+    Component.onCompleted: root.userIdentified.connect(userIdentified)
 
-    Component.onCompleted: root.newPassage.connect(newPassage)
-
-    function newPassage(event) {
+    function userIdentified(event) {
         var user = Utils.findItem(root.users, event.userId)
-        console.log("pass events:", root.activePane, JSON.stringify(event), JSON.stringify(user))
+        //console.log("pass events:", root.activePane, JSON.stringify(event), JSON.stringify(user))
         if (user) {
             model = {
                 id: user.id,
@@ -80,11 +96,11 @@ Rectangle {
                 organization: user.organization || '',
                 position: user.position || '',
                 deviceName: event.deviceName || '',
-                zoneName: event.zoneName || ''
+                zoneName: event.zoneName || '',
+                message: event.text,
+                time: event.timeString
             }
         } else
             model = empty
-
-
     }
 }
