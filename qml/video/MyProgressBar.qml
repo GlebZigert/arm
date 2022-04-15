@@ -721,8 +721,33 @@ function datetime(value) {
 
 function set_sliders_and_calendar_from_current_datetime_value(dt)
 {
+    console.log("set_sliders_and_calendar_from_current_datetime_value(dt)")
+
   slider.value=convert_dt_to_slider_value(dt)
 
+    console.log("dt: ",dt)
+    console.log("year: ",parseInt(dt.substring(0, 4)))
+    console.log("month: ",parseInt(dt.substring(4, 6))-1)
+    console.log("day: ",parseInt(dt.substring(6, 8)))
+
+
+
+    var date=new Date()
+
+    date.setFullYear(parseInt(dt.substring(0, 4)))
+    date.setMonth(parseInt(dt.substring(4, 6))-1)
+    date.setDate(parseInt(dt.substring(6, 8)))
+
+   console.log( date.getFullYear())
+    console.log( date.getMonth())
+    console.log( date.getDay())
+    console.log( date)
+
+    console.log("Date: ",date)
+
+    calendar.selectedDate=date
+
+    console.log("calendar.selectedDate: ",calendar.selectedDate)
     m_item.mode=m_item.storage
    livestream_txt.text=m_item.mode
    update_timelist(dt)
