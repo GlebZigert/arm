@@ -102,7 +102,7 @@ RowLayout {
         visible: adminMode
         color: "lightgray"
         Layout.fillHeight: true
-        Layout.minimumWidth: 300
+        Layout.minimumWidth: 330
         Forms.EventsFilterForm{}
     }
 }
