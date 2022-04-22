@@ -16,7 +16,7 @@ import "qml/forms" as Forms
 
 ApplicationWindow {
     id: root
-    property string version: "1.04 beta 2"
+    property string version: "1.05"
     title: qsTr("Риф-7 (АРМ версии " + version + ")")
     y: 50
     x: 400
@@ -225,19 +225,16 @@ ApplicationWindow {
              }
              //newMessage(msg)
          }
-         onStatusChanged: if (socket.status === WebSocket.Error) {
-                              //console.log("Error: " + socket.errorString)
-                              goOffline()
+         onStatusChanged: if ([WebSocket.Error, WebSocket.Closed].indexOf(socket.status) >= 0) {
                               socket.active = false
+                              if ('offline' !== menu.linkStatus) {
+                                  menu.linkStatus = 'offline'
+                                  messageBox.error("Связь с сервером потеряна, отображаемая информация может быть неактуальна.")
+                              }
                           } else if (socket.status === WebSocket.Open) {
                               menu.linkStatus = 'online'
                               console.log("Socket ready, sending credentials")
                               sendTextMessage('{"login": "' + userLogin + '", "token": "' + userToken + '"}')
-                          } else if (socket.status === WebSocket.Closed) {
-                              if (menu.linkStatus != 'offline')
-                                console.log("Socket closed")
-                              menu.linkStatus = 'offline'
-                              socket.active = false
                           }
     }
 
@@ -364,11 +361,6 @@ ApplicationWindow {
         newTask(0, "RunAlarm", "", function (){}, function(){
             messageBox.error("Операция не выполнена")
         })
-    }
-
-
-    function goOffline() {
-        menu.linkStatus = 'offline'
     }
 
     function saveSplitViews() {
