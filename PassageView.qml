@@ -12,11 +12,10 @@ Rectangle {
     //color: "yellow"
     Layout.margins: 10
     property int maxImageSize: 250
-    property int maxSize: 200
-    property int nocache: Date.now()
-    property int fontSize: 24
+    property real nocache: Date.now()
+    property int fontSize: 22
     property int panePosition
-    property var empty: ({id: 0, name: "", surename: "", deviceName: "", zoneName: ""})
+    property var empty: ({id: 0, time: "", name: "", surename: "", rank: "", organization: "", position: "", deviceName: "", zoneName: ""})
     property var model: empty
     onModelChanged: nocache = Date.now()
     Column {
@@ -36,9 +35,8 @@ Rectangle {
             spacing: 15
             Image {
                 id: placeholder
-                height: rect.height > maxImageSize ? maxImageSize : rect.height
+                width: (rect.width > maxImageSize ? maxImageSize : rect.width) * 0.9
                 clip: true
-                cache: false
                 fillMode: Image.PreserveAspectFit
                 source: "qrc:/images/user-solid.svg"
                 visible: image.status !== 1
@@ -46,12 +44,12 @@ Rectangle {
 
             Image {
                 id: image
-                height: rect.height > maxImageSize ? maxImageSize : rect.height
+                width: rect.width > maxImageSize ? maxImageSize : rect.width
                 clip: true
                 cache: false
                 fillMode: Image.PreserveAspectFit
                 //source: "qrc:/images/user-solid.svg"
-                source: "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
+                source: "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id
             }
 
             GridLayout {
