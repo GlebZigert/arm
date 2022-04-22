@@ -89,6 +89,11 @@ ToolBar {
             font.family: faFont.name
             text: faFont.fa_wifi
             font.pixelSize: 24
+            MouseArea {
+                anchors.fill: parent
+                pressAndHoldInterval: 10e3
+                onPressAndHold: messageBox.ask("Желаете переподключиться к серверу?", root.forceReconnect)
+            }
         }
         Column {
             topPadding: 5

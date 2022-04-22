@@ -41,6 +41,7 @@ ApplicationWindow {
     property alias activePane: menu.activePane
     property var panes
     property var services
+    signal forceReconnect()
     signal getService(int id)
     signal send(int service, string action, var data)
     signal newTask(int service, string action, var data, var done, var fail)
@@ -61,6 +62,11 @@ ApplicationWindow {
     }
 
     onPanesChanged: initPanes()
+
+    onForceReconnect: {
+        socket.stopped = true
+        Qt.callLater(function() {socket.stopped = false})
+    }
 
     /*signal setPane(int n)
     onSetPane: {
