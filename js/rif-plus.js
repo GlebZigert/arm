@@ -223,12 +223,6 @@ function Rif(model) {
     Utils.setInitialStatus(this.model, this.statusUpdate.bind(this))
 }
 
-// called from outside when user's devices visibility changed
-Rif.prototype.reloadDevices = function () {
-    if (Const.EC_SERVICE_ONLINE === this.model.status.tcp)
-        root.send(this.serviceId, 'ListDevices', '')
-}
-
 Rif.prototype.statusUpdate = function (sid) {
     //console.log("==============1 RIF-STATUS", sid, "=>", this.model.color, JSON.stringify(this.model.status))
     if (Const.EC_SERVICE_ONLINE === sid && this.model.status.tcp !== sid)

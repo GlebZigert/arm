@@ -222,9 +222,7 @@ function updateService(service, data) {
             service.model[key] = data[key]
 
     service.model.label = data.title
-    if ('reloadDevices' in service) {
-        service.reloadDevices()
-    }
+    Utils.setInitialStatus(service.model, service.statusUpdate.bind(service))
 }
 
 function deleteService(id) {

@@ -19,18 +19,12 @@ function Z5RWeb(model) {
     Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
 
-// called from outside when user's devices visibility changed
-Z5RWeb.prototype.reloadDevices = function () {
-    if (Const.EC_SERVICE_READY === this.model.status.self)
-        root.send(this.serviceId, 'ListDevices', '')
-}
-
 Z5RWeb.prototype.shutdown = function () {
     console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Z5RWeb.prototype.statusUpdate = function (sid) {
-    if (Const.EC_SERVICE_READY === sid && this.model.status.self !== sid) {
+    if (Const.EC_SERVICE_READY === sid /*&& this.model.status.self !== sid*/) {
         root.send(this.serviceId, 'ListDevices', '')
         root.send(0, 'LoadJournal', this.serviceId)
     }

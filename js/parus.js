@@ -20,12 +20,6 @@ function Parus(model) {
     Utils.setInitialStatus(model, this.statusUpdate.bind(this))
 }
 
-// called from outside when user's devices visibility changed
-Parus.prototype.reloadDevices = function () {
-    if (Const.EC_SERVICE_READY === this.model.status.self)
-        root.send(this.serviceId, 'ListDevices', '')
-}
-
 Parus.prototype.statusUpdate = function (sid) {
     //console.log("##################### Z5R SUP", JSON.stringify(data))
     if (Const.EC_SERVICE_READY === sid && this.model.status.self !== sid) {
