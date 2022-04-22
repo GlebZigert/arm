@@ -296,7 +296,6 @@
         <file>MyLogin.qml</file>
         <file>images/s7-logo.png</file>
         <file>js/arm-config.js</file>
-        <file>qml/forms/IPMonForm.qml</file>
         <file>qml/forms/AlarmPopup.qml</file>
         <file>qml/video/tree.png</file>
         <file>qml/forms/UserSelector.qml</file>
