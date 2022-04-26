@@ -19,6 +19,8 @@ public:
 
     QImage* img;
 
+    QImage lost;
+
     QTimer* tmr;
 
 

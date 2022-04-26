@@ -4,6 +4,7 @@ threadList::threadList(QImage* img, QObject *parent) : QObject(parent)
 {
     this->img=img;
     tmr = new QTimer(this);
+    lost=QImage(":/qml/video/no_signal.jpeg");
     connect(tmr,SIGNAL(timeout()), this,SLOT(process()));
 }
 
@@ -12,12 +13,15 @@ bool threadList::append(QString str, int mode)
     foreach(MyThread* val, list.values()){
         val->stop();
     }
-
+    int i=0;
     foreach(MyThread* val, list.values()){
 
-    if(val->runner.thread()->isFinished()){
-        delete val;
+        qDebug()<<i++<<" "<<val->runner->URL<<" "<<val->runner->thread()->isRunning()<<" "<<val->runner->thread()->isFinished();
+
+    if(val->runner->thread()->isFinished()){
         list.remove(list.key(val));
+        delete val;
+
     }
 
     }
@@ -30,11 +34,16 @@ bool threadList::append(QString str, int mode)
 
     if(str!=0){
         MyThread*  mm=new MyThread(img,str,mode);
-        connect(&mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
-        connect(&mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lost_connection(QString)));
+        connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
+        connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lost_connection(QString)));
         list.insert(str,mm);
-        mm->thread.start();
+        mm->thread->start();
+
+
     }
+
+    qDebug()<<"sizeof "<<sizeof(list);
+
     return true;
 }
 
@@ -42,6 +51,7 @@ void threadList::remove(QString str)
 {
     MyThread* current= list.value(str);
     current->stop();
+
 }
 
 void threadList::process()
@@ -80,7 +90,7 @@ void threadList::process()
             if(cnt1<20){
                 tmr->start(100);
             }else{
-                *img=QImage(":/qml/video/no_signal.jpeg");
+                *img=lost;
                 emit frame();
 
                 cnt2++;
@@ -108,7 +118,7 @@ void threadList::lost_connection(QString URL)
 {
     if(URL==this->URL){
         step=0;
-        *img=QImage(":/qml/video/no_signal.jpeg");
+        *img=lost;
         emit frame();
         cnt3++;
 
