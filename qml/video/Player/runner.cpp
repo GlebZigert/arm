@@ -189,7 +189,8 @@ while(m_running!=mode::turnOff){
 
     }
 
-     av_free_packet(packet);
+ //    av_packet_unref(packet);
+     av_packet_unref(packet);
 
 
 }
@@ -207,10 +208,12 @@ return;
 void Runner::close()
 {
 
+    av_free_packet(packet);
+
     qDebug()<<"1";
     avcodec_close(pAVCodecContext);
     qDebug()<<"2";
-    av_free_packet(packet);
+    av_packet_unref(packet);
     qDebug()<<"3";
     if(pFormatCtx){
         avformat_close_input(&pFormatCtx);
