@@ -11,11 +11,16 @@ QC1.TableView {
     property int panePosition
 
     id: tableView
-    //width: parent.width
-//    anchors.fill: parent
     frameVisible: false
     model: root.events
-    onRowCountChanged: Qt.callLater(positionViewAtRow, rowCount - 1, ListView.End)
+    onRowCountChanged: {
+        selection.clear()
+        if (currentRow >= 0)
+            selection.select(currentRow)
+        if (flickableItem.atYEnd)
+            Qt.callLater(positionViewAtRow, rowCount - 1, ListView.Contain)
+    }
+    onVisibleChanged: if (visible) Qt.callLater(positionViewAtRow, rowCount - 1, ListView.Contain)
     onDoubleClicked: root.eventSelected(model.get(row))
     //onClicked: showPopup(row)
     Keys.onReturnPressed: {
@@ -57,7 +62,7 @@ QC1.TableView {
         id: idColumn
         role: "id"
         title: "#"
-        width: 50
+        width: 70
     }
 
     QC1.TableViewColumn {

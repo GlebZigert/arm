@@ -86,6 +86,11 @@ RowLayout {
                 //width: tableView.viewport.width - serviceColumn.width - deviceColumn.width
             }
             QC1.TableViewColumn {
+                role: "zoneName"
+                title: "Зона"
+                //width: 100
+            }
+            QC1.TableViewColumn {
                 role: "reason"
                 title: "Причины"
                 //width: tableView.viewport.width - serviceColumn.width - deviceColumn.width
