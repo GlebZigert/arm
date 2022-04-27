@@ -1,5 +1,6 @@
 .import "utils.js" as Utils
 .import "journal.js" as Journal
+.import "constants.js" as Const
 
 var handlers = {
     ListZones: listZones,
@@ -86,7 +87,10 @@ function complement(data) {
 }
 
 function enterZone(event) {
-    console.log("enterZONE:", JSON.stringify(event))
+    if ([Const.ARM_ADMIN, Const.ARM_SECRET].indexOf(root.armRole) < 0)
+            return // control visitor's location not for all ARM
+
+    //console.log("enterZONE:", JSON.stringify(event))
     var zone,
         del = false,
         add = false,
@@ -98,12 +102,12 @@ function enterZone(event) {
             if (event.userId === zone.entranceEvents.get(j).userId) {
                 zone.entranceEvents.remove(j)
                 del = true
-                console.log('DEL')
+                //console.log('DEL from zone')
             }
         if (zone.id === event.zoneId) {
             zone.entranceEvents.append(event)
             add = true
-            console.log('ADD')
+            //console.log('ADD to zone')
         }
     }
 }
