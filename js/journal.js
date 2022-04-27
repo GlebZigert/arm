@@ -2,7 +2,8 @@
 .import "constants.js" as Const
 //.import "zones.js" as Zones
 
-var maxJournalSize = 1e3, // max events count
+var oddOrEven = 0, // fluctuations for ListView(s) update
+    maxJournalSize = 3e3, // max events count
     alarmNames = ["alarm", "error", "lost"]
 
 // returns devices list with active alarms [device_id, device_id, ...] for service
@@ -116,6 +117,7 @@ function loadJournal(msg) {
             root.events.insert(0, events.pop())
     } else
         root.events.append(events)
+    shrinkOldEvents()
 }
 
 function logEvents(events, silent) {
@@ -125,6 +127,7 @@ function logEvents(events, silent) {
     root.events.append(events)
     if (!silent)
         root.newEvents(events)
+    shrinkOldEvents()
 }
 
 function complementEvents(events) {
@@ -151,6 +154,12 @@ function complementEvents(events) {
     return events
 }
 
+
+function shrinkOldEvents() {
+    oddOrEven = (oddOrEven + 1) % 2
+    if (root.events.count > maxJournalSize)
+        root.events.remove(0, root.events.count - maxJournalSize + oddOrEven)
+}
 
 /*
 function colorizeEvents(serviceId) {
