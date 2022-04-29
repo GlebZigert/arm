@@ -2,7 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 
-import io.qt.examples.imageMaker 1.0
+//import io.qt.examples.imageMaker 1.0
 
 
 Flickable {
@@ -14,7 +14,7 @@ Flickable {
     property var modelId: model.id
     onModelIdChanged: {
         fileDialog.reset()
-        previewBadge()
+        //previewBadge()
     }
 
     property var roles: ([
@@ -318,7 +318,7 @@ Flickable {
         }
 
         /////////////////////////////////////////////
-        property bool showBadge: !newItem && !!fields['photo'] && Image.Ready === image.status
+        /*property bool showBadge: !newItem && !!fields['photo'] && Image.Ready === image.status
         Text { text: "Бейдж"; visible: form.showBadge; Layout.alignment: Qt.AlignRight }
         ImageMaker {
             visible: form.showBadge
@@ -326,7 +326,7 @@ Flickable {
             id: imgmaker
             width: 290
             height: 180
-        }
+        }*/
 
         ///////////////////////////////////////////
         Text { text: "Добавить"; visible: !!fields['add-children'] && itemId; Layout.alignment: Qt.AlignRight }
@@ -345,10 +345,10 @@ Flickable {
         Text { text: "ID:";  Layout.alignment: Qt.AlignRight }
         Text { text: itemId}*/
     }
-    function previewBadge() {
+    /*function previewBadge() {
         imgmaker.test()
         var photo="http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id
         imgmaker.take_photo_from_url_and_set_name_and_surename(photo, model['name'], model['surename']);
-    }
+    }*/
 
 }

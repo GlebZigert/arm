@@ -44,7 +44,7 @@ int main(int argc, char *argv[])
     #endif
 
 
-    qmlRegisterType<imageMaker>("io.qt.examples.imageMaker", 1, 0, "ImageMaker");
+    //qmlRegisterType<imageMaker>("io.qt.examples.imageMaker", 1, 0, "ImageMaker");
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));
