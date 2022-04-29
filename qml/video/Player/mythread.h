@@ -14,8 +14,8 @@ public:
 
     ~MyThread();
 
-    QThread thread;
-    Runner runner;
+    QThread* thread;
+    Runner* runner;
 
     void stop();
 

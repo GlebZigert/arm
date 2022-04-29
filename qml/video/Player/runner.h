@@ -32,7 +32,7 @@ class Runner : public QObject
 
 public:
     explicit Runner( QObject *parent = nullptr);
-
+    ~Runner();
     void output();
 
 int m_running;
@@ -45,6 +45,18 @@ int m_running;
     QImage* img;
     QString URL;
     clock_t prev;
+
+private:
+
+    AVCodecContext *pAVCodecContext;
+    AVFrame *pAVFrame;
+    SwsContext * pSwsContext;
+    AVPicture  *pAVPicture;
+    AVCodec *pAVCodec;
+    AVPacket *packet;
+    AVFormatContext *pFormatCtx;
+
+    void close();
 
 
 signals:
