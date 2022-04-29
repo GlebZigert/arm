@@ -56,8 +56,11 @@ function message(msg) {
         console.log('Running action', msg.action, 'on', msg.service)
         services[msg.service].handlers[msg.action](msg.data, !msg.task)
         console.log('Done action', msg.action)
-     } else //if (!msg.task)
-        console.log('Unknown action:', msg.action, 'on', msg.service/*, JSON.stringify(msg.data)*/)
+     } else if (0 !== msg.service && !(msg.service in services)) {
+        console.log('Unknown service:', msg.service, " => reload services list")
+        root.send(0, "ListServices", "")
+     } else
+        console.log('Unknown action:', msg.action, 'on', msg.service)
     if ("Events" === msg.action)
         scanEvents(msg.data)
 }
@@ -259,21 +262,23 @@ function reconnectUser(msg) {
 }
 
 function listServices(msg) {
-//        console.log("LIST SVC:", JSON.stringify(msg))
-        var i,
-            id,
-            service,
-            all = Object.keys(services).map(function (v){return parseInt(v)})
+    //console.log("LIST SVC:", JSON.stringify(msg))
+    if (null === msg.data)
+        return
 
-        if (null !== msg.data)
-            for (i = 0; i < msg.data.length; i++) {
-                id = msg.data[i].id
-                if (id in services) {
-                    updateService(services[id], msg.data[i])
-                    all.splice(all.indexOf(id), 1)
-                } else
-                    newService(msg.data[i])
-            }
+    var i,
+        id,
+        service,
+        all = Object.keys(services).map(function (v){return parseInt(v)})
+
+        for (i = 0; i < msg.data.length; i++) {
+            id = msg.data[i].id
+            if (id in services) {
+                updateService(services[id], msg.data[i])
+                all.splice(all.indexOf(id), 1)
+            } else
+                newService(msg.data[i])
+        }
 
         // delete unlisted services
         for (i = 0; i < all.length; i++)
