@@ -5,6 +5,16 @@ AVDictionary* options;
 AVCodecParameters *param;
 Runner::Runner( QObject *parent) : QObject(parent)
 {
+     pAVCodecContext = NULL;
+     pAVFrame = NULL;
+      pSwsContext = NULL;
+     pAVPicture = NULL;
+     pAVCodec = NULL;
+     packet = NULL;
+     pFormatCtx = NULL;
+     options = NULL;
+     param = NULL;
+
     av_log_set_level(AV_LOG_QUIET);
     this->str=str;
     m_running=true;
@@ -240,52 +250,65 @@ void Runner::close()
 
 
 
-    qDebug()<<"1";
-  //  avcodec_close(pAVCodecContext);
 
 
-        qDebug()<<"111";
+     if(param)   {
+    qDebug()<<"  avcodec_parameters_free(&param);";
     avcodec_parameters_free(&param);
+     }
+
+     if(pAVCodecContext){
+             qDebug()<<" avcodec_free_context(&pAVCodecContext);";
     avcodec_free_context(&pAVCodecContext);
-    qDebug()<<"222";
+     }
 
 
-    qDebug()<<"2";
+
+
+    if(packet){
+qDebug()<<"av_packet_unref(packet);";
     av_packet_unref(packet);
-    qDebug()<<"3";
-
-        avformat_close_input(&pFormatCtx);
-
-
+qDebug()<<"av_packet_free(&packet);";
     av_packet_free(&packet);
+qDebug()<<"av_free(packet);)";
     av_free(packet);
 
-    qDebug()<<"4";
- //   avpicture_alloc(&pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
- //
+    }
+
+        if(pFormatCtx){
+            qDebug()<<"avformat_close_input(&pFormatCtx);";
+        avformat_close_input(&pFormatCtx);
+        }
 
 
 
-    qDebug()<<"5";
 
+
+
+    if(pAVFrame){
+    *img=QImage();
+        qDebug()<<"av_frame_free(&pAVFrame);";
     av_frame_free(&pAVFrame);
-
-    qDebug()<<"6";
-    sws_freeContext(pSwsContext);
-    qDebug()<<"7";
+    qDebug()<<"av_free(pAVFrame);";
     av_free(pAVFrame);
-    qDebug()<<"8";
+    }
+
+    if(pSwsContext){
+        qDebug()<<"sws_freeContext(pSwsContext);";
+    sws_freeContext(pSwsContext);
+    }
+
+
 
         qDebug()<<"avpicture_free";
       //  qDebug()<<"sizeof avpicture "<<sizeof (pAVPicture);
-        *img=QImage();
 
-        avpicture_free(pAVPicture);
-
+if(pAVPicture){
+    qDebug()<<"avpicture_free(pAVPicture);";
+     avpicture_free(pAVPicture);
+qDebug()<<"av_free(pAVPicture);";
     av_free(pAVPicture);
-
-    qDebug()<<"9";
- //   if(pAVCodecContext)
+}
 
 
 }
