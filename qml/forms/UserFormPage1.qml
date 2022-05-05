@@ -313,7 +313,7 @@ Flickable {
                 text: faFont.fa_address_card
                 ToolTip.text: "Печатать"
                 ToolTip.visible: hovered
-                onClicked: imgmaker.printImage()
+                //onClicked: imgmaker.printImage()
             }
         }
 
