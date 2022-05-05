@@ -246,7 +246,10 @@ return;
 void Runner::close()
 {
 
-
+    if(options){
+qDebug()<<"  av_dict_free(&options);";
+        av_dict_free(&options);
+    }
 
 
 
