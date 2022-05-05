@@ -5,6 +5,16 @@ AVDictionary* options;
 AVCodecParameters *param;
 Runner::Runner( QObject *parent) : QObject(parent)
 {
+     pAVCodecContext = NULL;
+     pAVFrame = NULL;
+      pSwsContext = NULL;
+     pAVPicture = NULL;
+     pAVCodec = NULL;
+     packet = NULL;
+     pFormatCtx = NULL;
+     options = NULL;
+     param = NULL;
+
     av_log_set_level(AV_LOG_QUIET);
     this->str=str;
     m_running=true;
