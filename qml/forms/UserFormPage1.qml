@@ -115,8 +115,9 @@ Flickable {
         Text { text: subs['name'] || "Имя"; visible: !!fields['name']; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'name'
-            enabled: visible && changeable
-            visible: !!fields[name]
+            property bool showIt: !!fields[name]
+            enabled: showIt && changeable
+            visible: showIt
             Layout.fillWidth: true
             text: newItem ? '' : model[name] || ''
             validator: RegExpValidator { regExp: /\S+.*/ }
@@ -126,9 +127,10 @@ Flickable {
         Text { text: subs['surename'] || 'Фамилия'; visible: !!fields['surename']; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'surename'
+            property bool showIt: !!fields[name]
+            enabled: showIt && changeable
+            visible: showIt
             Layout.fillWidth: true
-            enabled: visible && changeable
-            visible: !!fields[name]
             //placeholderText: 'Фамилия'
             text: newItem ? '' : model[name] || ''
             validator: RegExpValidator { regExp: /\S+.*/ }
@@ -138,9 +140,10 @@ Flickable {
         Text { text: subs['middleName'] || 'Отчество'; visible: !!fields['middleName']; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'middleName'
+            property bool showIt: !!fields[name]
+            enabled: showIt && changeable
+            visible: showIt
             Layout.fillWidth: true
-            enabled: visible && changeable
-            visible: !!fields[name]
             text: newItem ? '' : model[name] || ''
             //validator: RegExpValidator { regExp: /\S+.*/ }
             //color: acceptableInput ? palette.text : "red"
@@ -149,9 +152,10 @@ Flickable {
         Text { text: subs['rank'] || 'Звание'; visible: !!fields['rank']; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'rank'
+            property bool showIt: !!fields[name]
             Layout.fillWidth: true
-            enabled: visible && changeable
-            visible: !!fields[name]
+            enabled: showIt && changeable
+            visible: showIt
             text: newItem ? '' : model[name] || ''
             //validator: RegExpValidator { regExp: /\S+.*/ }
             //color: acceptableInput ? palette.text : "red"
@@ -160,9 +164,10 @@ Flickable {
         Text { text: subs['organization'] || 'Организация'; visible: !!fields['organization']; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'organization'
+            property bool showIt: !!fields[name]
             Layout.fillWidth: true
-            enabled: visible && changeable
-            visible: !!fields[name]
+            enabled: showIt && changeable
+            visible: showIt
             text: newItem ? '' : model[name] || ''
             //validator: RegExpValidator { regExp: /\S+.*/ }
             //color: acceptableInput ? palette.text : "red"
@@ -171,9 +176,10 @@ Flickable {
         Text { text: subs['position'] || 'Должность'; visible: !!fields['position']; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'position'
+            property bool showIt: !!fields[name]
             Layout.fillWidth: true
-            enabled: visible && changeable
-            visible: !!fields[name]
+            enabled: showIt && changeable
+            visible: showIt
             text: newItem ? '' : model[name] || ''
             //validator: RegExpValidator { regExp: /\S+.*/ }
             //color: acceptableInput ? palette.text : "red"
@@ -185,9 +191,10 @@ Flickable {
             id: roleCombo
             Layout.fillWidth: true
             property string name: 'role'
+            property bool showIt: !!fields[name]
             textRole: "text"
-            visible: !!fields[name]
-            enabled: visible && newItem && changeable
+            visible: showIt
+            enabled: showIt && newItem && changeable
             model: ListModel{} // all roles
             currentIndex: {for (var i = roles.length - 1; i > 0 && roles[i].id !== form.role0; i--); newItem ? 0 : i}
             Component.onCompleted: model.append(roles)
@@ -198,10 +205,11 @@ Flickable {
         Text { text: "Логин"; visible: !!fields['login'] && roleCombo.currentIndex > 0; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'login'
+            property bool showIt: !!fields[name] && roleCombo.currentIndex > 0
+            visible: showIt
+            enabled: showIt && changeable
             Layout.fillWidth: true
             placeholderText: 'Логин'
-            visible: !!fields[name] && roleCombo.currentIndex > 0
-            enabled: visible && changeable
             text: newItem ? '' : model[name] || ''
             validator: RegExpValidator { regExp: /\S{2,20}/ }
             color: acceptableInput ? palette.text : "red"
@@ -210,9 +218,10 @@ Flickable {
         Text { text: "Пароль"; visible: !!fields['password'] && roleCombo.currentIndex > 0; Layout.alignment: Qt.AlignRight }
         TextField {
             property string name: 'password'
+            property bool showIt: !!fields[name] && roleCombo.currentIndex > 0
+            visible: showIt
+            enabled: showIt && changeable
             Layout.fillWidth: true
-            visible: !!fields[name] && roleCombo.currentIndex > 0
-            enabled: visible && changeable
             placeholderText: 'Пароль'
             text: newItem ? '' : model[name] || ''
             echoMode: TextInput.Password
@@ -226,13 +235,14 @@ Flickable {
             spacing: 10
             property ListModel cardsList: model.cards
             ComboBox {
+                id: cardsCombo
                 property string name: 'cards'
                 property var fieldValue
                 property int lastIndex: -1
-                id: cardsCombo
+                property bool showIt: !!fields[name]
+                enabled: showIt
+                visible: showIt
                 Layout.fillWidth: true
-                enabled: !!fields[name]
-                visible: enabled
                 textRole: "card"
                 //text: newItem ? '' : model[name] || ''
                 //validator: RegExpValidator { regExp: /[0-9a-f]{6,12}/i }
@@ -331,8 +341,9 @@ Flickable {
         ///////////////////////////////////////////
         Text { text: "Добавить"; visible: !!fields['add-children'] && itemId; Layout.alignment: Qt.AlignRight }
         Button {
-            enabled: visible && changeable
-            visible: !!fields['add-children'] && itemId;
+            property bool showIt: !!fields['add-children'] && itemId
+            enabled: showIt && changeable
+            visible: showIt
             text: "+ дочерний элемент"
             onClicked: {
                 loader.makeNewUser(model.id)
