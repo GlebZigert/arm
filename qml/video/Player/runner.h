@@ -1,4 +1,4 @@
-#ifndef RUNNER_H
+﻿#ifndef RUNNER_H
 #define RUNNER_H
 
 #include <QObject>
@@ -55,6 +55,8 @@ private:
     AVCodec *pAVCodec;
     AVPacket *packet;
     AVFormatContext *pFormatCtx;
+
+    AVCodecParameters *param;
 
     void close();
 

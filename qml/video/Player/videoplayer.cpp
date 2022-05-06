@@ -4,6 +4,8 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
     list=new threadList(&img);
     connect(list,SIGNAL(frame()),this,SLOT(frame()));
+
+    img=QImage();
 }
 
 

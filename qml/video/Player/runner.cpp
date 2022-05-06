@@ -2,7 +2,7 @@
 #include "QDebug"
 #define AVIO_FLAG_NONBLOCK   8
 AVDictionary* options;
-AVCodecParameters *param;
+
 Runner::Runner( QObject *parent) : QObject(parent)
 {
      pAVCodecContext = NULL;
@@ -73,7 +73,7 @@ pFormatCtx->interrupt_callback.opaque = this;
 if (avformat_open_input(&pFormatCtx, filepath, NULL, &options) != 0){
     emit lost_connection(URL);
     emit finished();
-    close();
+
     return;
 }
 
@@ -83,7 +83,7 @@ pFormatCtx->max_analyze_duration = AV_TIME_BASE;
 if (avformat_find_stream_info(pFormatCtx, NULL)<0){
     emit lost_connection(URL);
     emit finished();
-    close();
+
     return;
 }
 
@@ -99,7 +99,7 @@ if (pFormatCtx->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO){
 if (videoindex == -1){
     emit lost_connection(URL);
     emit finished();
-    close();
+
     return;
 }
 
@@ -127,7 +127,7 @@ qDebug()<<"avpicture_alloc 2";
 if((videoWidth==0)&&(videoHeight==0)){
     emit lost_connection(URL);
     emit finished();
-    close();
+
     return;
 }
 
@@ -138,7 +138,7 @@ int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
 if (result<0){
     emit lost_connection(URL);
     emit finished();
-    close();
+
     return;
 }
 
@@ -169,7 +169,7 @@ while(m_running!=mode::turnOff){
         emit lost_connection(URL);
         emit finished();
 
-        close();
+
         return;
     }
 int used=0;
@@ -196,7 +196,7 @@ int got_frame=0;
         emit lost_connection(URL);
             emit finished();
 
-            close();
+
             return;
         }
 
@@ -211,6 +211,7 @@ int got_frame=0;
                       pAVPicture->linesize
                       );
 
+       //     for(int i=0;i<1000;i++)
             *img=QImage(pAVPicture->data[0],
                         videoWidth,
                         videoHeight,
@@ -218,10 +219,12 @@ int got_frame=0;
 
             emit new_frame(URL);
 
+
             if(m_running==mode::Snapshot){
                 m_running=mode::turnOff;
             }
         }
+
 
     }
 
