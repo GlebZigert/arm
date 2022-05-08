@@ -9,35 +9,49 @@ class threadList : public QObject
 {
     Q_OBJECT
 public:
-    explicit threadList(QImage* img, QObject *parent = nullptr);
+    explicit threadList(AVPicture **data,int *h,int *w, QObject *parent = nullptr);
 
-    QMap<QString, MyThread* > list;
+    MyThread* mm;
 
-    bool append(QString,int);
 
-    void remove(QString str);
+    AVPicture **data;
+    int *h;
+    int *w;
 
     QImage* img;
 
-    QImage lost;
+    QImage* lost;
 
-    QTimer* tmr;
+    bool isValid;
+
+
 
 
     QString URL;
     int mode;
-    int step;
-    int cnt1,cnt2,cnt3;
-    int firstFrame;
+
+
+
+
+    void stop();
+
+
+
+    QTimer *tmrStart;
+
+
+
 
 
 public slots:
     void receiveFrame(QString);
-    void lost_connection(QString URL);
-    void process();
+    void lostConnection(QString);
+
+    void start();
+
 
 signals:
-    void frame();
+    void frame(QString URL);
 
 };
 

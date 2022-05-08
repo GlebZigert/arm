@@ -2,16 +2,31 @@
 #include <QPainter>
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
-    list=new threadList(&img);
-    connect(list,SIGNAL(frame()),this,SLOT(frame()));
+    data=NULL;
+    list1=new threadList(&data,&h,&w);
+    list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
 
-    img=QImage();
+    connect(list1,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+
+    list2=new threadList(&data,&h,&w);
+ //   list2->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.6/SourceEndpoint.video:0:0";
+
+    connect(list2,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
 }
 
 
 void VideoPlayer::paint(QPainter *painter)
 {
+
+    if(data!=NULL){
+    QImage img=QImage(data->data[0],
+            w,
+            h,
+            QImage::Format_RGB32);
+
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
+    }
+
 }
 
 QString VideoPlayer::source() const
@@ -25,37 +40,29 @@ void VideoPlayer::setSource(const QString source)
 }
 
 
+
+
+
 void VideoPlayer::start()
 {
-    list->tmr->stop();
-    list->step=0;
-    list->cnt2=0;
-    list->cnt3=0;
-    list->URL=m_source;
-    list->mode=mode::Streaming;
-    list->process();
+    list1->URL=m_source;
+    list1->mode=mode::Streaming;
+   list1->start();
 }
 
 void VideoPlayer::stop()
 {
-    list->tmr->stop();
-    foreach(QString str, list->list.keys()){
-        list->remove(str);
-    }
-
+  list1->stop();
 }
-
-
 
 void VideoPlayer::shot()
 {
-    list->tmr->stop();
-    list->cnt3=0;
-    list->step=0;
-    list->URL=m_source;
-    list->mode=mode::Snapshot;
-    list->process();
+    list1->URL=m_source;
+    list1->mode=mode::Snapshot;
+   list1->start();
 }
+
+
 
 void VideoPlayer::onWidthChanged(){
     update();
@@ -65,7 +72,9 @@ void VideoPlayer::onheightChanged(){
     update();
 }
 
-void VideoPlayer::frame(){
+void VideoPlayer::frame(QString source){
+
+    if(source==this->m_source)
     this->update();
 }
 
