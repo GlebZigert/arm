@@ -264,7 +264,7 @@ function reconnectUser(msg) {
 function listServices(msg) {
     //console.log("LIST SVC:", JSON.stringify(msg))
     if (null === msg.data)
-        return
+        msg.data = []
 
     var i,
         id,
