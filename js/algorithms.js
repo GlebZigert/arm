@@ -16,9 +16,13 @@ function listAlgos(msg) {
     if (!msg.data)
         msg.data = []
 
-    if (algos && validateTree(msg.data))
-        return // TODO: update algorithms
+    if (algos && validateTree(msg.data)) {
+        // TODO: update algorithms
+        console.log("Update algorithms here...")
+        //return
+    }
 
+    console.log('Rebuild algos tree')
 
     for (var i = 0; i < msg.data.length; i++) {
         complement(msg.data[i])
@@ -27,8 +31,6 @@ function listAlgos(msg) {
     algos = root.algorithms.get(0).children
     algos.clear()
     algos.append(msg.data)
-
-    console.log('Rebuild algos tree')
 }
 
 function updateAlgo(msg) {
