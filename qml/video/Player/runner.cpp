@@ -329,6 +329,7 @@ prev=clock();
 
 load();
 if (!load_settings()){
+    emit lost_connection(URL);
     emit  finished();
     return;
 }

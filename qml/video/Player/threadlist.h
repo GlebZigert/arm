@@ -20,7 +20,6 @@ public:
 
     QImage* img;
 
-    QImage* lost;
 
     bool isValid;
 
@@ -41,7 +40,7 @@ public:
 
 
 
-
+    int delay;
 
 public slots:
     void receiveFrame(QString);
@@ -49,9 +48,11 @@ public slots:
 
     void start();
 
+    void startRunner();
 
 signals:
     void frame(QString URL);
+    void lost(QString URL);
 
 };
 

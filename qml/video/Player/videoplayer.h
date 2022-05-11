@@ -53,6 +53,7 @@ public slots:
     void onWidthChanged();
     void onheightChanged();
     void frame(QString src);
+    void lost(QString src);
 
 };
 

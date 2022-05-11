@@ -7,11 +7,8 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
 
     connect(list1,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+    connect(list1,SIGNAL(lost(QString)),this,SLOT(lost(QString)));
 
-    list2=new threadList(&data,&h,&w);
- //   list2->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.6/SourceEndpoint.video:0:0";
-
-    connect(list2,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
 }
 
 
@@ -19,11 +16,11 @@ void VideoPlayer::paint(QPainter *painter)
 {
 
     if(data!=NULL){
-    QImage img=QImage(data->data[0],
+ /*   QImage img=QImage(data->data[0],
             w,
             h,
             QImage::Format_RGB32);
-
+*/
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
     }
 
@@ -74,8 +71,21 @@ void VideoPlayer::onheightChanged(){
 
 void VideoPlayer::frame(QString source){
 
-    if(source==this->m_source)
+    if(source==this->m_source){
+         img=QImage(data->data[0],
+                    w,
+                    h,
+                    QImage::Format_RGB32);
     this->update();
+    }
+}
+
+void VideoPlayer::lost(QString source)
+{
+    if(source==this->m_source){
+         img=QImage(":/qml/video/no_signal.jpeg");
+    this->update();
+    }
 }
 
 

@@ -17,11 +17,19 @@ threadList::threadList(AVPicture **data,int *h,int *w, QObject *parent) : QObjec
 
 void threadList::start()
 {
+tmrStart->stop();
+delay=10;
+startRunner();
+
+}
+
+void threadList::startRunner()
+{
     if(isValid){
         qDebug()<<".";
 
         stop();
-        tmrStart->singleShot(10,this,SLOT(start()));
+        tmrStart->singleShot(delay,this,SLOT(start()));
         return;
     }
 
@@ -33,7 +41,6 @@ void threadList::start()
 
     mm->thread->start();
     isValid=true;
-
 }
 
 void threadList::stop()
@@ -66,8 +73,10 @@ void threadList::lostConnection(QString URL)
 {
 
     qDebug()<<"lostConnection";
-
-
+    emit lost(URL);
+    tmrStart->stop();
+    delay=1000;
+    startRunner();
 
 
 }
