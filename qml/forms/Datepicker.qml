@@ -7,15 +7,19 @@ import QtQuick.Controls 2.4
 RowLayout {
     Layout.fillWidth: true
     Layout.fillHeight: true
+    property string initial
     property alias text: textDate.text
     property alias acceptableInput: textDate.acceptableInput
     property alias enabled: textDate.enabled
     property bool upside // show popup at top
+    onTextChanged: {
+        var pp = (text || '').split('.').reverse()
+        cal.selectedDate = 3 === pp.length ? new Date(pp[0], pp[1]-1, pp[2]) : new Date()
+    }
 
     TextField {
         id: textDate
-        placeholderText: "например, 02.12.2020"
-        text: Qt.formatDate(cal.selectedDate, "dd.MM.yyyy")
+        placeholderText: "дд.мм.гггг"
         Layout.fillWidth: true
         validator: RegExpValidator { regExp: /^\d\d\.\d\d\.\d\d\d\d$/ }
         color: acceptableInput ? palette.text : "red"
@@ -42,11 +46,13 @@ RowLayout {
         modal: true
         focus: true
         closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
-        Calendar{
+        Calendar {
            id: cal
            selectedDate: new Date()
            onClicked: {
-               textDate.text = Qt.formatDate(this.selectedDate, "dd.MM.yyyy");
+               var txt = Qt.formatDate(this.selectedDate, "dd.MM.yyyy");
+               textDate.clear()
+               textDate.insert(0, txt)
                popup.close()
            }
         }
