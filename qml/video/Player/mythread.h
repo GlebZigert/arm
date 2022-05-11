@@ -10,9 +10,10 @@ class MyThread : public QObject
     Q_OBJECT
 
 public:
-    explicit MyThread(QImage* img,QString str,int mode, QObject *parent = nullptr);
+    explicit MyThread(AVPicture** data,int *h, int *w,QString str,int mode, QObject *parent = nullptr);
 
     ~MyThread();
+
 
     QThread* thread;
     Runner* runner;
@@ -23,7 +24,7 @@ public slots:
 
 
 private:
-    QString str;
+    QString URL;
 signals:
 
 

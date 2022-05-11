@@ -4,7 +4,6 @@
 #include <QObject>
 #include <QDebug>
 #include <QTimer>
-#include <QImage>
 #include <QTime>
 #include <time.h>
 extern "C"{
@@ -32,6 +31,7 @@ class Runner : public QObject
 
 public:
     explicit Runner( QObject *parent = nullptr);
+        explicit Runner(AVPicture** data,int *h, int *w, QString URL,int mode, QObject *parent = nullptr);
     ~Runner();
     void output();
 
@@ -42,10 +42,11 @@ int m_running;
     QString str;
     QTimer tmr;
     static int interrupt_cb(void *ctx);
-    QImage* img;
     QString URL;
     clock_t prev;
-
+    AVPicture **data;
+    int *h;
+    int *w;
 private:
 
     AVCodecContext *pAVCodecContext;
@@ -56,6 +57,26 @@ private:
     AVPacket *packet;
     AVFormatContext *pFormatCtx;
 
+    AVCodecParameters* param ;
+
+    int videoindex;
+
+    int videoWidth;
+    int videoHeight;
+
+    int m_i_frameFinished;
+    int ret;
+
+
+
+
+
+void load();
+bool load_settings();
+void free_settings();
+void free();
+void capture();
+
     void close();
 
 
@@ -65,10 +86,13 @@ signals:
     void lost_connection(QString URL);
     void new_frame(QString);
     void playing();
+    void destroyed();
+
+
 
 public slots:
    void run(); // Метод с полезной нагрузкой, который может выполняться в цикле               // что потоки выполняются и работают
-   void setRunning(bool running);
+   void setRunning(int running);
 
 
 };

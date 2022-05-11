@@ -24,10 +24,15 @@ public:
 
 
     Q_INVOKABLE void start();
-    Q_INVOKABLE void stop();
-    Q_INVOKABLE void shot();
+    Q_INVOKABLE void  stop();
+    Q_INVOKABLE void  shot();
 
 
+
+
+    AVPicture *data;
+    int h;
+    int w;
 
 
 private:
@@ -36,7 +41,9 @@ private:
 
     QImage img;
 
-    threadList* list;
+    threadList* list1;
+    threadList* list2;
+
 
 signals:
     void playing();
@@ -45,7 +52,8 @@ public slots:
 
     void onWidthChanged();
     void onheightChanged();
-    void frame();
+    void frame(QString src);
+    void lost(QString src);
 
 };
 

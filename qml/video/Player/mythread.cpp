@@ -1,18 +1,19 @@
 #include "mythread.h"
 #include "QDebug"
 
-MyThread::MyThread(QImage* img, QString str,int mode, QObject *parent) : QObject(parent)
+MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,int mode, QObject *parent) : QObject(parent)
 {
-    runner = new Runner();
+    runner = new Runner(data,h,w,URL,mode);
     thread = new QThread();
-    this->str=str;
+
+
+    this->URL=URL;
     if(mode!=mode::turnOff){
-        runner->str=str;
+        runner->URL=URL;
         connect(thread,&QThread::started,runner,&Runner::run);
         connect(runner, &Runner::finished, thread, &QThread::quit);
-        runner->m_running=mode;
-        runner->img=img;
-        runner->URL=str;
+
+
         runner->moveToThread(thread);
     }
 
@@ -23,11 +24,12 @@ MyThread::~MyThread()
     qDebug()<<"DELETE "<<runner->URL;
     delete runner;
     delete thread;
+        qDebug()<<"MyThread destroyed";
 }
 
 void MyThread::stop()
 {
-    runner->setRunning(false);
+    runner->setRunning(mode::turnOff);
 }
 
 
