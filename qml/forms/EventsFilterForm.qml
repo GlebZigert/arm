@@ -117,7 +117,7 @@ GridLayout {
         }
         Datepicker {
             property string name: 'startDate'
-            //Layout.fillWidth: true
+            text: Qt.formatDate(new Date(), "dd.MM.yyyy")
         }
     }
     ///////////////////////////////////////////
@@ -134,6 +134,7 @@ GridLayout {
         }
         Datepicker {
             property string name: 'endDate'
+            text: Qt.formatDate(new Date(), "dd.MM.yyyy")
         }
     }
     ///////////////////////////////////////////

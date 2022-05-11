@@ -41,14 +41,14 @@ GridLayout {
     Datepicker {
         property string name: 'startDate'
         enabled: changeable
-        text: !itemId ? '' : model[name] || ''
+        text: 0 < itemId && model[name] || ''
     }
     ///////////////////////////////////////////
     Text { text: "Окончание:";  Layout.alignment: Qt.AlignRight }
     Datepicker {
         property string name: 'endDate'
         enabled: changeable
-        text: !itemId ? '' : model[name] || ''
+        text: 0 < itemId && model[name] || ''
     }
     /*///////////////////////////////////////////
     Text { text: "Template:";  Layout.alignment: Qt.AlignRight }

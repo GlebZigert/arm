@@ -46,7 +46,7 @@ ColumnLayout {
             id: specDate
             upside: true
             enabled: changeable
-            text: tree.current ? (tree.current.date || '') : ''
+            text: tree.current && tree.current.date || ''
         }
         Button {
             enabled: changeable
@@ -77,7 +77,7 @@ ColumnLayout {
             id: timeStart
             enabled: changeable
             //inputMask: "99:99"
-            text: tree.current ? (tree.current.timeStart || '') : ''
+            text: tree.current && tree.current.timeStart || ''
             placeholderText: "Начало (ЧЧ:ММ)"
             inputMethodHints: Qt.ImhDigitsOnly
             validator: RegExpValidator { regExp: /^([01\s]?[0-9\s]|2[0-3\s]):(([0-5\s][0-9\s])|\d)$/ }
@@ -89,7 +89,7 @@ ColumnLayout {
             id: timeEnd
             enabled: changeable
             //inputMask: "99:99"
-            text: tree.current ? (tree.current.timeEnd || '') : ''
+            text: tree.current && tree.current.timeEnd || ''
             placeholderText: "Конец (ЧЧ:ММ)"
             inputMethodHints: Qt.ImhDigitsOnly
             validator: RegExpValidator { regExp: /^([01\s]?[0-9\s]|2[0-3\s]):(([0-5\s][0-9\s])|\d)$/ }
