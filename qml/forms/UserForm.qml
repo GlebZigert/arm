@@ -94,7 +94,7 @@ ColumnLayout {
             //Layout.alignment: Qt.AlignCenter
             Layout.fillWidth: true
             enabled: !asyncWait && form1.changeable
-            onClicked: messageBox.ask("Удалить пользователя?", function () {
+            onClicked: messageBox.ask('Удалить ' + (1 === model.type ? 'группу?' : 'пользователя?'), function () {
                 asyncWait = true
                 root.newTask(0, 'DeleteUser', itemId, null, fail)
             })
