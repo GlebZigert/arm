@@ -315,7 +315,7 @@ Flickable {
                 ToolTip.visible: hovered
                 onClicked: cardsCombo.remove()
             }
-            Button {
+            /*Button {
                 visible: cardsCombo.currentIndex >= 0 && cardsCombo.currentIndex !== cardsCombo.model.count - 1
                 implicitWidth: height
                 font.family: faFont.name
@@ -323,8 +323,8 @@ Flickable {
                 text: faFont.fa_address_card
                 ToolTip.text: "Печатать"
                 ToolTip.visible: hovered
-                //onClicked: imgmaker.printImage()
-            }
+                onClicked: imgmaker.printImage()
+            }*/
         }
 
         /////////////////////////////////////////////
