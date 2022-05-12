@@ -248,18 +248,19 @@ void Runner::free()
 
 }
 
-void Runner::capture()
+bool Runner::capture()
 {
 
     int res=(av_read_frame(pFormatCtx, packet));
    if(res<0){
-       qDebug()<<"lostConnection";
+       qDebug()<<"interrupt lostConnection";
    //    emit lost_connection(URL);
    //    emit finished();
 
        //close();
-       return;
+       return false;
    }
+   qDebug()<<"frame";
    int used=0;
    int got_frame=0;
    if (pAVCodecContext->codec_type == AVMEDIA_TYPE_VIDEO ||
@@ -319,6 +320,7 @@ void Runner::capture()
 
 //   av_packet_free(&packet);
    av_packet_unref(packet);
+   return true;
 }
 
 
@@ -350,7 +352,11 @@ while(m_running!=mode::turnOff){
 
    prev=clock();
 
-   capture();
+   if (!capture()){
+       emit lost_connection(URL);
+       emit  finished();
+       return;
+   }
 
  //  qDebug()<<"count "<<frame_cnt++;
 
