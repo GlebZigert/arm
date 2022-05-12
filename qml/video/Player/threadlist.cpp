@@ -26,7 +26,7 @@ startRunner();
 void threadList::startRunner()
 {
     if(isValid){
-        qDebug()<<".";
+    //    qDebug()<<".";
 
         stop();
         tmrStart->singleShot(delay,this,SLOT(start()));
@@ -53,7 +53,7 @@ void threadList::stop()
     mm->stop();
   //  qDebug()<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning();
     if(mm->runner->thread()->isFinished()){
-    qDebug()<<"2";
+   // qDebug()<<"2";
         if(mm)
         delete mm;
         isValid=false;
@@ -72,7 +72,7 @@ void threadList::receiveFrame(QString URL)
 void threadList::lostConnection(QString URL)
 {
 
-    qDebug()<<"lostConnection";
+  //  qDebug()<<"lostConnection";
     emit lost(URL);
     tmrStart->stop();
     delay=1000;

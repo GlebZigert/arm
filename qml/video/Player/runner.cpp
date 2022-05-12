@@ -4,7 +4,7 @@
 AVDictionary* options;
 Runner::Runner( QObject *parent) : QObject(parent)
 {
-    qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
+  //  qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     av_log_set_level(AV_LOG_QUIET);
 
 
@@ -22,7 +22,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
 
 Runner::Runner(AVPicture **data, int *h, int *w, QString URL, int mode, QObject *parent)
 {
-      qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
+    //  qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
     pAVFrame = NULL;
      pSwsContext = NULL;
@@ -38,15 +38,15 @@ Runner::Runner(AVPicture **data, int *h, int *w, QString URL, int mode, QObject 
     this->h=h;
     this->w=w;
 
-    qDebug()<<"runner mode: "<<mode;
+  //  qDebug()<<"runner mode: "<<mode;
 
 }
 
 Runner::~Runner()
 {
-    qDebug()<<"DELETE Runner "<<this->URL;
+  //  qDebug()<<"DELETE Runner "<<this->URL;
     close();
-    qDebug()<<"runner destroyed";
+  //  qDebug()<<"runner destroyed";
 
 }
 
@@ -85,7 +85,7 @@ void Runner::load()
 bool Runner::load_settings()
 {
 //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
-    qDebug()<<"URL: "<<URL;
+ //   qDebug()<<"URL: "<<URL;
     QByteArray ba = URL.toLatin1();
     char *c_str2 = ba.data();
     char *filepath = ba.data();
@@ -101,7 +101,7 @@ bool Runner::load_settings()
       //  emit lost_connection(URL);
 
 
-        qDebug()<<"FAIL with: avformat_open_input ";
+      //  qDebug()<<"FAIL with: avformat_open_input ";
 
         return false;
     }
@@ -112,7 +112,7 @@ bool Runner::load_settings()
     if (avformat_find_stream_info(pFormatCtx, NULL)<0){
     //    emit lost_connection(URL);
 
-        qDebug()<<"FAIL with: avformat_find_stream_info ";
+     //   qDebug()<<"FAIL with: avformat_find_stream_info ";
         return false;
     }
 
@@ -127,7 +127,7 @@ bool Runner::load_settings()
     if (videoindex == -1){
     //    emit lost_connection(URL);
 
-         qDebug()<<"FAIL with: videoindex ";
+   //      qDebug()<<"FAIL with: videoindex ";
         return false;
     }
 
@@ -164,7 +164,7 @@ bool Runner::load_settings()
     //    emit lost_connection(URL);
         emit finished();
         close();
-        qDebug()<<"FAIL with: avcodec_open2t";
+     //   qDebug()<<"FAIL with: avcodec_open2t";
         return false;
     }
 
@@ -182,7 +182,7 @@ void Runner::free_settings()
     //  if(packet->buf){
     /*
     if(packet){
-        qDebug()<<"av_packet_unref(packet);";
+        //qDebug()<<"av_packet_unref(packet);";
 
      av_packet_unref(packet);
     }
@@ -193,12 +193,12 @@ void Runner::free_settings()
 
 
       if(pAVPicture){
-          qDebug()<<"avpicture_free(pAVPicture);";
+          //qDebug()<<"avpicture_free(pAVPicture);";
       avpicture_free(pAVPicture);
       }
 
       if(pFormatCtx){
-          qDebug()<<"vformat_close_input(&pFormatCtx);";
+          //qDebug()<<"vformat_close_input(&pFormatCtx);";
       avformat_close_input(&pFormatCtx);
       avformat_free_context(pFormatCtx);
       }
@@ -206,41 +206,41 @@ void Runner::free_settings()
 
 
       if(options){
-  qDebug()<<"  av_dict_free(&options);";
+  //qDebug()<<"  av_dict_free(&options);";
           av_dict_free(&options);
       }
 
        if(param)   {
-      qDebug()<<"  avcodec_parameters_free(&param);";
+      //qDebug()<<"  avcodec_parameters_free(&param);";
       avcodec_parameters_free(&param);
        }
 
        if(pAVCodecContext){
-               qDebug()<<" avcodec_free_context(&pAVCodecContext);";
+               //qDebug()<<" avcodec_free_context(&pAVCodecContext);";
       avcodec_free_context(&pAVCodecContext);
        }
 
 }
-//  qDebug()<<" ";
+//  //qDebug()<<" ";
 void Runner::free()
 {
     if(packet){
-     qDebug()<<" av_free(packet); ";
+     //qDebug()<<" av_free(packet); ";
     av_free(packet);
     }
 
     if(pAVFrame){
-        qDebug()<<"av_frame_free(&pAVFrame); ";
+        //qDebug()<<"av_frame_free(&pAVFrame); ";
     av_frame_free(&pAVFrame);
     }
 
     if(pAVPicture){
-        qDebug()<<"av_free(pAVPicture); ";
+        //qDebug()<<"av_free(pAVPicture); ";
     av_free(pAVPicture);
     }
 
     if(pSwsContext){
-        qDebug()<<"sws_freeContext(pSwsContext); ";
+        //qDebug()<<"sws_freeContext(pSwsContext); ";
     sws_freeContext(pSwsContext);
     }
     //if(pAVCodecContext)
@@ -248,18 +248,19 @@ void Runner::free()
 
 }
 
-void Runner::capture()
+bool Runner::capture()
 {
 
     int res=(av_read_frame(pFormatCtx, packet));
    if(res<0){
-       qDebug()<<"lostConnection";
+       qDebug()<<"interrupt lostConnection";
    //    emit lost_connection(URL);
    //    emit finished();
 
        //close();
-       return;
+       return false;
    }
+
    int used=0;
    int got_frame=0;
    if (pAVCodecContext->codec_type == AVMEDIA_TYPE_VIDEO ||
@@ -319,12 +320,13 @@ void Runner::capture()
 
 //   av_packet_free(&packet);
    av_packet_unref(packet);
+   return true;
 }
 
 
 void Runner::run()
 {
-
+av_log_set_level(AV_LOG_QUIET);
 prev=clock();
 
 load();
@@ -350,13 +352,17 @@ while(m_running!=mode::turnOff){
 
    prev=clock();
 
-   capture();
+   if (!capture()){
+       emit lost_connection(URL);
+       emit  finished();
+       return;
+   }
 
  //  qDebug()<<"count "<<frame_cnt++;
 
 
 }
-qDebug()<<"finished";
+//qDebug()<<"finished";
 emit finished();
 
 return;

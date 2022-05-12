@@ -75,7 +75,7 @@ void load();
 bool load_settings();
 void free_settings();
 void free();
-void capture();
+bool capture();
 
     void close();
 
