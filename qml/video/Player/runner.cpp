@@ -260,7 +260,7 @@ bool Runner::capture()
        //close();
        return false;
    }
-   qDebug()<<"frame";
+
    int used=0;
    int got_frame=0;
    if (pAVCodecContext->codec_type == AVMEDIA_TYPE_VIDEO ||
