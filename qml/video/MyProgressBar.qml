@@ -72,17 +72,7 @@ Item {
             }
             if (msec<0)
                 msec=0;
-
-
-
-
-
-
-
-
         }
-
-
     }
 
     Timer {
@@ -554,17 +544,20 @@ color: "lightgray";
 }
 function increase()
 {
+    //console.log(slider.value," ",m_item.speed," ",slider.to)
+
     if((slider.value+m_item.speed)<slider.to)
     {
      slider.value=slider.value+m_item.speed
     }
     else
     {
+        //console.log("! slider.value+m_item.speed)<slider.to")
       var dt=new Date(calendar.selectedDate)
 
       var nextDay = new Date();
 
-      nextDay.setDate(dt.getDate() + (slider.value+m_item.speed-slider.to));
+      nextDay.setDate(dt.getDate() + 1);
 
       calendar.selectedDate=nextDay
 
@@ -787,7 +780,8 @@ function play_or_pause()
         m_item.play=true
 
         var dt=datetime(slider.value)
-
+        timer.prev_date=new Date().getTime()
+        timer.start()
         dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
 
