@@ -295,7 +295,7 @@ var res=0
 
         }
 
-        var howmutch=1440-(list.height/30)+1
+        var howmutch=1441-(list.height/30)+1
 
         slider.to=howmutch
 
