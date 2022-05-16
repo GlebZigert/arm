@@ -79,24 +79,48 @@ Row{
 
     }
 
+
+
  Rectangle{
         width: 250
         height: 98
 
-color: "#ffe4c4"
-    Text {
-        id: text
-        width: parent.width
-        height: 100
-        x:10
-        text: modelData.id
-        font.family: "Helvetica"
-        font.pointSize: 10
-        minimumPointSize: 10
-        fontSizeMode: Text.HorizontalFit
-        color: "black"
+         color: "#ffe4c4"
+
+     Column{
+
+        Text {
+            id: text
+            width: parent.width
+            height: 10
+            x:10
+            y:0
+            text: modelData.id
+            font.family: "Helvetica"
+            font.pointSize: 10
+            minimumPointSize: 10
+            fontSizeMode: Text.HorizontalFit
+            color: "black"
         }
+
+        Text {
+            id: ipadrfield
+            width: parent.width
+            height: 10
+            x:10
+            y:20
+            text: modelData.ipadress
+            font.family: "Helvetica"
+            font.pointSize: 10
+            minimumPointSize: 10
+            fontSizeMode: Text.HorizontalFit
+            color: "black"
         }
+   }
+
+
+}
+
 }
 
 function func(y){
@@ -162,6 +186,7 @@ function update_from_cameraList() {
          model.append({obj: {
                               id: root.cameraList.get(j).id ,
                               name: root.cameraList.get(j).name ,
+                              ipadress:  root.cameraList.get(j).ipadress ,
                               frash_snapshot:root.cameraList.get(j).frash_snapshot,
                           }
                       })
@@ -210,6 +235,7 @@ function go_to_page(page){
             container.page_model.append({obj:{
             preview_id:ind ,
             id: -1,
+            ipadress:  "" ,
             name: "" ,
             frash_snapshot:"",
             }})
@@ -241,9 +267,9 @@ function do_refresh(i){
     var x=model.get(ind)
     var y=container.page_model.get(i)
 
-    container.page_model.set(i,{obj:{"preview_id":i,"id":x.obj.id,"name":x.obj.name}})
+    container.page_model.set(i,{obj:{"preview_id":i,"ipadress":x.obj.ipadress,"id":x.obj.id,"name":x.obj.name}})
 
-    container.refresh({"obj":{"preview_id":i,"id":x.obj.id,"name":x.obj.name,"frash_snapshot":x.obj.frash_snapshot}})
+    container.refresh({"obj":{"preview_id":i,"ipadress":x.obj.ipadress,"id":x.obj.id,"name":x.obj.name,"frash_snapshot":x.obj.frash_snapshot}})
 }
 
 }
