@@ -645,7 +645,7 @@ var i
 
 Axxon.prototype.rebuildTree = function (data) {
 
-  //   console.log('Axxon',this.serviceId,': rebuild tree')
+
 
     var i,
     list = [],
@@ -685,7 +685,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
         for (i in data) {
 
-         //   console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," от сервера ",data[i].sid)
+          //  console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," ",data[i].ipadress," от сервера ",data[i].sid)
 
             var state =data[i].state
             var color="gray"
@@ -719,7 +719,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
                 {
 
-                    root.log("[УЖЕ ЕСТЬ]")
+                 //   root.log("[УЖЕ ЕСТЬ]")
                     res=false
 
                     root.cameraList.get(j).actual=true
@@ -731,7 +731,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
             }
             if(res){
-                console.log("ДОБАВЛЯЮ ", data[i].id)
+           //     console.log("ДОБАВЛЯЮ ", data[i].id)
 
                 root.cameraList.append(    {
                     sid: data[i].sid ,
@@ -752,6 +752,7 @@ Axxon.prototype.rebuildTree = function (data) {
                     liveStream:"",
                     storageStream: "",
                     snapshot: "",
+                    ipadress: data[i].ipadress
 
 
 
