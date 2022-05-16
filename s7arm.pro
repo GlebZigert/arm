@@ -45,7 +45,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
         qml/video/Preview/Preview.h
 }
 DISTFILES += \
-    qml/video/Player/no_signal.jpeg
+    qml/video/Player/no_signal.jpeg \
+    qml/video/no_in_storage.jpeg
 !win32 {
     LIBS +=  -lavformat -lswscale  -lavcodec -lavutil
 }

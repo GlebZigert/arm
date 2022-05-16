@@ -42,9 +42,14 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start()
 {
+    if(m_source==""){
+        img=QImage(":/qml/video/no_in_storage.jpeg");
+   this->update();
+    }else{
     list1->URL=m_source;
     list1->mode=mode::Streaming;
    list1->start();
+    }
 }
 
 void VideoPlayer::stop()
@@ -54,9 +59,14 @@ void VideoPlayer::stop()
 
 void VideoPlayer::shot()
 {
+    if(m_source==""){
+        img=QImage(":/qml/video/no_in_storage.jpeg");
+   this->update();
+    }else{
     list1->URL=m_source;
     list1->mode=mode::Snapshot;
    list1->start();
+    }
 }
 
 
