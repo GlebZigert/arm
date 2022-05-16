@@ -6,7 +6,7 @@ Preview::Preview(QQuickItem *parent) :
 {
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Preview::onTimer);
-    timer->start(5000);
+    timer->start(30000);
     connect(this, &Preview::widthChanged, this, &Preview::onWidthChanged);
     connect(this, &Preview::heightChanged, this, &Preview::onWidthChanged);
     manager = new QNetworkAccessManager();
