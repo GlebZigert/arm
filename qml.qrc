@@ -308,5 +308,6 @@
         <file>js/parus.js</file>
         <file>MySettings.qml</file>
         <file>qml/settings/BackupDB.qml</file>
+        <file>qml/settings/GetLog.qml</file>
     </qresource>
 </RCC>

@@ -16,6 +16,7 @@ Item {
     property bool adminMode: false
     property var forms: ({
         'backup-db': Qt.createComponent('qml/settings/BackupDB.qml'),
+        'get-log': Qt.createComponent('qml/settings/GetLog.qml'),
     })
     anchors.fill: parent
 
@@ -25,6 +26,7 @@ Item {
             id: 1, label: 'Настройки', expanded: true,
             children: [
               {id: 100, label: 'Архивация БД', form: 'backup-db'},
+              {id: 200, label: 'Журнал сервера', form: 'get-log'},
             ]
         })
     }
