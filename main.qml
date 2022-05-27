@@ -234,9 +234,9 @@ ApplicationWindow {
          onStatusChanged: if ([WebSocket.Error, WebSocket.Closed].indexOf(socket.status) >= 0) {
                               socket.active = false
                               if ('offline' !== menu.linkStatus) {
-                                  menu.linkStatus = 'offline'
-                                  if (currentUser)
-                                    messageBox.error("Связь с сервером потеряна, отображаемая информация может быть неактуальна.")
+                                    menu.linkStatus = 'offline'
+                                    if (currentUser && !stopped)
+                                        messageBox.error("Связь с сервером потеряна, отображаемая информация может быть неактуальна.")
                               }
                           } else if (socket.status === WebSocket.Open) {
                               menu.linkStatus = 'online'
