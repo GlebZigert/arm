@@ -180,12 +180,27 @@ var handlers = {
     },
 }
 
-function armCommands() {
+/*function armCommands() {
     var i,
         commands = ARM.commands[root.armRole]
     for (i = 0; i < commands.length; i++)
         socket.sendTextMessage('{"Service": 0, "Action": "' + commands[i] + '"}')
+}*/
+
+function armCommands() {
+    var i = 0,
+        commands = ARM.commands[root.armRole],
+        next = function () {
+            if (i < commands.length)
+                root.newTask(0, commands[i++], null, next, restart)
+        },
+        restart = function () {
+            socket.stopped = true
+            messageBox.error('Ошибка получения исходных данных,\nтребуется переподключение к серверу.', function() {socket.stopped = false})
+        }
+    next()
 }
+
 
 function newService(service) {
     //{"id":2,"type":"rif","title":"Риф ДЕМО","host":"127.0.0.1:1978","login":"","password":"","keepAlive":5,"dbHost":"192.168.0.1:3306","dbName":"","dbLogin":"","dbPassword":"","status":{"tcp":"online","db":""}}
