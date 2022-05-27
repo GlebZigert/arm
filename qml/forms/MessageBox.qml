@@ -4,28 +4,34 @@ import QtQuick.Dialogs 1.1
 MessageDialog {
     property var yesCb
     property var noCb
-    onAccepted: if (yesCb) yesCb()
-    onRejected: if (noCb) noCb()
+    onAccepted: {yesCb && yesCb(); reset()}
+    onRejected: {noCb && noCb(); reset()}
     //onYes: accepted()
     //onNo: rejected()
+
+    function reset() {
+        yesCb = noCb = null
+    }
 
     function show(ttl, txt) {
         title = ttl
         text = txt
-        yesCb = noCb = null
         standardButtons = StandardButton.Ok
         open()
     }
-    function error(txt) {
+    function error(txt, yesCallback) {
         icon = StandardIcon.Critical
+        yesCb = yesCallback
         show('Ошибка', txt)
     }
-    function warning(txt) {
+    function warning(txt, yesCallback) {
         icon = StandardIcon.Warning
+        yesCb = yesCallback
         show('Внимание', txt)
     }
-    function information(txt) {
+    function information(txt, yesCallback) {
         icon = StandardIcon.Information
+        yesCb = yesCallback
         show('Информация', txt)
     }
 
