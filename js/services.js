@@ -176,20 +176,12 @@ var handlers = {
             }*/
         }
 
-        armCommands()
+        runCommands(ARM.commands[root.armRole])
     },
 }
 
-/*function armCommands() {
-    var i,
-        commands = ARM.commands[root.armRole]
-    for (i = 0; i < commands.length; i++)
-        socket.sendTextMessage('{"Service": 0, "Action": "' + commands[i] + '"}')
-}*/
-
-function armCommands() {
+function runCommands(commands) {
     var i = 0,
-        commands = ARM.commands[root.armRole],
         next = function () {
             if (i < commands.length)
                 root.newTask(0, commands[i++], null, next, restart)
@@ -266,14 +258,14 @@ function reconnectUser(msg) {
 
 
     console.log("Reload user-affected data")
-    var reload = ["ListServices", "ListMaps", "ListZones"]
+    var commands = [],
+        reload = ["ListServices", "ListMaps", "ListZones"]
+
     for (i = 0; i < reload.length; i++)
         if (ARM.commands[root.armRole].indexOf(reload[i]) >= 0)
-            root.send(0, reload[i], "")
+            commands.push(reload[i])
 
-    /*for (i in services)
-        if ('reloadTree' in services[i])
-            services[i].reloadTree()*/
+    runCommands(commands)
 }
 
 function listServices(msg) {
