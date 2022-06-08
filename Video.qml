@@ -630,7 +630,6 @@ Rectangle {
            y:10
 
             minimumDate: new Date(2021, 01, 1)
-            maximumDate: new Date(2022, 05, 1)
             selectedDate: new Date()
             Drag.active: calendar_rect_area.drag.active
             Drag.hotSpot.x: 10
