@@ -309,5 +309,6 @@
         <file>MySettings.qml</file>
         <file>qml/settings/BackupDB.qml</file>
         <file>qml/settings/GetLog.qml</file>
+        <file>qml/forms/BadgePreview.qml</file>
     </qresource>
 </RCC>

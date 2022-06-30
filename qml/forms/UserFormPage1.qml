@@ -2,9 +2,6 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 
-//import io.qt.examples.imageMaker 1.0
-
-
 Flickable {
     clip: true
     contentHeight: form.height
@@ -14,7 +11,6 @@ Flickable {
     property var modelId: model.id
     onModelIdChanged: {
         fileDialog.reset()
-        //previewBadge()
     }
 
     property var roles: ([
@@ -315,7 +311,7 @@ Flickable {
                 ToolTip.visible: hovered
                 onClicked: cardsCombo.remove()
             }
-            /*Button {
+            Button {
                 visible: cardsCombo.currentIndex >= 0 && cardsCombo.currentIndex !== cardsCombo.model.count - 1
                 implicitWidth: height
                 font.family: faFont.name
@@ -323,20 +319,9 @@ Flickable {
                 text: faFont.fa_address_card
                 ToolTip.text: "Печатать"
                 ToolTip.visible: hovered
-                onClicked: imgmaker.printImage()
-            }*/
+                onClicked: badgePreview.open()
+            }
         }
-
-        /////////////////////////////////////////////
-        /*property bool showBadge: !newItem && !!fields['photo'] && Image.Ready === image.status
-        Text { text: "Бейдж"; visible: form.showBadge; Layout.alignment: Qt.AlignRight }
-        ImageMaker {
-            visible: form.showBadge
-            Layout.alignment: Qt.AlignRight
-            id: imgmaker
-            width: 290
-            height: 180
-        }*/
 
         ///////////////////////////////////////////
         Text { text: "Добавить"; visible: !!fields['add-children'] && itemId; Layout.alignment: Qt.AlignRight }
@@ -356,10 +341,6 @@ Flickable {
         Text { text: "ID:";  Layout.alignment: Qt.AlignRight }
         Text { text: itemId}*/
     }
-    /*function previewBadge() {
-        imgmaker.test()
-        var photo="http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id
-        imgmaker.take_photo_from_url_and_set_name_and_surename(photo, model['name'], model['surename']);
-    }*/
 
+    BadgePreview{id: badgePreview}
 }

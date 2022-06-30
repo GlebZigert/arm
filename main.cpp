@@ -4,6 +4,7 @@
 #include <QNetworkProxy>
 #include <QQuickWindow>
 #include "qml/video/Preview/Preview.h"
+#include "printer.h"
 
 #ifndef WIN32
 #include "qml/video/Player/videoplayer.h"
@@ -54,6 +55,11 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.rootContext()->setContextProperty("applicationDirPath", QGuiApplication::applicationDirPath());
+
+    // for printing
+    Printer *printer = new Printer;
+    engine.rootContext()->setContextProperty("printer", printer);
+
     engine.load(url);
 
     return app.exec();
