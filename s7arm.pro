@@ -14,7 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        main.cpp
+        main.cpp \
+        printer.cpp
 !win32 {
     SOURCES += \
             qml/video/Player/mythread.cpp \
@@ -50,3 +51,6 @@ DISTFILES += \
 !win32 {
     LIBS +=  -lavformat -lswscale  -lavcodec -lavutil
 }
+
+HEADERS += \
+    printer.h
