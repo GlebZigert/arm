@@ -32,7 +32,7 @@ ColumnLayout {
         "":       [],
         "rif":    ['title', 'host', 'keepAlive'],
         "axxon":  ['login','password','title', 'host'],
-        "z5rweb": ['title', 'keepAlive', 'url'],
+        "z5rweb": ['title', 'login', 'password', 'keepAlive', 'url'],
         "ipmon": ['title'],
         "parus": ['title'],
     }[type].reduce(function (a, v){a[v] = true; return a}, {}))
@@ -118,6 +118,8 @@ ColumnLayout {
             enabled: !!fields[name]
             visible: enabled
             text: model && model[name] || ''
+            validator: RegExpValidator { regExp: /\S{2,20}/ }
+            color: acceptableInput ? palette.text : "red"
         }
         ///////////////////////////////////////////
         Text { text: "Пароль:"; visible: !!fields['password'];  Layout.alignment: Qt.AlignRight }
@@ -128,6 +130,8 @@ ColumnLayout {
             visible: enabled
             text: model && model[name] || ''
             echoMode: TextInput.Password
+            validator: RegExpValidator { regExp: /.{4,20}/ }
+            color: acceptableInput ? palette.text : "red"
         }
         ///////////////////////////////////////////
         Text { text: "Интервал:"; visible: !!fields['keepAlive'];  Layout.alignment: Qt.AlignRight }
