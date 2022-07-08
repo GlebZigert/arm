@@ -6,7 +6,7 @@ import QtQuick.Dialogs 1.2
 import "../forms/helpers.js" as Helpers
 import "../forms" as Forms
 import "../../js/upload.js" as Upload
-import "../../js/crypto.js" as Crypto
+import "../../js/utils.js" as Utils
 
 ColumnLayout {
     id: form
@@ -43,11 +43,7 @@ ColumnLayout {
         }
 
     function getLog() {
-        var timestamp = Math.round(Date.now() / 1000, 0),
-            token = Crypto.md5(root.authSalt + timestamp),
-            url = 'http://' + serverHost + '/0/get-log?token=' + token
-        //var url = 'http://192.168.0.79:2973/0/get-log'
-        //console.log("TOKEN", timestamp, token)
+        var url = Utils.makeURL('get-log')
         Upload.readFile(url, function (arrayBuffer) {
             if (arrayBuffer)
                 saveLog(arrayBuffer)

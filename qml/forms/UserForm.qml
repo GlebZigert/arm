@@ -5,6 +5,7 @@ import QtQuick.Dialogs 1.1
 
 import "helpers.js" as Helpers
 import "../../js/upload.js" as Upload
+import "../../js/utils.js" as Utils
 
 import "../forms" as Forms
 
@@ -159,7 +160,7 @@ ColumnLayout {
     }
     function saveDone(filename) {
         console.log("UserForm upload:", filename)
-        var url = "http://" + serverHost + "/0/user?id=" + savedId;
+        var url = Utils.makeURL("user", {id: savedId});
         if (filename) { // upload user image
             Upload.readFile(filename, function (arrayBuffer) {
                 if (arrayBuffer)

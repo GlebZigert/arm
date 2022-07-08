@@ -2,6 +2,8 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 
+import "../../js/utils.js" as Utils
+
 Flickable {
     clip: true
     contentHeight: form.height
@@ -68,7 +70,9 @@ Flickable {
             clip: true
             cache: false
             fillMode: Image.PreserveAspectFit
-            source: !fields['photo'] ? '' : "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
+            source: !fields['photo'] ? '' : Utils.makeURL("user", {nocache: nocache, id: model.id});
+            //source: !fields['photo'] ? '' : "http://asdasdasd:bbbbbbbb@" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id;
+            //onSourceChanged: console.log("SRC:", source)
         }
 
         ///////////////////////////////////////////

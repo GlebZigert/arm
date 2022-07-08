@@ -1,4 +1,18 @@
 .import "constants.js" as Const
+.import "crypto.js" as Crypto
+
+function makeURL(endpoint, params) {
+    params = params || {}
+    var k,
+        list = [],
+        timestamp = Math.round(Date.now() / 1000, 0),
+        token = Crypto.md5(currentUser.token + timestamp)
+
+    for (k in params)
+        list.push(k + "=" + encodeURIComponent(params[k]))
+
+    return "http://" + currentUser.id + ":" + token + "@" + serverHost + "/0/" + endpoint + "?" + list.join('&')
+}
 
 function linksMap(arr) {
     return (arr || []).map(function (v){return {scope: v[0], id: v[1], flags: v[2]}})

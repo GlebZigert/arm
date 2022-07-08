@@ -307,7 +307,7 @@ Rectangle {
         // {"service":0,"action":"UpdateMap","task":2,"data":{"id":26,"type":"map","name":"gfhgfh","cx":0,"cy":0,"zoom":0,"shapes":[],"zoomLevel":3}}
         console.log("Map saveDone", JSON.stringify(msg))
         var i,
-            url = "http://" + serverHost + "/0/plan?id=" + msg.data.id;
+            url = Utils.makeURL("plan", {id: msg.data.id})//"http://" + serverHost + "/0/plan?id=" + msg.data.id;
 
         if (0 === currentMap.id) // it was a new map, remove draft
             for (i = root.maps.count-1; i >= 0; i--) {

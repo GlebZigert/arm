@@ -2,6 +2,8 @@ import QtQuick 2.11
 import QtQuick.Controls 2.11
 import QtQuick.Layouts 1.5
 
+import "../../js/utils.js" as Utils
+
 Popup {
     id: badgePreview
     modal: true
@@ -47,7 +49,7 @@ Popup {
                     verticalAlignment: Image.AlignTop
                     fillMode: Image.PreserveAspectFit
                     //source: "qrc:/images/user-solid.svg"
-                    source: "http://" + serverHost + "/0/user?nocache=" + (nocache || Date.now()) + "&id=" + model.id
+                    source: Utils.makeURL("user", {nocache: nocache || Date.now(), id: model.id});
                 }
 
                 ColumnLayout {

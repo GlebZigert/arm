@@ -49,7 +49,7 @@ Rectangle {
                 cache: false
                 fillMode: Image.PreserveAspectFit
                 //source: "qrc:/images/user-solid.svg"
-                source: "http://" + serverHost + "/0/user?nocache=" + nocache + "&id=" + model.id
+                source: Utils.makeURL("user", {nocache: nocache, id: model.id});
             }
 
             GridLayout {

@@ -6,152 +6,146 @@ import "helpers.js" as Helpers
 import "../../js/utils.js" as Utils
 import "../../js/journal.js" as Journal
 
-GridLayout {
-    id: form
+ColumnLayout {
     property int userId
     property bool asyncWait
-    columns: 2
-    //anchors.fill: parent
-    anchors.left: parent.left
-    anchors.right: parent.right
+    anchors.fill: parent
     anchors.margins: 5
 
-    /*Text {
-        anchors.margins: 10
-        text: "Фильтр событий"
-        font.pixelSize: 18
-        font.bold: true
-        Layout.columnSpan: 2
-    }*/
+    GridLayout {
+        id: form
+        columns: 2
 
-    ///////////////////////////////////////////
-    Text { text: "Подсистема:";  Layout.alignment: Qt.AlignRight }
+        ///////////////////////////////////////////
+        Text { text: "Подсистема:";  Layout.alignment: Qt.AlignRight }
 
-    RowLayout {
-        Layout.fillWidth: true
-        ComboBox {
-            id: typeCombo
-            implicitWidth: 200
-            property string name: 'serviceId'
-            property int fieldValue: -1
-            textRole: "label"
-            model: root.devices.get(0).children
+        RowLayout {
             Layout.fillWidth: true
-            onCurrentIndexChanged: fieldValue = currentIndex < 0 ? -1 : model.get(currentIndex).scopeId
-        }
-        Button {
-            width: height
-            implicitWidth: height
-            font.family: faFont.name
-            text: faFont.fa_times
-            font.pixelSize: 18
-            ToolTip.text: "Очистить"
-            ToolTip.visible: hovered
-            onClicked: typeCombo.currentIndex = -1
-        }
-    }
-    ///////////////////////////////////////////
-    Text { text: "Пользователь";  Layout.alignment: Qt.AlignRight }
-    RowLayout {
-        Layout.fillWidth: true
-        TextField {
-            id: userField
-            Layout.fillWidth: true
-            readOnly: true
-            onPressed: userSelector.display(userId, selected)
-            function selected(item) {
-                //console.log("Selected user:", item.name, item.id)
-                if (item && item.id) {
-                    userId = item.id
-                    text = item.label
-                } else {
-                    userId = 0
-                    text = ''
-                }
+            ComboBox {
+                id: typeCombo
+                implicitWidth: 200
+                property string name: 'serviceId'
+                property int fieldValue: -1
+                textRole: "label"
+                model: root.devices.get(0).children
+                Layout.fillWidth: true
+                onCurrentIndexChanged: fieldValue = currentIndex < 0 ? -1 : model.get(currentIndex).scopeId
+            }
+            Button {
+                width: height
+                implicitWidth: height
+                font.family: faFont.name
+                text: faFont.fa_times
+                font.pixelSize: 18
+                ToolTip.text: "Очистить"
+                ToolTip.visible: hovered
+                onClicked: typeCombo.currentIndex = -1
             }
         }
-        Button {
-            width: height
-            implicitWidth: height
-            font.family: faFont.name
-            text: faFont.fa_times
-            font.pixelSize: 18
-            ToolTip.text: "Очистить"
-            ToolTip.visible: hovered
-            onClicked: {userField.selected(null)}
+        ///////////////////////////////////////////
+        Text { text: "Пользователь";  Layout.alignment: Qt.AlignRight }
+        RowLayout {
+            Layout.fillWidth: true
+            TextField {
+                id: userField
+                Layout.fillWidth: true
+                readOnly: true
+                onPressed: userSelector.display(userId, selected)
+                function selected(item) {
+                    //console.log("Selected user:", item.name, item.id)
+                    if (item && item.id) {
+                        userId = item.id
+                        text = item.label
+                    } else {
+                        userId = 0
+                        text = ''
+                    }
+                }
+            }
+            Button {
+                width: height
+                implicitWidth: height
+                font.family: faFont.name
+                text: faFont.fa_times
+                font.pixelSize: 18
+                ToolTip.text: "Очистить"
+                ToolTip.visible: hovered
+                onClicked: {userField.selected(null)}
+            }
         }
-    }
-    ///////////////////////////////////////////
-    Text { text: "События";  Layout.alignment: Qt.AlignRight }
-    GridLayout {
-        //id: eventClass
-        property int fieldValue: 63
-        property string name: 'class'
-        columns: 1
-        Layout.fillWidth: true
-        CheckBox {text: "Информация"; checked: true; onCheckedChanged: parent.setBit(1, checked)}
-        CheckBox {text: "Норма"; checked: true; onCheckedChanged: parent.setBit(2, checked)}
-        CheckBox {text: "Неисправность"; checked: true; onCheckedChanged: parent.setBit(3, checked)}
-        CheckBox {text: "Потеря связи"; checked: true; onCheckedChanged: parent.setBit(4, checked)}
-        CheckBox {text: "Тревога"; checked: true; onCheckedChanged: parent.setBit(5, checked)}
-        CheckBox {text: "Прочее"; checked: true; onCheckedChanged: parent.setBit(0, checked)}
-        function setBit(bit, checked) {
-            if (checked)
-                fieldValue |= 1 << bit
-            else
-                fieldValue ^= 1 << bit
-        }
+        ///////////////////////////////////////////
+        Text { text: "События";  Layout.alignment: Qt.AlignRight }
+        GridLayout {
+            //id: eventClass
+            property int fieldValue: 63
+            property string name: 'class'
+            columns: 1
+            Layout.fillWidth: true
+            CheckBox {text: "Информация"; checked: true; onCheckedChanged: parent.setBit(1, checked)}
+            CheckBox {text: "Норма"; checked: true; onCheckedChanged: parent.setBit(2, checked)}
+            CheckBox {text: "Неисправность"; checked: true; onCheckedChanged: parent.setBit(3, checked)}
+            CheckBox {text: "Потеря связи"; checked: true; onCheckedChanged: parent.setBit(4, checked)}
+            CheckBox {text: "Тревога"; checked: true; onCheckedChanged: parent.setBit(5, checked)}
+            CheckBox {text: "Прочее"; checked: true; onCheckedChanged: parent.setBit(0, checked)}
+            function setBit(bit, checked) {
+                if (checked)
+                    fieldValue |= 1 << bit
+                else
+                    fieldValue ^= 1 << bit
+            }
 
-    }
-    ///////////////////////////////////////////
-    Text { text: "Начало:";  Layout.alignment: Qt.AlignRight }
-    RowLayout {
-        Layout.fillWidth: true
-        TextField {
-            property string name: 'startTime'
-            implicitWidth: 60
-            placeholderText: "00:00"
-            text: placeholderText
-            validator: RegExpValidator { regExp: /^[012]?\d:\d\d$/ }
-            color: acceptableInput ? palette.text : "red"
         }
-        Datepicker {
-            property string name: 'startDate'
-            text: Qt.formatDate(new Date(), "dd.MM.yyyy")
+        ///////////////////////////////////////////
+        Text { text: "Начало:";  Layout.alignment: Qt.AlignRight }
+        RowLayout {
+            Layout.fillWidth: true
+            TextField {
+                property string name: 'startTime'
+                implicitWidth: 60
+                placeholderText: "00:00"
+                text: placeholderText
+                validator: RegExpValidator { regExp: /^[012]?\d:\d\d$/ }
+                color: acceptableInput ? palette.text : "red"
+            }
+            Datepicker {
+                property string name: 'startDate'
+                text: Qt.formatDate(new Date(), "dd.MM.yyyy")
+            }
         }
-    }
-    ///////////////////////////////////////////
-    Text { text: "Окончание:";  Layout.alignment: Qt.AlignRight }
-    RowLayout {
-        Layout.fillWidth: true
-        TextField {
-            property string name: 'endTime'
-            implicitWidth: 60
-            placeholderText: "23:59"
-            text: placeholderText
-            validator: RegExpValidator { regExp: /^[012]?\d:\d\d$/ }
-            color: acceptableInput ? palette.text : "red"
+        ///////////////////////////////////////////
+        Text { text: "Окончание:";  Layout.alignment: Qt.AlignRight }
+        RowLayout {
+            Layout.fillWidth: true
+            TextField {
+                property string name: 'endTime'
+                implicitWidth: 60
+                placeholderText: "23:59"
+                text: placeholderText
+                validator: RegExpValidator { regExp: /^[012]?\d:\d\d$/ }
+                color: acceptableInput ? palette.text : "red"
+            }
+            Datepicker {
+                property string name: 'endDate'
+                text: Qt.formatDate(new Date(), "dd.MM.yyyy")
+            }
         }
-        Datepicker {
-            property string name: 'endDate'
-            text: Qt.formatDate(new Date(), "dd.MM.yyyy")
+        ///////////////////////////////////////////
+        Text { text: "Число строк:";  Layout.alignment: Qt.AlignRight }
+        ComboBox {
+            property string name: 'limit'
+            property int fieldValue: model[currentIndex]
+            //textRole: "label"
+            currentIndex: 0
+            model: [100, 200, 500, 1000]
+            Layout.fillWidth: true
+            onCurrentIndexChanged: fieldValue = model[currentIndex]
         }
-    }
-    ///////////////////////////////////////////
-    Text { text: "Число строк:";  Layout.alignment: Qt.AlignRight }
-    ComboBox {
-        property string name: 'limit'
-        property int fieldValue: model[currentIndex]
-        //textRole: "label"
-        currentIndex: 0
-        model: [100, 200, 500, 1000]
-        Layout.fillWidth: true
-        onCurrentIndexChanged: fieldValue = model[currentIndex]
     }
 
+    Item {Layout.fillHeight: true}
 
     RowLayout {
-        Layout.columnSpan: 2
+        //Layout.columnSpan: 2
         Layout.fillWidth: true
         //Layout.preferredHeight: 30
 
@@ -171,7 +165,7 @@ GridLayout {
         }
         function printLog() {
             var url,
-                key, query = [],
+                key,
                 payload = {}
             if (!Helpers.readForm(form, payload))
                 return
@@ -180,11 +174,9 @@ GridLayout {
             payload.start = makeDate(payload.startDate, payload.startTime + ':00')
             payload.end = makeDate(payload.endDate, payload.endTime + ':59')
             'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-            console.log("EventFilter PRINT", JSON.stringify(payload))
-            for (key in payload)
-                query.push(key + "=" + encodeURIComponent(payload[key]))
+            //console.log("EventFilter PRINT", JSON.stringify(payload))
 
-            url = "http://" + serverHost + "/0/journal?" + query.join('&')
+            url = Utils.makeURL("journal", payload);
             //console.log("URL:", url)
             Qt.openUrlExternally(url);
         }

@@ -2,6 +2,7 @@ import QtQuick 2.11
 
 import QtQuick.Controls 2.4
 
+import "../../js/utils.js" as Utils
 
 /*ScrollView {
     width: 200
@@ -61,7 +62,8 @@ Flickable {
     Image {
         id: image
         cache: false
-        source: currentMap && 'plan' === currentMap.type ? "http://" + serverHost + "/0/plan?id=" + currentMap.id + '&ac=' + anticache : ''
+        //source: currentMap && 'plan' === currentMap.type ? "http://" + serverHost + "/0/plan?id=" + currentMap.id + '&ac=' + anticache : ''
+        source: currentMap && 'plan' === currentMap.type ? Utils.makeURL("plan", {id: currentMap.id, ac: anticache}) : ''
         //anchors.fill: parent
         //fillMode: Image.PreserveAspectFit
         width: sourceSize.width * planScale
