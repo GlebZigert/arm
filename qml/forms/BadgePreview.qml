@@ -25,6 +25,7 @@ Popup {
             border.width: 1
             border.color: "gray"
             Row {
+                padding: 0.1 * dpi
                 width: 3.375 * dpi
                 height: 2.125 * dpi
                 spacing: 15
