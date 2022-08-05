@@ -17,6 +17,7 @@ Item {
     property var forms: ({
         'backup-db': Qt.createComponent('qml/settings/BackupDB.qml'),
         'get-log': Qt.createComponent('qml/settings/GetLog.qml'),
+        'make-badge': Qt.createComponent('qml/settings/MakeBadge.qml'),
     })
     anchors.fill: parent
 
@@ -27,6 +28,7 @@ Item {
             children: [
               {id: 100, label: 'Архивация БД', form: 'backup-db'},
               {id: 200, label: 'Журнал сервера', form: 'get-log'},
+              {id: 300, label: 'Макет карты доступа', form: 'make-badge'},
             ]
         })
     }

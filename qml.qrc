@@ -310,5 +310,6 @@
         <file>qml/settings/BackupDB.qml</file>
         <file>qml/settings/GetLog.qml</file>
         <file>qml/forms/BadgePreview.qml</file>
+        <file>qml/settings/MakeBadge.qml</file>
     </qresource>
 </RCC>
