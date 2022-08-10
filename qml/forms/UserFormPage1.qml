@@ -245,8 +245,20 @@ Flickable {
                 Layout.fillWidth: true
                 textRole: "card"
                 //text: newItem ? '' : model[name] || ''
-                //validator: RegExpValidator { regExp: /[0-9a-f]{6,12}/i }
-                validator: RegExpValidator { regExp: /((\d{1,3},\d{1,5}|\d{1,6}) )?\d{1,3},\d{1,5}/i }
+                //validator: RegExpValidator { regExp: /((\d{1,3},\d{1,5}|\d{1,6}) )?\d{1,3},\d{1,5}/i }
+                property var variants: [
+                    '[a-f0-9]{6,14}|\\d{1,3},\\d{1,5}', // only card
+                    '\\d{1,6} [a-f0-9]{6,14}', // hex-card with pin
+                    '\\d{1,6} \\d{1,3},\\d{1,5}', // em-card with pin
+                    // dual card variants
+                    '[a-f0-9]{6,14} [a-f0-9]{6,14}',
+                    '[a-f0-9]{6,14} \\d{1,3},\\d{1,5}',
+                    '\\d{1,3},\\d{1,5} [a-f0-9]{6,14}',
+                    '\\d{1,3},\\d{1,5} \\d{1,3},\\d{1,5}',
+                    //'(([a-f0-9]{6,14}|\\d{1,3},\\d{1,5}|\\d{1,6}) )?[a-f0-9]{6,14}|\\d{1,3},\\d{1,5}',
+                    //'[0-9A-F]{14,14}'
+                ]
+                validator: RegExpValidator { regExp: new RegExp("(" + cardsCombo.variants.join(')|(') + ")", "i") }
                 model: parent.cardsList
                 onCurrentIndexChanged: {
                     if (currentIndex >= 0)
@@ -277,7 +289,7 @@ Flickable {
 
                 function apply() {
                     if (acceptableInput) {
-                        var txt = editText
+                        var txt = reFormat(editText)
                         editable = false
                         //model.insert(0, {card: txt}) // BUG: leaves blank item in combobox
                         //currentIndex = model.
@@ -285,6 +297,27 @@ Flickable {
                         model.setProperty(currentIndex, 'card', txt)
                         calcValue()
                     }
+                }
+
+                function reFormat(text) {
+                    var pp,
+                        p = text.split(' ')
+                    for (var i = 0; i < p.length; i++)
+                        if (p[i].indexOf(',') < 0)
+                            p[i] = p[i].substring(p[i].length - 6).toUpperCase()
+                        else {
+                            pp = p[i].split(',')
+                            p[i] = padLeft(pp[0], '0', 3) + ',' + padLeft(pp[1], '0', 5)
+                        }
+
+
+                    return p.join(' ')
+                }
+
+                function padLeft(str, c, l) {
+                    for (var i = l - str.length; i > 0; i--)
+                        str = c + str
+                    return str
                 }
 
                 function remove() {
