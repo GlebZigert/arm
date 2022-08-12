@@ -240,24 +240,26 @@ Flickable {
                 property var fieldValue
                 property int lastIndex: -1
                 property bool showIt: !!fields[name]
+                property var variants: [
+                    // TODO: use # prefix (e.g. #CE16B8) for hex numbers?
+                    '\\d{8,17}|\\d{1,3},\\d{1,5}', // only card, any format
+                    '\\d{1,6} \\d{8,17}', // dec-card with pin
+                    '\\d{1,6} \\d{1,3},\\d{1,5}', // em-card with pin
+                    // dual dec-card variants
+                    '\\d{8,17} \\d{8,17}',
+                    '\\d{8,17} \\d{1,3},\\d{1,5}',
+                    '\\d{1,3},\\d{1,5} \\d{8,17}',
+                    '\\d{1,3},\\d{1,5} \\d{1,3},\\d{1,5}',
+                    //'(([a-f0-9]{6,14}|\\d{1,3},\\d{1,5}|\\d{1,6}) )?[a-f0-9]{6,14}|\\d{1,3},\\d{1,5}',
+                    //'[0-9A-F]{14,14}'
+                ]
                 enabled: showIt
                 visible: showIt
                 Layout.fillWidth: true
                 textRole: "card"
                 //text: newItem ? '' : model[name] || ''
                 //validator: RegExpValidator { regExp: /((\d{1,3},\d{1,5}|\d{1,6}) )?\d{1,3},\d{1,5}/i }
-                property var variants: [
-                    '[a-f0-9]{6,14}|\\d{1,3},\\d{1,5}', // only card
-                    '\\d{1,6} [a-f0-9]{6,14}', // hex-card with pin
-                    '\\d{1,6} \\d{1,3},\\d{1,5}', // em-card with pin
-                    // dual card variants
-                    '[a-f0-9]{6,14} [a-f0-9]{6,14}',
-                    '[a-f0-9]{6,14} \\d{1,3},\\d{1,5}',
-                    '\\d{1,3},\\d{1,5} [a-f0-9]{6,14}',
-                    '\\d{1,3},\\d{1,5} \\d{1,3},\\d{1,5}',
-                    //'(([a-f0-9]{6,14}|\\d{1,3},\\d{1,5}|\\d{1,6}) )?[a-f0-9]{6,14}|\\d{1,3},\\d{1,5}',
-                    //'[0-9A-F]{14,14}'
-                ]
+                inputMethodHints: Qt.ImhNoPredictiveText
                 validator: RegExpValidator { regExp: new RegExp("(" + cardsCombo.variants.join(')|(') + ")", "i") }
                 model: parent.cardsList
                 onCurrentIndexChanged: {
@@ -266,6 +268,7 @@ Flickable {
 
                     if (model && model.count > 0 && currentIndex === model.count - 1) {
                         editable = true
+                        //focus = true TODO IT
                         Qt.callLater(function (){editText = ''})
                     } else
                         editable = false
@@ -277,6 +280,7 @@ Flickable {
                     currentIndex = model && model.count > 1 ? 0 : -1
                     calcValue()
                 }
+                onAccepted: apply()
 
                 function calcValue() {
                     var i, value = []
@@ -289,7 +293,7 @@ Flickable {
 
                 function apply() {
                     if (acceptableInput) {
-                        var txt = reFormat(editText)
+                        var txt = editText
                         editable = false
                         //model.insert(0, {card: txt}) // BUG: leaves blank item in combobox
                         //currentIndex = model.
@@ -297,27 +301,6 @@ Flickable {
                         model.setProperty(currentIndex, 'card', txt)
                         calcValue()
                     }
-                }
-
-                function reFormat(text) {
-                    var pp,
-                        p = text.split(' ')
-                    for (var i = 0; i < p.length; i++)
-                        if (p[i].indexOf(',') < 0)
-                            p[i] = p[i].substring(p[i].length - 6).toUpperCase()
-                        else {
-                            pp = p[i].split(',')
-                            p[i] = padLeft(pp[0], '0', 3) + ',' + padLeft(pp[1], '0', 5)
-                        }
-
-
-                    return p.join(' ')
-                }
-
-                function padLeft(str, c, l) {
-                    for (var i = l - str.length; i > 0; i--)
-                        str = c + str
-                    return str
                 }
 
                 function remove() {
