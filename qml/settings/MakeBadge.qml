@@ -107,7 +107,7 @@ ColumnLayout {
                         background: Rectangle {color: model.background}
                         MouseArea {
                             anchors.fill: parent
-                            onReleased: badgeText.savePosition() // minor changes, drag not started
+                            onReleased: badgeText.savePosition() // minor movement, drag is not recognized automatically
                             onPressed: {
                                 badgeText.ox = cx < 0 ? cx : cx + width <= badgeText.width ? 0 : cx + width - badgeText.width
                                 badgeText.oy = cy < 0 ? cy : cy + height <= badgeText.height ? 0 : cy + height - badgeText.height
@@ -148,14 +148,20 @@ ColumnLayout {
             ComboBox {
                 id: labelContent
                 model: ['Текст', 'Фамилия', 'Имя', 'Отчество', 'Звание', 'Организация', 'Должность']
+                // currentIndex is updated first, text is updated after
+                onCurrentTextChanged: 'Текст' !== currentText && setProperty('text',  '=' + currentText)
+                currentIndex: {
+                    var i, txt = getProperty('text', '')
+                    return '=' !== txt[0] || (i = model.indexOf(txt.substring(1))) < 0 ? 0 : i
+                }
             }
 
             TextField {
                 enabled: 0 === labelContent.currentIndex
                 //id: spacing
                 Layout.fillWidth: true
-                text: getProperty('text', '')
-                onTextChanged: setProperty('text', text)
+                text: enabled ? getProperty('text', 'Текст') : ''
+                onTextChanged: text.length && setProperty('text', text)
                 Layout.preferredWidth: 70
             }
         }
@@ -276,7 +282,7 @@ ColumnLayout {
             text: faFont.fa_plus
             ToolTip {text: "Добавить надпись"; visible: parent.hovered}
             onClicked: {
-                list.append({text: 'Надпись', x: .5, y: .5, color: 'black', background: 'transparent', font: 14, style: 0, align: 0, width: 0, padding: 0})
+                list.append({text: 'Текст', x: .5, y: .5, color: 'black', background: 'transparent', font: 14, style: 0, align: 0, width: 0, padding: 0})
                 currentLabel = list.count - 1
             }
         }
