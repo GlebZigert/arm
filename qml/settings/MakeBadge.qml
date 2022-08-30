@@ -288,8 +288,9 @@ ColumnLayout {
             text: faFont.fa_trash
             ToolTip {text: "Удалить надпись"; visible: parent.hovered}
             onClicked: {
-                list.remove(currentLabel, 1)
+                Qt.callLater(list.remove, currentLabel)
                 currentLabel = -1
+
             }
         }
     }
