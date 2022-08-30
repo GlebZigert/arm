@@ -79,4 +79,8 @@ FontLoader {
     readonly property string fa_paint_roller                        : "\uf5aa"
     readonly property string fa_paintbrush                          : "\uf1fc"
     readonly property string fa_pen                                 : "\uf304"
+
+    readonly property string fa_underline                           : "\uf0cd"
+    readonly property string fa_italic                              : "\uf033"
+    readonly property string fa_bold                                : "\uf032"
 }
