@@ -1,9 +1,9 @@
-
 import QtQuick 2.12
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.0
 
+import "../../js/utils.js" as Utils
 import "../forms/helpers.js" as Helpers
 import "../forms" as Forms
 
@@ -11,22 +11,23 @@ ColumnLayout {
     id: form
     property bool asyncWait
     property int currentLabel: -1
-    property var currentLabelItem: currentLabel < 0 ? null : list.get(currentLabel)
-    //onCurrentLabelChanged: currentLabelItem = currentLabel < 0 ? null : list.get(currentLabel)
+    property var currentLabelItem: currentLabel < 0 ? null : badgeItem.labels.get(currentLabel)
+    //onCurrentLabelChanged: currentLabelItem = currentLabel < 0 ? null : badgeItem.get(currentLabel)
+    property var badgeItem: root.badges.get(0)
 
-    anchors.fill: parent
-
-    ListModel {
-        id: list
-        Component.onCompleted: append([
+    /*ListModel {
+        id: list0
+        Component.onCompleted: append([{name: "Main", photoSize: 50, labels: [
             {text: 'Фамилия', x: .5, y: 0, color: 'black', background: 'yellow', font: 14, style: 0, align: 0, width: .5, padding: 5},
             {text: 'Имя', x: .5, y: .15, color: 'black', background: 'yellow', font: 14, style: 1, align: 2, width: .5, padding: 5},
             {text: 'Отчество', x: .3, y: .3, color: 'black', background: 'yellow', font: 14, style: 2, align: 0, width: .3, padding: 5},
             {text: 'Звание', x: .1, y: .45, color: 'black', background: 'yellow', font: 14, style: 3, align: 0, width: 0, padding: 5},
             {text: 'Организация', x: .5, y: .6, color: 'black', background: 'yellow', font: 14, style: 4, align: 1, width: .5, padding: 5},
             {text: 'Должность', x: 0, y: .75, color: 'black', background: 'yellow', font: 14, style: 7, align: 0, width: 0, padding: 5}
-        ])
-    }
+        ]}])
+    }*/
+
+    anchors.fill: parent
 
     Text { text: model.label; font.pixelSize: 14; font.bold: true }
     Rectangle {Layout.fillWidth: true; height: 2; color: "gray"}
@@ -84,7 +85,7 @@ ColumnLayout {
                 }
 
                 Repeater {
-                    model: list
+                    model: badgeItem.labels
                     delegate: Label {
                         property real dx: index !== currentLabel ? 0 : parent.dx
                         property real dy: index !== currentLabel ? 0 : parent.dy
@@ -127,6 +128,8 @@ ColumnLayout {
         ComboBox {
             id: orientation
             property bool landscape: 0 === currentIndex
+            currentIndex: badgeItem.landscape ? 0 : 1
+            onCurrentIndexChanged: badgeItem.landscape = 0 === currentIndex
             Layout.fillWidth: true
             model: ['Горизонтальная', 'Вертикальная']
         }
@@ -138,8 +141,8 @@ ColumnLayout {
             from: 20
             to: 100
             stepSize: 1
-            //value: getProperty('padding', from)
-            //onValueChanged: setProperty('padding', value)
+            value: badgeItem.photoSize
+            onValueChanged: badgeItem.photoSize = value
         }
 
         ///////////////////////////////////////////
@@ -282,8 +285,8 @@ ColumnLayout {
             text: faFont.fa_plus
             ToolTip {text: "Добавить надпись"; visible: parent.hovered}
             onClicked: {
-                list.append({text: 'Текст', x: .5, y: .5, color: 'black', background: 'transparent', font: 14, style: 0, align: 0, width: 0, padding: 0})
-                currentLabel = list.count - 1
+                badgeItem.labels.append({text: 'Текст', x: .5, y: .5, color: 'black', background: 'transparent', font: 14, style: 0, align: 0, width: 0, padding: 0})
+                currentLabel = badgeItem.labels.count - 1
             }
         }
 
@@ -294,7 +297,7 @@ ColumnLayout {
             text: faFont.fa_trash
             ToolTip {text: "Удалить надпись"; visible: parent.hovered}
             onClicked: {
-                Qt.callLater(list.remove, currentLabel)
+                Qt.callLater(badgeItem.labels.remove, currentLabel)
                 currentLabel = -1
 
             }
@@ -311,7 +314,7 @@ ColumnLayout {
             text: "Сохранить макет"
             enabled: !asyncWait
             Layout.fillWidth: true
-            onClicked: root.newTask(0, 'SaveBadge', null, backupDone, fail)
+            onClicked: saveBadge()
         }
     }
     Forms.MessageBox {id: messageBox}
@@ -334,19 +337,21 @@ ColumnLayout {
     function setProperty(name, value) {
         //console.log("SP:", name, value)
         if (currentLabel >= 0)
-            list.setProperty(currentLabel, name, value)
+            badgeItem.labels.setProperty(currentLabel, name, value)
     }
 
     function getProperty(name, dflt) {
         return currentLabelItem ? currentLabelItem[name] : dflt
     }
 
-    function backupDone() {
-        asyncWait = false
-        messageBox.information("Создание резервной копии запущено")
+    function saveBadge() {
+        var s = JSON.stringify({'badges': Utils.toObject(root.badges)})
+        asyncWait = true
+        root.newTask(0, 'SaveSettings', s, done, fail)
     }
 
-    function restoreDone() {
+
+    function done() {
         asyncWait = false
     }
 
