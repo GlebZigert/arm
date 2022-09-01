@@ -11,9 +11,11 @@ ColumnLayout {
     id: form
     property bool asyncWait
     property int currentLabel: -1
-    property var currentLabelItem: currentLabel < 0 ? null : badgeItem.labels.get(currentLabel)
+    property var currentLabelItem: null === badgeItem || currentLabel < 0 ? null : badgeItem.labels.get(currentLabel)
     //onCurrentLabelChanged: currentLabelItem = currentLabel < 0 ? null : badgeItem.get(currentLabel)
-    property var badgeItem: root.badges.get(0)
+    property var badgeItem: root.badges.count > 0 ? root.badges.get(0) : null
+    //onBadgeItemChanged: console.log("==========================CHG", badgeItem)
+    //onRbChanged: console.log("!!!!!!!==========================CHG")
 
     /*ListModel {
         id: list0
@@ -63,8 +65,8 @@ ColumnLayout {
                 property real oy
 
                 function savePosition() {
-                    setProperty('x', currentLabelItem.x + dx / width)
-                    setProperty('y', currentLabelItem.y + dy / height)
+                    setProperty('x', Math.round(1e4 * (currentLabelItem.x + dx / width)) / 1e4)
+                    setProperty('y', Math.round(1e4 * (currentLabelItem.y + dy / height)) / 1e4)
                     ox = oy = dx = dy = 0
                 }
 
@@ -85,7 +87,7 @@ ColumnLayout {
                 }
 
                 Repeater {
-                    model: badgeItem.labels
+                    model: badgeItem && badgeItem.labels || []
                     delegate: Label {
                         property real dx: index !== currentLabel ? 0 : parent.dx
                         property real dy: index !== currentLabel ? 0 : parent.dy
@@ -128,8 +130,8 @@ ColumnLayout {
         ComboBox {
             id: orientation
             property bool landscape: 0 === currentIndex
-            currentIndex: badgeItem.landscape ? 0 : 1
-            onCurrentIndexChanged: badgeItem.landscape = 0 === currentIndex
+            currentIndex: badgeItem && badgeItem.landscape ? 0 : 1
+            onCurrentIndexChanged: if (badgeItem) badgeItem.landscape = 0 === currentIndex
             Layout.fillWidth: true
             model: ['Горизонтальная', 'Вертикальная']
         }
@@ -141,8 +143,8 @@ ColumnLayout {
             from: 20
             to: 100
             stepSize: 1
-            value: badgeItem.photoSize
-            onValueChanged: badgeItem.photoSize = value
+            value: badgeItem && badgeItem.photoSize || from
+            onValueChanged: if (badgeItem) badgeItem.photoSize = value
         }
 
         ///////////////////////////////////////////
@@ -336,7 +338,7 @@ ColumnLayout {
 
     function setProperty(name, value) {
         //console.log("SP:", name, value)
-        if (currentLabel >= 0)
+        if (currentLabelItem)
             badgeItem.labels.setProperty(currentLabel, name, value)
     }
 
@@ -345,9 +347,9 @@ ColumnLayout {
     }
 
     function saveBadge() {
-        var s = JSON.stringify({'badges': Utils.toObject(root.badges)})
+        var s = {name: 'badges', value: JSON.stringify(Utils.toObject(root.badges))}
         asyncWait = true
-        root.newTask(0, 'SaveSettings', s, done, fail)
+        root.newTask(0, 'UpdateSettings', s, done, fail)
     }
 
 

@@ -71,6 +71,11 @@ var handlers = {
     LoadJournal: Journal.loadJournal,
     DescribeEvent: Journal.describeEvent,
     ////////////////////////////////////////////////////////
+    /////////////////// S E T T I N G S ////////////////////
+    ////////////////////////////////////////////////////////
+    UpdateSettings: updateSettings,
+    ListSettings: listSettings,
+    ////////////////////////////////////////////////////////
     ////////////////////// A L G O S ///////////////////////
     ////////////////////////////////////////////////////////
     ListAlgorithms: Algorithms,
@@ -314,5 +319,26 @@ function scanEvents(events) {
     }
     if (eventList.length > 0) {
         Journal.logEvents(eventList)
+    }
+}
+
+// Settings
+// TODO: move it to separate file
+
+function updateSettings(msg) {
+    applySettings(msg.data.name, msg.data.value)
+}
+
+function listSettings(msg) {
+    for (var i = 0; i < msg.data.length; i++)
+        applySettings(msg.data[i].name, msg.data[i].value)
+}
+
+function applySettings(name, value) {
+    var data
+    if ('badges' === name) {
+        data = JSON.parse(value)
+        root.badges.clear()
+        root.badges.append(data)
     }
 }

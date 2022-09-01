@@ -17,7 +17,7 @@ layouts[Const.ARM_ADMIN] = [
     {symbol: '4', views: [['EventLog']]},
     {symbol: '5', views: [['Video']]},
 ]
-commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups"]
+commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups", "ListSettings"]
 config[Const.ARM_ADMIN] = {
     DevicesTree: 1,
     UserTree: 7, // GOD mode
@@ -93,7 +93,7 @@ config[Const.ARM_SECRET] = {
 layouts[Const.ARM_BUREAU] = [
     {symbol: 'fa_users_cog', views: [['MyConfig']]}
 ]
-commands[Const.ARM_BUREAU] = ["ListUsers", "ListRules", "ListZones"]
+commands[Const.ARM_BUREAU] = ["ListUsers", "ListRules", "ListZones", "ListSettings"]
 config[Const.ARM_BUREAU] = {
     UserTree: 3, // bit mask for tab's #
     RulesTree: 1,
