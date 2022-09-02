@@ -34,9 +34,8 @@ ColumnLayout {
     Text { text: model.label; font.pixelSize: 14; font.bold: true }
     Rectangle {Layout.fillWidth: true; height: 2; color: "gray"}
 
-    Rectangle {
-        id: badge
-        property real k: 3.375 / 2.125
+    Rectangle { // Badge contour
+        property real k: 3.375 / 2.125 // card's sides proportion
         property real w: orientation.landscape ? parent.width : parent.width / k
         property real h: !orientation.landscape ? parent.width : parent.width / k
         border.color: "#999"
@@ -45,17 +44,34 @@ ColumnLayout {
         Layout.alignment: Qt.AlignHCenter // Qt.AlignCenter
         Layout.preferredWidth: w
         Layout.preferredHeight: h
-        GridLayout {
-            columns: orientation.landscape ? 2 : 1
-            anchors.margins: 10
+        Item { // inner container (for spacing)
             anchors.fill: parent
-            Rectangle {
-                property real size: Math.min(badge.childrenRect.width, badge.childrenRect.height) * parseInt(photoSize.value) / 100
-                Layout.alignment: Qt.AlignTop | Qt.AlignCenter
-                border.color: "#900"
-                border.width: 2
-                implicitWidth: size
-                implicitHeight: size
+            anchors.margins: 10
+            clip: true
+            Rectangle { // photo placeholder
+                property real size: Math.min(parent.width, parent.height) * parseInt(photoSize.value) / 100
+                //Layout.alignment: Qt.AlignTop | Qt.AlignCenter
+                anchors.horizontalCenter: orientation.landscape ? undefined : parent.horizontalCenter
+                x: orientation.landscape ? 0 : NaN
+                //anchors.left: orientation.landscape ? parent.left : undefined
+                //border.color: "#900"
+                //border.width: 2
+                color: "#f0f0f0"
+                //implicitWidth: size
+                //implicitHeight: size
+                width: size
+                height: size
+                Image {
+                    id: placeholder
+                    //width: (rect.width > maxImageSize ? maxImageSize : rect.width) * 0.9
+                    anchors.fill: parent
+                    anchors.margins: 5
+                    clip: true
+                    fillMode: Image.PreserveAspectFit
+                    source: "qrc:/images/user-solid.svg"
+                    visible: true //image.status !== 1
+                }
+
             }
             Rectangle {
                 property real dx
@@ -63,21 +79,26 @@ ColumnLayout {
                 // x & y overflow
                 property real ox
                 property real oy
+                property bool taken
 
                 function savePosition() {
-                    setProperty('x', Math.round(1e4 * (currentLabelItem.x + dx / width)) / 1e4)
-                    setProperty('y', Math.round(1e4 * (currentLabelItem.y + dy / height)) / 1e4)
+                    if (currentLabelItem) {
+                        setProperty('x', Math.round(1e4 * (currentLabelItem.x + dx / width)) / 1e4)
+                        setProperty('y', Math.round(1e4 * (currentLabelItem.y + dy / height)) / 1e4)
+                    }
+                    taken = false
                     ox = oy = dx = dy = 0
                 }
 
                 id: badgeText
-                color: "#f0f0f0"
-                Layout.fillWidth: true
-                Layout.fillHeight: true
+                color: "transparent"
+                //Layout.fillWidth: true
+                //Layout.fillHeight: true
+                anchors.fill: parent
 
                 DragHandler {
                     target: null
-                    onCentroidChanged: {
+                    onCentroidChanged: if (parent.taken) {
                         if (0 !== centroid.pressedButtons) {
                             parent.dx = centroid.position.x - centroid.pressPosition.x - parent.ox
                             parent.dy = centroid.position.y - centroid.pressPosition.y - parent.oy
@@ -112,6 +133,7 @@ ColumnLayout {
                             anchors.fill: parent
                             onReleased: badgeText.savePosition() // minor movement, drag is not recognized automatically
                             onPressed: {
+                                badgeText.taken = true
                                 badgeText.ox = cx < 0 ? cx : cx + width <= badgeText.width ? 0 : cx + width - badgeText.width
                                 badgeText.oy = cy < 0 ? cy : cy + height <= badgeText.height ? 0 : cy + height - badgeText.height
                                 currentLabel = index

@@ -346,5 +346,8 @@ Flickable {
         Text { text: itemId}*/
     }
 
-    BadgePreview{id: badgePreview}
+    BadgePreview{
+        id: badgePreview
+        user: model
+    }
 }
