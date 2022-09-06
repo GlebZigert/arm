@@ -71,4 +71,16 @@ FontLoader {
     // EventLog filter
     readonly property string fa_times                               : "\uf00d"
     readonly property string fa_sync                                : "\uf021"
+
+    // MakeBadge
+    readonly property string fa_align_left                          : "\uf036"
+    readonly property string fa_align_right                         : "\uf038"
+    readonly property string fa_align_center                        : "\uf037"
+    readonly property string fa_paint_roller                        : "\uf5aa"
+    readonly property string fa_paintbrush                          : "\uf1fc"
+    readonly property string fa_pen                                 : "\uf304"
+
+    readonly property string fa_underline                           : "\uf0cd"
+    readonly property string fa_italic                              : "\uf033"
+    readonly property string fa_bold                                : "\uf032"
 }

@@ -42,7 +42,7 @@ Rectangle {
             pageRoot.devicesChanged.connect(update)
             pageRoot.currentModelChanged.connect(update) // TODO: not used on page2 for zones
             update()
-            console.log('UF PAGE-3 INIT COMPLETED')
+            //console.log('UF PAGE-3 INIT COMPLETED')
         }
 
         // populate values
@@ -51,7 +51,7 @@ Rectangle {
                 console.log('UP3-UPD not ready')
                 return
             }
-            console.log('UP3-UPD started')
+            //console.log('UP3-UPD started')
             if (values)
                 values = {}
             if (!devices || !devicesTree) {

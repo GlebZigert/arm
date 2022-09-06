@@ -1,6 +1,24 @@
 .import "constants.js" as Const
 .import "crypto.js" as Crypto
 
+// convert QML model to the pure JS object
+function toObject(m) {
+    var i,
+        k,
+        row,
+        item,
+        o = []
+
+    for (i = 0; i < m.count; i++) {
+        item = m.get(i)
+        row = {}
+        for (k in item)
+            row[k] = 'object' === typeof item[k] && 'count' in item[k] ? toObject(item[k]) : item[k]
+        o.push(row)
+    }
+    return o
+}
+
 function makeURL(endpoint, params) {
     params = params || {}
     var k,
