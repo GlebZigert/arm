@@ -36,8 +36,8 @@ Popup {
             border.width: 2
             radius: blindZone
 
-            width: badgeItem ? 2 * blindZone + dpi * (badgeItem.landscape ? 3.375 : 2.125) : 0
-            height: badgeItem ? 2 * blindZone + dpi * (badgeItem.landscape ? 2.125 : 3.375) : 0
+            width: badgeItem ? dpi * (badgeItem.landscape ? 3.375 : 2.125) : 0
+            height: badgeItem ? dpi * (badgeItem.landscape ? 2.125 : 3.375) : 0
 
             Item { // paddings (blind zones around)
                 id: badge
