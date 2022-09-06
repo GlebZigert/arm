@@ -29,81 +29,32 @@ Popup {
 
     Column {
         spacing: 10
-        /*Rectangle {
-            id: badge
-            width: childrenRect.width
-            height: childrenRect.height
-            border.width: 1
-            border.color: "gray"
-            Row {
-                padding: 0.1 * dpi
-                width: 3.375 * dpi
-                height: 2.125 * dpi
-                spacing: 15
-                Image {
-                    id: placeholder
-                    //width: (rect.width > maxImageSize ? maxImageSize : rect.width) * 0.9
-                    width: maxImageSize
-                    height: maxImageSize
-                    clip: true
-                    fillMode: Image.PreserveAspectFit
-                    source: "qrc:/images/user-solid.svg"
-                    visible: image.status !== 1
-                }
-
-                Image {
-                    id: image
-                    //width: rect.width > maxImageSize ? maxImageSize : rect.width
-                    width: maxImageSize
-                    height: maxImageSize
-                    clip: true
-                    cache: false
-                    verticalAlignment: Image.AlignTop
-                    fillMode: Image.PreserveAspectFit
-                    //source: "qrc:/images/user-solid.svg"
-                    source: Utils.makeURL("user", {nocache: nocache || Date.now(), id: model.id});
-                }
-
-                ColumnLayout {
-                    Text { text: model.surename; font.pixelSize: fontSize}
-                    Text { text: [model.name, model.middleName].join(' '); font.pixelSize: fontSize}
-                    Text { text: model.rank; font.pixelSize: fontSize}
-                    Text { text: model.organization; font.pixelSize: fontSize}
-                    Text { text: model.position; font.pixelSize: fontSize}
-                }
-            }
-        }*/
 
         Rectangle { // Badge contour
-            id: badge
             border.color: "#999"
             border.width: 2
             radius: blindZone
-            //Layout.alignment: Qt.AlignHCenter // Qt.AlignCenter
-            //width: childrenRect.width
-            //height: childrenRect.height
 
             property real blindZone: 0.1 * dpi
             width: badgeItem ? 2 * blindZone + dpi * (badgeItem.landscape ? 3.375 : 2.125) : 0
             height: badgeItem ? 2 * blindZone + dpi * (badgeItem.landscape ? 2.125 : 3.375) : 0
 
-            Item { // inner container (for spacing)
+            Item { // badge content
+                id: badge
+                clip: true
                 anchors.fill: parent
                 anchors.margins: parent.blindZone
 
                 Item { // photo placeholder
                     property real size: badgeItem ? Math.min(parent.width, parent.height) * parseInt(badgeItem.photoSize) / 100 : 0
-                    //Layout.alignment: Qt.AlignTop | Qt.AlignCenter
                     anchors.horizontalCenter: badgeItem && badgeItem.landscape ? undefined : parent.horizontalCenter
                     x: badgeItem && badgeItem.landscape ? 0 : NaN
                     width: size
                     height: size
                     Image {
                         id: placeholder
-                        //width: (rect.width > maxImageSize ? maxImageSize : rect.width) * 0.9
                         anchors.fill: parent
                         anchors.margins: 5
-                        clip: true
                         opacity: .5
                         fillMode: Image.PreserveAspectFit
                         source: "qrc:/images/user-solid.svg"
@@ -112,16 +63,15 @@ Popup {
                     Image {
                         id: image
                         anchors.fill: parent
-                        clip: true
+                        //clip: true
                         cache: false
                         verticalAlignment: Image.AlignTop
                         fillMode: Image.PreserveAspectFit
                         source: Utils.makeURL("user", {nocache: nocache || Date.now(), id: model.id});
                     }
                 }
-                Rectangle {
+                Item {
                     id: badgeText
-                    color: "transparent"
                     anchors.fill: parent
 
                     Repeater {
@@ -133,7 +83,6 @@ Popup {
                             property real cy: badgeText.height * model.y - height / 2
                             x: cx < 0 ? 0 : cx + width <= badgeText.width ? cx : badgeText.width - width
                             y: cy < 0 ? 0 : cy + height <= badgeText.height ? cy : badgeText.height - height
-                            clip: true
                             padding: model.padding * dpiScale
                             width: model.width > 0 ? badgeText.width * model.width : 2 * padding +  paintedWidth
                             horizontalAlignment: [Text.AlignLeft, Text.AlignRight, Text.AlignHCenter][model.align]

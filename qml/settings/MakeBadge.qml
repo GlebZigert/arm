@@ -9,27 +9,12 @@ import "../forms" as Forms
 
 ColumnLayout {
     id: form
+    anchors.fill: parent
+
     property bool asyncWait
     property int currentLabel: -1
     property var currentLabelItem: null === badgeItem || currentLabel < 0 ? null : badgeItem.labels.get(currentLabel)
-    //onCurrentLabelChanged: currentLabelItem = currentLabel < 0 ? null : badgeItem.get(currentLabel)
     property var badgeItem: root.badges.count > 0 ? root.badges.get(0) : null
-    //onBadgeItemChanged: console.log("==========================CHG", badgeItem)
-    //onRbChanged: console.log("!!!!!!!==========================CHG")
-
-    /*ListModel {
-        id: list0
-        Component.onCompleted: append([{name: "Main", photoSize: 50, labels: [
-            {text: 'Фамилия', x: .5, y: 0, color: 'black', background: 'yellow', font: 14, style: 0, align: 0, width: .5, padding: 5},
-            {text: 'Имя', x: .5, y: .15, color: 'black', background: 'yellow', font: 14, style: 1, align: 2, width: .5, padding: 5},
-            {text: 'Отчество', x: .3, y: .3, color: 'black', background: 'yellow', font: 14, style: 2, align: 0, width: .3, padding: 5},
-            {text: 'Звание', x: .1, y: .45, color: 'black', background: 'yellow', font: 14, style: 3, align: 0, width: 0, padding: 5},
-            {text: 'Организация', x: .5, y: .6, color: 'black', background: 'yellow', font: 14, style: 4, align: 1, width: .5, padding: 5},
-            {text: 'Должность', x: 0, y: .75, color: 'black', background: 'yellow', font: 14, style: 7, align: 0, width: 0, padding: 5}
-        ]}])
-    }*/
-
-    anchors.fill: parent
 
     Text { text: model.label; font.pixelSize: 14; font.bold: true }
     Rectangle {Layout.fillWidth: true; height: 2; color: "gray"}
@@ -45,63 +30,52 @@ ColumnLayout {
         Layout.preferredWidth: w
         Layout.preferredHeight: h
         Item { // inner container (for spacing)
+            clip: true
             anchors.fill: parent
             anchors.margins: 10
-            clip: true
             Rectangle { // photo placeholder
                 property real size: Math.min(parent.width, parent.height) * parseInt(photoSize.value) / 100
-                //Layout.alignment: Qt.AlignTop | Qt.AlignCenter
                 anchors.horizontalCenter: orientation.landscape ? undefined : parent.horizontalCenter
                 x: orientation.landscape ? 0 : NaN
-                //anchors.left: orientation.landscape ? parent.left : undefined
-                //border.color: "#900"
-                //border.width: 2
                 color: "#f0f0f0"
-                //implicitWidth: size
-                //implicitHeight: size
                 width: size
                 height: size
                 Image {
                     id: placeholder
-                    //width: (rect.width > maxImageSize ? maxImageSize : rect.width) * 0.9
                     anchors.fill: parent
                     anchors.margins: 5
-                    clip: true
                     fillMode: Image.PreserveAspectFit
                     source: "qrc:/images/user-solid.svg"
                     visible: true //image.status !== 1
                 }
 
             }
-            Rectangle {
+            Item {
+                id: badgeText
+                anchors.fill: parent
+
                 property real dx
                 property real dy
                 // x & y overflow
                 property real ox
                 property real oy
-                property bool taken
+                property bool taken // currently controlled with mouse
 
                 function savePosition() {
                     if (currentLabelItem) {
-                        setProperty('x', Math.round(1e4 * (currentLabelItem.x + dx / width)) / 1e4)
-                        setProperty('y', Math.round(1e4 * (currentLabelItem.y + dy / height)) / 1e4)
+                        setProperty('x', Math.round(1e4 * (currentLabelItem.x + (dx - ox) / width)) / 1e4)
+                        setProperty('y', Math.round(1e4 * (currentLabelItem.y + (dy - oy) / height)) / 1e4)
                     }
                     taken = false
                     ox = oy = dx = dy = 0
                 }
 
-                id: badgeText
-                color: "transparent"
-                //Layout.fillWidth: true
-                //Layout.fillHeight: true
-                anchors.fill: parent
-
                 DragHandler {
                     target: null
                     onCentroidChanged: if (parent.taken) {
                         if (0 !== centroid.pressedButtons) {
-                            parent.dx = centroid.position.x - centroid.pressPosition.x - parent.ox
-                            parent.dy = centroid.position.y - centroid.pressPosition.y - parent.oy
+                            parent.dx = centroid.position.x - centroid.pressPosition.x
+                            parent.dy = centroid.position.y - centroid.pressPosition.y
                         } else
                             badgeText.savePosition()
                     }
@@ -113,14 +87,18 @@ ColumnLayout {
                         property real dx: index !== currentLabel ? 0 : parent.dx
                         property real dy: index !== currentLabel ? 0 : parent.dy
                         property real offs: 0 === model.align ? 0 : width  // 0: left, 1: right, 2: center
-                        // calculated x & y
+                        // calculated X & Y
                         property real cx: dx + badgeText.width * model.x - offs / (2 === model.align ? 2 : 1)
                         property real cy: dy + badgeText.height * model.y - height / 2
-                        x: cx < 0 ? 0 : cx + width <= badgeText.width ? cx : badgeText.width - width
-                        y: cy < 0 ? 0 : cy + height <= badgeText.height ? cy : badgeText.height - height
-                        clip: true
-                        padding: model.padding
+                        // overflow X & Y
+                        property real ox : cx < 0 ? cx : cx + width <= badgeText.width ? 0 : cx + width - badgeText.width
+                        property real oy : cy < 0 ? cy : cy + height <= badgeText.height ? 0 : cy + height - badgeText.height
+                        onOxChanged: badgeText.ox = ox
+                        onOyChanged: badgeText.oy = oy
+                        x: cx - ox
+                        y: cy - oy
                         width: model.width > 0 ? badgeText.width * model.width : 2 * padding +  paintedWidth
+                        padding: model.padding
                         horizontalAlignment: [Text.AlignLeft, Text.AlignRight, Text.AlignHCenter][model.align]
                         text: model.text
                         color: model.color
@@ -129,13 +107,16 @@ ColumnLayout {
                         font.italic: model.style & 2
                         font.underline: model.style & 1
                         background: Rectangle {color: model.background}
+                        ToolTip {
+                            visible: badgeText.taken && index === currentLabel//ma.pressed || ma.containsPress
+                            text: Math.round(1e4 * (model.x + (dx - ox) / badgeText.width)) / 1e4
+                                  + ' ' + Math.round(1e4 * (model.y + (dy - oy) / badgeText.height)) / 1e4
+                        }
                         MouseArea {
                             anchors.fill: parent
                             onReleased: badgeText.savePosition() // minor movement, drag is not recognized automatically
                             onPressed: {
                                 badgeText.taken = true
-                                badgeText.ox = cx < 0 ? cx : cx + width <= badgeText.width ? 0 : cx + width - badgeText.width
-                                badgeText.oy = cy < 0 ? cy : cy + height <= badgeText.height ? 0 : cy + height - badgeText.height
                                 currentLabel = index
                             }
                         }
@@ -187,6 +168,7 @@ ColumnLayout {
                 enabled: 0 === labelContent.currentIndex
                 //id: spacing
                 Layout.fillWidth: true
+                maximumLength: 32
                 text: enabled ? getProperty('text', 'Текст') : ''
                 onTextChanged: text.length && setProperty('text', text)
                 Layout.preferredWidth: 70
@@ -369,7 +351,9 @@ ColumnLayout {
     }
 
     function saveBadge() {
-        var s = {name: 'badges', value: JSON.stringify(Utils.toObject(root.badges))}
+        var o = Utils.toObject(root.badges),
+            s = {name: 'badges', value: JSON.stringify(o)}
+        //console.log("BADGE>", JSON.stringify(o))
         asyncWait = true
         root.newTask(0, 'UpdateSettings', s, done, fail)
     }

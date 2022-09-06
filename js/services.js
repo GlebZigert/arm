@@ -330,6 +330,8 @@ function updateSettings(msg) {
 }
 
 function listSettings(msg) {
+    if (!msg.data)
+        return
     for (var i = 0; i < msg.data.length; i++)
         applySettings(msg.data[i].name, msg.data[i].value)
 }

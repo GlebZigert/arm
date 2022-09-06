@@ -315,16 +315,18 @@ Flickable {
                 ToolTip.visible: hovered
                 onClicked: cardsCombo.remove()
             }
-            Button {
-                visible: cardsCombo.currentIndex >= 0 && cardsCombo.currentIndex !== cardsCombo.model.count - 1
-                implicitWidth: height
-                font.family: faFont.name
-                font.pixelSize: 18
-                text: faFont.fa_address_card
-                ToolTip.text: "Печатать"
-                ToolTip.visible: hovered
-                onClicked: badgePreview.open()
-            }
+        }
+        ///////////////////////////////////////////
+        Text { text: "Карта"; visible: !!fields['cards'] && changeable; Layout.alignment: Qt.AlignRight }
+        Button {
+            visible: !!fields['cards'] && changeable;
+            implicitWidth: height * 5
+            font.family: faFont.name
+            font.pixelSize: 18
+            text: faFont.fa_address_card + " Распечатать"
+            ToolTip.text: "Просмотр и печать карты доступа"
+            ToolTip.visible: hovered
+            onClicked: badgePreview.open()
         }
 
         ///////////////////////////////////////////
