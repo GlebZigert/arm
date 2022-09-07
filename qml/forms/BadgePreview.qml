@@ -12,6 +12,12 @@ Popup {
     anchors.centerIn: Overlay.overlay
     closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutsideParent
 
+    // default (std) card size:    3.375 x 2.125
+    // Evolis Badgy 100 card size: 3.390 x 2.170
+    // TODO: make custom margins & page size?
+    // see also https://doc.qt.io/qt-5/qprinter.html#PaperSize-typedef & https://doc.qt.io/qt-5/qprinter.html#setFullPage
+    property real cardWidth: 3.390
+    property real cardHeight: 2.170
     property int dpi: 200
     property real dpiScale: 200 / Screen.pixelDensity / 25.4
     property real blindZone: 0.1 * dpi
@@ -36,10 +42,10 @@ Popup {
             border.width: 2
             radius: blindZone
 
-            width: badgeItem ? dpi * (badgeItem.landscape ? 3.375 : 2.125) : 0
-            height: badgeItem ? dpi * (badgeItem.landscape ? 2.125 : 3.375) : 0
+            width: badgeItem ? dpi * (badgeItem.landscape ? cardWidth : cardHeight) : 0
+            height: badgeItem ? dpi * (badgeItem.landscape ? cardHeight : cardWidth) : 0
 
-            Item { // paddings (blind zones around)
+            Item { // margins (blind zones around)
                 id: badge
                 anchors.fill: parent
 
