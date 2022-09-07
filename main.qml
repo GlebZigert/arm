@@ -246,7 +246,7 @@ ApplicationWindow {
                           } else if (socket.status === WebSocket.Open) {
                               menu.linkStatus = 'online'
                               console.log("Socket ready, sending credentials")
-                              sendTextMessage('{"login": "' + userLogin + '", "token": "' + userToken + '"}')
+                              sendTextMessage('{"login": "' + userLogin + '", "token": "' + userToken + '", "timestamp": ' + Date.now() + '}')
                           }
     }
 
