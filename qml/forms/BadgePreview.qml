@@ -20,7 +20,7 @@ Popup {
     property real cardHeight: 2.170
     property int dpi: 200
     property real dpiScale: 200 / Screen.pixelDensity / 25.4
-    property real blindZone: 0.1 * dpi
+    property real blindZone: 0.085 * dpi
     property var user
     property var badgeItem: root.badges.count > 0 ? root.badges.get(0) : null
     property var replacements: ({
