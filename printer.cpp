@@ -16,8 +16,8 @@ void Printer::print(QVariant data, qreal resolution) {
     printer.setPageOrientation(img.width() < img.height() ? QPageLayout::Portrait : QPageLayout::Landscape);
     qreal resolutionFactor = printer.resolution() / resolution;
     //qDebug() << "Screen resolution: " << resolution << ", Print: " << printer.resolution();
-    QPrintDialog *dlg = new QPrintDialog(&printer, nullptr);
-    if(dlg->exec() == QDialog::Accepted) {
+    QPrintDialog dlg(&printer, nullptr);
+    if(dlg.exec() == QDialog::Accepted) {
           QPainter painter(&printer);
           painter.scale(resolutionFactor, resolutionFactor);
           painter.drawImage(QPoint(0,0),img);
