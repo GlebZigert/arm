@@ -52,6 +52,8 @@ ColumnLayout {
             }
         }
     }*/
+    Text { text: 0 == itemId ? 'Новая подсистема' : 'Подсистема ' + model.title; font.pixelSize: 14; font.bold: true}
+    Rectangle {Layout.fillWidth: true; height: 2; color: "gray"}
 
     GridLayout {
         id: form
@@ -203,14 +205,14 @@ ColumnLayout {
         //RadioButton { text: qsTr("Small") }
         ///////////////////////////////////////////
     }
-    Rectangle { // separator
+    /*Rectangle { // separator
         visible: itemId > 0 && type in extraForms
         Layout.fillWidth: true
         height: 2
         color: "gray"
         Layout.topMargin: 10
         Layout.bottomMargin: 10
-    }
+    }*/
     Loader {
         visible: itemId > 0
         Layout.fillWidth: true

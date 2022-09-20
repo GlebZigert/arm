@@ -85,7 +85,7 @@ Parus.prototype.processEvents = function (events) {
 }
 
 Parus.prototype.update = function (dev) {
-    //console.log("Parus upd.dev", JSON.stringify(dev))
+    console.log("Parus upd.dev", JSON.stringify(dev))
     var item = this.cache[dev.id],
         model = this.model.children
     if (item) { // update existing
