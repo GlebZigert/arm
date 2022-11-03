@@ -36,6 +36,7 @@ layouts[Const.ARM_UNIT] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
     {symbol: '2', views: [['Video']]},
     {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
+    {symbol: '4', views: [['EventLog']]},
 ]
 commands[Const.ARM_UNIT] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
 config[Const.ARM_UNIT] = {}
