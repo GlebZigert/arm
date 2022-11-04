@@ -21,7 +21,9 @@ void VideoPlayer::paint(QPainter *painter)
             h,
             QImage::Format_RGB32);
 */
+
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
+    qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
 
 }
