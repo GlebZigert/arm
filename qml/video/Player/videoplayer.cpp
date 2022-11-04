@@ -82,7 +82,7 @@ void VideoPlayer::onheightChanged(){
 }
 
 void VideoPlayer::frame(QString source){
-
+    qDebug()<<"frame";
     if(source==this->m_source){
          img=QImage(data->data[0],
                     w,
@@ -94,6 +94,7 @@ void VideoPlayer::frame(QString source){
 
 void VideoPlayer::lost(QString source)
 {
+        qDebug()<<"lost";
     if(source==this->m_source){
          img=QImage(":/qml/video/no_signal.jpeg");
     this->update();

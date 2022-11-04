@@ -331,6 +331,7 @@ prev=clock();
 
 load();
 if (!load_settings()){
+    qDebug()<<"001";
     emit lost_connection(URL);
     emit  finished();
     return;
@@ -353,6 +354,7 @@ while(m_running!=mode::turnOff){
    prev=clock();
 
    if (!capture()){
+       qDebug()<<"002";
        emit lost_connection(URL);
        emit  finished();
        return;
