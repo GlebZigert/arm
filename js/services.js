@@ -238,6 +238,7 @@ function updateService(service, data) {
 
     service.model.label = data.title
     Utils.setInitialStatus(service.model, service.statusUpdate.bind(service))
+    root.updateLinkStatus()
 }
 
 function deleteService(id) {
@@ -251,6 +252,7 @@ function deleteService(id) {
         }
     }
     delete services[id]
+    root.updateLinkStatus()
 }
 
 function reconnectUser(msg) {

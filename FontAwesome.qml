@@ -21,6 +21,8 @@ FontLoader {
     readonly property string fa_volume_mute                         : "\uf6a9"
     readonly property string fa_check_double                        : "\uf560"
     readonly property string fa_skull_crossbones                    : "\uf714"
+    readonly property string fa_triangle_exclamation                : "\uf071"
+    readonly property string fa_bullhorn                            : "\uf0a1"
 
     readonly property string fa_car                                 : "\uf1b9"
     readonly property string fa_user_friends                        : "\uf500"

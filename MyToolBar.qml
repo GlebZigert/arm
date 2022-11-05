@@ -32,7 +32,7 @@ ToolBar {
             width: buttonSize
             height: width
             font.family: faFont.name
-            text: faFont.fa_skull_crossbones
+            text: faFont.fa_bullhorn
             font.pixelSize: 24
             onClicked: messageBox.ask("Включить тревогу?", function(){Qt.callLater(root.alarma)})
             hoverEnabled: true
@@ -89,11 +89,28 @@ ToolBar {
             font.family: faFont.name
             text: faFont.fa_wifi
             font.pixelSize: 24
+
             MouseArea {
                 anchors.fill: parent
                 pressAndHoldInterval: 10e3
                 onPressAndHold: messageBox.ask("Желаете переподключиться к серверу?", root.forceReconnect)
             }
+
+            SequentialAnimation on opacity {
+                loops: Animation.Infinite
+                running: 'online' != linkStatus
+                alwaysRunToEnd: true
+                NumberAnimation {
+                    id: flashAnimation
+                    loops: 3
+                    from: 0.1
+                    to: 1
+                    duration: 250
+                    //onStopped: if ('flash' === model.display) model.display = ''
+                }
+                PauseAnimation { duration: 1000 }
+            }
+
         }
         Column {
             topPadding: 5

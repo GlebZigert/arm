@@ -283,7 +283,8 @@ function setServiceStatus(model, sid) {
     var max = Math.max(model.status.self, model.status.tcp, model.status.db),
         color = stateColor(max)
     model.color = color
-    //console.log(max, color, JSON.stringify(model.status))
+    root.updateLinkStatus()
+    //console.log(">>>>>>>>>>>>>>>>", max, color, JSON.stringify(model.status))
 }
 
 function makeCache(model, cache) {

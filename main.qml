@@ -11,6 +11,7 @@ import Qt.labs.settings 1.0
 import "js/object-factory.js" as ObjectFactory
 import "js/services.js" as Services
 import "js/utils.js" as Utils
+import "js/constants.js" as Const
 
 import "qml/forms" as Forms
 
@@ -244,7 +245,7 @@ ApplicationWindow {
                                         messageBox.error("Связь с сервером потеряна, отображаемая информация может быть неактуальна.")
                               }
                           } else if (socket.status === WebSocket.Open) {
-                              menu.linkStatus = 'online'
+                              menu.linkStatus = 'partial'
                               console.log("Socket ready, sending credentials")
                               sendTextMessage('{"login": "' + userLogin + '", "token": "' + userToken + '", "timestamp": ' + Date.now() + '}')
                           }
@@ -408,6 +409,34 @@ ApplicationWindow {
         if (currentUser)
             saveSplitViews()
 
+    }
+
+    function updateLinkStatus() {
+        if ('offline' === menu.linkStatus)
+            return
+
+        var services = devices.get(0).children
+        if (!services)
+            return
+
+        var i,
+            max,
+            status,
+            list = []
+
+
+        for (i = 0; i < services.count; i++) {
+            status = services.get(i).status
+            max = Math.max( status.self, status.tcp, status.db)
+            if (max >= Const.EC_LOST) // TODO: >= EC_ERROR ?
+                list.push(services.get(i).title)
+        }
+
+        if (list.length > 0) {
+            menu.linkStatus = 'partial'
+            messageBox.error("Проблемы в подсистемах:\n" + list.join("\n"))
+        } else
+            menu.linkStatus = 'online'
     }
 
     function log(str){
