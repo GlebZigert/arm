@@ -132,7 +132,7 @@ Popup {
         alarmsCount = Journal.activeAlarms(event)
         if (alarmsCount === 0) {
             console.log("Reset alarm:", event.deviceId)
-            root.newTask(event.serviceId, "ResetAlarm", event.deviceId, resetDone, fail)
+            root.newTask(event.serviceId, "ResetAlarm", [event.deviceId], resetDone, fail)
         }
     }
 
