@@ -149,7 +149,7 @@ function complementEvents(events) {
                 checkSticky = root.services[events[i].serviceId] && root.services[events[i].serviceId].checkSticky
         }
         events[i].timeString = Utils.formatDate(d) + ' ' + Utils.formatFullTime(d)
-        events[i].text = (events[i].class + '.' + events[i].event) + ': ' + events[i].text
+        events[i].text = /*(events[i].class + '.' + events[i].event) + ': ' + */events[i].text
         events[i].color = Utils.stateColor(events[i].class)
         events[i].sticky = checkSticky ? checkSticky(events[i]) : false
     }
