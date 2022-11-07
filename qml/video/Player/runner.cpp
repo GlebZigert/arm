@@ -85,7 +85,7 @@ void Runner::load()
 bool Runner::load_settings()
 {
 //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
- //   qDebug()<<"URL: "<<URL;
+    qDebug()<<"URL: "<<URL;
     QByteArray ba = URL.toLatin1();
     char *c_str2 = ba.data();
     char *filepath = ba.data();
@@ -96,12 +96,13 @@ bool Runner::load_settings()
     av_dict_set(&options, "stimeout", "200000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
     av_dict_set(&options, "max_delay", "50", 0); //Set the maximum delay
 
+    int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
 
-    if (avformat_open_input(&pFormatCtx, filepath, NULL, &options) != 0){
+    if (error != 0){
       //  emit lost_connection(URL);
 
 
-      //  qDebug()<<"FAIL with: avformat_open_input ";
+        qDebug()<<"FAIL with: avformat_open_input "<<error;
 
         return false;
     }
@@ -112,7 +113,7 @@ bool Runner::load_settings()
     if (avformat_find_stream_info(pFormatCtx, NULL)<0){
     //    emit lost_connection(URL);
 
-     //   qDebug()<<"FAIL with: avformat_find_stream_info ";
+        qDebug()<<"FAIL with: avformat_find_stream_info ";
         return false;
     }
 
@@ -127,7 +128,7 @@ bool Runner::load_settings()
     if (videoindex == -1){
     //    emit lost_connection(URL);
 
-   //      qDebug()<<"FAIL with: videoindex ";
+         qDebug()<<"FAIL with: videoindex ";
         return false;
     }
 
@@ -164,7 +165,7 @@ bool Runner::load_settings()
     //    emit lost_connection(URL);
         emit finished();
         close();
-     //   qDebug()<<"FAIL with: avcodec_open2t";
+        qDebug()<<"FAIL with: avcodec_open2t";
         return false;
     }
 
@@ -326,11 +327,13 @@ bool Runner::capture()
 
 void Runner::run()
 {
+    qDebug()<<"run";
 av_log_set_level(AV_LOG_QUIET);
 prev=clock();
 
 load();
 if (!load_settings()){
+    qDebug()<<"001";
     emit lost_connection(URL);
     emit  finished();
     return;
@@ -353,6 +356,7 @@ while(m_running!=mode::turnOff){
    prev=clock();
 
    if (!capture()){
+       qDebug()<<"002";
        emit lost_connection(URL);
        emit  finished();
        return;

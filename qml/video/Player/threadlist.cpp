@@ -72,7 +72,7 @@ void threadList::receiveFrame(QString URL)
 void threadList::lostConnection(QString URL)
 {
 
-  //  qDebug()<<"lostConnection";
+    qDebug()<<"lostConnection";
     emit lost(URL);
     tmrStart->stop();
     delay=1000;
