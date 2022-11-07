@@ -15,11 +15,14 @@ function pendingAlarms(serviceId) {
     for (i = root.events.count - 1; i >= 0 ; i--) {
         ev = root.events.get(i)
         if (ev.serviceId === serviceId) {
-            if (Const.EC_INFO_ALARM_RESET === ev.class || events[ev.deviceId] !== Const.EC_INFO_ALARM_RESET && ev.sticky)
+            if (ev.deviceId in events)
+                continue
+
+            if (Const.EC_INFO_ALARM_RESET === ev.class || ev.sticky)
                 events[ev.deviceId] = ev.class
         }
     }
-    //console.log("PeAl-1:", serviceId, JSON.stringify(events))
+
     for (i in events)
         if (Const.EC_INFO_ALARM_RESET !== events[i])
             devices.push(parseInt(i))
