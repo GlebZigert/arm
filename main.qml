@@ -241,8 +241,10 @@ ApplicationWindow {
                               socket.active = false
                               if ('offline' !== menu.linkStatus) {
                                     menu.linkStatus = 'offline'
-                                    if (currentUser && !stopped)
+                                    if (currentUser && !stopped) {
+                                        playAlarm("lost")
                                         messageBox.error("Связь с сервером потеряна, отображаемая информация может быть неактуальна.")
+                                    }
                               }
                           } else if (socket.status === WebSocket.Open) {
                               menu.linkStatus = 'partial'
@@ -427,14 +429,15 @@ ApplicationWindow {
 
         for (i = 0; i < services.count; i++) {
             status = services.get(i).status
-            max = Math.max( status.self, status.tcp, status.db)
+            max = Math.max(status.self, status.tcp, status.db)
             if (max >= Const.EC_LOST) // TODO: >= EC_ERROR ?
                 list.push(services.get(i).title)
         }
 
         if (list.length > 0) {
             menu.linkStatus = 'partial'
-            messageBox.error("Проблемы в подсистемах:\n" + list.join("\n"))
+            messageBox.error("Проблемы в подсистемах:\n• " + list.join("\n• "))
+            playAlarm("lost")
         } else
             menu.linkStatus = 'online'
     }
