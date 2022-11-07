@@ -429,7 +429,7 @@ ApplicationWindow {
 
         for (i = 0; i < services.count; i++) {
             status = services.get(i).status
-            max = Math.max(status.self, status.tcp, status.db)
+            max = Math.max(status.self, status.tcp) // TODO: also use 'status.db'
             if (max >= Const.EC_LOST) // TODO: >= EC_ERROR ?
                 list.push(services.get(i).title)
         }
