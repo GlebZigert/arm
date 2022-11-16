@@ -5,9 +5,7 @@ var handlers = {
     ListMaps: listMaps,
     UpdateMap: updateMap,
     DeleteMap: function (msg) {
-        console.log("Maps COUNT before del", root.maps.count)
         Utils.deleteItem(root.maps, msg.data)
-        console.log("Maps COUNT after del", root.maps.count)
     },
     PlanUpload: function (msg) {
         root.planUpload(msg.data)
@@ -47,7 +45,6 @@ function listMaps(msg) {
 }
 
 function updateMap(msg) {
-    console.log("UPD MAP:", JSON.stringify(msg.data))
     if (!msg.data)
         return
 
@@ -58,20 +55,17 @@ function updateMap(msg) {
     //console.log("=====================")
     //dumpModel(root.maps)
 
-    // if map_updated && !admin && no_shapes_in_map
-    if (i < root.maps.count && Const.ARM_ADMIN !== root.armRole && (!msg.data.shapes || 0 === msg.data.shapes.length)) {
-            root.maps.remove(i)
-    } else {
+    if (Const.ARM_ADMIN === root.armRole || (msg.data.shapes && msg.data.shapes.length > 0)) {
         injectExtra(msg.data)
-        if (i < root.maps.count) {
-            //map.imageSource = planImagePath(map.id)
+        if (i < root.maps.count) { // update existing map
             map.name = msg.data.name
             mergeShapes(map.shapes, msg.data.shapes || [])
-        } else //if (!msg.task)// new map
+        } else // append the new map
             root.maps.append(msg.data)
+    } else if (i < root.maps.count) {
+        root.maps.remove(i)
     }
     //dumpModel(root.maps)
-    //console.log("Maps COUNT after update", root.maps.count)
 }
 
 function mergeShapes(model, updates) {
