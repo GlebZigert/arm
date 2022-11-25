@@ -2,12 +2,27 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 import QtQuick.Dialogs 1.1
+import QtQml.Models 2.1
+
 import "helpers.js" as Helpers
 
 GridLayout {
     id: form
     columns: 2
     anchors.fill: parent
+
+    property ListModel myCamList: ListModel{}
+    property ListModel camListWatcher: cameraList
+    onCamListWatcherChanged: {
+        myCamList.clear()
+        myCamList.append({id: 0, name: "-- нет --"})
+        for (let i = 0; i < camListWatcher.count; i++) {
+            let item = camListWatcher.get(i),
+                o = {id: item.id, name: item.name}
+            myCamList.append(o)
+            console.log(JSON.stringify(o))
+        }
+    }
 
     ///////////////////////////////////////////
     Text { text: "Название";  Layout.alignment: Qt.AlignRight }
@@ -30,6 +45,16 @@ GridLayout {
         currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.intZone; i--); i}
     }
     ///////////////////////////////////////////
+    Text { text: "Камера 1";  Layout.alignment: Qt.AlignRight }
+    property int intCam: model.internalCam
+    ComboBox {
+        property string name: 'internalCam'
+        textRole: "name"
+        model: myCamList
+        Layout.fillWidth: true
+        currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.intCam; i--); i}
+    }
+    ///////////////////////////////////////////
     Text { text: "Выход";  Layout.alignment: Qt.AlignRight }
     //property int extZone: model && model.zones.length > 1 && model.zones[1].id || 0
     property int extZone: findZone(2)
@@ -42,8 +67,18 @@ GridLayout {
 
     }
     ///////////////////////////////////////////
-    Text { text: "ID:";  Layout.alignment: Qt.AlignRight }
-    Text { text: model.id}
+    Text { text: "Камера 2";  Layout.alignment: Qt.AlignRight }
+    property int extCam: model.externalCam
+    ComboBox {
+        property string name: 'externalCam'
+        Layout.fillWidth: true
+        textRole: "name"
+        model: myCamList
+        currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.extCam; i--); i}
+    }
+    ///////////////////////////////////////////
+    //Text { text: "ID:";  Layout.alignment: Qt.AlignRight }
+    //Text { text: model.id}
     //////////////////////// free space placeholder
     Item {
         Layout.columnSpan: 2
