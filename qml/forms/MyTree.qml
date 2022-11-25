@@ -134,7 +134,7 @@ Item {
             property bool expanded: model['expanded'] || isExpanded(tnid) // TODO: first click bug on model['expanded']
             property var tnid: getTNID(model)
             //x: 15
-            width: parent.width
+            width: parent && parent.width || undefined
             spacing: 0
             padding: 0
             //visible: model.childrens.count > 0 || label.indexOf("е") > 0
