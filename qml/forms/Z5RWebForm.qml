@@ -38,6 +38,7 @@ GridLayout {
     //property int intZone: model && model.zones.length > 0 && model.zones[0].id || 0
     property int intZone: findZone(1)
     ComboBox {
+        // entrance is a gate to the `internalZone`
         property string name: 'internalZone'
         textRole: "name"
         model: root.zones.get(0).children
@@ -46,19 +47,21 @@ GridLayout {
     }
     ///////////////////////////////////////////
     Text { text: "Камера 1";  Layout.alignment: Qt.AlignRight }
-    property int intCam: model.internalCam
+    property int extCam: model.externalCam
     ComboBox {
-        property string name: 'internalCam'
+        // `externalCam` is watching for the `entrance` to the `internalZone`
+        property string name: 'externalCam'
+        Layout.fillWidth: true
         textRole: "name"
         model: myCamList
-        Layout.fillWidth: true
-        currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.intCam; i--); i}
+        currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.extCam; i--); i}
     }
     ///////////////////////////////////////////
     Text { text: "Выход";  Layout.alignment: Qt.AlignRight }
     //property int extZone: model && model.zones.length > 1 && model.zones[1].id || 0
     property int extZone: findZone(2)
     ComboBox {
+        // exit is a gate to the `externalZone`
         property string name: 'externalZone'
         textRole: "name"
         model: root.zones.get(0).children
@@ -68,13 +71,14 @@ GridLayout {
     }
     ///////////////////////////////////////////
     Text { text: "Камера 2";  Layout.alignment: Qt.AlignRight }
-    property int extCam: model.externalCam
+    property int intCam: model.internalCam
     ComboBox {
-        property string name: 'externalCam'
-        Layout.fillWidth: true
+        // `internalCam` is watching for the `exit` to the `externalZone`
+        property string name: 'internalCam'
         textRole: "name"
         model: myCamList
-        currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.extCam; i--); i}
+        Layout.fillWidth: true
+        currentIndex: {for (var i = model.count - 1; i >= 0 && model.get(i).id !== parent.intCam; i--); i}
     }
     ///////////////////////////////////////////
     //Text { text: "ID:";  Layout.alignment: Qt.AlignRight }
