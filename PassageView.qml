@@ -26,7 +26,7 @@ Rectangle {
     property int panePosition
     property var empty: ({id: 0, time: "--:--", name: "-----", surename: "-----", rank: "-----", organization: "-----", position: "-----", deviceName: "-----", zoneName: "-----"})
     property var model: empty
-    onModelChanged: nocache = Date.now()
+    onModelChanged: nocache = Math.round(Date.now() / 1000)
     Column{
         id: column
         anchors.fill: parent
@@ -47,7 +47,7 @@ Rectangle {
                 verticalAlignment: Image.AlignBottom
                 cache: false
                 fillMode: Image.PreserveAspectFit
-                source: camSnapshot// ||"http://root:root@192.168.0.187:8000/live/media/snapshot/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:1"
+                source: camSnapshot + "?w=" + (785 + Math.round(Date.now() / 1000) % 30) + '&' + nocache
                 MouseArea {
                     anchors.fill: parent
                     onClicked: popup.open()
