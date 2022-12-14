@@ -8,6 +8,8 @@ import "../../js/journal.js" as Journal
 
 ColumnLayout {
     property int userId
+    property int serviceId
+    property int deviceId
     property bool asyncWait
     anchors.fill: parent
     anchors.margins: 5
@@ -43,6 +45,38 @@ ColumnLayout {
             }
         }
         ///////////////////////////////////////////
+        Text { text: "Устройство"; Layout.alignment: Qt.AlignRight }
+        RowLayout {
+            Layout.fillWidth: true
+            TextField {
+                id: deviceField
+                readOnly: true
+                Layout.fillWidth: true
+                onPressed: deviceSelector.display(serviceId, deviceId, selected)
+                function selected(item) {
+                    //console.log("Selected:", item.name, item.serviceId, item.id)
+                    if (item && item.id && item.serviceId) {
+                        serviceId = item.serviceId
+                        deviceId = item.id
+                        text = item.name
+                    } else {
+                        serviceId = deviceId = 0
+                        text = ''
+                    }
+                }
+            }
+            Button {
+                width: height
+                implicitWidth: height
+                font.family: faFont.name
+                text: faFont.fa_times
+                font.pixelSize: 18
+                ToolTip.text: "Очистить"
+                ToolTip.visible: hovered
+                onClicked: deviceField.selected(null)
+            }
+        }
+        ///////////////////////////////////////////
         Text { text: "Пользователь";  Layout.alignment: Qt.AlignRight }
         RowLayout {
             Layout.fillWidth: true
@@ -70,7 +104,7 @@ ColumnLayout {
                 font.pixelSize: 18
                 ToolTip.text: "Очистить"
                 ToolTip.visible: hovered
-                onClicked: {userField.selected(null)}
+                onClicked: userField.selected(null)
             }
         }
         ///////////////////////////////////////////
@@ -166,32 +200,32 @@ ColumnLayout {
         function printLog() {
             var url,
                 key,
-                payload = {}
-            if (!Helpers.readForm(form, payload))
-                return
-
-            payload.userId = userId
-            payload.start = makeDate(payload.startDate, payload.startTime + ':00')
-            payload.end = makeDate(payload.endDate, payload.endTime + ':59')
-            'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-            //console.log("EventFilter PRINT", JSON.stringify(payload))
-
-            url = Utils.makeURL("journal", payload);
-            //console.log("URL:", url)
-            Qt.openUrlExternally(url);
+                payload = makePayload()
+            if (null !== payload) {
+                url = Utils.makeURL("journal", payload);
+                Qt.openUrlExternally(url)
+            }
         }
 
         function display () {
-            var payload = {}
-            if (Helpers.readForm(form, payload)) {
-                payload.userId = userId
-                payload.start = makeDate(payload.startDate, payload.startTime + ':00')
-                payload.end = makeDate(payload.endDate, payload.endTime + ':59')
-                'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
-                //console.log("EventFilter SHOW", JSON.stringify(payload))
+            var payload = makePayload()
+            if (null !== payload) {
                 asyncWait = true
                 root.newTask('configuration', 'ListEvents', payload, done, fail)
             }
+        }
+
+        function makePayload() {
+            var payload = {}
+            if (Helpers.readForm(form, payload)) {
+                payload.userId = userId
+                payload.deviceId = deviceId
+                payload.start = makeDate(payload.startDate, payload.startTime + ':00')
+                payload.end = makeDate(payload.endDate, payload.endTime + ':59')
+                'startDate endDate startTime endTime'.split(' ').forEach(function (v) {delete payload[v]})
+            } else
+                payload = null
+            return payload
         }
 
 
@@ -224,6 +258,10 @@ ColumnLayout {
 
     MessageBox {id: messageBox}
 
+    DeviceSelector {
+        id: deviceSelector
+        devicesTree: root.devices
+    }
     UserSelector {
         id: userSelector
         userTree: root.users
