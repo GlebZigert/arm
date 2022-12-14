@@ -12,15 +12,15 @@ GridLayout {
     anchors.fill: parent
 
     property ListModel myCamList: ListModel{}
-    property ListModel camListWatcher: cameraList
-    onCamListWatcherChanged: {
+    property int itemId: model.id
+    onItemIdChanged: customCamList() // TODO: use signals for list rebuild? See: https://doc.qt.io/qt-5/qabstractitemmodel.html#rowsInserted
+
+    function customCamList() {
         myCamList.clear()
         myCamList.append({id: 0, name: "-- нет --"})
-        for (let i = 0; i < camListWatcher.count; i++) {
-            let item = camListWatcher.get(i),
-                o = {id: item.id, name: item.name}
-            myCamList.append(o)
-            console.log(JSON.stringify(o))
+        for (let i = 0; i < cameraList.count; i++) {
+            let item = cameraList.get(i)
+            myCamList.append({id: item.id, name: item.name})
         }
     }
 
