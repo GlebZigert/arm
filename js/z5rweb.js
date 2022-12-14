@@ -191,12 +191,9 @@ function setState(dev, event, priority) {
         if (priority < 0 || !dev.stickyState && dev.state !== sid) {
             //console.log('Z5R check-1')
             // update map
-            if (sticky && priority > 0) {
-                //console.log('Z5R check-2')
+            if (sticky && priority > 0)
                 dev.stickyState = true
-                //event.sticky = true
-                root.playAlarm(className)
-            }
+
             dev.mapState = className
             dev.mapColor = color
             dev.mapTooltip = text

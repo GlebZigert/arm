@@ -40,10 +40,6 @@ function useAlarms() {
     return Const.useAlarms.indexOf(root.armRole) >= 0
 }
 
-function checkSticky(event) {
-    return Const.stickyStates.indexOf(event.class) >= 0
-}
-
 function className(cls) {
     return Const.classNames[100 * Math.floor(cls / 100)] || ''
 }

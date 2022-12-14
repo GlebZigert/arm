@@ -101,11 +101,6 @@ const   EC_NA = 0,  //iota
         EC_UPS_UNPLUGGED        = 505
 
 
-var stickyStates = [
-    EC_ACCESS_VIOLATION,
-    EC_GLOBAL_ALARM
-]
-
 var serviceStatuses = {}
 serviceStatuses[EC_SERVICE_READY] = "self"
 serviceStatuses[EC_SERVICE_SHUTDOWN] = "self"

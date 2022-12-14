@@ -1,4 +1,4 @@
-import QtQuick 2.11
+import QtQuick 2.13
 import QtQuick.Layouts 1.4
 import QtQuick.Controls 2.4
 import QtMultimedia 5.11
@@ -10,6 +10,12 @@ ToolBar {
    property string linkStatus: "offline"
    readonly property int buttonSize: 50
    property int activePane: 0
+
+   function setAlarm(n, msg) {
+       lastAlarm.text = msg
+       alarmsCount.text = n < 100 ? n : '∞'
+   }
+
    background: Rectangle {
        implicitHeight: buttonSize
        color: "#225"
@@ -19,11 +25,76 @@ ToolBar {
         spacing: 0
         implicitHeight: parent.height
     }
+    Text {
+        id: lastAlarm
+        visible: Utils.useAlarms()
+        anchors.right: info.left
+        anchors.verticalCenter: parent.verticalCenter
+        color: "#BBFFFFFF"
+        //font.bold: true
+        font.pixelSize: 18
+        //width: 80
+        clip: true
+        Behavior on text {
+            id: msgBehaviour
+            SequentialAnimation {
+                NumberAnimation {
+                    target: lastAlarm
+                    properties: 'scale,opacity'
+                    easing.type: Easing.InQuad
+                    duration: 100
+                    to: 0
+                }
+                PropertyAction {}
+                NumberAnimation {
+                    target: lastAlarm
+                    properties: 'scale,opacity'
+                    easing.type: Easing.OutQuad
+                    duration: 100
+                    to: 1
+                }
+            }
+        }
+    }
     RowLayout {
         id: info
         anchors.right: parent.right
         implicitHeight: parent.height
         spacing: 0
+        Item {
+            visible: Utils.useAlarms()
+            Layout.preferredWidth: buttonSize
+            Layout.preferredHeight: buttonSize
+            Button {
+                //visible: Utils.useAlarms()
+                anchors.fill: parent
+                font.family: faFont.name
+                text: faFont.fa_message
+                font.pixelSize: 24
+                onClicked: alarmsList.open()
+                ToolTip.visible: hovered
+                ToolTip.text: "Активные тревоги"
+                palette {
+                    mid: "#338"
+                    button: "transparent"
+                    buttonText: "white"
+                }
+                MouseArea {
+                    anchors.fill: parent
+                    cursorShape: Qt.PointingHandCursor
+                    onPressed: mouse.accepted = false
+                }
+            }
+            Text {
+                id: alarmsCount
+                anchors.centerIn: parent
+                font.pixelSize: 15
+                font.bold: true
+                text: "0"
+                color: "crimson"
+                bottomPadding: 5
+            }
+        }
         Button {
             visible: Utils.useAlarms()
             clip: true
@@ -35,11 +106,9 @@ ToolBar {
             text: faFont.fa_bullhorn
             font.pixelSize: 24
             onClicked: messageBox.ask("Включить тревогу?", function(){Qt.callLater(root.alarma)})
-            hoverEnabled: true
-            ToolTip {
-                visible: parent.hovered
-                text: "Тревога!"
-            }
+            ToolTip.visible: hovered
+            ToolTip.text: "Тревога!"
+
             palette {
                 mid: "#338"
                 button: "transparent"
@@ -59,11 +128,9 @@ ToolBar {
             text: alarmPlayer.playbackState === MediaPlayer.PlayingState ? faFont.fa_volume_up : faFont.fa_volume_mute
             font.pixelSize: 24
             onClicked: root.playAlarm("")
-            hoverEnabled: true
-            ToolTip {
-                visible: parent.hovered
-                text: "Сброс звука"
-            }
+            ToolTip.visible: hovered
+            ToolTip.text: "Сброс звука"
+
             palette {
                 mid: "#338"
                 button: "transparent"
@@ -173,11 +240,6 @@ ToolBar {
                 color: bindPane == toolbar.activePane ? "orange" : "transparent"
             }
 
-            /*ToolTip.delay: 1000
-            ToolTip.timeout: 5000
-            ToolTip.visible: hovered
-            ToolTip.text: "Button description"*/
-
             onClicked: toolbar.activePane = bindPane
         }
     }
@@ -186,8 +248,6 @@ ToolBar {
         oneButton.createObject(buttons, {symbol: 'fa_key', bindPane: 0})
         root.onPanesChanged.connect(populateToolbar)
     }
-
-    Forms.MessageBox{}
 
     function populateToolbar() {
         for (var i = 0; i < panes.length; i++)

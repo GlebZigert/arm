@@ -43,15 +43,16 @@ function describeEvent(msg) {
         if (item.id === event.id) {
             item.reason = event.reason
             item.reaction = event.reaction
+            root.events.updated(item)
             break
         }
     }
 }
 
-function isAlarm(eventClass) {
+/*function isAlarm(eventClass) {
     var className = Utils.className(eventClass)
     return alarmNames.indexOf(className) >= 0
-}
+}*/
 
 // -1 event is not sticky alarm or no alarms after reset
 // 0 all events are described
@@ -101,7 +102,8 @@ function loadJournal(msg) {
     for (i = 0; i < root.events.count; i++)
         known[root.events.get(i).id] = true
 
-    events = complementEvents(msg.data.filter(function (v) {return !(v.id in known)}))
+    events = msg.data.filter(function (v) {return !(v.id in known)})
+    complementEvents(events)
 
     if (root.events.count) {
         for (i = root.events.count - 1; i >= 0 ; i--) {
@@ -121,30 +123,38 @@ function loadJournal(msg) {
     } else
         root.events.append(events)
     shrinkOldEvents()
+    root.events.updated(null)
 }
 
+// `silent` arg is unused?
 function logEvents(events, silent) {
     //if (!silent)
         //console.log("EvLog:", JSON.stringify(events))
-    complementEvents(events)
+    var maxAlarmClass = complementEvents(events)
     root.events.append(events)
     if (!silent)
         root.newEvents(events)
     shrinkOldEvents()
+    root.events.updated(null)
+    if (maxAlarmClass) {
+        root.playAlarm(Utils.className(maxAlarmClass))
+        alarmsList.openIfNeeded()
+    }
 }
 
 function complementEvents(events) {
     if (!events)
         return
     var i, d,
-        checkSticky
+        checkSticky,
+        maxAlarmClass = 0
 
     for (i = 0; i < events.length; i++) {
         d = new Date(events[i].time * 1e3)
 
         if (Utils.useAlarms()) {
-            if (0 === events[i].serviceId)
-                checkSticky = Utils.checkSticky
+            if (0 === events[i].serviceId || 0 === events[i].deviceId)
+                checkSticky = stickySysStatus//Utils.checkSticky
             else
                 checkSticky = root.services[events[i].serviceId] && root.services[events[i].serviceId].checkSticky
         }
@@ -152,11 +162,16 @@ function complementEvents(events) {
         events[i].text = /*(events[i].class + '.' + events[i].event) + ': ' + */events[i].text
         events[i].color = Utils.stateColor(events[i].class)
         events[i].sticky = checkSticky ? checkSticky(events[i]) : false
+        if (events[i].sticky && events[i].class > maxAlarmClass)
+            maxAlarmClass = events[i].class
     }
 //console.log(":", JSON.stringify(events))
-    return events
+    return maxAlarmClass
 }
 
+function stickySysStatus(event) {
+    return event.class >= Const.EC_ERROR
+}
 
 function shrinkOldEvents() {
     oddOrEven = (oddOrEven + 1) % 2
@@ -178,3 +193,25 @@ function colorizeEvents(serviceId) {
         }
     }
 }*/
+
+function alarmRecords() {
+    //{"id":48113,"externalId":0,"fromState":0,"event":0,"class":202,"data":"","text":"202: Связь установлена","serviceId":49,"deviceId":1343,"userId":0,"zoneId":0,"reason":"","reaction":"","commands":"","time":1631260390,"serviceName":"Пингатор","deviceName":"ip-dev-2","userName":"","zoneName":"","timeString":"10.09.2021 10:53:10","color":"#00db00"}
+    var i,
+        key,
+        item,
+        alarms = [],
+        completed = {}
+
+    // find opened alarms for this device from the end of journal
+    for (i = root.events.count - 1; i >= 0 ; i--) {
+        item = root.events.get(i)
+        key = item.serviceId + ':' + item.deviceId
+        if (!(key in completed)) {
+            if (Const.EC_INFO_ALARM_RESET === item.class)
+                completed[key] = true
+            else if (item.sticky)
+                alarms.unshift(item)
+        }
+    }
+    return alarms
+}

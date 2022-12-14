@@ -17,6 +17,8 @@ Popup {
 
     onVisibleChanged: if (visible) reason.focus = true
 
+    MessageBox {id: messageBox}
+
     GridLayout {
         id: eventForm
         anchors.margins: 5
@@ -98,8 +100,8 @@ Popup {
             Button {
                 text: "Сброс тревог"
                 Layout.fillWidth: true
-                enabled: alarmsCount == 0
-                onClicked: reset()
+                //enabled: alarmsCount == 0
+                onClicked: checkReset()
             }
             Button {
                 text: "Отмена"
@@ -128,12 +130,17 @@ Popup {
             popup.close()
     }
 
-    function reset(msg) {
+    function checkReset() {
         alarmsCount = Journal.activeAlarms(event)
-        if (alarmsCount === 0) {
-            console.log("Reset alarm:", event.deviceId)
-            root.newTask(event.serviceId, "ResetAlarm", [event.deviceId], resetDone, fail)
-        }
+        if (alarmsCount === 0)
+            reset()
+        else if (alarmsCount > 0)
+            messageBox.ask("Не для всех событий указаны причины\nи принятые меры. Продолжить?", reset)
+    }
+
+    function reset() {
+        console.log("Reset alarm:", event.deviceId)
+        root.newTask(event.serviceId, "ResetAlarm", [event.deviceId], resetDone, fail)
     }
 
     function resetDone(msg) {

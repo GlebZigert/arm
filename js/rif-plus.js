@@ -630,11 +630,9 @@ function setState(dev, event, priority) {
 
     if (priority < 0 || !dev.stickyState && dev.state !== sid) {
         // update map
-        if (sticky && priority > 0) {
+        if (sticky && priority > 0)
             dev.stickyState = true
-            //event.sticky = true
-            root.playAlarm(className)
-        }
+
         dev.mapState = className + dev.lastAction
         dev.mapColor = color
         dev.mapTooltip = text

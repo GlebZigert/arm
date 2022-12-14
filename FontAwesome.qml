@@ -23,6 +23,7 @@ FontLoader {
     readonly property string fa_skull_crossbones                    : "\uf714"
     readonly property string fa_triangle_exclamation                : "\uf071"
     readonly property string fa_bullhorn                            : "\uf0a1"
+    readonly property string fa_message                             : "\uf27a"
 
     readonly property string fa_car                                 : "\uf1b9"
     readonly property string fa_user_friends                        : "\uf500"

@@ -88,7 +88,10 @@ ApplicationWindow {
         signal updated(int id)
         ListElement{label: "Режимы доступа"; form: "rule"; expanded: true; children: []}
     }
-    property ListModel events: ListModel{}
+    property ListModel events: ListModel{
+        signal updated(var item)
+        onModelReset: updated(0)
+    }
 
     property ListModel maps: ListModel{}
 
@@ -278,6 +281,7 @@ ApplicationWindow {
     }
 
     Forms.MessageBox {id: messageBox}
+    Forms.AlarmsList{id: alarmsList}
 
     Component.onCompleted: {
         makePane([["MyLogin"]], 1)
@@ -436,8 +440,6 @@ ApplicationWindow {
 
         if (list.length > 0) {
             menu.linkStatus = 'partial'
-            messageBox.error("Проблемы в подсистемах:\n• " + list.join("\n• "))
-            playAlarm("lost")
         } else
             menu.linkStatus = 'online'
     }
