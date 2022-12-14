@@ -124,4 +124,5 @@ Popup {
             }
         }
     }
+    onClosed: scale = 1
 }
