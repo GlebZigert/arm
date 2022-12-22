@@ -58,6 +58,47 @@ Popup {
         }
     }
 
+    function resetAlarms(all) {
+        var counter,
+            names = {},
+            lists = {},
+            failures = [],
+            ignored = false
+        var done = () => {
+            if (--counter <= 0 && failures.length > 0)
+                messageBox.error(failures.join('\n'))
+        }
+        var fail = (serviceId, t) => {
+            failures.push(names[serviceId] + ': ' + t)
+            done()
+        }
+        var process = (i) => {
+            var item = alarms.get(i)
+            if (!(item.serviceId in lists)) {
+                names[item.serviceId] = item.serviceName
+                lists[item.serviceId] = {}
+            }
+            lists[item.serviceId][item.deviceId] = true
+            ignored = ignored || "" === item.reason.trim() || "" === item.reaction.trim()
+        }
+        var reset = () => {
+            counter = Object.keys(lists).length
+            for (let i in lists) {
+                let devs = Object.keys(lists[i]).map((v) => {return parseInt(v)})
+                root.newTask(i, 'ResetAlarm', devs, done, fail.bind(this, i))
+            }
+        }
+
+        if (all)
+            for (let i = 0; i < alarms.count; i++) process(i)
+        else
+            tableView.selection.forEach(process)
+
+        if (ignored)
+            messageBox.ask("Не все тревоги обработаны, продолжить?", reset)
+        else
+            reset()
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -68,6 +109,8 @@ Popup {
             model: alarms
             Layout.fillHeight: true
             Layout.fillWidth: true
+            selectionMode: 2 // SelectionMode.MultiSelection => https://doc.qt.io/qt-5/qabstractitemview.html#SelectionMode-enum
+            //sortIndicatorVisible: true
         }
 
         RowLayout {
@@ -77,10 +120,30 @@ Popup {
                 text: "Открывать при тревоге"
                 checked: true
             }
-            Item {Layout.fillWidth: true}
 
             Button {
-                implicitWidth: autoOpen.width
+                Layout.fillWidth: true
+                text: "Обработка"
+                enabled: 1 === tableView.selection.count
+                onClicked: tableView.showPopup()
+            }
+
+            Button {
+                Layout.fillWidth: true
+                text: "Сброс выбранных"
+                enabled: tableView.selection.count > 0
+                onClicked: resetAlarms()
+            }
+
+            Button {
+                Layout.fillWidth: true
+                text: "Сброс всех"
+                enabled: alarms.count > 0
+                onClicked: resetAlarms(true)
+            }
+
+            Button {
+                Layout.fillWidth: true
                 text: "Выход"
                 onClicked: popup.close()
             }
@@ -91,6 +154,7 @@ Popup {
         }
     }
 
+    onClosed: scale = 1 // fix for enter/exit animation side effect in Linux
     enter: Transition {
             ParallelAnimation {
                 NumberAnimation {
@@ -124,5 +188,6 @@ Popup {
             }
         }
     }
-    onClosed: scale = 1
+
+
 }

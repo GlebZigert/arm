@@ -15,17 +15,16 @@ EventTable {
             Qt.callLater(positionViewAtRow, rowCount - 1, ListView.Contain)
     }
     onVisibleChanged: if (visible) Qt.callLater(showRecent)
-    onDoubleClicked: root.eventSelected(model.get(row))
-    //onClicked: showPopup(row)
-    Keys.onReturnPressed: {
-        showPopup(tableView.currentRow)
-        event.accepted = true
-    }
 
     function showRecent() {
         positionViewAtRow(rowCount - 1, ListView.Contain)
     }
 
+    onDoubleClicked: root.eventSelected(model.get(row))
+    Keys.onReturnPressed: {
+        showPopup(tableView.currentRow)
+        event.accepted = true
+    }
     MouseArea {
         property int headerHeight: 25
         anchors.fill: parent
