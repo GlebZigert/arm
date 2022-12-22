@@ -11,27 +11,35 @@ Menu {
       Instantiator {
           delegate: MenuItem {
               text: model.text
-              onTriggered: if (Infinity !== model.deviceId) {
-                  var payload = {deviceId: model.deviceId, command: model.command, argument: model.argument || 0}
-                  //console.log('ContextMenu: Sending', JSON.stringify(payload), 'to #', model.serviceId)
-                  root.send(model.serviceId, "ExecCommand", payload);
-              } else {
-                    var ids = Journal.pendingAlarms(model.serviceId)
-                    if (ids.length > 0)
-                        root.send(model.serviceId, "ResetAlarm", ids)
+              onTriggered: {
+                  if (!model.action) {
+                      var payload = {deviceId: model.deviceId, command: model.command, argument: model.argument || 0}
+                      //console.log('ContextMenu: Sending', JSON.stringify(payload), 'to #', model.serviceId)
+                      root.send(model.serviceId, 'ExecCommand', payload);
+                  } else if ('ResetAlarms' === model.action) {
+                        let ids = Journal.pendingAlarms(model.serviceId)
+                        if (ids.length > 0)
+                            root.send(model.serviceId, 'ResetAlarm', ids)
+                  } else if ('ShowAlarms' === model.action) {
+                        let ids = Journal.pendingAlarms(model.serviceId)
+                        if (ids.indexOf(model.deviceId) >= 0)
+                            alarmsList.showDeviceAlarm(model.deviceId)
+                  }
               }
           }
 
           model: ListModel {
               id: menuItemsModel
-              ListElement{text: "placeholder"; command: 0; argument: 0; serviceId: 0; deviceId: 0}
+              ListElement{action: ""; text: "placeholder"; command: 0; argument: 0; serviceId: 0; deviceId: 0} // !important
           }
           onObjectAdded: menu.insertItem(index, object)
           onObjectRemoved: menu.removeItem(object)
       }
       function show(serviceId, deviceId) {
+          serviceId = serviceId || 0
           var list = [],
               service = root.services[serviceId]
+          console.log(serviceId, deviceId)
 
           if (service && ('contextMenu' in service)) {
               list = service.contextMenu(serviceId ? deviceId : 0) // 0 for subsystem root
@@ -39,13 +47,26 @@ Menu {
           }
 
           var pa = Journal.pendingAlarms(serviceId)
-          if (Utils.useAlarms() && service && 0 === deviceId && pa.length > 0) {
-              list.push({
-                  text: "Сброс тревог",
-                  serviceId: serviceId,
-                  deviceId: Infinity,
-                  command: 0
-              })
+          console.log(JSON.stringify(pa))
+          if (Utils.useAlarms() && pa.length > 0) {
+              if (0 === deviceId || 0 === serviceId) { // TODO: check core service (id = 0)
+                  list.push({
+                      action: "ResetAlarms",
+                      text: "Сброс тревог",
+                      serviceId: serviceId,
+                      deviceId: 0,
+                      command: 0
+                  })
+              }
+              if (deviceId > 0 && pa.indexOf(deviceId) >= 0) {
+                  list.push({
+                      action: "ShowAlarms",
+                      text: "Обработка тревог",
+                      serviceId: serviceId,
+                      deviceId: deviceId,
+                      command: 0
+                  })
+              }
           }
 
           if (list && list.length > 0) {

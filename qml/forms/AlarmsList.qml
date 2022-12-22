@@ -34,6 +34,23 @@ Popup {
             open()
     }
 
+    function showDeviceAlarm(deviceId) {
+        var item,
+            row = -1
+        for (let i = 0; i < alarms.count; i++) {
+            item = alarms.get(i)
+            if (deviceId === item.deviceId) {
+                row = i
+                if ("" === item.reason || "" === item.reaction)
+                    break
+            }
+        }
+        if (row >= 0) {
+            open()
+            tableView.showPopup(row)
+        }
+    }
+
     function updateList() {
         var ev,
             r = Journal.alarmRecords()
@@ -79,7 +96,7 @@ Popup {
                 lists[item.serviceId] = {}
             }
             lists[item.serviceId][item.deviceId] = true
-            ignored = ignored || "" === item.reason.trim() || "" === item.reaction.trim()
+            ignored = ignored || "" === item.reason || "" === item.reaction // .trim() is performed on the server side
         }
         var reset = () => {
             counter = Object.keys(lists).length

@@ -6,11 +6,11 @@ var oddOrEven = 0, // fluctuations for ListView(s) update
     maxJournalSize = 3e3, // max events count
     alarmNames = ["alarm", "error", "lost"]
 
-// returns devices list with active alarms [device_id, device_id, ...] for service
+// returns unique devices list with active alarms [device_id, device_id, ...] for service
 function pendingAlarms(serviceId) {
     var i, ev,
         events = {},
-        devices = []
+        devices = {}
 
     for (i = root.events.count - 1; i >= 0 ; i--) {
         ev = root.events.get(i)
@@ -25,9 +25,9 @@ function pendingAlarms(serviceId) {
 
     for (i in events)
         if (Const.EC_INFO_ALARM_RESET !== events[i])
-            devices.push(parseInt(i))
+            devices[i] = null
 
-    return devices
+    return Object.keys(devices).map((v) => {return parseInt(v)})
 }
 
 function describeEvent(msg) {
