@@ -119,7 +119,7 @@ Popup {
         var payload = {id: event.id},
             ok = Helpers.readForm(eventForm, payload)
         if (ok) {
-            console.log("Desc event:", JSON.stringify(payload))
+            //console.log("Desc event:", JSON.stringify(payload))
             root.newTask(0, "DescribeEvent", payload, descDone, fail)
         }
     }

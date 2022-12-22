@@ -22,7 +22,7 @@ EventTable {
 
     onDoubleClicked: root.eventSelected(model.get(row))
     Keys.onReturnPressed: {
-        showPopup(tableView.currentRow)
+        showCurrent()
         event.accepted = true
     }
     MouseArea {
@@ -37,7 +37,7 @@ EventTable {
                 tableView.currentRow = row
                 tableView.selection.clear()
                 tableView.selection.select(row, row)
-                showPopup(row)
+                showPopup(tableView.model.get(row).id)
             }
         }
     }
@@ -45,8 +45,12 @@ EventTable {
 
     AlarmPopup{id: popup}
 
-    function showPopup(row) {
-        var event = tableView.model.get(row),
+    function showCurrent() {
+        showPopup(tableView.model.get(currentRow).id)
+    }
+
+    function showPopup(id) {
+        var event = Journal.getEvent(id),
             count = Journal.activeAlarms(event)
         if (count >= 0) {
             //console.log("ACTIVE ALARMS", count)

@@ -35,19 +35,20 @@ Popup {
     }
 
     function showDeviceAlarm(deviceId) {
-        var item,
-            row = -1
-        for (let i = 0; i < alarms.count; i++) {
+        var i,
+            item,
+            alarm
+        for (i = 0; i < alarms.count; i++) {
             item = alarms.get(i)
             if (deviceId === item.deviceId) {
-                row = i
+                alarm = item
                 if ("" === item.reason || "" === item.reaction)
                     break
             }
         }
-        if (row >= 0) {
+        if (alarm) {
             open()
-            tableView.showPopup(row)
+            tableView.showPopup(alarm.id)
         }
     }
 
@@ -142,7 +143,7 @@ Popup {
                 Layout.fillWidth: true
                 text: "Обработка"
                 enabled: 1 === tableView.selection.count
-                onClicked: tableView.showPopup()
+                onClicked: tableView.showCurrent()
             }
 
             Button {

@@ -215,3 +215,14 @@ function alarmRecords() {
     }
     return alarms
 }
+
+function getEvent(id) {
+    var i,
+        event
+    for (i = 0; i < root.events.count; i++) {
+        event = root.events.get(i)
+        if (id === event.id)
+            return event
+    }
+    return null
+}
