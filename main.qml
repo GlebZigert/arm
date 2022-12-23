@@ -78,7 +78,7 @@ ApplicationWindow {
 
     property ListModel devices: ListModel {
         signal updated(int serviceId, int deviceId)
-        ListElement{label: "Подсистемы"; form: "service"; expanded: true; children: []}
+        ListElement{label: "Подсистемы"; form: "service"; expanded: true; isGroup: true; children: []}
     }
     property ListModel users: ListModel {
         signal updated(int id)

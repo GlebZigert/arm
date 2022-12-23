@@ -10,7 +10,7 @@ import "../../js/utils.js" as Utils
 
 Rectangle {
     id: pageRoot
-    property ListModel devicesTree: root.devices.get(0).children
+    property ListModel devicesTree: root.devices
     property ListModel devices: model.devices
     property var currentModel: model // TODO: not used on page2 for zones - much simple here!
     property bool changeable: adminMode && armConfig[activeComponent] & 4
