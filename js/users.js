@@ -74,7 +74,7 @@ UserTree.prototype.append = function (list, item) {
 UserTree.prototype.updateUser = function (data) {
     // TODO: maybe rewrite using model.set()?
     //{"id":13,"parentId":2,"type":4,"name":"7358t","surename":"Sdsfgdfgdf","login":""}
-    console.log("UPD USER", JSON.stringify(data))
+    //console.log("UPD USER", JSON.stringify(data))
     var i,
         exclude = ['id', 'type', 'role', 'icon', 'form', 'cards', 'zones', 'devices'],
         item = findUserOrParent(this.model, data.id, data.parentId)
