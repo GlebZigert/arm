@@ -25,6 +25,34 @@ Rectangle {
     color: "white"
     clip: true
 
+    Menu {
+        id: menu
+        property var currentItem
+
+        MenuItem {
+          text: "Без доступа"
+          onTriggered: menu.set(0)
+        }
+        MenuItem {
+          text: "Только просмотр"
+          onTriggered: menu.set(1)
+        }
+        MenuItem {
+          text: "Полный доступ"
+          onTriggered: menu.set(2)
+        }
+
+        function set(n) {
+            tree.changeSubnodes(currentItem.children, n)
+        }
+
+        function display(item) {
+            if (item.children && item.children.count > 0) {
+                currentItem = item
+                menu.popup()
+            }
+        }
+    }
     MyTree {
         id: tree
         //itemValues: ({serviceId: 1, id: 2, switchValue: 1})
@@ -34,8 +62,11 @@ Rectangle {
         anchors.fill: parent
         getTNID: Utils.getDeviceTNID
         Component.onCompleted: {
-            if (changeable)
-                tree.selected.connect(change)
+            if (changeable) {
+                tree.selected.connect(select)
+                tree.activated.connect(change)
+                tree.contextMenu.connect(menu.display)
+            }
             root.devices.updated.connect(update)
 
             //root.users.updated.connect(update)
@@ -88,17 +119,18 @@ Rectangle {
                 return icons[0]
         }
 
-        function change (item) {
-            if (item.isGroup)
-                return
-            if (currentItem.id !== item.id || currentItem.serviceId !== item.serviceId || currentItem.scopeId !== item.scopeId) {
+        function select(item) {
+            if (item.isGroup) return
+            //if (currentItem.id !== item.id || currentItem.serviceId !== item.serviceId || currentItem.scopeId !== item.scopeId) {
                 currentItem.id = item.id
                 currentItem.serviceId = item.serviceId
                 currentItem.scopeId = item.scopeId
                 //console.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
-                return
-            }
+            //}
+        }
 
+        function change(item) {
+            if (item.isGroup) return
             var i,
                 key = [item.id || 0, item.serviceId || 0, item.scopeId || 0].join(':'),
                 realItem = Utils.findItem(devicesTree, {id: item.id, serviceId: item.serviceId})
@@ -115,25 +147,20 @@ Rectangle {
         }
 
         function changeSubnodes(model, n) {
+            //console.log("MC", model.count)
             if (!model)
                 return
             var item, key
 
             for (var i = 0; i < model.count; i++) {
                 item = model.get(i)
-                key = [item.id || 0, item.serviceId || 0, item.scopeId || 0].join(':')
-                values[key] = n
+                if (!item.isGroup) {
+                    key = [item.id || 0, item.serviceId || 0, item.scopeId || 0].join(':')
+                    values[key] = n
+                }
                 changeSubnodes(item.children, n)
             }
+            iconProvider = getIcon // trigger update
         }
-
-        /*function findDevice(item) {
-            for (var i = 0; i < values.length; i++)
-                if (item.id === values[i].id && item.serviceId === values[i].serviceId)
-                    return values[i]
-            return null
-        }*/
-
     }
-
 }
