@@ -29,8 +29,9 @@ Item {
     property alias model: columnRepeater.model
     //property colors: {'na', 'ok', 'lost', 'error'}
     signal contextMenu(var item, int x, int y)
+    signal activated(var item)
     signal selected(var item)
-    signal selectNode(var item, var tnid) // select on mouse click
+    signal selectNode(var item, var tnid, bool rightButton) // select on mouse click
 
     signal findItem(var keys)
     signal clearSelection()
@@ -61,9 +62,10 @@ Item {
 
 
     onSelectNode: {
+        var newSelection = selectedTNID !== tnid
         treeRoot.focus = true // get focus (remove from another widget)
         selectedTNID = tnid
-        selected(item)
+        newSelection ? selected(item) : !rightButton && activated(item)
     }
 
     property var getTNID: function(item) {
@@ -199,7 +201,8 @@ Item {
                     }
                     MouseArea {
                         anchors.fill: parent
-                        onClicked: treeRoot.selectNode(model, tnid)
+                        onClicked: selectNode(model, tnid, false)
+                        //onDoubleClicked: activated(model)
                     }
                 }
                 Label {
@@ -223,13 +226,15 @@ Item {
                         acceptedButtons: Qt.LeftButton | Qt.RightButton
                         //preventStealing: true
                         onClicked: {
-                            treeRoot.selectNode(model, tnid)
-                            if (Qt.RightButton === mouse.button) {
+                            var rb = Qt.RightButton === mouse.button
+                            selectNode(model, tnid, rb)
+                            if (rb) {
                                var p = mapToItem(null, mouse.x, mouse.y)
-                               treeRoot.contextMenu(model, p.x, p.y)
+                               contextMenu(model, p.x, p.y)
                             }
-
                         }
+                        //onDoubleClicked: activated(model)
+
                         //onHoveredChanged: toolt.visible = hovered
                     }
                 }
