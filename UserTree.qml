@@ -93,7 +93,7 @@ Item {
 
     function reloadForm(id) {
         if (loader.model && loader.model.id === id) {
-            console.log("RELOAD!")
+            //console.log("RELOAD!")
             loader.reloadPic()
             loader.model = loader.model
         }
