@@ -32,8 +32,8 @@ Text {
     NumberAnimation on flashOpacity {
         id: flashAnimation
         loops: 3
-        from: 0.1
-        to: 1
+        from: 1
+        to: 0.1
         duration: 300
         onStopped: if ('flash' === model.display) model.display = ''
     }

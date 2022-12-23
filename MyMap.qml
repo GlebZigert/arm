@@ -62,8 +62,8 @@ RowLayout {
 
     NumberAnimation on blinkOpacity {
         loops: Animation.Infinite
-        from: 0.1
-        to: 1
+        from: 1
+        to: 0.1
         duration: 1000
     }
 
