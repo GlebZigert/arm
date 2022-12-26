@@ -121,7 +121,7 @@ Z5RWeb.prototype.contextMenu = function (id) {
         device = this.cache[id]
     //console.log("z5rweb-CM", JSON.stringify(device))
 
-    if (device && 2 === device.accessMode) {
+    if (device && 2 === device.accessMode && 'lost' !== Utils.className(device.stateClass)) {
         menu.push({text: "Открыть вход", command: 8})
         menu.push({text: "Открыть выход", command: 9})
         if (0 !== device.mode)
