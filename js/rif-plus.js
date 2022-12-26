@@ -289,7 +289,7 @@ Rif.prototype.contextMenu = function (id) {
               deviceId: 0,
               command: 133
           })
-    } else if (2 === device.accessMode && !device.isGroup) {
+    } else if (2 === device.accessMode && !device.isGroup && 'lost' !== Utils.className(device.stateClass)) {
         sid = device.state
         if (sid in transitions)
             trans.push(device.state)
