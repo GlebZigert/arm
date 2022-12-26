@@ -204,11 +204,14 @@ Rectangle {
             }
         }
 
-        camSnapshot = snapshot.replace(/:0$/, ':1') // secondary stream
-        camStream = camSnapshot
-            .replace(/^htt/, 'rts')
-            .replace(':8000/', ':50554/')
-            .replace('/live/media/snapshot/', '/hosts/')
+        if (snapshot) {
+            camSnapshot = snapshot.replace(/:0$/, ':1') // secondary stream
+            camStream = camSnapshot
+                .replace(/^htt/, 'rts')
+                .replace(':8000/', ':50554/')
+                .replace('/live/media/snapshot/', '/hosts/')
+        } else
+            camSnapshot = camStream = ''
 
         //console.log("SnSo>", snapshot)
         //console.log("CaSt>", camStream)
