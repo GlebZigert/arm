@@ -305,7 +305,7 @@ Rectangle {
 
     function saveDone(msg) {
         // {"service":0,"action":"UpdateMap","task":2,"data":{"id":26,"type":"map","name":"gfhgfh","cx":0,"cy":0,"zoom":0,"shapes":[],"zoomLevel":3}}
-        console.log("Map saveDone", JSON.stringify(msg))
+        //console.log("Map saveDone", JSON.stringify(msg))
         var i,
             url = Utils.makeURL("plan", {id: msg.data.id})//"http://" + serverHost + "/0/plan?id=" + msg.data.id;
 
@@ -385,11 +385,11 @@ Rectangle {
     }
 
     function treeContextMenu(item, x, y) {
-        console.log(x, y)
+        //console.log(x, y)
     }
 
     function deleteShape() {
-        console.log('deleting...')
+        //console.log('deleting...')
         for (var i = 0; i < currentMap.shapes.count; i++)
             if (equal(currentItem, currentMap.shapes.get(i))) {
                 selectItem({})
@@ -423,12 +423,12 @@ Rectangle {
         if (action in handlers) {
             item = handlers[action](x, y, size)
             seed(item, x, y, size)
-            console.log("New shape:", JSON.stringify(item))
+            //console.log("New shape:", JSON.stringify(item))
             appendFinished = false
             currentMap.shapes.append(item)
             selectItem(currentMap.shapes.get(currentMap.shapes.count - 1))
         } else {
-            console.log('Unknown new shape action')
+            //console.log('Unknown new shape action')
             //currentMap.shapes.setProperty(5, 'state', 'flash')
         }
 
@@ -488,7 +488,7 @@ Rectangle {
                 data = [(-w2) + ',' + (-h2),
                         w2 + ',' + (-h2),
                         0 + ',' + h2].join(' ')
-            console.log(data)
+            //console.log(data)
             return {type: 'polygon', data: data, color: 'red'}
         },
         'plan.polygon': function (x, y, size) {
@@ -505,7 +505,7 @@ Rectangle {
                 h2 = size / 2,
                 data = [(-w2) + ',0',
                         w2 + ',0'].join(' ')
-            console.log(data)
+            //console.log(data)
             return {type: 'polyline', data: data, color: 'red'}
         },
         'plan.polyline': function (x, y, size) {
