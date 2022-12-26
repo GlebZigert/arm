@@ -39,15 +39,21 @@ Menu {
           serviceId = serviceId || 0
           var list = [],
               service = root.services[serviceId]
-          console.log(serviceId, deviceId)
+          //console.log(serviceId, deviceId)
+
+          if (service && 'lost' === Utils.className(service.model.status.tcp))
+              return // no menu when connection with the underlaying service is lost
 
           if (service && ('contextMenu' in service)) {
               list = service.contextMenu(serviceId ? deviceId : 0) // 0 for subsystem root
               //console.log("ContextMenu:", JSON.stringify(list))
           }
 
+          if (null === list) // null means context commands are unavailable (no conn with server?)
+              return
+
           var pa = Journal.pendingAlarms(serviceId)
-          console.log(JSON.stringify(pa))
+          //console.log(JSON.stringify(pa))
           if (Utils.useAlarms() && pa.length > 0) {
               if (0 === deviceId || 0 === serviceId) { // TODO: check core service (id = 0)
                   list.push({
