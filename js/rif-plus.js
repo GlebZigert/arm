@@ -281,7 +281,7 @@ Rif.prototype.contextMenu = function (id) {
         menu = [],
         trans = [], // combined transitions
         device = this.cache[id]
-    console.log("Rif-CM", JSON.stringify(device))
+    //console.log("Rif-CM", JSON.stringify(device))
     if (!device) {
         menu.push({
               text: "Общий ДК",
@@ -331,7 +331,7 @@ Rif.prototype.contextMenu = function (id) {
 
 
 Rif.prototype.shutdown = function () {
-    console.log(this.model.type, this.model.id, 'shutdown')
+    //console.log(this.model.type, this.model.id, 'shutdown')
 }
 
 Rif.prototype.rebuildTree = function (data0) {
@@ -348,11 +348,11 @@ Rif.prototype.rebuildTree = function (data0) {
         path = [list],
         model = this.model.children;
     if (this.validateTree(data0)) {
-        console.log('Update RIF tree')
+        //console.log('Update RIF tree')
         this.update(data0)
     } else {
         this.nextGroupId = 9e15 // ~Number.MAX_SAFE_INTEGER
-        console.log("Rebuild RIF tree")
+        //console.log("Rebuild RIF tree")
         for (i = 0; i < data0.length; i++)
             data.push(data0[i])
         data.sort(function(a, b) {
@@ -559,7 +559,7 @@ Rif.prototype.update = function (data) {
 */
 // validate new data against existing tree
 Rif.prototype.validateTree = function (data) {
-    console.log('RifValidateTreeStub')
+    //console.log('RifValidateTreeStub')
     return false
     /*var id,
         ok = true
