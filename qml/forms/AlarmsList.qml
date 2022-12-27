@@ -119,12 +119,23 @@ Popup {
         }
     }
 
+    function checkAlarms(lists) {
+        var i,
+            item
+        for (i = 0; i < alarms.count; i++) {
+            item = alarms.get(i)
+            if (item.serviceId in lists && item.deviceId in lists[item.serviceId] && ("" === item.reason || "" === item.reaction))
+                return false
+        }
+        return true
+    }
+
     function resetAlarms(all) {
         var counter,
             names = {},
             lists = {},
-            failures = [],
-            ignored = false
+            failures = []
+
         var done = () => {
             if (--counter <= 0 && failures.length > 0)
                 messageBox.error(failures.join('\n'))
@@ -139,8 +150,8 @@ Popup {
                 names[item.serviceId] = item.serviceName
                 lists[item.serviceId] = {}
             }
-            lists[item.serviceId][item.deviceId] = true
-            ignored = ignored || "" === item.reason || "" === item.reaction // .trim() is performed on the server side
+            lists[item.serviceId][item.deviceId] = null
+            //ignored = ignored || "" === item.reason || "" === item.reaction // .trim() is performed on the server side
         }
         var reset = () => {
             counter = Object.keys(lists).length
@@ -155,7 +166,7 @@ Popup {
         else
             tableView.selection.forEach(process)
 
-        if (ignored)
+        if (!checkAlarms(lists))
             messageBox.ask("Не все тревоги обработаны, продолжить?", reset)
         else
             reset()
