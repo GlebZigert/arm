@@ -154,6 +154,7 @@ Item {
             delete payload.password
             root.userLogin = payload.login
             root.userToken = payload.token
+            payload.timestamp = Date.now()
             root.newTask(0, "ChangeUser", payload, done, failed)
         }
     }
