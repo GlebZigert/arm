@@ -52,16 +52,59 @@ Popup {
         }
     }
 
+    function saveSelection() {
+        var selected = {}
+        tableView.selection.forEach((i) => {selected[alarms.get(i).id] = null})
+        return selected
+    }
+
+    function restoreSelection(selected) {
+        var i,
+            item
+        tableView.currentRow = -1
+        tableView.selection.clear()
+        for (i = 0; i < alarms.count; i++)
+            if (alarms.get(i).id in selected)
+                tableView.selection.select(i, i)
+    }
+
     function updateList() {
-        var ev,
-            r = Journal.alarmRecords()
-        alarms.clear()
-        alarms.append(Journal.alarmRecords())
-        if (r.length > 0) {
-            ev = r[r.length-1]
-            menu.setAlarm(r.length, (ev.deviceName || ev.serviceName) + ': ' + ev.text)
+        var i,
+            item,
+            alarmId,
+            selection = saveSelection(),
+            items = Journal.alarmRecords(),
+            actual = items.reduce((o, v) => {o[v.id] = null; return o}, {})
+
+        // topbar alarm text
+        item = items.pop()
+        if (item) {
+            menu.setAlarm(1 + items.length, (item.deviceName || item.serviceName) + ': ' + item.text)
         } else
             menu.setAlarm(0, '')
+
+        // inject new items
+        for (i = alarms.count - 1; i >= 0; i--) {
+            alarmId = alarms.get(i).id
+            if (!(alarmId in actual)) {
+                alarms.remove(i)
+                continue
+            }
+            while (item && item.id !== alarmId) {
+                alarms.insert(i+1, item)
+                item = items.pop()
+            }
+            while (item && item.id === alarmId)
+                item = items.pop()
+        }
+
+        // inject the rest
+        while (item) {
+            alarms.insert(0, item)
+            item = items.pop()
+        }
+
+        restoreSelection(selection)
     }
 
     function updateRecord(event) {
