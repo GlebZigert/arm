@@ -75,7 +75,7 @@ function activeAlarms(event) {
             } else if (item.sticky) {
                 if (alarmCount < 0)
                     alarmCount = 0
-                if ("" === item.reason.trim() || "" === item.reaction.trim())
+                if ("" === item.reason || "" === item.reaction) // .trim() is performed on the server side
                     alarmCount++ // not-described alarms
             }
         }
