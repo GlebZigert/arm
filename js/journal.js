@@ -37,13 +37,13 @@ function describeEvent(msg) {
         event = msg.data
     if (!event)
         return
-
     for (i = 0; i < root.events.count; i++) {
         item = root.events.get(i)
         if (item.id === event.id) {
             item.reason = event.reason
             item.reaction = event.reaction
-            root.events.updated(item)
+            // bug in Qt? `item` in signal handler is not updated
+            root.events.updated(JSON.parse(JSON.stringify(item)))
             break
         }
     }
