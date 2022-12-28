@@ -164,7 +164,7 @@ function setState(dev, event, priority) {
     var mode,
         text,
         animation,
-        sticky = stickyStates.indexOf(event.event) >= 0,
+        sticky = stickyStates.indexOf(event.event) >= 0 && Utils.useAlarms(),
         classCode = event.class,
         sid = event.event || classCode, // TODO: check this!
         className = Utils.className(classCode),
