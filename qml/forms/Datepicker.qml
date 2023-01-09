@@ -31,6 +31,7 @@ RowLayout {
         font.family: faFont.name
         text: faFont.fa_calendar_alt
         font.pixelSize: 18
+        hoverEnabled: true
         ToolTip.text: "Выбрать дату"
         ToolTip.visible: hovered
         onClicked: popup.open()

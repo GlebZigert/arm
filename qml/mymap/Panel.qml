@@ -49,6 +49,7 @@ Rectangle {
                 ]
                 delegate: Button {
                     enabled: !!currentMap && !asyncWait
+                    hoverEnabled: true
                     ToolTip.text: modelData.name
                     ToolTip.visible: hovered
                     width: buttonSize
@@ -82,7 +83,7 @@ Rectangle {
                 Repeater {
                     model: iconsList
                     delegate: Button {
-
+                        hoverEnabled: true
                         ToolTip.text: model.name
                         ToolTip.visible: hovered
                         width: buttonSize

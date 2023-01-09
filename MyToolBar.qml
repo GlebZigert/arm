@@ -72,6 +72,7 @@ ToolBar {
                 text: faFont.fa_message
                 font.pixelSize: 24
                 onClicked: alarmsList.open()
+                hoverEnabled: true
                 ToolTip.visible: hovered
                 ToolTip.text: "Активные тревоги"
                 palette {
@@ -106,6 +107,7 @@ ToolBar {
             text: faFont.fa_bullhorn
             font.pixelSize: 24
             onClicked: messageBox.ask("Включить тревогу?", function(){Qt.callLater(root.alarma)})
+            hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: "Тревога!"
 
@@ -128,6 +130,7 @@ ToolBar {
             text: alarmPlayer.playbackState === MediaPlayer.PlayingState ? faFont.fa_volume_up : faFont.fa_volume_mute
             font.pixelSize: 24
             onClicked: root.playAlarm("")
+            hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: "Сброс звука"
 
