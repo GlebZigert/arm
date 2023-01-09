@@ -27,6 +27,13 @@ Item {
 
 
 
+    Keys.onPressed: {
+         console.log("!!!003")
+
+    }
+
+
+
 
     signal signal_to_set_size(int x,int y)
 signal take_it_on_big_screen(string name,string point)
@@ -76,6 +83,9 @@ signal take_it_on_big_screen(string name,string point)
         anchors.fill:parent
         color: "#9adbda"
 
+
+
+
         Column{
         anchors.fill:parent
 
@@ -94,6 +104,9 @@ signal take_it_on_big_screen(string name,string point)
             id: space
             width:parent.width
             height: parent.height-head.height
+
+
+
 
        Repeater{
             id: rpt

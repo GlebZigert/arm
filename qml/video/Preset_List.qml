@@ -11,9 +11,28 @@ Item {
     property var serviceId
     property int current_tlmtr_id: -1
 
+
+
     Rectangle{
     anchors.fill: parent
     color: "gray"
+
+  //  propagateComposedEvents: true
+
+
+
+          MouseArea{
+
+              hoverEnabled: true
+              id:area1
+              anchors.fill: parent
+
+
+
+          }
+
+   //    activeFocusOnPress: true
+
 
 
     Column{
@@ -39,6 +58,7 @@ Item {
              text: "   +"
                  }
              MouseArea{
+
                  anchors.fill: parent
              onClicked: {
 
@@ -100,7 +120,7 @@ Item {
 
              MouseArea{
              anchors.fill: parent
-             propagateComposedEvents: true
+          //   propagateComposedEvents: true
              onClicked: {
 
                  mouse.accepted=false
@@ -123,6 +143,8 @@ Item {
     color: "lightblue"
 
     clip:true
+
+
 
     ListModel{
         id: model
@@ -182,13 +204,20 @@ anchors.fill: parent
              width: parent.width
              height: 30
              placeholderText: qsTr("Enter name")
-             focus: true
-             activeFocusOnPress: true
-
+        //     focus: true
+       //      activeFocusOnPress: true
+       //      Keys.onLeftPressed: console.log("move left")
 
              property int ind: index
 
+
+
+
               onAccepted:{
+
+//Если мышь не в этом поле то идешь ты вдаль
+
+                if(area1.containsMouse){
 
 
               if(ind<0)
@@ -197,20 +226,31 @@ anchors.fill: parent
               }
               else
               {
+                  console.log("this is ")
               Tlmtr.edit(ind,text_field.text,serviceId)
               }
 
 
+              }else
+                    console.log("where is fucking mouse")
               }
 
+
+           //   focus: true
+
+              /*
               Keys.onPressed: {
+                   console.log(" Keys.onPressed !!! :")
+
                       if (event.key == Qt.Key_Enter) {
 
                           text_field.visible=false
                           event.accepted = true
 
                       }
+
                   }
+              */
 
 
 

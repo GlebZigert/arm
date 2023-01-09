@@ -25,6 +25,8 @@ ApplicationWindow {
     height: 1024
     visible: true
 
+
+
     //https://stackoverflow.com/questions/47175409/qml-asking-confirmation-before-closing-application
     onClosing: checkClosing(close)
 

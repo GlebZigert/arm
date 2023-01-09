@@ -13,12 +13,33 @@ SplitView {
 anchors.fill: parent
 orientation: Qt.Vertical
 
+propagateComposedEvents: true
+
 
 Rectangle {
 id: centerItem
 Layout.minimumHeight: 50
 height: 800
 color: "lightgray"
+propagateComposedEvents: true
+
+Keys.onPressed: {
+     console.log("!!!4")
+
+}
+
+MouseArea{
+    propagateComposedEvents: true
+    hoverEnabled: true
+    anchors.fill: parent
+acceptedButtons:  Qt.LeftButton | Qt.RightButton
+Keys.onPressed: {
+     console.log("!!!3")
+
+}
+}
+
+
 Text {
 text: "View 2"
 anchors.centerIn: parent

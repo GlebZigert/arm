@@ -23,7 +23,7 @@ void VideoPlayer::paint(QPainter *painter)
 */
 
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
-    qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
+ //   qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
 
 }
@@ -82,7 +82,7 @@ void VideoPlayer::onheightChanged(){
 }
 
 void VideoPlayer::frame(QString source){
-    qDebug()<<"frame";
+  //  qDebug()<<"frame";
     if(source==this->m_source){
          img=QImage(data->data[0],
                     w,
