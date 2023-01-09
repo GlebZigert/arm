@@ -866,7 +866,7 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
 function tlmtr_cmd(data)
 {
-   console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
+ //  console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
 if (root.storage_live=="live") {
      root.log("...this.serviceId ",root.axxon_service_id)
     root.send(root.axxon_service_id, 'Telemetry_command', data)

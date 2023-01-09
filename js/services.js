@@ -51,11 +51,11 @@ function message(msg) {
             handlers[msg.action].handlers[msg.action](msg) // WTF?
         else
             console.log('Handler not found:', msg.action)
-        console.log('Done action:', msg.action)
+     //   console.log('Done action:', msg.action)
     } else if (msg.service in services && msg.action in services[msg.service].handlers) {
-        console.log('Running action', msg.action, 'on', msg.service)
+  //      console.log('Running action', msg.action, 'on', msg.service)
         services[msg.service].handlers[msg.action](msg.data, !msg.task)
-        console.log('Done action', msg.action)
+      //  console.log('Done action', msg.action)
      } else if (0 !== msg.service && !(msg.service in services)) {
         console.log('Unknown service:', msg.service, " => reload services list")
         root.send(0, "ListServices", "")

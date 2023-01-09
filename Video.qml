@@ -48,6 +48,9 @@ Item{
 
     property int cid
 
+    property int dy
+    property int dx
+
 
     focus: true
 
@@ -56,15 +59,91 @@ Item{
 
     }
 
-    Keys.onLeftPressed:   {stop_moving_timer.stop();console.log("onLeftPressed ");if((root.storage_live==live)&&(root.pause_play==play))vm_area.move(-1,0)}
+    Keys.onLeftPressed:   {
 
-    Keys.onRightPressed:  {stop_moving_timer.stop();console.log("onRightPressed ");if((root.storage_live==live)&&(root.pause_play==play))vm_area.move(1,0)}
+        dx=-1;
+stop_moving_timer_dx.stop()
+        if((root.storage_live==live)&&(root.pause_play==play)){
 
-    Keys.onUpPressed:     {stop_moving_timer.stop();console.log("onUpPressed ");if((root.storage_live==live)&&(root.pause_play==play))vm_area.move(0,1)}
+            vm_area.move(dx,dy)
 
-    Keys.onDownPressed:   {stop_moving_timer.stop();console.log("onDownPressed ");if((root.storage_live==live)&&(root.pause_play==play))vm_area.move(0,-1)}
+        }
 
-    Keys.onReleased:      {stop_moving_timer.stop();console.log("onReleased ");if((root.storage_live==live)&&(root.pause_play==play))stop_moving_timer.start()}
+
+
+    }
+
+    Keys.onRightPressed:  {
+
+        dx=1;
+stop_moving_timer_dx.stop()
+        if((root.storage_live==live)&&(root.pause_play==play)){
+
+            vm_area.move(dx,dy)
+
+        }
+
+
+    }
+
+    Keys.onUpPressed:     {
+
+        dy=1;
+stop_moving_timer_dy.stop()
+        if((root.storage_live==live)&&(root.pause_play==play)){
+
+            vm_area.move(dx,dy)
+
+        }
+
+
+    }
+
+    Keys.onDownPressed:   {
+
+        dy=-1;
+stop_moving_timer_dy.stop()
+        if((root.storage_live==live)&&(root.pause_play==play)){
+
+            vm_area.move(dx,dy)
+
+        }
+
+    }
+
+    Keys.onReleased:      {
+
+        switch(event.key){
+
+        case Qt.Key_Up:{
+       stop_moving_timer_dy.start()
+
+        }
+        break
+
+        case Qt.Key_Down:{
+
+       stop_moving_timer_dy.start()
+        }
+        break
+
+        case Qt.Key_Right:{
+       stop_moving_timer_dx.start()
+
+        }
+        break
+
+        case Qt.Key_Left:{
+       stop_moving_timer_dx.start()
+
+        }
+        break
+        }
+
+
+
+
+    }
 
 
     onPanePositionChanged: {
@@ -210,6 +289,30 @@ Item{
                                 }
                             }
 
+                            Timer {
+                                id:stop_moving_timer_dx
+                                interval: 100; running: false; repeat: false
+                                property int msec:0
+                                onTriggered:
+                                {
+                                        console.log("stop_moving_timer_dx")
+                                   dx=0
+                                      vm_area.move(dx,dy)
+                                }
+                            }
+
+                            Timer {
+                                id:stop_moving_timer_dy
+                                interval: 100; running: false; repeat: false
+                                property int msec:0
+                                onTriggered:
+                                {
+                                    console.log("stop_moving_timer_dy")
+                                  dy=0
+                                       vm_area.move(dx,dy)
+                                }
+                            }
+
                             onReleased: {
                                 if((root.storage_live==live)&&(root.pause_play==play)){
                                     stop_moving_timer.start()
@@ -219,7 +322,7 @@ Item{
 
                             function move(mx,my)
                             {
-
+                                //  console.log("move ",mx," ",my)
                                 var value=Math.sqrt(mx*mx+my*my)
 
                                 var val=0
@@ -235,7 +338,7 @@ Item{
                                 if(value>0.9)
                                     val=0.5
 
-                                console.log("val ",val)
+                                //   console.log("val ",val)
                                 var arctn=Math.abs(Math.atan(my/mx))
 
                                 var x=0
@@ -256,9 +359,12 @@ Item{
                                         y=0
 
                                     }
-                                    else
+                                    else if(mx<0)
                                     {
                                         x=-1
+                                        y=0
+                                    }else{
+                                        x=0
                                         y=0
                                     }
                                 }
@@ -280,9 +386,12 @@ Item{
                                                 x=1
                                                 y=1
                                             }
-                                            else
+                                            else if(mx<0)
                                             {
                                                 x=-1
+                                                y=1
+                                            }else{
+                                                x=0
                                                 y=1
                                             }
                                         }
@@ -293,11 +402,15 @@ Item{
                                                 x=1
                                                 y=-1
                                             }
-                                            else
+                                            else if(mx<0)
                                             {
                                                 x=-1
                                                 y=-1
+                                            }else{
+                                                x=0
+                                                y=-1
                                             }
+
                                         }
 
 
@@ -319,15 +432,22 @@ Item{
                                             x=0
                                             y=1
                                         }
-                                        else
+                                        else if(my<0)
                                         {
                                             x=0
                                             y=-1
+                                        }else{
+                                            x=0
+                                            y=0
                                         }
                                     }
+
+
+                                console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
+
                                 if((x_prev!=x)||(y_prev!=y)||(val_prev!=val))
                                 {
-
+                                    console.log("+")
                                     var str=""
                                     str=String(x)
                                     str=str+" "
@@ -335,7 +455,6 @@ Item{
                                     str=str+" "
                                     str=str+String(val)
                                     str=str+" "
-
 
 
                                     Tlmtr.move(str)
