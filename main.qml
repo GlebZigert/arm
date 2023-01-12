@@ -27,6 +27,9 @@ ApplicationWindow {
 
 
 
+    onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)
+
+
     //https://stackoverflow.com/questions/47175409/qml-asking-confirmation-before-closing-application
     onClosing: checkClosing(close)
 

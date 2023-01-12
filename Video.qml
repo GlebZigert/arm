@@ -52,99 +52,21 @@ Item{
     property int dx
 
 
-    focus: true
 
-    Keys.onPressed: {
-        console.log("!!!0004")
 
-    }
+/*
+                    Keys.onPressed: {
+                        console.log("!!!0004")
 
-    Keys.onLeftPressed:   {
+                    }
+                    */
 
-        dx=-1;
-stop_moving_timer_dx.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
+     onActiveFocusChanged:{
+     console.log("srv activeFocus: ", srv.activeFocus)
 
 
 
-    }
-
-    Keys.onRightPressed:  {
-
-        dx=1;
-stop_moving_timer_dx.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
-
-
-    }
-
-    Keys.onUpPressed:     {
-
-        dy=1;
-stop_moving_timer_dy.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
-
-
-    }
-
-    Keys.onDownPressed:   {
-
-        dy=-1;
-stop_moving_timer_dy.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
-
-    }
-
-    Keys.onReleased:      {
-
-        switch(event.key){
-
-        case Qt.Key_Up:{
-       stop_moving_timer_dy.start()
-
-        }
-        break
-
-        case Qt.Key_Down:{
-
-       stop_moving_timer_dy.start()
-        }
-        break
-
-        case Qt.Key_Right:{
-       stop_moving_timer_dx.start()
-
-        }
-        break
-
-        case Qt.Key_Left:{
-       stop_moving_timer_dx.start()
-
-        }
-        break
-        }
-
-
-
-
-    }
-
+     }
 
     onPanePositionChanged: {
 
@@ -170,17 +92,7 @@ stop_moving_timer_dy.stop()
         }
     }
 
-    Timer {
-        id:zoom_timer
-        interval: 300; running: false; repeat: false
-        property int msec:0
-        onTriggered:
-        {
-            //root.log("zoom_timer_timeout")
-            Tlmtr.stop_zoom()
-            vm_area.zoom_prev=0
-        }
-    }
+
 
     Timer {
         id: update_intervals_timer
@@ -204,6 +116,9 @@ stop_moving_timer_dy.stop()
             Layout.fillHeight: true
             orientation: Qt.Horizontal
 
+
+
+
             Rectangle {
                 id:r2
                 width: 50
@@ -217,7 +132,9 @@ stop_moving_timer_dy.stop()
                     Component.onCompleted: {
 
                         root.deviceSelected.connect(deviceSelected)
-                        tree.selected.connect(selected)
+                        //tree.selected.connect(selected)
+                        v1.selected.connect(selected)
+
                     }
                     function selected(item) {
 
@@ -230,6 +147,7 @@ stop_moving_timer_dy.stop()
 
             }
 
+
             Rectangle {
                 id:rect
                 width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
@@ -238,410 +156,87 @@ stop_moving_timer_dy.stop()
                 color: "lightblue"
                 clip: true
 
-                Rectangle { color: "lightgray";
-                    id:vm_rect
-                    anchors.fill: parent
-                    clip:true
 
-                    VideoPlayer{
-                        id: vm
-                        x:(parent.width- width)/2
-                        width: (height/1080)*1920
-                        height: parent.height
-                        transform: Scale {
-                            id: tform1
-                        }
 
 
-                        MouseArea {
-                            id: vm_area
-                            anchors.fill: parent
-                            property double factor: 2.0
-                            hoverEnabled: true
-                            property int x_prev
-                            property int y_prev
-                            property int val_prev
-                            property int mouseX_prev
-                            property int mouseY_prev
-
-
-
-
-                            onPressed: {
-                                if((root.storage_live==live)&&(root.pause_play==play)){
-
-                                    var mx=mouseX-parent.width/2
-                                    var my=parent.height/2-mouseY
-                                    var arctn=Math.abs(Math.atan(my/mx))
-                                    move(mx/2,my/2)
-                                }
-                            }
-
-                            Timer {
-                                id:stop_moving_timer
-                                interval: 100; running: false; repeat: false
-                                property int msec:0
-                                onTriggered:
-                                {
-                                    Tlmtr.stop_moving()
-                                    vm_area.x_prev=0
-                                    vm_area.y_prev=0
-                                }
-                            }
-
-                            Timer {
-                                id:stop_moving_timer_dx
-                                interval: 100; running: false; repeat: false
-                                property int msec:0
-                                onTriggered:
-                                {
-                                        console.log("stop_moving_timer_dx")
-                                   dx=0
-                                      vm_area.move(dx,dy)
-                                }
-                            }
-
-                            Timer {
-                                id:stop_moving_timer_dy
-                                interval: 100; running: false; repeat: false
-                                property int msec:0
-                                onTriggered:
-                                {
-                                    console.log("stop_moving_timer_dy")
-                                  dy=0
-                                       vm_area.move(dx,dy)
-                                }
-                            }
-
-                            onReleased: {
-                                if((root.storage_live==live)&&(root.pause_play==play)){
-                                    stop_moving_timer.start()
-                                }
-                            }
-
-
-                            function move(mx,my)
-                            {
-                                //  console.log("move ",mx," ",my)
-                                var value=Math.sqrt(mx*mx+my*my)
-
-                                var val=0
-                                if(value===0)
-                                    val=0
-
-                                if(value>0.4)
-                                    val=0.2
-
-                                if(value>0.4)
-                                    val=0.2
-
-                                if(value>0.9)
-                                    val=0.5
-
-                                //   console.log("val ",val)
-                                var arctn=Math.abs(Math.atan(my/mx))
-
-                                var x=0
-                                var y=0
-                                if(arctn<0.2)
-                                {
-                                    if(value>0.9)
-                                        rect.color="red"
-                                    else
-                                        if(value>0.4)
-                                            rect.color="yellow"
-                                        else
-                                            rect.color="lightgray"
-
-                                    if(mx>0)
-                                    {
-                                        x=1
-                                        y=0
-
-                                    }
-                                    else if(mx<0)
-                                    {
-                                        x=-1
-                                        y=0
-                                    }else{
-                                        x=0
-                                        y=0
-                                    }
-                                }
-                                else
-                                    if(arctn<1.3)
-
-                                    { if(value>0.9)
-                                            rect.color="green"
-                                        else
-                                            if(value>0.4)
-                                                rect.color="lightgreen"
-                                            else
-                                                rect.color="lightgray"
-
-                                        if(my>0)
-                                        {
-                                            if(mx>0)
-                                            {
-                                                x=1
-                                                y=1
-                                            }
-                                            else if(mx<0)
-                                            {
-                                                x=-1
-                                                y=1
-                                            }else{
-                                                x=0
-                                                y=1
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if(mx>0)
-                                            {
-                                                x=1
-                                                y=-1
-                                            }
-                                            else if(mx<0)
-                                            {
-                                                x=-1
-                                                y=-1
-                                            }else{
-                                                x=0
-                                                y=-1
-                                            }
-
-                                        }
-
-
-
-
-
-                                    }
-                                    else
-                                    {          if(value>0.9)
-                                            rect.color="blue"
-                                        else
-                                            if(value>0.4)
-                                                rect.color="lightblue"
-                                            else
-                                                rect.color="lightgray"
-
-                                        if(my>0)
-                                        {
-                                            x=0
-                                            y=1
-                                        }
-                                        else if(my<0)
-                                        {
-                                            x=0
-                                            y=-1
-                                        }else{
-                                            x=0
-                                            y=0
-                                        }
-                                    }
-
-
-                                console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
-
-                                if((x_prev!=x)||(y_prev!=y)||(val_prev!=val))
-                                {
-                                    console.log("+")
-                                    var str=""
-                                    str=String(x)
-                                    str=str+" "
-                                    str=str+String(y)
-                                    str=str+" "
-                                    str=str+String(val)
-                                    str=str+" "
-
-
-                                    Tlmtr.move(str)
-
-
-                                    x_prev=x
-                                    y_prev=y
-                                    val_prev=val
-                                }
-                            }
-
-
-                            onEntered: {
-
-                            }
-                            property int zoom: 0
-                            property int zoom_prev: 0
-                            onWheel:
-                            {
-                                if((root.storage_live==live)&&(root.pause_play==play)){
-
-                                    if(wheel.angleDelta.y > 0)  // zoom in
-                                        zoom=1
-                                    else                        // zoom out
-                                        zoom=-1
-
-                                    if(zoom_prev!=zoom)
-                                    {
-                                        if (zoom==1)
-                                        {
-                                            Tlmtr.zoom_in()
-                                        }
-                                        if (zoom==-1)
-                                        {
-                                            Tlmtr.zoom_out()
-                                        }
-                                    }
-                                    zoom_prev=zoom
-                                    zoom_timer.stop()
-                                    zoom_timer.start()
-                                }
-                                else
-                                {
-                                    if(wheel.angleDelta.y > 0)  // zoom in
-                                        var zoomFactor = factor
-                                    else                        // zoom out
-                                        zoomFactor = 1/factor
-
-                                    if(!(tform1.xScale *zoomFactor<1))
-                                    {
-                                        if(wheel.angleDelta.y > 0)
-                                        {
-                                            var realX = wheel.x * tform1.xScale
-                                            var realY = wheel.y * tform1.yScale
-                                            vm.x += (1-zoomFactor)*realX
-                                            vm.y += (1-zoomFactor)*realY
-                                            tform1.xScale *=zoomFactor
-                                            tform1.yScale *=zoomFactor
-                                        }
-                                        else
-                                        {
-                                            var realX = wheel.x * tform1.xScale
-                                            var realY = wheel.y * tform1.yScale
-
-                                            tform1.xScale *=zoomFactor
-                                            tform1.yScale *=zoomFactor
-
-
-                                            vm.x += (1-zoomFactor)*realX
-                                            vm.y += (1-zoomFactor)*realY
-
-                                            if(tform1.xScale==1)
-                                            {
-
-                                                vm.x =(vm_rect.width- (vm_rect.height/1080)*1920)/2
-                                                vm.y =0
-
-                                                root.log("rect.x ", vm.x )
-                                                root.log("rect.y ",vm.y )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    Timer{
-                        id: delay_timer
-                        interval: 100; running: false; repeat: false
-
-                        onTriggered:
-                        {
-
-                        }
-
-
-                    }
-
-
-                    MouseArea{
-                        anchors.fill:parent
-                        propagateComposedEvents: true
-
-                        onPressed: {
-                            delay_timer.start()
-                            mouse.accepted=false
-                        }
-
-                        onReleased: {
-
-                            if(delay_timer.running)
-                            {
-
-                                if(srv.interfase_visible)
-                                {
-                                    bottom_panel.height=0
-                                    timelist_rect.width=0
-                                }
-                                else
-                                {
-                                    bottom_panel.height=160
-                                    timelist_rect.width=100
-                                }
-                                srv.interfase_visible=!srv.interfase_visible
-                            }
-
-                            mouse.accepted=false
-
-                        }
-                    }
-                }
-
-                Rectangle {
-                    width: 300
-                    anchors {
-
-                        top: parent.top
-                        right: parent.right
-                        bottom: parent.bottom
-                    }
-                    id: configPanel
-                    layer.enabled: true
-                    property string selected: ""
-                    property string selectedUrl
-                    property int selectedX: 0
-                    property int selectedY: 0
-                    opacity: 0.1
-                    color: "blue"
-
-                    Video.Loaded_cameras {
-                        id: camera_storage
-                        anchors.fill:parent
-                        progress_bar: timeline
-
-                    }
-
-                    states: [
-                        State {
-                            name: "show"
-                            PropertyChanges {
-                                target: configPanel
-                                opacity: 1
-                                anchors.rightMargin: 0
-                                width: 400
-                            }
-                        },
-                        State {
-                            name: "hide"
-                            PropertyChanges {
-                                target: configPanel
-                                opacity: 0.5
-                                anchors.rightMargin: configPanel.width
-                                width:0
-                            }
-                        }
-                    ]
-
-
-                }
 
                 MouseArea{
+
+
+
+
                     anchors.fill:parent
                     hoverEnabled: true
                     propagateComposedEvents: true
                     property int flag: 0
+
+
+                    Video.Vvvvvvm{
+                        id: v1
+
+                     //   anchors.fill: parent
+                        x:0
+                        y:0
+                        width: 400
+                        height: 400
+
+
+
+                        onActiveFocusChanged:{
+                        console.log("v1 activeFocus: ", v1.activeFocus)
+
+
+                        }
+                    }
+
+                    Rectangle {
+                        width: 300
+                        anchors {
+
+                            top: parent.top
+                            right: parent.right
+                            bottom: parent.bottom
+                        }
+                        id: configPanel
+                        layer.enabled: true
+                        property string selected: ""
+                        property string selectedUrl
+                        property int selectedX: 0
+                        property int selectedY: 0
+                        opacity: 0.1
+                        color: "blue"
+
+                        Video.Loaded_cameras {
+                            id: camera_storage
+                            anchors.fill:parent
+                            progress_bar: timeline
+
+                        }
+
+                        states: [
+                            State {
+                                name: "show"
+                                PropertyChanges {
+                                    target: configPanel
+                                    opacity: 1
+                                    anchors.rightMargin: 0
+                                    width: 400
+                                }
+                            },
+                            State {
+                                name: "hide"
+                                PropertyChanges {
+                                    target: configPanel
+                                    opacity: 0.5
+                                    anchors.rightMargin: configPanel.width
+                                    width:0
+                                }
+                            }
+                        ]
+
+
+                    }
+
 
 
                     onClicked: {
@@ -653,7 +248,16 @@ stop_moving_timer_dy.stop()
                         mouse.accepted = false
                     }
 
+
+
+
                 }
+
+
+
+
+
+
             }
 
             Rectangle {
@@ -824,7 +428,12 @@ stop_moving_timer_dy.stop()
 
     Component.onCompleted: {
 
-        srv.forceActiveFocus()
+
+
+       // srv.forceActiveFocus()
+
+        console.log("srv focus: ",srv.activeFocus)
+
         Axxon.get_service_id()
         root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
         hide_menu()
@@ -844,7 +453,8 @@ stop_moving_timer_dy.stop()
         timeline.signal_telemetry_on_off.connect( f_telemetry_on_off)
         timeline.signal_loaded_cameras_on_off.connect(f_loaded_cameras_on_off)
         timeline.eventlog_on_off.connect( f_eventlog_on_off)
-        vm.playing.connect(start_timer_if_its_needed)
+    //    vm.playing.connect(start_timer_if_its_needed)
+        v1.playing.connect(start_timer_if_its_needed)
         timeline.update_timelist.connect(timelist.set_current)
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
         root.cameraList.updated.connect(reconnect_livestream)
@@ -1018,7 +628,7 @@ stop_moving_timer_dy.stop()
 
     function f_pause(){
         root.pause_play=pause
-        vm.stop()
+        v1.vm_stop()
     }
 
     function f_paused_and_moved_at_dt(dt){
@@ -1037,8 +647,7 @@ stop_moving_timer_dy.stop()
         Axxon.request_URL(cameraId, serviceId, dt,"utc")
     }
 
-    function f_set_live_play()
-    {
+    function f_set_live_play()    {
         root.log("[f_set_live_play]")
         root.storage_live=live
         root.pause_play=play
@@ -1047,22 +656,24 @@ stop_moving_timer_dy.stop()
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
-    function  update_vm(id)
-    {
+    function  update_vm(id)    {
         var lcl=Axxon.camera(cid)
         if(root.pause_play==pause)
         {
 
             if(root.storage_live==storage)
             {
-                vm.source=lcl.snapshot
-                vm.shot()
+                //vm.source=lcl.snapshot
+                v1.set_vm_source(lcl.snapshot)
+                v1.vm_shot()
+              //  vm.shot()
 
             }
             else
                 if(root.storage_live==live)
                 {
-                    vm.stop()
+                    v1.vm_stop()
+                    //vm.stop()
 
                 }
         }
@@ -1071,8 +682,8 @@ stop_moving_timer_dy.stop()
             {
                 if(root.storage_live==storage)
                 {
-                    vm.source=lcl.storageStream
-                    vm.start()
+                    v1.set_vm_source(lcl.storageStream)
+                    v1.vm_start()
 
                 }
                 else
@@ -1083,11 +694,19 @@ stop_moving_timer_dy.stop()
 
                         Tlmtr.capture_session()
                         timer.start()
-                        tform1.xScale =1
-                        tform1.yScale =1
+                //        v1.tform1.xScale =1
+                //        v1.tform1.yScale =1
+                        v1.set_Scale(1);
+
+
                         root.log("live")
-                        vm.source=lcl.liveStream
-                        vm.start()
+
+
+                    //    vm.source=lcl.liveStream
+                    //    vm.start()
+
+                        v1.set_vm_source(lcl.liveStream)
+                        v1.vm_start()
                     }
 
             }
@@ -1165,6 +784,10 @@ stop_moving_timer_dy.stop()
             eventlog.width=700
 
     }
+
+
+
+
 
 }
 
