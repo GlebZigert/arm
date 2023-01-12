@@ -317,5 +317,6 @@
         <file>qml/video/Vvvvvvm.qml</file>
         <file>1.qml</file>
         <file>Reqqt.qml</file>
+        <file>qml/video/DoubleVm.qml</file>
     </qresource>
 </RCC>

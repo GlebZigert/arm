@@ -171,13 +171,13 @@ Item{
                     property int flag: 0
 
 
-                    Video.Vvvvvvm{
+                    Video.DoubleVm{
                         id: v1
 
                      //   anchors.fill: parent
                         x:0
                         y:0
-                        width: 400
+                        width: 800
                         height: 400
 
 
