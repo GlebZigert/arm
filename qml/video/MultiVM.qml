@@ -21,17 +21,31 @@ Item {
     GridLayout {
         anchors.fill: parent
         id: grid
-           rows: 5; columns: 5;
 
+        columnSpacing: 0
+
+        rowSpacing: 0
+           rows: 5
+           columns: 5
+
+
+
+
+ baselineOffset: 1
 
     Repeater{
     //    id: rpt
 
-        model: 20
+        model: work_model
+
+
+
 
         Item {
-            width: 300
-            height: 200
+          //  width: grid.width/grid.columns
+          //  height: grid.height/grid.rows
+              width: (height/1080)*1920
+              height: 250
 
             signal isSelected(int index)
 

@@ -152,7 +152,7 @@ Item {
             y:(parent.height- height)/2
 
             width: (height/1080)*1920
-            height: parent.height/2
+            height: parent.height
             transform: Scale {
                 id: tform1
             }

@@ -341,16 +341,17 @@ if (!load_settings()){
 qDebug()<<"123";
 
 prev=clock();
+qDebug()<<"1231";
 pFormatCtx->interrupt_callback.callback=interrupt_cb;
 pFormatCtx->interrupt_callback.opaque = this;
-
+qDebug()<<"1232";
 
 if(m_running==mode::Streaming){
     emit playing();
 }
-
+qDebug()<<"1233";
 int frame_cnt=0;
-
+qDebug()<<"1234";
 while(m_running!=mode::turnOff){
 
    prev=clock();
@@ -361,7 +362,7 @@ while(m_running!=mode::turnOff){
        emit  finished();
        return;
    }
-
+//qDebug()<<"1235";
  //  qDebug()<<"count "<<frame_cnt++;
 
 
