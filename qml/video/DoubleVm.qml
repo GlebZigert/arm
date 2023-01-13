@@ -16,10 +16,20 @@ Item {
 
 
 
+
+
         onActiveFocusChanged:{
         console.log("v1 activeFocus: ", v1.activeFocus)
 
 
+        }
+
+        MouseArea{
+        anchors.fill: parent
+        onClicked: {
+        v1.selected=true
+            v2.selected=false
+        }
         }
     }
 
@@ -39,31 +49,56 @@ Item {
 
 
         }
+
+        MouseArea{
+        anchors.fill: parent
+        onClicked: {
+        v2.selected=true
+            v1.selected=false
+        }
+        }
+
     }
 
     function set_Scale(val){
+
+         if(v1.selected)
         v1.set_Scale(val)
+
+          if(v2.selected)
         v2.set_Scale(val)
     }
 
     function set_vm_source(src){
+
+        if(v1.selected)
         v1.set_vm_source(src)
+
+        if(v2.selected)
         v2.set_vm_source(src)
     }
 
     function vm_start(){
+         if(v1.selected)
         v1.vm_start()
+
+         if(v2.selected)
         v2.vm_start()
     }
 
     function vm_stop(){
+         if(v1.selected)
         v1.vm_stop()
+          if(v2.selected)
         v2.vm_stop()
     }
     function vm_shot(){
+         if(v1.selected)
         v1.vm_shot()
+          if(v2.selected)
         v2.vm_shot()
     }
+
 
 
 

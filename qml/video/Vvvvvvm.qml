@@ -8,7 +8,7 @@ Item {
   //   anchors.fill: parent
 
 
-
+        property bool selected: parent.selected
 
     signal playing
     signal selected
@@ -129,7 +129,8 @@ Item {
          }
      }
 
-    Rectangle { color: "gray";
+    Rectangle {
+        color: selected ? "lightgray" : "gray";
         id:vm_rect
         anchors.fill: parent
         clip:true
@@ -567,7 +568,7 @@ Item {
 
        // supreme.forceActiveFocus()
         console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
-
+            selected=false;
 
 
 

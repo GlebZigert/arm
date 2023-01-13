@@ -170,8 +170,8 @@ Item{
                     propagateComposedEvents: true
                     property int flag: 0
 
-
-                    Video.DoubleVm{
+//Video.Vvvvvvm{
+                    Video.MultiVM{
                         id: v1
 
                      //   anchors.fill: parent
