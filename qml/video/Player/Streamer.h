@@ -1,15 +1,15 @@
-#ifndef STREAMCONTAINER_H
-#define STREAMCONTAINER_H
+#ifndef STREAMER_H
+#define STREAMER_H
 
 #include <QObject>
 #include <QMap>
 #include "mythread.h"
 
-class StreamContainer : public QObject
+class Streamer : public QObject
 {
     Q_OBJECT
 public:
-    explicit StreamContainer(AVPicture **data,int *h,int *w, QObject *parent = nullptr);
+    explicit Streamer(AVPicture **data,int *h,int *w, QObject *parent = nullptr);
 
     MyThread* mm;
 
@@ -56,4 +56,4 @@ signals:
 
 };
 
-#endif // STREAMCONTAINER_H
+#endif // STREAMER_H

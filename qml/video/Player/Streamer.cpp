@@ -1,6 +1,6 @@
-#include "StreamContainer.h"
+#include "Streamer.h"
 
-StreamContainer::StreamContainer(AVPicture **data,int *h,int *w, QObject *parent) : QObject(parent)
+Streamer::Streamer(AVPicture **data,int *h,int *w, QObject *parent) : QObject(parent)
 {
     this->data=data;
     this->h=h;
@@ -15,7 +15,7 @@ StreamContainer::StreamContainer(AVPicture **data,int *h,int *w, QObject *parent
 
 
 
-void StreamContainer::start()
+void Streamer::start()
 {
 tmrStart->stop();
 delay=10;
@@ -23,7 +23,7 @@ startRunner();
 
 }
 
-void StreamContainer::startRunner()
+void Streamer::startRunner()
 {
     if(isValid){
     //    qDebug()<<".";
@@ -43,7 +43,7 @@ void StreamContainer::startRunner()
     isValid=true;
 }
 
-void StreamContainer::stop()
+void Streamer::stop()
 {
   //  qDebug()<<"stop";
     if(!isValid)
@@ -63,13 +63,13 @@ void StreamContainer::stop()
 
 
 
-void StreamContainer::receiveFrame(QString URL)
+void Streamer::receiveFrame(QString URL)
 {
 
     emit frame(URL);
 }
 
-void StreamContainer::lostConnection(QString URL)
+void Streamer::lostConnection(QString URL)
 {
 
     qDebug()<<"lostConnection";
