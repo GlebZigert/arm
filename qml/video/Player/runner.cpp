@@ -1,7 +1,9 @@
 #include "runner.h"
 #include "QDebug"
+#include <mutex>
 #define AVIO_FLAG_NONBLOCK   8
 AVDictionary* options;
+static std::mutex local_mutex;
 Runner::Runner( QObject *parent) : QObject(parent)
 {
   //  qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
@@ -79,7 +81,7 @@ void Runner::load()
     pAVFrame = av_frame_alloc();
     pAVPicture = new AVPicture();
     packet = (AVPacket *) malloc(sizeof(AVPacket));
-    pFormatCtx = avformat_alloc_context();
+//    pFormatCtx = avformat_alloc_context();
 }
 
 bool Runner::load_settings()
@@ -95,9 +97,9 @@ bool Runner::load_settings()
     av_dict_set(&options, "rtsp_transport", "udp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
     av_dict_set(&options, "stimeout", "200000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
     av_dict_set(&options, "max_delay", "50", 0); //Set the maximum delay
-
+    qDebug()<<"avformat_open_input -->";
     int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
-
+    qDebug()<<"<-- avformat_open_input";
     if (error != 0){
       //  emit lost_connection(URL);
 
@@ -331,14 +333,18 @@ void Runner::run()
 av_log_set_level(AV_LOG_QUIET);
 prev=clock();
 
+ local_mutex.lock();
 load();
 if (!load_settings()){
     qDebug()<<"001";
     emit lost_connection(URL);
     emit  finished();
+    local_mutex.unlock();
     return;
 }
+local_mutex.unlock();
 qDebug()<<"123";
+
 
 prev=clock();
 qDebug()<<"1231";
@@ -352,6 +358,8 @@ if(m_running==mode::Streaming){
 qDebug()<<"1233";
 int frame_cnt=0;
 qDebug()<<"1234";
+
+
 while(m_running!=mode::turnOff){
 
    prev=clock();
