@@ -6,7 +6,7 @@
 #include <QThread>
 #include <QTimer>
 #include "Streamer.h"
-
+#include "StreamerContainer.h"
 
 class VideoPlayer : public QQuickPaintedItem
 
@@ -41,8 +41,9 @@ private:
 
     QImage img;
 
-    Streamer* list1;
-    Streamer* list2;
+    static StreamerContainer container;
+
+    QSharedPointer<Streamer> current = nullptr;
 
 
 signals:

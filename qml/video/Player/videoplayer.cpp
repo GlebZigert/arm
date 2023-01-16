@@ -1,13 +1,19 @@
 #include "videoplayer.h"
 #include <QPainter>
+
+StreamerContainer VideoPlayer::container;
+
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
-    data=NULL;
-    list1=new Streamer(&data,&h,&w);
-    list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
+//    data=NULL;
 
-    connect(list1,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-    connect(list1,SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
+
+  //  list1=new Streamer(&data,&h,&w);
+  //  list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
+
+  //  connect(list1,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+  //  connect(list1,SIGNAL(lost(QString)),this,SLOT(lost(QString)));
 
 }
 
@@ -48,15 +54,27 @@ void VideoPlayer::start()
         img=QImage(":/qml/video/no_in_storage.jpeg");
    this->update();
     }else{
-    list1->URL=m_source;
-    list1->mode=mode::Streaming;
-   list1->start();
+
+
+  current = container.start(&h,&w,m_source,mode::Streaming);
+
+  if(current){
+        data = current.data()->getData();
+
+        connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+        connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+  }
+ //   list1->URL=m_source;
+ //   list1->mode=mode::Streaming;
+ //  list1->start();
+
+
     }
 }
 
 void VideoPlayer::stop()
 {
-  list1->stop();
+ // list1->stop();
 }
 
 void VideoPlayer::shot()
@@ -65,9 +83,9 @@ void VideoPlayer::shot()
         img=QImage(":/qml/video/no_in_storage.jpeg");
    this->update();
     }else{
-    list1->URL=m_source;
-    list1->mode=mode::Snapshot;
-   list1->start();
+  //  list1->URL=m_source;
+  //  list1->mode=mode::Snapshot;
+  // list1->start();
     }
 }
 

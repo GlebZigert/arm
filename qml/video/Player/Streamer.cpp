@@ -1,8 +1,11 @@
 #include "Streamer.h"
 
-Streamer::Streamer(AVPicture **data,int *h,int *w, QObject *parent) : QObject(parent)
+Streamer::Streamer(int *h,int *w, QString URL, enum mode,QObject *parent) : QObject(parent)
 {
-    this->data=data;
+    qDebug()<<"Streamer::Streamer "<<URL;
+    this->URL=URL;
+    data=NULL;
+
     this->h=h;
     this->w=w;
 
@@ -33,7 +36,7 @@ void Streamer::startRunner()
         return;
     }
 
-    mm=new MyThread(data,h,w,URL,mode);
+    mm=new MyThread(&data,h,w,URL,mode);
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
     connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
@@ -61,11 +64,16 @@ void Streamer::stop()
     }
 }
 
+AVPicture *Streamer::getData() const
+{
+    return data;
+}
+
 
 
 void Streamer::receiveFrame(QString URL)
 {
-
+    qDebug()<<"+";
     emit frame(URL);
 }
 

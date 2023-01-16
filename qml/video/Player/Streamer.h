@@ -9,12 +9,12 @@ class Streamer : public QObject
 {
     Q_OBJECT
 public:
-    explicit Streamer(AVPicture **data,int *h,int *w, QObject *parent = nullptr);
+    explicit Streamer(int *h,int *w, QString URL,mode mode,QObject *parent = nullptr);
 
     MyThread* mm;
 
 
-    AVPicture **data;
+
     int *h;
     int *w;
 
@@ -26,7 +26,7 @@ public:
 
 
 
-    QString URL;
+
     int mode;
 
 
@@ -41,6 +41,14 @@ public:
 
 
     int delay;
+
+    AVPicture *getData() const;
+
+private:
+    AVPicture *data;
+
+    QString URL;
+
 
 public slots:
     void receiveFrame(QString);
