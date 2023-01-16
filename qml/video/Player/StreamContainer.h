@@ -1,15 +1,15 @@
-#ifndef THREADLIST_H
-#define THREADLIST_H
+#ifndef STREAMCONTAINER_H
+#define STREAMCONTAINER_H
 
 #include <QObject>
 #include <QMap>
 #include "mythread.h"
 
-class threadList : public QObject
+class StreamContainer : public QObject
 {
     Q_OBJECT
 public:
-    explicit threadList(AVPicture **data,int *h,int *w, QObject *parent = nullptr);
+    explicit StreamContainer(AVPicture **data,int *h,int *w, QObject *parent = nullptr);
 
     MyThread* mm;
 
@@ -56,4 +56,4 @@ signals:
 
 };
 
-#endif // THREADLIST_H
+#endif // STREAMCONTAINER_H

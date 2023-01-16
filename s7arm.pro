@@ -18,9 +18,9 @@ SOURCES += \
         printer.cpp
 !win32 {
     SOURCES += \
+    qml/video/Player/StreamContainer.cpp \
             qml/video/Player/mythread.cpp \
             qml/video/Player/runner.cpp \
-            qml/video/Player/threadlist.cpp \
            qml/video/Player/videoplayer.cpp \
            qml/video/Preview/Preview.cpp
 }
@@ -39,8 +39,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 !win32 {
     HEADERS += \
+    qml/video/Player/StreamContainer.h \
         qml/video/Player/mythread.h \
-        qml/video/Player/threadlist.h \
         qml/video/Player/runner.h \
         qml/video/Player/videoplayer.h \
         qml/video/Preview/Preview.h

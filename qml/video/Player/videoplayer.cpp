@@ -3,7 +3,7 @@
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
     data=NULL;
-    list1=new threadList(&data,&h,&w);
+    list1=new StreamContainer(&data,&h,&w);
     list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
 
     connect(list1,SIGNAL(frame(QString)),this,SLOT(frame(QString)));

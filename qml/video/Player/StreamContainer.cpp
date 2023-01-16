@@ -1,6 +1,6 @@
-#include "threadlist.h"
+#include "StreamContainer.h"
 
-threadList::threadList(AVPicture **data,int *h,int *w, QObject *parent) : QObject(parent)
+StreamContainer::StreamContainer(AVPicture **data,int *h,int *w, QObject *parent) : QObject(parent)
 {
     this->data=data;
     this->h=h;
@@ -15,7 +15,7 @@ threadList::threadList(AVPicture **data,int *h,int *w, QObject *parent) : QObjec
 
 
 
-void threadList::start()
+void StreamContainer::start()
 {
 tmrStart->stop();
 delay=10;
@@ -23,7 +23,7 @@ startRunner();
 
 }
 
-void threadList::startRunner()
+void StreamContainer::startRunner()
 {
     if(isValid){
     //    qDebug()<<".";
@@ -43,7 +43,7 @@ void threadList::startRunner()
     isValid=true;
 }
 
-void threadList::stop()
+void StreamContainer::stop()
 {
   //  qDebug()<<"stop";
     if(!isValid)
@@ -63,13 +63,13 @@ void threadList::stop()
 
 
 
-void threadList::receiveFrame(QString URL)
+void StreamContainer::receiveFrame(QString URL)
 {
 
     emit frame(URL);
 }
 
-void threadList::lostConnection(QString URL)
+void StreamContainer::lostConnection(QString URL)
 {
 
     qDebug()<<"lostConnection";

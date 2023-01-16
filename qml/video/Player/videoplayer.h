@@ -5,7 +5,7 @@
 #include <QImage>
 #include <QThread>
 #include <QTimer>
-#include "threadlist.h"
+#include "StreamContainer.h"
 
 
 class VideoPlayer : public QQuickPaintedItem
@@ -41,8 +41,8 @@ private:
 
     QImage img;
 
-    threadList* list1;
-    threadList* list2;
+    StreamContainer* list1;
+    StreamContainer* list2;
 
 
 signals:
