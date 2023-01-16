@@ -15,6 +15,9 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,int mode, QObjec
 
 
         runner->moveToThread(thread);
+        qDebug()<<"  runner->moveToThread(thread);";
+    }else{
+         qDebug()<<"  FUCK SHIT =mode::turnOff";
     }
 
 }

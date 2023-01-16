@@ -1,11 +1,11 @@
 #include "Streamer.h"
 
-Streamer::Streamer(int *h,int *w, QString URL, enum mode,QObject *parent) : QObject(parent)
+Streamer::Streamer(int *h,int *w, QString URL, enum mode mode,QObject *parent) : QObject(parent)
 {
     qDebug()<<"Streamer::Streamer "<<URL;
     this->URL=URL;
-    data=NULL;
-
+    this->data=NULL;
+    this->mode=mode;
     this->h=h;
     this->w=w;
 
@@ -14,6 +14,16 @@ Streamer::Streamer(int *h,int *w, QString URL, enum mode,QObject *parent) : QObj
 
 
   isValid=false;
+}
+
+int Streamer::getW() const
+{
+    return *w;
+}
+
+int Streamer::getH() const
+{
+    return *h;
 }
 
 
@@ -28,14 +38,15 @@ startRunner();
 
 void Streamer::startRunner()
 {
+    qDebug()<<"Streamer::startRunner()";
     if(isValid){
-    //    qDebug()<<".";
+        qDebug()<<"noValid";
 
         stop();
         tmrStart->singleShot(delay,this,SLOT(start()));
         return;
     }
-
+     qDebug()<<"Valid";
     mm=new MyThread(&data,h,w,URL,mode);
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));

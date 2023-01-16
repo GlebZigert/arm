@@ -44,6 +44,10 @@ public:
 
     AVPicture *getData() const;
 
+    int getH() const;
+
+    int getW() const;
+
 private:
     AVPicture *data;
 

@@ -24,7 +24,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
 
 Runner::Runner(AVPicture **data, int *h, int *w, QString URL, int mode, QObject *parent)
 {
-    //  qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
+      qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
     pAVFrame = NULL;
      pSwsContext = NULL;
@@ -40,7 +40,7 @@ Runner::Runner(AVPicture **data, int *h, int *w, QString URL, int mode, QObject 
     this->h=h;
     this->w=w;
 
-  //  qDebug()<<"runner mode: "<<mode;
+    qDebug()<<"runner mode: "<<mode;
 
 }
 
@@ -293,7 +293,7 @@ bool Runner::capture()
 
 
 
-          // qDebug()<<"frame";
+           qDebug()<<".";
 
            *h=videoHeight;
            *w=videoWidth;

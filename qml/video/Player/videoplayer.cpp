@@ -27,7 +27,7 @@ void VideoPlayer::paint(QPainter *painter)
             h,
             QImage::Format_RGB32);
 */
-
+        qDebug()<<"img.siz<e "<<img.size();
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
  //   qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
@@ -100,12 +100,25 @@ void VideoPlayer::onheightChanged(){
 }
 
 void VideoPlayer::frame(QString source){
-  //  qDebug()<<"frame";
+    qDebug()<<"frame";
+    data = current.data()->getData();
+    w = current.data()->getW();
+    h = current.data()->getH();
+
     if(source==this->m_source){
+
          img=QImage(data->data[0],
                     w,
                     h,
                     QImage::Format_RGB32);
+         qDebug()<<"img.size "<<img.size();
+
+         QImage img1=QImage(data->data[0],
+                    w,
+                    h,
+                    QImage::Format_RGB32);
+         qDebug()<<"img1.size "<<img1.size();
+
     this->update();
     }
 }
