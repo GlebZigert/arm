@@ -34,6 +34,26 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mod
 
     }
 
+    for(auto one :map.values()){
+       if(one.data()->mm->runner->thread()->isFinished()){
+           map.remove(one->getURL());
+       }
+
+    }
+    qDebug()<<" ";
+    qDebug()<<"Потоки: "<<map.count();
+     qDebug()<<" ";
+    for(auto one :map.keys()){
+
+        qDebug()<<one;
+         qDebug()<<"пордписчики: "<<map.value(one)->getFollowers()<<"; завершен - "<<map.value(one).data()->mm->runner->thread()->isFinished();
+ qDebug()<<" ";
+
+    }
+
+
+
+
     if(streamer)
         return streamer;
 
@@ -42,4 +62,5 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mod
 
 
 }
+
 

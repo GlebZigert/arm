@@ -9,11 +9,52 @@ Streamer::Streamer(int *h,int *w, QString URL, enum mode mode,QObject *parent) :
     this->h=h;
     this->w=w;
 
+    followers=0;
+
     //lost=QImage(":/qml/video/no_signal.jpeg");
   tmrStart = new QTimer(this);
 
 
   isValid=false;
+}
+
+Streamer::~Streamer()
+{
+
+    qDebug()<<"Streamer::~Streamer() "<<URL;
+}
+
+int Streamer::getFollowers() const
+{
+    return followers;
+}
+
+const QString &Streamer::getURL() const
+{
+    return URL;
+}
+
+bool Streamer::getIsOver() const
+{
+    return isOver;
+}
+
+void Streamer::followers_inc()
+{
+    followers++;
+    qDebug()<<"followers "<<followers<<" "<<URL;
+}
+
+void Streamer::followers_dec()
+{
+    if(followers>0){
+        followers--;
+    }
+    qDebug()<<"followers "<<followers<<" "<<URL;
+
+    if(followers==0){
+        stop();
+    }
 }
 
 int Streamer::getW() const
@@ -47,7 +88,7 @@ void Streamer::startRunner()
         return;
     }
      qDebug()<<"Valid";
-    mm=new MyThread(&data,h,w,URL,mode);
+    mm= QSharedPointer<MyThread>::create(&data,h,w,URL,mode);
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
     connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
@@ -59,20 +100,25 @@ void Streamer::startRunner()
 
 void Streamer::stop()
 {
-  //  qDebug()<<"stop";
+    qDebug()<<"stop";
     if(!isValid)
         return;
   //  qDebug()<<"1";
     if(mm)
     mm->stop();
-  //  qDebug()<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning();
+    qDebug()<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning();
     if(mm->runner->thread()->isFinished()){
    // qDebug()<<"2";
-        if(mm)
-        delete mm;
+
         isValid=false;
 
+        isOver=true;
+
     }
+
+
+
+
 }
 
 AVPicture *Streamer::getData() const
@@ -84,7 +130,7 @@ AVPicture *Streamer::getData() const
 
 void Streamer::receiveFrame(QString URL)
 {
-    qDebug()<<"+";
+ //   qDebug()<<"+";
     emit frame(URL);
 }
 

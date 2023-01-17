@@ -293,7 +293,7 @@ bool Runner::capture()
 
 
 
-           qDebug()<<".";
+         //  qDebug()<<".";
 
            *h=videoHeight;
            *w=videoWidth;
@@ -343,21 +343,20 @@ if (!load_settings()){
     return;
 }
 local_mutex.unlock();
-qDebug()<<"123";
 
 
 prev=clock();
-qDebug()<<"1231";
+
 pFormatCtx->interrupt_callback.callback=interrupt_cb;
 pFormatCtx->interrupt_callback.opaque = this;
-qDebug()<<"1232";
+
 
 if(m_running==mode::Streaming){
     emit playing();
 }
-qDebug()<<"1233";
+
 int frame_cnt=0;
-qDebug()<<"1234";
+
 
 
 while(m_running!=mode::turnOff){
@@ -375,7 +374,7 @@ while(m_running!=mode::turnOff){
 
 
 }
-//qDebug()<<"finished";
+qDebug()<<"finished";
 emit finished();
 
 return;
@@ -399,6 +398,8 @@ void Runner::setRunning(int running)
         return;
     }
     m_running = running;
+
+    qDebug()<<"Runner::setRunning "<<running;
 
     emit runningChanged(running);
 }

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QMap>
+#include <QSharedPointer>
 #include "mythread.h"
 
 class Streamer : public QObject
@@ -10,10 +11,14 @@ class Streamer : public QObject
     Q_OBJECT
 public:
     explicit Streamer(int *h,int *w, QString URL,mode mode,QObject *parent = nullptr);
+    ~Streamer();
+    QSharedPointer<MyThread> mm;
 
-    MyThread* mm;
 
+    int followers=0;
 
+    void followers_inc();
+    void followers_dec();
 
     int *h;
     int *w;
@@ -22,6 +27,8 @@ public:
 
 
     bool isValid;
+
+
 
 
 
@@ -48,7 +55,17 @@ public:
 
     int getW() const;
 
+    int getFollowers() const;
+
+    const QString &getURL() const;
+
+    bool getIsOver() const;
+
 private:
+
+    bool isOver=false;
+
+
     AVPicture *data;
 
     QString URL;

@@ -27,7 +27,7 @@ void VideoPlayer::paint(QPainter *painter)
             h,
             QImage::Format_RGB32);
 */
-        qDebug()<<"img.siz<e "<<img.size();
+
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
  //   qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
@@ -50,15 +50,30 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start()
 {
+
+    if(current){
+        //если мы уже принимаем поток - нужно от него отписаться
+        disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+        disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+        current->followers_dec();
+        current.clear();
+
+    }
+
+
     if(m_source==""){
         img=QImage(":/qml/video/no_in_storage.jpeg");
    this->update();
-    }else{
+        return;
+    }
+
+
 
 
   current = container.start(&h,&w,m_source,mode::Streaming);
 
   if(current){
+        current->followers_inc();
         data = current.data()->getData();
 
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
@@ -69,7 +84,7 @@ void VideoPlayer::start()
  //  list1->start();
 
 
-    }
+
 }
 
 void VideoPlayer::stop()
@@ -100,7 +115,7 @@ void VideoPlayer::onheightChanged(){
 }
 
 void VideoPlayer::frame(QString source){
-    qDebug()<<"frame";
+
     data = current.data()->getData();
     w = current.data()->getW();
     h = current.data()->getH();
@@ -111,13 +126,7 @@ void VideoPlayer::frame(QString source){
                     w,
                     h,
                     QImage::Format_RGB32);
-         qDebug()<<"img.size "<<img.size();
 
-         QImage img1=QImage(data->data[0],
-                    w,
-                    h,
-                    QImage::Format_RGB32);
-         qDebug()<<"img1.size "<<img1.size();
 
     this->update();
     }

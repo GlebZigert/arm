@@ -22,6 +22,8 @@ public:
 
 public slots:
 
+   void quit();
+
 
 private:
     QString URL;

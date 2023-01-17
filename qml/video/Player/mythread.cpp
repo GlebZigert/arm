@@ -24,15 +24,20 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,int mode, QObjec
 
 MyThread::~MyThread()
 {
-  //  qDebug()<<"DELETE "<<runner->URL;
+    qDebug()<<"DELETE "<<runner->URL;
     delete runner;
     delete thread;
-  //      qDebug()<<"MyThread destroyed";
+        qDebug()<<"MyThread destroyed";
 }
 
 void MyThread::stop()
 {
     runner->setRunning(mode::turnOff);
+}
+
+void MyThread::quit()
+{
+
 }
 
 
