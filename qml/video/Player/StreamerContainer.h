@@ -12,12 +12,12 @@ class StreamerContainer : public QObject
 public:
     explicit StreamerContainer(QObject *parent = nullptr);
 
-    QMap<QString, QSharedPointer<Streamer>> map;
+    QList<QSharedPointer<Streamer>> map;
 
     QSharedPointer<Streamer> start(int *h,int *w,QString url, mode mode);
 
 
-
+    QSharedPointer<Streamer> find(QString url);
 
 signals:
 

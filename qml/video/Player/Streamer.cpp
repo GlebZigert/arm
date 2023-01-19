@@ -53,6 +53,7 @@ void Streamer::followers_dec()
     qDebug()<<"followers "<<followers<<" "<<URL;
 
     if(followers==0){
+       URL.clear();
         stop();
     }
 }

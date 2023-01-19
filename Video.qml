@@ -665,7 +665,7 @@ Item{
             {
                 //vm.source=lcl.snapshot
                 v1.set_vm_source(lcl.snapshot)
-                v1.vm_shot()
+                v1.vm_start()
               //  vm.shot()
 
             }

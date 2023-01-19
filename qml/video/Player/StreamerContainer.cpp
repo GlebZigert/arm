@@ -10,7 +10,7 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mod
     qDebug()<<"StreamerContainer::start "<<url;
     qDebug()<<"mode "<<(mode==mode::turnOff?"turnOff":(mode==mode::Streaming)?"Streaming":"Snapshot");
 
-    QSharedPointer<Streamer> streamer = map.value(url);
+    QSharedPointer<Streamer> streamer = find(url);
 
     if(streamer){
         qDebug()<<"берем из контейера "<<url;
@@ -20,7 +20,7 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mod
 
         streamer=QSharedPointer<Streamer>::create(h,w,url,mode);
         if(streamer){
-            map.insert(url,streamer);
+            map.append(streamer);
             qDebug()<<"добавляем в контейер "<<url;
 
         streamer->start();
@@ -34,19 +34,19 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mod
 
     }
 
-    for(auto one :map.values()){
+    for(auto one : map){
        if(one.data()->mm->runner->thread()->isFinished()){
-           map.remove(one->getURL());
+           map.removeOne(one);
        }
 
     }
     qDebug()<<" ";
     qDebug()<<"Потоки: "<<map.count();
      qDebug()<<" ";
-    for(auto one :map.keys()){
+    for(auto one :map){
 
-        qDebug()<<one;
-         qDebug()<<"пордписчики: "<<map.value(one)->getFollowers()<<"; завершен - "<<map.value(one).data()->mm->runner->thread()->isFinished();
+        qDebug()<<one.data()->getURL();
+         qDebug()<<"пордписчики: "<<one.data()->getFollowers()<<"; завершен - " <<one.data()->mm->runner->thread()->isFinished();
  qDebug()<<" ";
 
     }
@@ -61,6 +61,15 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mod
 
 
 
+}
+
+QSharedPointer<Streamer> StreamerContainer::find(QString url)
+{
+    for(auto one : map){
+        if(one.data()->getURL()==url)
+            return one;
+    }
+    return nullptr;
 }
 
 

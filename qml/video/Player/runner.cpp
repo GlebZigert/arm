@@ -46,10 +46,11 @@ Runner::Runner(AVPicture **data, int *h, int *w, QString URL, int mode, QObject 
 
 Runner::~Runner()
 {
+     local_mutex.lock();
   //  qDebug()<<"DELETE Runner "<<this->URL;
     close();
   //  qDebug()<<"runner destroyed";
-
+ local_mutex.unlock();
 }
 
 int Runner::running() const
