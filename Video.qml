@@ -17,11 +17,16 @@ import "qml/video" as Video
 import "js/axxon_telemetry_control.js" as Tlmtr
 import "js/axxon.js" as Axxon
 
+import MyQMLEnums 13.37
+
 //Another player
 
 Item{
     id: srv
     anchors.fill: parent
+
+    property int item_style: Style.STYLE_RADIAL
+
     property int panePosition
     property var video: ({
                              'Loaded_cameras': Qt.createComponent('qml/video/Loaded_cameras.qml'),
@@ -84,6 +89,7 @@ Item{
             {
                 Tlmtr.hold_session()
                 timer.start()
+                mo
             }
             else
             {

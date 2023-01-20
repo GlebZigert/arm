@@ -6,6 +6,16 @@
 #include <QTimer>
 #include <QTime>
 #include <time.h>
+
+#include <QtGlobal>
+#if QT_VERSION < QT_VERSION_CHECK(5,0,0)
+    // Qt 4
+    #include <QDeclarativeEngine>
+#else
+    // Qt 5
+    #include <QQmlEngine>
+#endif
+
 extern "C"{
     #include <libavcodec/avcodec.h>
     #include <libavformat/avformat.h>
@@ -21,6 +31,7 @@ enum mode
          Streaming,
          Snapshot
       };
+ Q_ENUMS(mode)
 
 class Runner : public QObject
 {
@@ -34,6 +45,19 @@ public:
         explicit Runner(AVPicture** data,int *h, int *w, QString URL,int mode, QObject *parent = nullptr);
     ~Runner();
     void output();
+
+    typedef enum
+        {
+            STYLE_RADIAL,
+            STYLE_ENVELOPE,
+            STYLE_FILLED
+        }  Style;
+
+    Style m_style;
+
+    static void declareQML() {
+       qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Style");
+    }
 
 int m_running;
     int running() const;
