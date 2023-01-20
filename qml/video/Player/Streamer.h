@@ -10,7 +10,7 @@ class Streamer : public QObject
 {
     Q_OBJECT
 public:
-    explicit Streamer(int *h,int *w, QString URL,mode mode,QObject *parent = nullptr);
+    explicit Streamer(int *h,int *w, QString URL,Runner::Mode mode,QObject *parent = nullptr);
     ~Streamer();
     QSharedPointer<MyThread> mm;
 

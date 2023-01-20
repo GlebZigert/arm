@@ -8,7 +8,7 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,int mode, QObjec
 
 
     this->URL=URL;
-    if(mode!=mode::turnOff){
+    if(mode!=Runner::Mode::turnOff){
         runner->URL=URL;
         connect(thread,&QThread::started,runner,&Runner::run);
         connect(runner, &Runner::finished, thread, &QThread::quit);
@@ -32,7 +32,7 @@ MyThread::~MyThread()
 
 void MyThread::stop()
 {
-    runner->setRunning(mode::turnOff);
+    runner->setRunning(Runner::Mode::turnOff);
 }
 
 void MyThread::quit()

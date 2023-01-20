@@ -67,7 +67,7 @@ int Runner::interrupt_cb(void *ctx)
     if(delay>150000){
         qDebug()<<"Interrupt";
         pl->prev=clock();
-        pl->m_running=mode::turnOff;
+        pl->m_running=Mode::turnOff;
         emit pl->lost_connection(pl->URL);
 
         return 1;
@@ -303,8 +303,8 @@ bool Runner::capture()
 
            emit new_frame(URL);
 
-           if(m_running==mode::Snapshot){
-               m_running=mode::turnOff;
+           if(m_running==Mode::Snapshot){
+               m_running=Mode::turnOff;
            }
 /*
            *img=QImage(pAVPicture->data[0],
@@ -352,7 +352,7 @@ pFormatCtx->interrupt_callback.callback=interrupt_cb;
 pFormatCtx->interrupt_callback.opaque = this;
 
 
-if(m_running==mode::Streaming){
+if(m_running==Mode::Streaming){
     emit playing();
 }
 
@@ -360,7 +360,7 @@ int frame_cnt=0;
 
 
 
-while(m_running!=mode::turnOff){
+while(m_running!=Mode::turnOff){
 
    prev=clock();
 

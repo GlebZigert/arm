@@ -5,10 +5,10 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 
 }
 
-QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, mode mode)
+QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, Runner::Mode mode)
 {
     qDebug()<<"StreamerContainer::start "<<url;
-    qDebug()<<"mode "<<(mode==mode::turnOff?"turnOff":(mode==mode::Streaming)?"Streaming":"Snapshot");
+    qDebug()<<"mode "<<(mode==Runner::Mode::turnOff?"turnOff":(mode==Runner::Mode::Streaming)?"Streaming":"Snapshot");
 
     QSharedPointer<Streamer> streamer = find(url);
 

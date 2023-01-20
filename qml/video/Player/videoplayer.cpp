@@ -70,7 +70,7 @@ void VideoPlayer::start()
 
 
 
-  current = container.start(&h,&w,m_source,mode::Streaming);
+  current = container.start(&h,&w,m_source,Runner::Mode::Streaming);
 
   if(current){
         current->followers_inc();

@@ -25,8 +25,7 @@ Item{
     id: srv
     anchors.fill: parent
 
-    property int item_style: Style.STYLE_RADIAL
-
+    property int item_style: Mode.Streaming
     property int panePosition
     property var video: ({
                              'Loaded_cameras': Qt.createComponent('qml/video/Loaded_cameras.qml'),
@@ -435,7 +434,7 @@ Item{
     Component.onCompleted: {
 
 
-
+        console.log("item_style: ",item_style)
        // srv.forceActiveFocus()
 
         console.log("srv focus: ",srv.activeFocus)

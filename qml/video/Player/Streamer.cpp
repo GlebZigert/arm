@@ -1,6 +1,6 @@
 #include "Streamer.h"
 
-Streamer::Streamer(int *h,int *w, QString URL, enum mode mode,QObject *parent) : QObject(parent)
+Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
 {
     qDebug()<<"Streamer::Streamer "<<URL;
     this->URL=URL;

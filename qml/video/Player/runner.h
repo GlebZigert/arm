@@ -24,7 +24,7 @@ extern "C"{
     #include <libavutil/hwcontext.h>
 }
 
-
+/*
 enum mode
       {
          turnOff,
@@ -32,7 +32,7 @@ enum mode
          Snapshot
       };
  Q_ENUMS(mode)
-
+*/
 class Runner : public QObject
 {
     Q_OBJECT
@@ -46,17 +46,16 @@ public:
     ~Runner();
     void output();
 
-    typedef enum
-        {
-            STYLE_RADIAL,
-            STYLE_ENVELOPE,
-            STYLE_FILLED
-        }  Style;
-
-    Style m_style;
+    enum Mode
+           {
+        turnOff,
+        Streaming,
+        Snapshot
+           };
+           Q_ENUMS(Mode)
 
     static void declareQML() {
-       qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Style");
+       qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Mode");
     }
 
 int m_running;
