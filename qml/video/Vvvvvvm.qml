@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import VideoPlayer 1.0
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import MyQMLEnums 13.37
 Item {
 
     id: supreme
@@ -550,8 +551,8 @@ Item {
         vm.source=src
     }
 
-    function vm_start(){
-        vm.start()
+    function vm_start(mode){
+        vm.start(mode)
     }
 
     function vm_stop(){

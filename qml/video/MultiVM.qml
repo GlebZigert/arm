@@ -108,9 +108,9 @@ Item {
                 vm.set_vm_source(src)
             }
 
-            function vm_start(){
+            function vm_start(mode){
 
-                vm.vm_start()
+                vm.vm_start(mode)
             }
 
             function vm_stop(){
@@ -190,13 +190,14 @@ Item {
         }
     }
 
-    function vm_start(){
+    function vm_start(mode){
         for(var i = 0; i<grid.children.length; i++)
         {
 
             if(grid.children[i].selected){
 
-                grid.children[i].vm_start()
+                console.log("mode ",mode)
+                grid.children[i].vm_start(mode)
 
             }
 

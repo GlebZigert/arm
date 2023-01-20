@@ -48,7 +48,7 @@ void VideoPlayer::setSource(const QString source)
 
 
 
-void VideoPlayer::start()
+void VideoPlayer::start(Runner::Mode mode)
 {
 
     if(current){
@@ -70,7 +70,7 @@ void VideoPlayer::start()
 
 
 
-  current = container.start(&h,&w,m_source,Runner::Mode::Streaming);
+  current = container.start(&h,&w,m_source,mode);
 
   if(current){
         current->followers_inc();

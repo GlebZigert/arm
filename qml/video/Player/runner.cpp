@@ -22,7 +22,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
      param  = NULL;
 }
 
-Runner::Runner(AVPicture **data, int *h, int *w, QString URL, int mode, QObject *parent)
+Runner::Runner(AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)
 {
       qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
@@ -67,7 +67,7 @@ int Runner::interrupt_cb(void *ctx)
     if(delay>150000){
         qDebug()<<"Interrupt";
         pl->prev=clock();
-        pl->m_running=Mode::turnOff;
+        pl->m_running=Mode::TurnOff;
         emit pl->lost_connection(pl->URL);
 
         return 1;
@@ -304,7 +304,7 @@ bool Runner::capture()
            emit new_frame(URL);
 
            if(m_running==Mode::Snapshot){
-               m_running=Mode::turnOff;
+               m_running=Mode::TurnOff;
            }
 /*
            *img=QImage(pAVPicture->data[0],
@@ -352,7 +352,7 @@ pFormatCtx->interrupt_callback.callback=interrupt_cb;
 pFormatCtx->interrupt_callback.opaque = this;
 
 
-if(m_running==Mode::Streaming){
+if(m_running==Mode::LiveStreaming||m_running==Mode::StorageStreaming){
     emit playing();
 }
 
@@ -360,7 +360,7 @@ int frame_cnt=0;
 
 
 
-while(m_running!=Mode::turnOff){
+while(m_running!=Mode::TurnOff){
 
    prev=clock();
 

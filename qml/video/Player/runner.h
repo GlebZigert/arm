@@ -41,21 +41,26 @@ class Runner : public QObject
     Q_PROPERTY(int running READ running WRITE setRunning NOTIFY runningChanged)
 
 public:
-    explicit Runner( QObject *parent = nullptr);
-        explicit Runner(AVPicture** data,int *h, int *w, QString URL,int mode, QObject *parent = nullptr);
-    ~Runner();
-    void output();
 
     enum Mode
            {
-        turnOff,
-        Streaming,
+        TurnOff,
+        LiveStreaming,
+        StorageStreaming,
         Snapshot
            };
            Q_ENUMS(Mode)
 
+    explicit Runner( QObject *parent = nullptr);
+        explicit Runner(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent = nullptr);
+    ~Runner();
+    void output();
+
+
+
     static void declareQML() {
        qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Mode");
+       qRegisterMetaType<Runner::Mode>("const Runner::Mode");
     }
 
 int m_running;

@@ -1,14 +1,14 @@
 #include "mythread.h"
 #include "QDebug"
 
-MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,int mode, QObject *parent) : QObject(parent)
+MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent) : QObject(parent)
 {
     runner = new Runner(data,h,w,URL,mode);
     thread = new QThread();
 
 
     this->URL=URL;
-    if(mode!=Runner::Mode::turnOff){
+    if(mode!=Runner::Mode::TurnOff){
         runner->URL=URL;
         connect(thread,&QThread::started,runner,&Runner::run);
         connect(runner, &Runner::finished, thread, &QThread::quit);
@@ -32,7 +32,7 @@ MyThread::~MyThread()
 
 void MyThread::stop()
 {
-    runner->setRunning(Runner::Mode::turnOff);
+    runner->setRunning(Runner::Mode::TurnOff);
 }
 
 void MyThread::quit()

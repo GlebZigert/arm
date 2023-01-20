@@ -25,7 +25,7 @@ Item{
     id: srv
     anchors.fill: parent
 
-    property int item_style: Mode.Streaming
+    property int item_style: Mode.LiveStreaming
     property int panePosition
     property var video: ({
                              'Loaded_cameras': Qt.createComponent('qml/video/Loaded_cameras.qml'),
@@ -88,7 +88,7 @@ Item{
             {
                 Tlmtr.hold_session()
                 timer.start()
-                mo
+
             }
             else
             {
@@ -670,7 +670,7 @@ Item{
             {
                 //vm.source=lcl.snapshot
                 v1.set_vm_source(lcl.snapshot)
-                v1.vm_start()
+                v1.vm_start(Mode.StorageStreaming)
               //  vm.shot()
 
             }
@@ -688,7 +688,7 @@ Item{
                 if(root.storage_live==storage)
                 {
                     v1.set_vm_source(lcl.storageStream)
-                    v1.vm_start()
+                    v1.vm_start(Mode.StorageStreaming)
 
                 }
                 else
@@ -711,7 +711,7 @@ Item{
                     //    vm.start()
 
                         v1.set_vm_source(lcl.liveStream)
-                        v1.vm_start()
+                        v1.vm_start(Mode.LiveStreaming)
                     }
 
             }

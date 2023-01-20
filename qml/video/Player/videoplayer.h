@@ -23,7 +23,7 @@ public:
     void setSource(const QString source);
 
 
-    Q_INVOKABLE void start();
+    Q_INVOKABLE void start(Runner::Mode mode);
     Q_INVOKABLE void  stop();
     Q_INVOKABLE void  shot();
 
