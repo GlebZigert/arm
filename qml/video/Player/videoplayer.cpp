@@ -89,6 +89,13 @@ void VideoPlayer::start(Runner::Mode mode)
 
 void VideoPlayer::stop()
 {
+    qDebug()<<"VideoPlayer::stop()";
+    if(current){
+    disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+    disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+    current->followers_dec();
+    current.clear();
+    }
  // list1->stop();
 }
 
