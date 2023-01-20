@@ -44,9 +44,9 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, Run
 
        if(
 
-               one.data()->mm->getIsOver()
-             //  one.data()->mm->thread->isFinished()&&
-             //  !one.data()->mm->thread->isRunning()
+             //  one.data()->mm->getIsOver()
+               one.data()->mm->thread->isFinished()&&
+               !one.data()->mm->thread->isRunning()
 
                )
 

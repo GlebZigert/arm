@@ -6,6 +6,7 @@ AVDictionary* options;
 static std::mutex local_mutex;
 Runner::Runner( QObject *parent) : QObject(parent)
 {
+
   //  qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     av_log_set_level(AV_LOG_QUIET);
 
@@ -22,8 +23,9 @@ Runner::Runner( QObject *parent) : QObject(parent)
      param  = NULL;
 }
 
-Runner::Runner(AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)
+Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)
 {
+    m_index=index;
       qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
     pAVFrame = NULL;
@@ -47,10 +49,15 @@ Runner::Runner(AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode,
 Runner::~Runner()
 {
      local_mutex.lock();
-    qDebug()<<"DELETE Runner "<<this->URL;
+    qDebug()<<"DELETE Runner "<<m_index;
     close();
-    qDebug()<<"runner destroyed "<<this->URL;
- local_mutex.unlock();
+    qDebug()<<"runner destroyed "<<m_index;
+    local_mutex.unlock();
+}
+
+int Runner::get_m_index() const
+{
+    return m_index;
 }
 
 int Runner::running() const

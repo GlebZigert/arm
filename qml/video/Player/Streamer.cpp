@@ -1,8 +1,14 @@
 #include "Streamer.h"
 
+int Streamer::index = 0;
+
 Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
 {
-    qDebug()<<"Streamer::Streamer "<<URL;
+    m_index=index++;
+    qDebug()<<"Streamer::Streamer "<<m_index;
+
+
+
     this->URL=URL;
     this->data=NULL;
     this->mode=mode;
@@ -21,7 +27,9 @@ Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *p
 Streamer::~Streamer()
 {
 
-    qDebug()<<"Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<URL;
+    qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+
+    qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 }
 
 int Streamer::getFollowers() const
@@ -37,6 +45,11 @@ const QString &Streamer::getURL() const
 bool Streamer::getIsOver() const
 {
     return isOver;
+}
+
+int Streamer::get_m_index() const
+{
+    return m_index;
 }
 
 void Streamer::followers_inc()
@@ -89,7 +102,9 @@ void Streamer::startRunner()
         return;
     }
      qDebug()<<"Valid";
-    mm= QSharedPointer<MyThread>::create(&data,h,w,URL,mode);
+     isOver=false;
+     mm.clear();
+    mm = QSharedPointer<MyThread>::create(&data,h,w,URL,mode,m_index);
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
     connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
@@ -102,11 +117,15 @@ void Streamer::startRunner()
 void Streamer::stop()
 {
     qDebug()<<"stop";
-    if(!isValid)
+    if(!isValid){
         return;
+    }
   //  qDebug()<<"1";
-    if(mm)
+    if(mm){
     mm->stop();
+    }
+
+
     qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
     if(mm->thread->isFinished()){
    // qDebug()<<"2";

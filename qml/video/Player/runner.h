@@ -52,11 +52,11 @@ public:
            Q_ENUMS(Mode)
 
     explicit Runner( QObject *parent = nullptr);
-        explicit Runner(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent = nullptr);
+        explicit Runner(int index,AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent = nullptr);
     ~Runner();
     void output();
 
-
+    int get_m_index() const;
 
     static void declareQML() {
        qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Mode");
@@ -76,7 +76,7 @@ int m_running;
     int *h;
     int *w;
 private:
-
+    int m_index;
     AVCodecContext *pAVCodecContext;
     AVFrame *pAVFrame;
     SwsContext * pSwsContext;

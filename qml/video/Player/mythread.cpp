@@ -1,10 +1,12 @@
 #include "mythread.h"
 #include "QDebug"
 
-MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent) : QObject(parent)
+MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, int index, QObject *parent) : QObject(parent)
 {
+    m_index=index;
+
     isOver=false;
-    runner = new Runner(data,h,w,URL,mode);
+    runner = new Runner(m_index,data,h,w,URL,mode);
     thread = new QThread();
 
 
@@ -25,10 +27,11 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mod
 
 MyThread::~MyThread()
 {
-    qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<runner->URL;
+     qDebug()<<"-->MyThread::~MyThread() "<<m_index;
+    qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<m_index;
     delete runner;
     delete thread;
-        qDebug()<<"MyThread destroyed";
+     qDebug()<<"<--MyThread::~MyThread() "<<m_index;
 }
 
 void MyThread::stop()
@@ -41,6 +44,11 @@ void MyThread::m_quit()
     qDebug()<<"MyThread::quit()";
     thread->quit();
     isOver=true;
+}
+
+int MyThread::get_m_index() const
+{
+    return m_index;
 }
 
 bool MyThread::getIsOver() const

@@ -61,6 +61,8 @@ public:
 
     bool getIsOver() const;
 
+   int get_m_index() const;
+
 private:
 
     bool isOver=false;
@@ -69,6 +71,10 @@ private:
     AVPicture *data;
 
     QString URL;
+
+    static int index;
+
+    int m_index;
 
 
 public slots:
