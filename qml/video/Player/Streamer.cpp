@@ -21,7 +21,7 @@ Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *p
 Streamer::~Streamer()
 {
 
-    qDebug()<<"Streamer::~Streamer() "<<URL;
+    qDebug()<<"Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<URL;
 }
 
 int Streamer::getFollowers() const
@@ -107,8 +107,8 @@ void Streamer::stop()
   //  qDebug()<<"1";
     if(mm)
     mm->stop();
-    qDebug()<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning();
-    if(mm->runner->thread()->isFinished()){
+    qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
+    if(mm->thread->isFinished()){
    // qDebug()<<"2";
 
         isValid=false;

@@ -20,13 +20,16 @@ public:
 
     void stop();
 
+    bool getIsOver() const;
+
 public slots:
 
-   void quit();
+   void m_quit();
 
 
 private:
     QString URL;
+    bool isOver=false;
 signals:
 
 

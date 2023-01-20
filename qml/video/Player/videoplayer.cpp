@@ -56,6 +56,7 @@ void VideoPlayer::start(Runner::Mode mode)
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
         current->followers_dec();
+        qDebug()<<"clear "<<current.data()->getURL();
         current.clear();
 
     }
@@ -94,6 +95,7 @@ void VideoPlayer::stop()
     disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
     disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
     current->followers_dec();
+    qDebug()<<"clear "<<current.data()->getURL();
     current.clear();
     }
  // list1->stop();

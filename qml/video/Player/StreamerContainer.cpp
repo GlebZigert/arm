@@ -41,7 +41,18 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, Run
     }
 
     for(auto one : map){
-       if(one.data()->mm->runner->thread()->isFinished()){
+
+       if(
+
+               one.data()->mm->getIsOver()
+             //  one.data()->mm->thread->isFinished()&&
+             //  !one.data()->mm->thread->isRunning()
+
+               )
+
+
+               {
+           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL();
            map.removeOne(one);
        }
 
@@ -52,7 +63,7 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, Run
     for(auto one :map){
 
         qDebug()<<one.data()->getURL();
-         qDebug()<<"пордписчики: "<<one.data()->getFollowers()<<"; завершен - " <<one.data()->mm->runner->thread()->isFinished();
+         qDebug()<<"подписчики: "<<one.data()->getFollowers()<<"; завершен - " <<one.data()->mm->runner->thread()->isFinished();
  qDebug()<<" ";
 
     }
