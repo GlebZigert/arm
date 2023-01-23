@@ -24,7 +24,7 @@ ApplicationWindow {
     width: 1366
     height: 1024
     visible: true
-
+    visibility: "FullScreen"
 
 
     onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)

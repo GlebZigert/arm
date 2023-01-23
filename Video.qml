@@ -55,7 +55,16 @@ Item{
     property int dy
     property int dx
 
+    Window {
 
+        id: alarmWindow
+        x: 100;
+        y: 100;
+        width: 100;
+        height: 100
+        visible: true
+        visibility: "FullScreen"
+    }
 
 
 /*
