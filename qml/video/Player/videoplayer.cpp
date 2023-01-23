@@ -80,9 +80,7 @@ void VideoPlayer::start(Runner::Mode mode)
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
   }
- //   list1->URL=m_source;
- //   list1->mode=mode::Streaming;
- //  list1->start();
+
 
 
 
@@ -106,10 +104,6 @@ void VideoPlayer::shot()
     if(m_source==""){
         img=QImage(":/qml/video/no_in_storage.jpeg");
    this->update();
-    }else{
-  //  list1->URL=m_source;
-  //  list1->mode=mode::Snapshot;
-  // list1->start();
     }
 }
 

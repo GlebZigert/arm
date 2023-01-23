@@ -109,7 +109,7 @@ bool Runner::load_settings()
     int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
     qDebug()<<"<-- avformat_open_input";
     if (error != 0){
-      //  emit lost_connection(URL);
+
 
 
         qDebug()<<"FAIL with: avformat_open_input "<<error;
@@ -121,7 +121,7 @@ bool Runner::load_settings()
     pFormatCtx->max_analyze_duration = AV_TIME_BASE;
 
     if (avformat_find_stream_info(pFormatCtx, NULL)<0){
-    //    emit lost_connection(URL);
+
 
         qDebug()<<"FAIL with: avformat_find_stream_info ";
         return false;
@@ -136,7 +136,7 @@ bool Runner::load_settings()
 
 
     if (videoindex == -1){
-    //    emit lost_connection(URL);
+
 
          qDebug()<<"FAIL with: videoindex ";
         return false;
@@ -159,9 +159,7 @@ bool Runner::load_settings()
     pAVCodec = avcodec_find_decoder(pAVCodecContext->codec_id);
 
     if((videoWidth==0)&&(videoHeight==0)){
-    //     emit lost_connection(URL);
-    //     emit finished();
-         //close();
+
         qDebug()<<"FAIL with: videoWidth videoHeight";
        return false;
      }
@@ -172,7 +170,7 @@ bool Runner::load_settings()
 
     int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
     if (result<0){
-    //    emit lost_connection(URL);
+
         emit finished();
         close();
         qDebug()<<"FAIL with: avcodec_open2t";
@@ -265,10 +263,7 @@ bool Runner::capture()
     int res=(av_read_frame(pFormatCtx, packet));
    if(res<0){
        qDebug()<<"interrupt lostConnection";
-   //    emit lost_connection(URL);
-   //    emit finished();
 
-       //close();
        return false;
    }
 
@@ -345,7 +340,6 @@ prev=clock();
 load();
 if (!load_settings()){
     qDebug()<<"001";
-    emit lost_connection(URL);
     emit  finished();
     local_mutex.unlock();
     return;
@@ -373,7 +367,6 @@ while(m_running!=Mode::TurnOff){
 
    if (!capture()){
        qDebug()<<"002";
-       emit lost_connection(URL);
        emit  finished();
        return;
    }

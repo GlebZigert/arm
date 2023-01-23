@@ -21,6 +21,8 @@ Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *p
   tmrStart = new QTimer(this);
 
 
+
+
   isValid=false;
 }
 
@@ -93,17 +95,26 @@ startRunner();
 
 void Streamer::startRunner()
 {
-    qDebug()<<"Streamer::startRunner()";
+//    qDebug()<<"Streamer::startRunner()";
     if(isValid){
-        qDebug()<<"noValid";
+  //      qDebug()<<"noValid";
 
         stop();
         tmrStart->singleShot(delay,this,SLOT(start()));
         return;
     }
      qDebug()<<"Valid";
-     isOver=false;
+
+
+     if(mm!=nullptr){
+     disconnect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
+     disconnect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
+
+
      mm.clear();
+     }
+
+
     mm = QSharedPointer<MyThread>::create(&data,h,w,URL,mode,m_index);
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
@@ -116,16 +127,18 @@ void Streamer::startRunner()
 
 void Streamer::stop()
 {
-    qDebug()<<"stop";
+ //   qDebug()<<"stop";
     if(!isValid){
         return;
     }
+
+    mode = Runner::Mode::TurnOff;
   //  qDebug()<<"1";
     if(mm){
     mm->stop();
     }
 
-
+/*
     qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
     if(mm->thread->isFinished()){
    // qDebug()<<"2";
@@ -135,6 +148,7 @@ void Streamer::stop()
         isOver=true;
 
     }
+    */
 
 
 
@@ -160,6 +174,11 @@ void Streamer::lostConnection(QString URL)
     qDebug()<<"lostConnection";
     emit lost(URL);
     tmrStart->stop();
+
+    if(mode == Runner::Mode::TurnOff)
+        return;
+
+
     delay=1000;
     startRunner();
 
