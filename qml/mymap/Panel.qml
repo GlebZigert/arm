@@ -59,18 +59,16 @@ Rectangle {
                     onClicked: panel.btnAction(modelData.icon)
 
                     Image {
-                        property real k: 4
                         opacity: 0.65
                         anchors.margins: 5
                         //anchors.fill: parent
                         anchors.centerIn: parent
                         mipmap: true
                         source: "qrc:/images/map-toolbar/" + modelData.icon + ".svg"
-                        sourceSize.width: k * (parent.width - 12)
-                        sourceSize.height: k * (parent.height - 12)
-                        width: parentWidth - 12
-                        height: parentHeight - 12
-                        scale: 1 / k
+                        width: parent.width - 12
+                        height: parent.height - 12
+                        sourceSize.width: 4 * width
+                        sourceSize.height: 4 * height
                     }
                 }
             }
