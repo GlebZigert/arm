@@ -6,7 +6,7 @@ Item {
 
     id:supreme
 
-
+  anchors.fill: parent
     signal playing
     signal selected
 
@@ -45,11 +45,11 @@ Item {
 
 
         Item {
-       //     width: supreme.width/grid.columns
-       //     height: supreme.height/grid.rows
+            width: supreme.width/grid.columns
+            height: supreme.height/grid.rows
 
-              width: (height/1080)*1920
-              height: 250
+        //      width: (height/1080)*1920
+        //      height: 250
 
             signal isSelected(int index)
 
@@ -58,7 +58,8 @@ Item {
             property bool contain_mouse: area.containsMouse ? true : false
 
             Rectangle{
-            anchors.fill: parent
+                width: supreme.width/grid.columns
+                height: supreme.height/grid.rows
             color: selected? "lightgray" : "gray"
 
              }
@@ -67,7 +68,8 @@ Item {
             Vvvvvvm{
                 id: vm
 
-                anchors.fill: parent
+                width: supreme.width/grid.columns
+                height: supreme.height/grid.rows
 
 
 
@@ -81,7 +83,8 @@ Item {
 
             MouseArea{
                 id: area
-        anchors.fill: parent
+                width: supreme.width/grid.columns
+                height: supreme.height/grid.rows
         hoverEnabled: true
            onClicked: {
            console.log(index)
@@ -94,6 +97,7 @@ Item {
             function set_selected(val){
             selected=val
             vm.selected=val
+           //     console.log("selected ",val)
             }
 
             Component.onCompleted: {
@@ -139,7 +143,7 @@ Item {
 
     onClicked: {
 
-        for(var i = 0; i<grid.children.length; i++)
+        for(var i = 0; i<grid.children.length-1; i++)
         {
 
             if(grid.children[i].contain_mouse){

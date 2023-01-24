@@ -171,14 +171,24 @@ Item{
                 height: parent.height
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: "lightblue"
+                color: "gray"
                 clip: true
 
+
+                MouseArea{
+
+
+
+
+                    anchors.fill:parent
+                    hoverEnabled: true
+                    propagateComposedEvents: true
+                    property int flag: 0
 
                 Video.MultiVM{
                     id: v1
 
-                    anchors.fill: parent
+
 
 
                  //   x:0
@@ -247,17 +257,7 @@ Item{
 
 
 
-                MouseArea{
 
-
-
-
-                    anchors.fill:parent
-                    hoverEnabled: true
-                    propagateComposedEvents: true
-                    property int flag: 0
-
-//Video.Vvvvvvm{
 
                     onClicked: {
                         flag=1
