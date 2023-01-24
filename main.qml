@@ -23,8 +23,10 @@ ApplicationWindow {
     x: 400
     width: 1366
     height: 1024
+
     visible: true
-    visibility: "FullScreen"
+  //  visibility: "FullScreen"
+    screen: Qt.application.screens[0]
 
 
     onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)

@@ -319,5 +319,6 @@
         <file>Reqqt.qml</file>
         <file>qml/video/DoubleVm.qml</file>
         <file>qml/video/MultiVM.qml</file>
+        <file>VideoWall_panel.qml</file>
     </qresource>
 </RCC>

@@ -4,10 +4,10 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.5
-
+import QtQuick.Window 2.11
 
 import QtQuick 2.4
-import QtQuick.Window 2.2
+import QtQuick.Window 2.11
 import QtQuick.Layouts 1.1
 
 import VideoPlayer 1.0
@@ -58,12 +58,15 @@ Item{
     Window {
 
         id: alarmWindow
-        x: 100;
-        y: 100;
-        width: 100;
-        height: 100
+        x: 100
+        y: 100
+        width: 1000
+        height: 800
+
         visible: true
         visibility: "FullScreen"
+
+         screen: Qt.application.screens[1]
     }
 
 
@@ -165,10 +168,80 @@ Item{
             Rectangle {
                 id:rect
                 width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
+                height: parent.height
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 color: "lightblue"
                 clip: true
+
+
+                Video.MultiVM{
+                    id: v1
+
+                    anchors.fill: parent
+
+
+                 //   x:0
+                //    y:0
+                //    width: 800
+               //     height: 400
+
+
+
+                    onActiveFocusChanged:{
+                    console.log("v1 activeFocus: ", v1.activeFocus)
+
+
+                    }
+                }
+
+                Rectangle {
+                    width: 300
+                    anchors {
+
+                        top: parent.top
+                        right: parent.right
+                        bottom: parent.bottom
+                    }
+                    id: configPanel
+                    layer.enabled: true
+                    property string selected: ""
+                    property string selectedUrl
+                    property int selectedX: 0
+                    property int selectedY: 0
+                    opacity: 0.1
+                    color: "blue"
+
+                    Video.Loaded_cameras {
+                        id: camera_storage
+                        anchors.fill:parent
+                        progress_bar: timeline
+
+                    }
+
+                    states: [
+                        State {
+                            name: "show"
+                            PropertyChanges {
+                                target: configPanel
+                                opacity: 1
+                                anchors.rightMargin: 0
+                                width: 400
+                            }
+                        },
+                        State {
+                            name: "hide"
+                            PropertyChanges {
+                                target: configPanel
+                                opacity: 0.5
+                                anchors.rightMargin: configPanel.width
+                                width:0
+                            }
+                        }
+                    ]
+
+
+                }
 
 
 
@@ -185,73 +258,6 @@ Item{
                     property int flag: 0
 
 //Video.Vvvvvvm{
-                    Video.MultiVM{
-                        id: v1
-
-                     //   anchors.fill: parent
-                        x:0
-                        y:0
-                        width: 800
-                        height: 400
-
-
-
-                        onActiveFocusChanged:{
-                        console.log("v1 activeFocus: ", v1.activeFocus)
-
-
-                        }
-                    }
-
-                    Rectangle {
-                        width: 300
-                        anchors {
-
-                            top: parent.top
-                            right: parent.right
-                            bottom: parent.bottom
-                        }
-                        id: configPanel
-                        layer.enabled: true
-                        property string selected: ""
-                        property string selectedUrl
-                        property int selectedX: 0
-                        property int selectedY: 0
-                        opacity: 0.1
-                        color: "blue"
-
-                        Video.Loaded_cameras {
-                            id: camera_storage
-                            anchors.fill:parent
-                            progress_bar: timeline
-
-                        }
-
-                        states: [
-                            State {
-                                name: "show"
-                                PropertyChanges {
-                                    target: configPanel
-                                    opacity: 1
-                                    anchors.rightMargin: 0
-                                    width: 400
-                                }
-                            },
-                            State {
-                                name: "hide"
-                                PropertyChanges {
-                                    target: configPanel
-                                    opacity: 0.5
-                                    anchors.rightMargin: configPanel.width
-                                    width:0
-                                }
-                            }
-                        ]
-
-
-                    }
-
-
 
                     onClicked: {
                         flag=1
@@ -441,6 +447,13 @@ Item{
 
 
     Component.onCompleted: {
+
+
+        var screens = Qt.application.screens;
+               for (var i = 0; i < screens.length; ++i)
+                   console.log("screen "+i+" "+ screens[i].name + " has geometry " +
+                               screens[i].virtualX + ", " + screens[i].virtualY + " " +
+                               screens[i].width + "x" + screens[i].height)
 
 
         console.log("item_style: ",item_style)

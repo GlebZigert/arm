@@ -4,9 +4,12 @@ import QtQuick.Layouts 1.0
 
 Item {
 
+    id:supreme
+
+
     signal playing
     signal selected
-    anchors.fill: parent
+
     ListModel {
         id: work_model
 
@@ -42,8 +45,9 @@ Item {
 
 
         Item {
-          //  width: grid.width/grid.columns
-          //  height: grid.height/grid.rows
+       //     width: supreme.width/grid.columns
+       //     height: supreme.height/grid.rows
+
               width: (height/1080)*1920
               height: 250
 
@@ -93,7 +97,7 @@ Item {
             }
 
             Component.onCompleted: {
-                console.log("Rect ",index," is onCompleted")
+                console.log("Rect ",index," is onCompleted ",selected)
             selected=false
             }
 
@@ -234,7 +238,7 @@ Item {
     Component.onCompleted: {
 
 
-
+    console.log("multivm ",supreme.width," ",supreme.height," ",grid.width," ",grid.height)
         for(var i=0;i<20;i++){
             work_model.append({index: i})
         }
