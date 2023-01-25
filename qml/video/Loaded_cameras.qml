@@ -18,10 +18,10 @@ Item {
     signal refresh(var y)
 
 
-ListModel{
-id: model
+     ListModel{
+     id: model
 
-}
+     }
 
 property ListModel page_model: ListModel{ }
 

@@ -6,7 +6,7 @@ Item {
 
     id:supreme
 
-  anchors.fill: parent
+
     signal playing
     signal selected
 
@@ -26,6 +26,8 @@ Item {
         id: grid
 
         columnSpacing: 0
+
+
 
         rowSpacing: 0
            rows: 5
@@ -246,6 +248,8 @@ Item {
         for(var i=0;i<20;i++){
             work_model.append({index: i})
         }
+
+
 
     }
 }

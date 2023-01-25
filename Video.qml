@@ -188,7 +188,7 @@ Item{
                 Video.MultiVM{
                     id: v1
 
-
+                    anchors.fill: parent
 
 
                  //   x:0
