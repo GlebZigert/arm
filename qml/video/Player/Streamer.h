@@ -10,7 +10,7 @@ class Streamer : public QObject
 {
     Q_OBJECT
 public:
-    explicit Streamer(int *h,int *w, QString URL,Runner::Mode mode,QObject *parent = nullptr);
+    explicit Streamer(QString URL,Runner::Mode mode,QObject *parent = nullptr);
     ~Streamer();
     QSharedPointer<MyThread> mm;
 
@@ -20,8 +20,8 @@ public:
     void followers_inc();
     void followers_dec();
 
-    int *h;
-    int *w;
+    int h;
+    int w;
 
     QImage* img;
 

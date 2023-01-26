@@ -14,7 +14,7 @@ public:
 
     QList<QSharedPointer<Streamer>> map;
 
-    QSharedPointer<Streamer> start(int *h,int *w,QString url, Runner::Mode mode);
+    QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
 
 
     QSharedPointer<Streamer> find(QString url);

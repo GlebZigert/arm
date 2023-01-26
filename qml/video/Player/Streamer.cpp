@@ -2,7 +2,7 @@
 
 int Streamer::index = 0;
 
-Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
+Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
 {
     m_index=index++;
     qDebug()<<"Streamer::Streamer "<<m_index;
@@ -12,8 +12,8 @@ Streamer::Streamer(int *h,int *w, QString URL, enum Runner::Mode mode,QObject *p
     this->URL=URL;
     this->data=NULL;
     this->mode=mode;
-    this->h=h;
-    this->w=w;
+  //  this->h=h;
+  //  this->w=w;
 
     followers=0;
 
@@ -75,12 +75,12 @@ void Streamer::followers_dec()
 
 int Streamer::getW() const
 {
-    return *w;
+    return w;
 }
 
 int Streamer::getH() const
 {
-    return *h;
+    return h;
 }
 
 
@@ -115,7 +115,7 @@ void Streamer::startRunner()
      }
 
 
-    mm = QSharedPointer<MyThread>::create(&data,h,w,URL,mode,m_index);
+    mm = QSharedPointer<MyThread>::create(&data,&h,&w,URL,mode,m_index);
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
     connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));

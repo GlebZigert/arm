@@ -10,7 +10,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
 
 
-//    data=NULL;
+    data=NULL;
 
 
 
@@ -33,6 +33,7 @@ VideoPlayer::~VideoPlayer()
         current->followers_dec();
         qDebug()<<"clear "<<current.data()->getURL();
         current.clear();
+        data=NULL;
 
     }
     qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
@@ -74,6 +75,7 @@ void VideoPlayer::setSource(const QString source)
 void VideoPlayer::start(Runner::Mode mode)
 {
 
+
     if(current){
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
@@ -94,7 +96,7 @@ void VideoPlayer::start(Runner::Mode mode)
 
 
 
-  current = container.start(&h,&w,m_source,mode);
+  current = container.start(m_source,mode);
 
   if(current){
         current->followers_inc();
@@ -118,16 +120,19 @@ void VideoPlayer::stop()
     current->followers_dec();
     qDebug()<<"clear "<<current.data()->getURL();
     current.clear();
+    data=NULL;
     }
  // list1->stop();
 }
 
 void VideoPlayer::shot()
 {
+
     if(m_source==""){
         img=QImage(":/qml/video/no_in_storage.jpeg");
    this->update();
     }
+
 }
 
 
@@ -137,7 +142,7 @@ void VideoPlayer::onWidthChanged(){
 }
 
 void VideoPlayer::onheightChanged(){
-    update();
+   update();
 }
 
 void VideoPlayer::frame(QString source){
@@ -146,7 +151,8 @@ void VideoPlayer::frame(QString source){
     w = current.data()->getW();
     h = current.data()->getH();
 
-    if(source==this->m_source){
+
+    if(source==this->m_source&&data!=NULL){
 
          img=QImage(data->data[0],
                     w,
@@ -156,15 +162,18 @@ void VideoPlayer::frame(QString source){
 
     this->update();
     }
+
 }
 
 void VideoPlayer::lost(QString source)
 {
+
         qDebug()<<"lost";
     if(source==this->m_source){
          img=QImage(":/qml/video/no_signal.jpeg");
     this->update();
     }
+
 }
 
 

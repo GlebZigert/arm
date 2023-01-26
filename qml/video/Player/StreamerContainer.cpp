@@ -5,7 +5,7 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 
 }
 
-QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, Runner::Mode mode)
+QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
 {
     qDebug()<<"StreamerContainer::start "<<url;
     qDebug()<<"mode "<<mode;
@@ -24,7 +24,7 @@ QSharedPointer<Streamer> StreamerContainer::start(int *h,int *w,QString url, Run
 
     if(!streamer){
 
-        streamer=QSharedPointer<Streamer>::create(h,w,url,mode);
+        streamer=QSharedPointer<Streamer>::create(url,mode);
         if(streamer){
             map.append(streamer);
             qDebug()<<"добавляем в контейер "<<url;
