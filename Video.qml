@@ -150,7 +150,7 @@ Item{
 
                         root.deviceSelected.connect(deviceSelected)
                         //tree.selected.connect(selected)
-                        v1.selected.connect(selected)
+                    //    v1.selected.connect(selected)
 
                     }
                     function selected(item) {
@@ -481,7 +481,11 @@ Item{
         timeline.signal_loaded_cameras_on_off.connect(f_loaded_cameras_on_off)
         timeline.eventlog_on_off.connect( f_eventlog_on_off)
     //    vm.playing.connect(start_timer_if_its_needed)
+
         v1.playing.connect(start_timer_if_its_needed)
+
+        v1.selected_cid.connect(v1_selected)
+
         timeline.update_timelist.connect(timelist.set_current)
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
         root.cameraList.updated.connect(reconnect_livestream)
@@ -495,6 +499,11 @@ Item{
         root.storage_live=live
         root.pause_play=play
 
+    }
+    function v1_selected(vl){
+    console.log("v1_selected ",vl)
+        cid=vl
+         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
     function select_camera_from_deviceTree(sid,id){
@@ -691,7 +700,7 @@ Item{
             if(root.storage_live==storage)
             {
                 //vm.source=lcl.snapshot
-                v1.set_vm_source(lcl.snapshot)
+                v1.set_vm_source(cid,lcl.snapshot)
                 v1.vm_start(Mode.Snapshot)
 
             }
@@ -708,7 +717,7 @@ Item{
             {
                 if(root.storage_live==storage)
                 {
-                    v1.set_vm_source(lcl.storageStream)
+                    v1.set_vm_source(cid,lcl.storageStream)
                     v1.vm_start(Mode.StorageStreaming)
 
                 }
@@ -731,7 +740,7 @@ Item{
                     //    vm.source=lcl.liveStream
                     //    vm.start()
 
-                        v1.set_vm_source(lcl.liveStream)
+                        v1.set_vm_source(cid,lcl.liveStream)
                         v1.vm_start(Mode.LiveStreaming)
                     }
 

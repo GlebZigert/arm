@@ -135,6 +135,19 @@ void VideoPlayer::shot()
 
 }
 
+int VideoPlayer::getCid() const
+{
+
+    return cid;
+}
+
+void VideoPlayer::setCid(int newCid)
+{
+   qDebug()<<"VideoPlayer::setCid(): "<< newCid;
+    cid = newCid;
+        emit cidChanged(cid);
+}
+
 
 
 void VideoPlayer::onWidthChanged(){

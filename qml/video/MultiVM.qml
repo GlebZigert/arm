@@ -10,7 +10,9 @@ Item {
 
     property int index: 0
     signal playing
-    signal selected
+    signal selected_cid(int cid)
+
+     signal selected
 
     property int scale;
 
@@ -118,7 +120,7 @@ Item {
            //     width: model.w
            //     height: model.h
 
-
+                property int cid: -1
 
               //  property string source
 
@@ -140,6 +142,33 @@ Item {
                                              for(i=0;i<w_model.count-1;i++){
 
                                                console.log(i," ",w_model.get(i).url)
+
+                                             }
+
+                                             console.log("PROFIT")
+                                         }
+
+                                         }
+                                 }
+
+                onReturn_cid: (subject)=> {
+
+                                     console.log("MultiVM onCidChanged ", subject)
+
+                    console.log("model.count ", w_model.count)
+
+                                         for(var i = 0;i < w_model.count-1;i++){
+
+                                         console.log(i," ",w_model.get(i).uid)
+                                            console.log(i," ",uid)
+                                             if(w_model.get(i).uid === uid){
+                                                w_model.setProperty(i,"cid",subject)
+                                                  vm.cid = subject
+                                             console.log("uid ",uid," cid",vm.cid)
+                                             console.log("w_model")
+                                             for(i=0;i<w_model.count-1;i++){
+
+                                               console.log(i," ",w_model.get(i).cid)
 
                                              }
 
@@ -176,6 +205,10 @@ Item {
 
             }
 
+            function get_cid(){
+            return vm.cid
+            }
+
             function set_selected(val){
             selected=val
             vm.selected=val
@@ -193,10 +226,10 @@ Item {
                 vm.set_Scale(val)
             }
 
-            function set_vm_source(src){
+            function set_vm_source(cid,src){
 
 
-                vm.set_vm_source(src)
+                vm.set_vm_source(cid,src)
             }
 
             function vm_start(mode){
@@ -238,7 +271,14 @@ Item {
                             grid.children[i].contain_mouse );
 
                 grid.children[i].selected=true
+
+
+
              grid.children[i].set_selected(true)
+             console.log("---cid",grid.children[i].get_cid())
+              selected_cid(grid.children[i].get_cid())
+
+
             }
             else{
                grid.children[i].selected=false
@@ -268,13 +308,13 @@ Item {
         }
     }
 
-    function set_vm_source(src){
+    function set_vm_source(cid,src){
         for(var i = 0; i<grid.children.length; i++)
         {
 
             if(grid.children[i].selected){
 
-                grid.children[i].set_vm_source(src)
+                grid.children[i].set_vm_source(cid,src)
 
             }
 
@@ -325,13 +365,32 @@ Item {
 
     function resize(){
 
+        var ww = width/supreme.scale
+        var hh = height/supreme.scale
+
+        console.log("Меняю размеры w_model ",w_model.count)
+        for(var i=0;i<w_model.count;i++){
+
+          console.log(i," ",w_model.get(i).uid," ",w_model.get(i).url)
+
+            w_model.setProperty(i,"h",hh)
+            w_model.setProperty(i,"w",ww)
+            w_model.setProperty(i,"x",ww*(i%supreme.scale))
+            w_model.setProperty(i,"y",hh*((i<supreme.scale)?0:((i-(i%supreme.scale))/supreme.scale)))
+
+
+        }
+    }
+
+    function rescale(scale){
+
         if(width==0)
             return
 
         if(height==0)
             return
 
-        console.log("MultiVM onWidthChanged Item wh: ",width," ",height," ",scale);
+        console.log("MultiVM rescale Item wh: ",width," ",height," ",scale);
 
 
         var ww = width/scale
@@ -441,7 +500,7 @@ Item {
                 else{
     supreme.scale=2
     }
-    resize()
+    rescale(supreme.scale)
 
 
     }
@@ -456,9 +515,9 @@ Item {
 
     console.log("multivm ",supreme.width," ",supreme.height," ",grid.width," ",grid.height)
 
-        scale=5;
+        supreme.scale=5;
     w_model.clear()
-        resize();
+      rescale(supreme.scale)
 
 
 

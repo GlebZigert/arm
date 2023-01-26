@@ -14,6 +14,7 @@ class VideoPlayer : public QQuickPaintedItem
     Q_OBJECT
 
     Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(int cid READ getCid WRITE setCid NOTIFY cidChanged)
 public:
     explicit  VideoPlayer(QQuickItem *parent = 0);
     ~VideoPlayer();
@@ -35,6 +36,11 @@ public:
     int h;
     int w;
 
+    int cid;
+
+
+    int getCid() const;
+    void setCid(int newCid);
 
 private:
 
@@ -50,7 +56,7 @@ private:
 signals:
     void playing();
     void sourceChanged(const QString &source);
-
+    void cidChanged(const int &cid);
 public slots:
 
     void onWidthChanged();

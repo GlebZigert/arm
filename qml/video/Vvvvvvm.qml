@@ -15,9 +15,9 @@ Item {
     signal selected
 
     property string source
-
+    property int cid
     signal return_source(string src)
-
+    signal return_cid(int cid)
 
      onActiveFocusChanged:{
      console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
@@ -164,6 +164,12 @@ Item {
                         return_source(supreme.source)
             }
 
+            onCidChanged: (subject)=> {
+
+            console.log("onSourceChanged ", subject)
+                                 supreme.cid=subject
+                        return_cid(supreme.cid)
+            }
 
             transform: Scale {
                 id: tform1
@@ -558,7 +564,8 @@ Item {
         }
     }
 
-    function set_vm_source(src){
+    function set_vm_source(cid,src){
+        vm.cid=cid
         vm.source=src
     }
 
