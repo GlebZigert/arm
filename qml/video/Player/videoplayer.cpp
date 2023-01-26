@@ -119,6 +119,7 @@ void VideoPlayer::stop()
     disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
     current->followers_dec();
     qDebug()<<"clear "<<current.data()->getURL();
+    current.data()->save=false;
     current.clear();
     data=NULL;
     }
@@ -131,6 +132,21 @@ void VideoPlayer::shot()
     if(m_source==""){
         img=QImage(":/qml/video/no_in_storage.jpeg");
    this->update();
+    }
+
+}
+
+void VideoPlayer::saving_on()
+{
+    if(current!=0){
+        current.data()->setSave(true);
+    }
+}
+
+void VideoPlayer::saving_off()
+{
+    if(current!=0){
+        current.data()->setSave(false);
     }
 
 }

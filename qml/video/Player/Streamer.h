@@ -28,6 +28,8 @@ public:
 
     bool isValid;
 
+    bool save=false;
+
 
 
 
@@ -62,6 +64,9 @@ public:
     bool getIsOver() const;
 
    int get_m_index() const;
+
+   bool getSave() const;
+   void setSave(bool newSave);
 
 private:
 

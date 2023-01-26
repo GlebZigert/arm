@@ -23,7 +23,12 @@ Item {
 
      }
 
+    ListModel {
+        id: lcl_model
 
+        dynamicRoles: true
+
+     }
 
 
 
@@ -121,7 +126,7 @@ Item {
            //     height: model.h
 
                 property int cid: -1
-
+                property string url: ""
               //  property string source
 
 
@@ -134,11 +139,13 @@ Item {
                                          for(var i = 0;i < w_model.count-1;i++){
 
                                          console.log(i," ",w_model.get(i).uid)
-                                            console.log(i," ",uid)
+                                       //     console.log(i," ",uid)
                                              if(w_model.get(i).uid === uid){
+
+                                                console.log("w_model.setProperty(",i,",url,",subject,")")
                                                 w_model.setProperty(i,"url",subject)
 
-                                             console.log("w_model")
+                                             console.log("w_model", w_model.get(i).url)
                                              for(i=0;i<w_model.count-1;i++){
 
                                                console.log(i," ",w_model.get(i).url)
@@ -219,6 +226,8 @@ Item {
                 console.log("Rect ",index," is onCompleted ",selected)
             selected=false
                   resize_vm()
+                  set_vm_source(model.cid,model.url)
+                  vm.vm_start(1)
             }
 
             function set_Scale(val){
@@ -244,6 +253,14 @@ Item {
             function vm_shot(){
 
                 vm.vm_shot()
+            }
+
+            function saving_off(){
+                vm.saving_off()
+            }
+
+            function saving_on(){
+            vm.saving_on()
             }
 
         }
@@ -293,6 +310,8 @@ Item {
     }
 
     }
+
+
 
     function set_Scale(val){
 
@@ -382,6 +401,23 @@ Item {
         }
     }
 
+    function saving_on(){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+          grid.children[i].saving_on()
+
+        }
+
+    }
+
+    function saving_off(){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+          grid.children[i].saving_off()
+
+        }
+    }
+
     function rescale(scale){
 
         if(width==0)
@@ -392,12 +428,33 @@ Item {
 
         console.log("MultiVM rescale Item wh: ",width," ",height," ",scale);
 
+        saving_on()
 
         var ww = width/scale
         var hh = height/scale
 
         grid.rows = scale
         grid.columns = scale
+
+        lcl_model.clear()
+
+        for(var i = 0;i < w_model.count;i++){
+
+        lcl_model.append({cid:w_model.get(i).cid, url: w_model.get(i).url,uid:w_model.get(i).uid})
+  }
+
+
+    console.log("w_modell count ",w_model.count)
+
+         for(var i = 0;i < w_model.count;i++){
+        console.log("w.. ",w_model.get(i).uid," ",w_model.get(i).cid," ",w_model.get(i).url)
+        }
+
+         console.log("lcl model count ",lcl_model.count)
+
+        for(var i = 0;i < lcl_model.count;i++){
+        console.log("lcl.. ",lcl_model.get(i).cid," ",lcl_model.get(i).url)
+        }
 
         w_model.clear()
 /*
@@ -440,12 +497,26 @@ Item {
 
         for(var i=0;i<scale*scale;i++){
 
+
+            var url, cid,uid
+
+            if(lcl_model.count>i){
+            url=lcl_model.get(i).url
+            cid=lcl_model.get(i).cid
+                uid=lcl_model.get(i).uid
+            }else{
+            cid=-1
+            url=""
+                uid=index++
+            }
+console.log("Добавляю ",cid," ",url)
             if(i>=w_model.count){
                 w_model.append({h:hh,w:ww,
                                    x: ww*(i%scale),
                                    y: hh*((i<scale)?0:((i-(i%scale))/scale)),
-                                   uid: index++,
-                                   url:""
+                                   uid: uid,
+                                   cid: cid,
+                                   url:url
                                })
             }
         }
@@ -468,6 +539,7 @@ Item {
 
           console.log(i," ",
                       w_model.get(i).uid," ",
+                      w_model.get(i).cid," ",
                       w_model.get(i).url," ",
                       w_model.get(i).h," ",
                       w_model.get(i).w," ",
@@ -481,6 +553,7 @@ Item {
 
         }
 
+    saving_off()
 
     }
 

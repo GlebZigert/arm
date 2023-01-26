@@ -554,6 +554,14 @@ Item {
         text: activeFocus ? "I have active focus!" : "I do not have active focus"
     }
 
+    function saving_off(){
+        vm.saving_off()
+    }
+
+    function saving_on(){
+    vm.saving_on()
+    }
+
     function set_Scale(val){
         tform1.xScale = val
         tform1.yScale = val
@@ -565,6 +573,7 @@ Item {
     }
 
     function set_vm_source(cid,src){
+        console.log("set_vm_source ",cid," ",src)
         vm.cid=cid
         vm.source=src
     }
@@ -588,6 +597,7 @@ Item {
        // supreme.forceActiveFocus()
         console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
             selected=false;
+
 
 
 

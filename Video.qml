@@ -501,6 +501,9 @@ Item{
 
     }
     function v1_selected(vl){
+        if(vl==-1)
+            return
+
     console.log("v1_selected ",vl)
         cid=vl
          Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)

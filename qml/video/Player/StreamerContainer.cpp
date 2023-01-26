@@ -83,8 +83,10 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 QSharedPointer<Streamer> StreamerContainer::find(QString url)
 {
     for(auto one : map){
-        if(one.data()->getURL()==url)
+        if(one.data()->getURL()==url){
+            one->setSave(false);
             return one;
+        }
     }
     return nullptr;
 }
