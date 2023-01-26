@@ -13,9 +13,10 @@ class VideoPlayer : public QQuickPaintedItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString source READ source WRITE setSource )
+    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
 public:
     explicit  VideoPlayer(QQuickItem *parent = 0);
+    ~VideoPlayer();
     void paint(QPainter *painter) override;
 
 
@@ -48,6 +49,7 @@ private:
 
 signals:
     void playing();
+    void sourceChanged(const QString &source);
 
 public slots:
 

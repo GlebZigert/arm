@@ -171,7 +171,7 @@ Item{
                 height: parent.height
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                color: "gray"
+                color: "lightblue"
                 clip: true
 
 

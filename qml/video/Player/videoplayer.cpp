@@ -5,6 +5,11 @@ StreamerContainer VideoPlayer::container;
 
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
+    qDebug()<<"VideoPlayer::VideoPlayer";
+
+
+
+
 //    data=NULL;
 
 
@@ -15,6 +20,22 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
   //  connect(list1,SIGNAL(frame(QString)),this,SLOT(frame(QString)));
   //  connect(list1,SIGNAL(lost(QString)),this,SLOT(lost(QString)));
 
+}
+
+VideoPlayer::~VideoPlayer()
+{
+    qDebug()<<"--> ~VideoPlayer::VideoPlayer";
+
+    if(current){
+        //если мы уже принимаем поток - нужно от него отписаться
+        disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+        disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+        current->followers_dec();
+        qDebug()<<"clear "<<current.data()->getURL();
+        current.clear();
+
+    }
+    qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
 }
 
 
@@ -41,7 +62,9 @@ QString VideoPlayer::source() const
 
 void VideoPlayer::setSource(const QString source)
 {
+
     m_source=source;
+    emit sourceChanged(m_source);
 }
 
 

@@ -14,7 +14,9 @@ Item {
     signal playing
     signal selected
 
+    property string source
 
+    signal return_source(string src)
 
 
      onActiveFocusChanged:{
@@ -154,6 +156,15 @@ Item {
 
             width: (height/1080)*1920
             height: parent.height
+
+            onSourceChanged: (subject)=> {
+
+            console.log("onSourceChanged ", subject)
+                                 supreme.source=subject
+                        return_source(supreme.source)
+            }
+
+
             transform: Scale {
                 id: tform1
             }
@@ -424,8 +435,8 @@ Item {
                             {
                                 var realX = wheel.x * tform1.xScale
                                 var realY = wheel.y * tform1.yScale
-                                vm.x += (1-zoomFactor)*realX
-                                vm.y += (1-zoomFactor)*realY
+                                modelx += (1-zoomFactor)*realX
+                                modely += (1-zoomFactor)*realY
                                 tform1.xScale *=zoomFactor
                                 tform1.yScale *=zoomFactor
                             }
@@ -438,8 +449,8 @@ Item {
                                 tform1.yScale *=zoomFactor
 
 
-                                vm.x += (1-zoomFactor)*realX
-                                vm.y += (1-zoomFactor)*realY
+                                modelx += (1-zoomFactor)*realX
+                                modely += (1-zoomFactor)*realY
 
                                 if(tform1.xScale==1)
                                 {
@@ -447,12 +458,12 @@ Item {
 
 
 
-                                    vm.x=(supreme.width- vm.width)/2
-                                    vm.y=(supreme.height- vm.height)/2
+                                    modelx=(supreme.width- modelwidth)/2
+                                    modely=(supreme.height- modelheight)/2
 
 
-                                    root.log("rect.x ", vm.x )
-                                    root.log("rect.y ",vm.y )
+                                    root.log("rect.x ", modelx )
+                                    root.log("rect.y ",modely )
                                 }
                             }
                         }
