@@ -136,16 +136,18 @@ Item {
 
                     console.log("model.count ", w_model.count)
 
-                                         for(var i = 0;i < w_model.count-1;i++){
+                                         for(var i = 0;i < w_model.count;i++){
 
-                                         console.log(i," ",w_model.get(i).uid)
-                                       //     console.log(i," ",uid)
+                                         console.log(i," ",w_model.get(i).uid," ",uid)
                                              if(w_model.get(i).uid === uid){
 
                                                 console.log("w_model.setProperty(",i,",url,",subject,")")
                                                 w_model.setProperty(i,"url",subject)
 
                                              console.log("w_model", w_model.get(i).url)
+                                               console.log("изменил url  для ",uid," на url ",vm.cid)
+
+
                                              for(i=0;i<w_model.count-1;i++){
 
                                                console.log(i," ",w_model.get(i).url)
@@ -164,15 +166,16 @@ Item {
 
                     console.log("model.count ", w_model.count)
 
-                                         for(var i = 0;i < w_model.count-1;i++){
+                                         for(var i = 0;i < w_model.count;i++){
 
-                                         console.log(i," ",w_model.get(i).uid)
-                                            console.log(i," ",uid)
+                                         console.log(i," ",w_model.get(i).uid," ",uid)
                                              if(w_model.get(i).uid === uid){
                                                 w_model.setProperty(i,"cid",subject)
                                                   vm.cid = subject
-                                             console.log("uid ",uid," cid",vm.cid)
-                                             console.log("w_model")
+
+                                             console.log("изменил cid  для ",uid," на cid ",w_model.get(i).cid)
+
+
                                              for(i=0;i<w_model.count-1;i++){
 
                                                console.log(i," ",w_model.get(i).cid)
@@ -223,10 +226,12 @@ Item {
             }
 
             Component.onCompleted: {
-                console.log("Rect ",index," is onCompleted ",selected)
+
             selected=false
                   resize_vm()
                   set_vm_source(model.cid,model.url)
+                   console.log("Rect ",index," создан ",uid," ",vm.cid," ",vm.url)
+
                   vm.vm_start(1)
             }
 
@@ -509,7 +514,7 @@ Item {
             url=""
                 uid=index++
             }
-console.log("Добавляю ",cid," ",url)
+console.log("Добавляю в модель ",uid," ",cid," ",url)
             if(i>=w_model.count){
                 w_model.append({h:hh,w:ww,
                                    x: ww*(i%scale),
