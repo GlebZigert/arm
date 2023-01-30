@@ -535,7 +535,7 @@ Item{
         root.storage_live=storage
         timeline.to_storage()
         var lcl=Axxon.camera(cid)
-        request_URL(lcl.id,lcl.serviceId,dt)
+        request_URL(v1.get_cids(),lcl.serviceId,dt)
 
     }
 
@@ -590,7 +590,7 @@ Item{
 
         cid=id
         var lcl
-        lcl=Axxon.camera(cid)
+        lcl=Axxon.camera(id)
         if(lcl!=-1){
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
@@ -609,7 +609,10 @@ Item{
             }
             root.deviceSelected(panePosition,lcl.sid,lcl.id)
             timeline.set_camera_zone(lcl.name)
-            request_URL(lcl.id,lcl.serviceId,dt)
+
+            v1.set_current_cid(cid)
+
+            request_URL(v1.get_cids(),lcl.serviceId,dt)
         }
     }
 
@@ -662,7 +665,7 @@ Item{
 
     function f_play(){
         root.pause_play=play
-        request_URL(cid,Axxon.camera(cid).serviceId,timeline.current_dt())
+        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt())
     }
 
     function f_pause(){
@@ -679,7 +682,7 @@ Item{
 
     function f_moved_at_dt(dt){
         root.storage_live=storage
-        request_URL(cid,Axxon.camera(cid).serviceId,dt)
+        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,dt)
     }
 
     function request_URL(cameraId, serviceId, dt){
@@ -696,15 +699,20 @@ Item{
     }
 
     function  update_vm(id)    {
-        var lcl=Axxon.camera(cid)
+
+        var cids =  v1.get_cids()
+        for(var one in cids)
+        {
+            var id=cids[one]
+        var lcl=Axxon.camera(id)
         if(root.pause_play==pause)
         {
 
             if(root.storage_live==storage)
             {
                 //vm.source=lcl.snapshot
-                v1.set_vm_source(cid,lcl.snapshot)
-                v1.vm_start(Mode.Snapshot)
+
+                v1.vm_start(id,lcl.snapshot,Mode.Snapshot)
 
             }
             else
@@ -720,8 +728,8 @@ Item{
             {
                 if(root.storage_live==storage)
                 {
-                    v1.set_vm_source(cid,lcl.storageStream)
-                    v1.vm_start(Mode.StorageStreaming)
+
+                    v1.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
 
                 }
                 else
@@ -743,11 +751,12 @@ Item{
                     //    vm.source=lcl.liveStream
                     //    vm.start()
 
-                        v1.set_vm_source(cid,lcl.liveStream)
-                        v1.vm_start(Mode.LiveStreaming)
+
+                        v1.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
                     }
 
             }
+    }
     }
 
     function f_telemetry_on_off(){
@@ -811,7 +820,7 @@ Item{
 
 
         timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
-        Axxon.request_URL(cid,Axxon.camera(id).serviceId,dt,"utc")
+        Axxon.request_URL(v1.get_cids(),Axxon.camera(id).serviceId,dt,"utc")
 
     }
 

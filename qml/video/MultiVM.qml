@@ -219,6 +219,11 @@ Item {
             return vm.cid
             }
 
+
+            function set_cid(cid){
+             vm.set_vm_cid(cid)
+            }
+
             function set_selected(val){
             selected=val
             vm.selected=val
@@ -229,6 +234,7 @@ Item {
 
             selected=false
                   resize_vm()
+                vm.set_vm_cid(model.cid)
                   set_vm_source(model.cid,model.url)
                    console.log("Rect ",index," создан ",uid," ",vm.cid," ",vm.url)
 
@@ -332,26 +338,48 @@ Item {
         }
     }
 
-    function set_vm_source(cid,src){
+    function get_cids(){
+
+        var cids =[]
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+
+        var lcl = grid.children[i].get_cid()
+               if(lcl!=-1){
+             cids.push(grid.children[i].get_cid())
+               }
+
+
+
+        }
+        return cids
+    }
+
+
+
+    function set_current_cid(cid){
         for(var i = 0; i<grid.children.length; i++)
         {
 
             if(grid.children[i].selected){
 
-                grid.children[i].set_vm_source(cid,src)
+
+                grid.children[i].set_cid(cid)
 
             }
 
         }
     }
 
-    function vm_start(mode){
-        for(var i = 0; i<grid.children.length; i++)
+    function vm_start(cid,src,mode){
+        for(var i = 0; i<grid.children.length-1; i++)
         {
 
-            if(grid.children[i].selected){
+            var lcl = grid.children[i].get_cid()
+            if(lcl==cid){
 
                 console.log("mode ",mode)
+                  grid.children[i].set_vm_source(cid,src)
                 grid.children[i].vm_start(mode)
 
             }
@@ -363,11 +391,11 @@ Item {
         for(var i = 0; i<grid.children.length; i++)
         {
 
-            if(grid.children[i].selected){
+        //    if(grid.children[i].selected){
 
                 grid.children[i].vm_stop()
 
-            }
+       //     }
 
         }
     }

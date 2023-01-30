@@ -540,25 +540,28 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     root.log("")
-         root.log("[receive_URL]")
-     root.log("")
+     console.log("")
+         console.log("[receive_URL]")
+     console.log("")
 
      //    root.log(data)
      //    root.log(JSON.stringify(data))
           root.log(JSON.stringify(data))
      var i
      for (i in data) {
-//      root.log("id: ", data[i].id)
-//      root.log("liveStream: ", data[i].liveStream)
-//      root.log("storageStream: ", data[i].storageStream)
-//      root.log("snapshot: ", data[i].snapshot)
+      console.log("id: ", data[i].id)
+      console.log("liveStream: ", data[i].liveStream)
+      console.log("storageStream: ", data[i].storageStream)
+      root.log("snapshot: ", data[i].snapshot)
 //      root.log("интервалы: ", JSON.stringify(data[i].intervals))
-     }
 
+
+     var cl = root.cameraList
      for(var j=0;j< root.cameraList.count;j++){
 
-         if( data[i].id==root.cameraList.get(j).id){
+var lcl = root.cameraList.get(j)
+ var lcld = data[i]
+         if( data[i].id===root.cameraList.get(j).id){
 
              root.log("[PROFIT]")
 
@@ -571,19 +574,8 @@ Axxon.prototype.receive_URL = function (data) {
 
          }
 
-
-
-
-
-
-
-
-
-
-
-
  }
-
+}
  //root.update_intervals.updated()
  root.frash_URL()
 
@@ -854,11 +846,11 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
         }
 
-      //      cameraId+";"+dt+" "+format_dt
- //   console.log("data.cameraId : ",data.cameraId)
- //   console.log("data.serviceId : ",data.serviceId)
- //   console.log("data.dt       : ",data.dt)
- //   console.log("data.format_dt: ",data.format_dt)
+            cameraId+";"+dt+" "+format_dt
+    console.log("data.cameraId : ",data.cameraId)
+    console.log("data.serviceId : ",data.serviceId)
+    console.log("data.dt       : ",data.dt)
+    console.log("data.format_dt: ",data.format_dt)
 
       root.send(serviceId, 'request_URL', data)
 

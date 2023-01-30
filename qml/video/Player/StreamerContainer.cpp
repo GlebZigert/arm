@@ -14,13 +14,13 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
     QSharedPointer<Streamer> streamer=nullptr;
 
-    if(mode==Runner::Mode::LiveStreaming){
+  //  if(mode==Runner::Mode::LiveStreaming){
     streamer = find(url);
 
     if(streamer){
         qDebug()<<"берем из контейера "<<url;
     }
-    }
+  //  }
 
     if(!streamer){
 

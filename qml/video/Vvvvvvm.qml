@@ -572,9 +572,15 @@ Item {
         }
     }
 
+    function set_vm_cid(cid){
+        console.log("set_vm_source ",cid)
+       vm.cid=cid
+
+    }
+
     function set_vm_source(cid,src){
         console.log("set_vm_source ",cid," ",src)
-        vm.cid=cid
+    //    vm.cid=cid
         vm.source=src
     }
 

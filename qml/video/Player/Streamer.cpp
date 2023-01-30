@@ -65,7 +65,7 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-    qDebug()<<"followers "<<followers<<" "<<URL;
+    qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
 
     if(followers==0 && mode !=Runner::Mode::LiveStreaming &&save==false){
        URL.clear();
