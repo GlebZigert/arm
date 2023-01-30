@@ -69,9 +69,9 @@ int Runner::interrupt_cb(void *ctx)
 {
 
     Runner* pl=(Runner*)ctx;
-    clock_t delay=clock()-pl->prev;
+    pl->delay=clock()-pl->prev;
    // qDebug()<<delay;
-    if(delay>150000){
+    if(pl->delay>150000){
         qDebug()<<"Interrupt";
         pl->prev=clock();
         pl->m_running=Mode::TurnOff;
@@ -342,6 +342,7 @@ if (!load_settings()){
     qDebug()<<"001";
     emit  finished();
     local_mutex.unlock();
+    emit lost_connection(URL);
     return;
 }
 local_mutex.unlock();
@@ -363,10 +364,12 @@ int frame_cnt=0;
 
 while(m_running!=Mode::TurnOff){
 
+ //   qDebug()<<URL<<"..                                          "<<delay;
    prev=clock();
 
    if (!capture()){
        qDebug()<<"002";
+       emit lost_connection(URL);
        emit  finished();
        return;
    }

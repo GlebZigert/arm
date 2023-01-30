@@ -388,7 +388,7 @@ Item {
     }
 
     function vm_stop(){
-        for(var i = 0; i<grid.children.length; i++)
+        for(var i = 0; i<grid.children.length-1; i++)
         {
 
         //    if(grid.children[i].selected){

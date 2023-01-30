@@ -100,21 +100,15 @@ void Streamer::start()
 {
 tmrStart->stop();
 delay=10;
+if(!isValid){
 startRunner();
-
+ tmrStart->singleShot(delay,this,SLOT(start()));
+}
 }
 
 void Streamer::startRunner()
 {
-//    qDebug()<<"Streamer::startRunner()";
-    if(isValid){
-  //      qDebug()<<"noValid";
-
-        stop();
-        tmrStart->singleShot(delay,this,SLOT(start()));
-        return;
-    }
-     qDebug()<<"Valid";
+    qDebug()<<"Streamer::startRunner()";
 
 
      if(mm!=nullptr){
@@ -122,7 +116,14 @@ void Streamer::startRunner()
      disconnect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
 
 
+     if(mm->thread->isFinished()){
      mm.clear();
+     }else{
+         qDebug()<<"thread not finished !!";
+          mm->stop();
+         return;
+
+     }
      }
 
 
@@ -185,13 +186,24 @@ void Streamer::lostConnection(QString URL)
     qDebug()<<"lostConnection";
     emit lost(URL);
     tmrStart->stop();
+    isValid=false;
+    if(mode == Runner::Mode::TurnOff){
+        return;
+    }
 
-    if(mode == Runner::Mode::TurnOff)
+
+
+
+        if(mm){
+        mm->stop();
+        }
+
+        tmrStart->singleShot(delay,this,SLOT(start()));
         return;
 
 
-    delay=1000;
-    startRunner();
+
+
 
 
 }

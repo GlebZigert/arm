@@ -68,6 +68,8 @@ int m_running;
     int count;  // Счётчик, по которому будем ориентироваться на то,
 
     QString str;
+
+    clock_t delay;
     QTimer tmr;
     static int interrupt_cb(void *ctx);
     QString URL;

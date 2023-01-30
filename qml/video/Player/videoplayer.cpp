@@ -77,6 +77,13 @@ void VideoPlayer::start(Runner::Mode mode)
 
 
     if(current){
+
+        if(current.data()->getURL()==m_source){
+
+            qDebug()<<"это он и  есть";
+            return;
+        }
+
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
