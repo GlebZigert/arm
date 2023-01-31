@@ -1,9 +1,17 @@
 import QtQuick 2.11
 import QtQuick.Layouts 1.0
+import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
 Item{
+    id: good
     anchors.fill: parent
     property int scale:5
+    property bool first_time: true
+
+
+    signal selected_cid(int cid)
+    signal give_me_a_camera
+
 
     ListModel {
 
@@ -19,7 +27,8 @@ Item{
 
     }
 
-
+    MouseArea{
+        anchors.fill: parent
     GridLayout {
 
         anchors.fill: parent
@@ -46,23 +55,48 @@ Item{
                     anchors.fill: parent
                     color: selected ? "lightgray" : "gray"
 
+
                     Text{
                         anchors.fill: parent
                         text: model.cid
                     }
                 }
 
+
+
+
                 MouseArea{
                     id: area
                     anchors.fill: parent
                     hoverEnabled: true
+                    propagateComposedEvents: true
+
+
                 }
+
+                Button{
+                x:10
+                y:10
+                width: 10
+                height: 10
+                visible: selected ? true : false
+
+
+                onClicked: {
+
+                    console.log("onClicked .")
+                    good.give_me_a_camera()
+                }
+
+                }
+
+
             }
         }
     }
 
-    MouseArea{
-        anchors.fill: parent
+
+        propagateComposedEvents: true
 
         onClicked: {
             for(var i = 0; i<grid.children.length-1; i++)
@@ -98,6 +132,8 @@ Item{
         }
     }
 
+
+
     onHeightChanged: resize()
     onWidthChanged: resize()
 
@@ -117,41 +153,42 @@ Item{
         }
     }
 
- function reconnect_livestream(){
+    function reconnect_livestream(){
 
-var src = Axxon.get_cids()
+        if(first_time){
+            first_time=false
+            var src = Axxon.get_cids()
 
 
-     for(var i=0;i<src.length;i++){
-         var lcl = src[i]
-     if(i>=cids.count){
-         cids.append({cid:lcl})
-     }else{
-     cids.setProperty(i,"cid",lcl)
-     }
-     }
+            for(var i=0;i<src.length;i++){
+                var lcl = src[i]
+                if(i>=cids.count){
+                    cids.append({cid:lcl})
+                }else{
+                    cids.setProperty(i,"cid",lcl)
+                }
+            }
 
-     for(var i=0;i<cids.count;i++){
-     console.log(cids.get(i).cid)
-     }
-}
+            for(var i=0;i<cids.count;i++){
+                console.log(cids.get(i).cid)
+            }
+        }
+    }
 
     Component.onCompleted: {
 
         root.cameraList.updated.connect(reconnect_livestream)
          scale=5
           rescale(5)
-
-
     }
 
     function rescale(scale){
 
 
         for(var i = 0;i<scale*scale; i++){
-        if(i>=cids.count){
-        cids.append({cid:-1})
-        }
+            if(i>=cids.count){
+                cids.append({cid:-1})
+            }
         }
 
         var ww = width/scale
@@ -164,19 +201,12 @@ var src = Axxon.get_cids()
 
         console.log("cids.count ",cids.count)
 
-
-
-         for(var i=0;i<scale*scale;i++){
-             w_model.append({h:hh,w:ww,
-                            x: ww*(i%scale),
-                            y: hh*((i<scale)?0:((i-(i%scale))/scale)),
-                            cid:cids.get(i).cid
-                            })
-
-         }
-
+        for(var i=0;i<scale*scale;i++){
+            w_model.append({h:hh,w:ww,
+                               x: ww*(i%scale),
+                               y: hh*((i<scale)?0:((i-(i%scale))/scale)),
+                               cid:cids.get(i).cid
+                           })
+        }
     }
-
-
-
 }
