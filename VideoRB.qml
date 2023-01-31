@@ -26,7 +26,7 @@ Item{
         }
     }
 
-
+/*
     Window {
 
         id: alarmWindow
@@ -40,6 +40,7 @@ Item{
 
          screen: Qt.application.screens[1]
     }
+    */
 
     EventLog{
         anchors.fill: parent

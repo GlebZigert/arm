@@ -893,6 +893,19 @@ root.log("event.event: ",event.event)
 
 }
 
+function get_cids(){
+    var cids=[]
+    for(var i=0;i<root.cameraList.count;i++){
+
+
+
+     cids.push(root.cameraList.get(i).id)
+
+    }
+    return cids
+
+}
+
 function camera(id){
  //   root.log("...find camera... ",id)
     for(var i=0;i<root.cameraList.count;i++){

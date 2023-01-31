@@ -322,5 +322,6 @@
         <file>VideoWall_panel.qml</file>
         <file>VideoRB.qml</file>
         <file>qml/video/VideoWall.qml</file>
+        <file>qml/video/MultiVMold.qml</file>
     </qresource>
 </RCC>
