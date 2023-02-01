@@ -110,7 +110,7 @@ function preset_info(point)
 {
    root.log("[preset_info] ")
     var data= "Telemetry_preset_info "+ root.telemetryPoint
-    root.log("data: ",data)
+    console.log("data: ",data)
 
     Axxon.tlmtr_cmd(data)
 

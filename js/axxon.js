@@ -624,7 +624,7 @@ function receive_preset_info(data) {
 var i
      root.camera_presets.clear()
       for (i in data) {
-    root.log(data[i].Id," ",data[i].Name)
+  //  root.log(data[i].Id," ",data[i].Name)
 
     root.camera_presets.append({index: data[i].Id ,
                                 name: data[i].Name,

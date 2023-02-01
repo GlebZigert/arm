@@ -6,7 +6,7 @@ Item {
 
     id: supreme
 
-  //   anchors.fill: parent
+     anchors.fill: parent
 
 
         property bool selected: parent.selected
@@ -28,6 +28,8 @@ Item {
      }
 
 
+
+
      focus: true
 
      Keys.onPressed: {
@@ -39,7 +41,7 @@ Item {
     console.log("onLeftPressed")
          dx=-1;
  stop_moving_timer_dx.stop()
-         if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+         if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
              vm_area.move(dx,dy)
 
@@ -53,7 +55,12 @@ Item {
     console.log("onLeftPressed")
          dx=1;
  stop_moving_timer_dx.stop()
-        if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+
+         var x1=vvm_arrea.containsMouse
+         var x2=supreme.activeFocus
+         var x3=(vm.getMode()===Mode.LiveStreaming)
+
+        if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
              vm_area.move(dx,dy)
 
@@ -66,7 +73,7 @@ Item {
     console.log("onLeftPressed")
          dy=1;
  stop_moving_timer_dy.stop()
-         if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+         if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
              vm_area.move(dx,dy)
 
@@ -79,7 +86,7 @@ Item {
     console.log("onLeftPressed")
          dy=-1;
  stop_moving_timer_dy.stop()
-        if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+        if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
              vm_area.move(dx,dy)
 
@@ -135,7 +142,7 @@ Item {
      }
 
     Rectangle {
-        color: selected ? "lightgray" : "gray";
+        color: supreme.activeFocus ? "lightgray" : "gray";
         id:vm_rect
         anchors.fill: parent
         clip:true
@@ -182,9 +189,13 @@ Item {
             MouseArea {
 
                 id: vm_area
-                anchors.fill: parent
+                x:(parent.width- width)/2
+                y:(parent.height- height)/2
+
+                width: (height/1080)*1920
+                height: parent.height
                 property double factor: 2.0
-           //     hoverEnabled: true
+                hoverEnabled: true
                 propagateComposedEvents: true
                 property int x_prev
                 property int y_prev
@@ -194,12 +205,24 @@ Item {
 
 
 
+                onContainsMouseChanged: {
+
+                    if(!containsMouse){
+                        console.log("--")
+                    supreme.focus=false
+                    }
+                    if(containsMouse){
+                          console.log("++")
+                    supreme.focus=true
+                    }
+                }
+
 
 
 
                 onPressed: {
                      console.log("onPressed")
-                    if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+                    if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
                         var mx=mouseX-parent.width/2
                         var my=parent.height/2-mouseY
@@ -246,7 +269,7 @@ Item {
 
                 onReleased: {
                      console.log("onReleased")
-                if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+                if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
                         stop_moving_timer.start()
                     }
                 }
@@ -412,7 +435,12 @@ Item {
                 onWheel:
                 {
                     console.log("onWheel")
-                  if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
+
+                    var x1=vvm_arrea.containsMouse
+                    var x2=supreme.activeFocus
+                    var x3=(vm.getMode()===Mode.LiveStreaming)
+
+                    if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
                         if(wheel.angleDelta.y > 0)  // zoom in
                             zoom=1
@@ -423,12 +451,12 @@ Item {
                         {
                             if (zoom==1)
                             {
-                        console.log("+")
+                                console.log("+")
                                 Tlmtr.zoom_in()
                             }
                             if (zoom==-1)
                             {
-                        console.log("-")
+                                console.log("-")
                                 Tlmtr.zoom_out()
                             }
                         }
@@ -502,12 +530,23 @@ Item {
 
         MouseArea{
 
-/*
+
             Rectangle{
-            anchors.fill: parent
-           color:  vvm_arrea.containsMouse ? "green" : "red"
+                width: 20
+                height: 20
+
+                color:  vvm_arrea.containsMouse ? "green" : "red"
             }
-            */
+
+            Rectangle{
+                x:30
+                y:30
+                width: 20
+                height: 20
+
+                color:  mode===Mode.LiveStreaming ? "green" : "red"
+            }
+
 
             id: vvm_arrea
             anchors.fill:parent
@@ -516,6 +555,7 @@ Item {
             hoverEnabled: true
 
             onPressed: {
+                console.log("vvm_arrea onPressed")
                 delay_timer.start()
                 mouse.accepted=false
             }
@@ -536,7 +576,7 @@ Item {
             */
 
             onReleased: {
-
+    console.log("vvm_arrea onReleased")
                 if(delay_timer.running)
                 {
 

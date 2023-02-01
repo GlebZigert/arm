@@ -65,7 +65,7 @@ Item{
 
                 Rectangle{
                     anchors.fill: parent
-                    color: selected ? "lightgray" : "gray"
+                    color: selected ? "lightgreen" : "green"
                     MouseArea{
                         id: area
                         anchors.fill: parent

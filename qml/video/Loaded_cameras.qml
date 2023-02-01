@@ -183,7 +183,7 @@ function update_from_cameraList() {
 
       for(var j=0;j< root.cameraList.count;j++){
 
-         console.log(j," ",root.cameraList.get(j).name)
+   //      console.log(j," ",root.cameraList.get(j).name)
          model.append({obj: {
                               id: root.cameraList.get(j).id ,
                               name: root.cameraList.get(j).name ,
