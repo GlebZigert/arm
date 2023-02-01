@@ -19,6 +19,8 @@ Item {
     signal return_source(string src)
     signal return_cid(int cid)
 
+    property  int mode: -1
+
      onActiveFocusChanged:{
      console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
 
@@ -406,21 +408,24 @@ Item {
                 property int zoom_prev: 0
                 onWheel:
                 {
-                    if((root.storage_live==live)&&(root.pause_play==play)){
+                    console.log("onWheel")
+                    if(mode==Mode.LiveStreaming/*&&(root.pause_play==play)*/){
 
                         if(wheel.angleDelta.y > 0)  // zoom in
                             zoom=1
                         else                        // zoom out
                             zoom=-1
-
+                        console.log("zoom ",zoom_prev," ",zoom)
                         if(zoom_prev!=zoom)
                         {
                             if (zoom==1)
                             {
+                        console.log("+")
                                 Tlmtr.zoom_in()
                             }
                             if (zoom==-1)
                             {
+                        console.log("-")
                                 Tlmtr.zoom_out()
                             }
                         }
@@ -441,8 +446,8 @@ Item {
                             {
                                 var realX = wheel.x * tform1.xScale
                                 var realY = wheel.y * tform1.yScale
-                                modelx += (1-zoomFactor)*realX
-                                modely += (1-zoomFactor)*realY
+                          //      modelx += (1-zoomFactor)*realX
+                          //      modely += (1-zoomFactor)*realY
                                 tform1.xScale *=zoomFactor
                                 tform1.yScale *=zoomFactor
                             }
@@ -455,8 +460,8 @@ Item {
                                 tform1.yScale *=zoomFactor
 
 
-                                modelx += (1-zoomFactor)*realX
-                                modely += (1-zoomFactor)*realY
+                           //     modelx += (1-zoomFactor)*realX
+                           //     modely += (1-zoomFactor)*realY
 
                                 if(tform1.xScale==1)
                                 {
@@ -464,12 +469,12 @@ Item {
 
 
 
-                                    modelx=(supreme.width- modelwidth)/2
-                                    modely=(supreme.height- modelheight)/2
+                                //    modelx=(supreme.width- modelwidth)/2
+                                //    modely=(supreme.height- modelheight)/2
 
 
-                                    root.log("rect.x ", modelx )
-                                    root.log("rect.y ",modely )
+                                 //   root.log("rect.x ", modelx )
+                                 //   root.log("rect.y ",modely )
                                 }
                             }
                         }
@@ -581,8 +586,10 @@ Item {
         vm.source=src
     }
 
-    function vm_start(mode){
-        vm.start(mode)
+    function vm_start(mmode){
+        mode = mmode
+        vm.start(mmode)
+
     }
 
     function vm_stop(){

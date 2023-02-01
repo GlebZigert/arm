@@ -2,6 +2,7 @@ import QtQuick 2.11
 import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
+import "../../js/axxon_telemetry_control.js" as Tlmtr
 Item{
     id: good
     anchors.fill: parent
@@ -29,6 +30,9 @@ Item{
 
     MouseArea{
         anchors.fill: parent
+
+
+
     GridLayout {
 
         anchors.fill: parent
@@ -184,6 +188,12 @@ Item{
             {
                 if(grid.children[i].contain_mouse){
                     grid.children[i].selected=true
+
+                    //    preset_list.clear_model()
+                    //    Tlmtr.preset_info()
+
+                       Tlmtr.capture_session()
+                    //   timer.start()
                 }
                 else{
                     grid.children[i].selected=false
@@ -297,7 +307,7 @@ Item{
 
     Component.onCompleted: {
 
-        root.cameraList.updated.connect(reconnect_livestream)
+    //    root.cameraList.updated.connect(reconnect_livestream)
          scale=5
           rescale(5)
     }

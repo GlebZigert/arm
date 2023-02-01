@@ -6,6 +6,8 @@ Item{
     anchors.fill: parent
     property int cid: -1
 
+        property string live: "live"
+
     MultiVM{
         id: multivm
         anchors.fill: parent
