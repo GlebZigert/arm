@@ -7,7 +7,7 @@ Item{
     anchors.fill: parent
     property int scale:5
     property bool first_time: true
-
+    property int index: 0
 
     signal selected_cid(int cid)
     signal give_me_a_camera
@@ -43,6 +43,8 @@ Item{
 
             Item {
 
+                id: vm
+
                 x: model.x
                 y:model.y
                 width: model.w
@@ -50,6 +52,8 @@ Item{
 
                 property bool selected
                 property bool contain_mouse: area.containsMouse ? true : false
+                readonly property int uid: model.uid
+
 
                 Rectangle{
                     anchors.fill: parent
@@ -90,6 +94,26 @@ Item{
 
                 }
 
+
+                function set_cid(cid){
+               //  vm.set_vm_cid(cid)
+
+                 findAndSet(cids,vm.uid,"cid",cid)
+                 findAndSet(w_model,vm.uid,"cid",cid)
+                }
+
+                function findAndSet(model,uid,property_string,val){
+
+
+                      for(var i = 0;i < model.count;i++){
+
+                             if(model.get(i).uid === uid){
+
+                               model.setProperty(i,property_string,val)
+
+                             }
+                      }
+                }
 
             }
         }
@@ -163,7 +187,7 @@ Item{
             for(var i=0;i<src.length;i++){
                 var lcl = src[i]
                 if(i>=cids.count){
-                    cids.append({cid:lcl})
+                    cids.append({cid:lcl,uid:index++})
                 }else{
                     cids.setProperty(i,"cid",lcl)
                 }
@@ -191,12 +215,14 @@ Item{
           rescale(5)
     }
 
+
+
     function rescale(scale){
 
 
         for(var i = 0;i<scale*scale; i++){
             if(i>=cids.count){
-                cids.append({cid:-1})
+                cids.append({cid:-1,uid:index++})
             }
         }
 
@@ -214,8 +240,11 @@ Item{
             w_model.append({h:hh,w:ww,
                                x: ww*(i%scale),
                                y: hh*((i<scale)?0:((i-(i%scale))/scale)),
+                               uid: cids.get(i).uid,
                                cid:cids.get(i).cid
                            })
         }
     }
+
+
 }
