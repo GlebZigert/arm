@@ -192,7 +192,13 @@ Item{
                     //    preset_list.clear_model()
                     //    Tlmtr.preset_info()
 
+                        var lcl_cid = grid.children[i].get_cid()
+                     var lcl=Axxon.camera(lcl_cid)
+                    if(lcl!==-1){
+                    root.telemetryPoint=lcl.telemetryControlID
+                          Tlmtr.preset_info()
                        Tlmtr.capture_session()
+                    }
                     //   timer.start()
                 }
                 else{
