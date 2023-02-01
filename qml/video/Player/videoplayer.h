@@ -39,6 +39,10 @@ public:
 
     int cid;
 
+    bool connection;
+
+
+    Q_INVOKABLE Runner::Mode getMode();
 
     int getCid() const;
     void setCid(int newCid);

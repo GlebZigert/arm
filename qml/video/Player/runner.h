@@ -47,7 +47,9 @@ public:
         TurnOff,
         LiveStreaming,
         StorageStreaming,
-        Snapshot
+        Snapshot,
+        NoSignal
+
            };
            Q_ENUMS(Mode)
 

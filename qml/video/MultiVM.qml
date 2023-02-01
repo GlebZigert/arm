@@ -30,7 +30,7 @@ Item{
 
     MouseArea{
         anchors.fill: parent
-
+        hoverEnabled: true
 
 
     GridLayout {
@@ -42,6 +42,9 @@ Item{
         rows: 5
         columns: 5
         baselineOffset: 1
+
+
+
         Repeater{
             model: w_model
 
@@ -57,12 +60,17 @@ Item{
                 property bool selected
                 property bool contain_mouse: area.containsMouse ? true : false
                 readonly property int uid: model.uid
-
+                property int cid: model.cid
 
 
                 Rectangle{
                     anchors.fill: parent
                     color: selected ? "lightgray" : "gray"
+                    MouseArea{
+                        id: area
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        propagateComposedEvents: true
 
                     Vvvvvvm{
                         id: vvm
@@ -80,43 +88,41 @@ Item{
                         anchors.fill: parent
                         text: model.cid
                     }
-                }
+                    Button{
+                    x:10
+                    y:10
+                    width: 10
+                    height: 10
+                    visible: selected ? true : false
 
 
+                    onClicked: {
 
+                        console.log("onClicked .")
+                        good.give_me_a_camera()
+                    }
 
-                MouseArea{
-                    id: area
-                    anchors.fill: parent
-                    hoverEnabled: true
-                    propagateComposedEvents: true
+                    }
 
-
-                }
-
-                Button{
-                x:10
-                y:10
-                width: 10
-                height: 10
-                visible: selected ? true : false
-
-
-                onClicked: {
-
-                    console.log("onClicked .")
-                    good.give_me_a_camera()
-                }
+                    function get_cid(){
+                    return vvm.cid
+                    }
 
                 }
 
-                function get_cid(){
-                return vvm.cid
+
+
+
+
+
                 }
+
+
 
 
 
                 function set_cid(cid){
+                    vm.cid=cid
                     vvm.cid=cid
                  vvm.set_vm_cid(cid)
 
@@ -132,6 +138,10 @@ Item{
                 function vm_start(mode){
 
                     vvm.vm_start(mode)
+                }
+
+                function force_focus(){
+                vvm.forceActiveFocus()
                 }
 
 
@@ -184,21 +194,26 @@ Item{
         propagateComposedEvents: true
 
         onClicked: {
+            console.log("select by click")
             for(var i = 0; i<grid.children.length-1; i++)
             {
                 if(grid.children[i].contain_mouse){
                     grid.children[i].selected=true
 
+
                     //    preset_list.clear_model()
                     //    Tlmtr.preset_info()
 
-                        var lcl_cid = grid.children[i].get_cid()
+                        var lcl_cid = grid.children[i].cid
                      var lcl=Axxon.camera(lcl_cid)
                     if(lcl!==-1){
                     root.telemetryPoint=lcl.telemetryControlID
                           Tlmtr.preset_info()
                        Tlmtr.capture_session()
+
+
                     }
+                     grid.children[i].force_focus()
                     //   timer.start()
                 }
                 else{
@@ -322,7 +337,7 @@ Item{
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
-            var lcl = grid.children[i].get_cid()
+            var lcl = grid.children[i].cid
             if(lcl==cid){
 
                 console.log("mode ",mode)

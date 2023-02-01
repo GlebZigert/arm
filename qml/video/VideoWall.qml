@@ -6,7 +6,10 @@ Item{
     anchors.fill: parent
     property int cid: -1
 
-        property string live: "live"
+    property string live: "live"
+
+    property int dy
+    property int dx
 
     MultiVM{
         id: multivm

@@ -8,7 +8,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     qDebug()<<"VideoPlayer::VideoPlayer";
 
 
-
+    connection = false;
 
     data=NULL;
 
@@ -158,6 +158,18 @@ void VideoPlayer::saving_off()
 
 }
 
+Runner::Mode VideoPlayer::getMode()
+{
+    if(!connection)
+        return Runner::NoSignal;
+
+    if(current){
+        auto mode = current.data()->mode;
+        return mode;
+    }
+    return Runner::NoSignal;
+}
+
 int VideoPlayer::getCid() const
 {
 
@@ -195,7 +207,7 @@ void VideoPlayer::frame(QString source){
                     h,
                     QImage::Format_RGB32);
 
-
+    connection = true;
     this->update();
     }
 
@@ -203,7 +215,7 @@ void VideoPlayer::frame(QString source){
 
 void VideoPlayer::lost(QString source)
 {
-
+        connection = false;
         qDebug()<<"lost";
     if(source==this->m_source){
          img=QImage(":/qml/video/no_signal.jpeg");

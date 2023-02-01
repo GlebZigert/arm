@@ -22,7 +22,7 @@ Item {
     property  int mode: -1
 
      onActiveFocusChanged:{
-     console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
+     console.log("vvvvvvm activeFocus: ",vm.source," ",supreme.activeFocus)
 
 
      }
@@ -36,10 +36,10 @@ Item {
      }
 
      Keys.onLeftPressed:   {
-
+    console.log("onLeftPressed")
          dx=-1;
  stop_moving_timer_dx.stop()
-         if((root.storage_live==live)&&(root.pause_play==play)){
+         if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
 
              vm_area.move(dx,dy)
 
@@ -50,10 +50,10 @@ Item {
      }
 
      Keys.onRightPressed:  {
-
+    console.log("onLeftPressed")
          dx=1;
  stop_moving_timer_dx.stop()
-         if((root.storage_live==live)&&(root.pause_play==play)){
+        if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
 
              vm_area.move(dx,dy)
 
@@ -63,10 +63,10 @@ Item {
      }
 
      Keys.onUpPressed:     {
-
+    console.log("onLeftPressed")
          dy=1;
  stop_moving_timer_dy.stop()
-         if((root.storage_live==live)&&(root.pause_play==play)){
+         if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
 
              vm_area.move(dx,dy)
 
@@ -76,10 +76,10 @@ Item {
      }
 
      Keys.onDownPressed:   {
-
+    console.log("onLeftPressed")
          dy=-1;
  stop_moving_timer_dy.stop()
-         if((root.storage_live==live)&&(root.pause_play==play)){
+        if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
 
              vm_area.move(dx,dy)
 
@@ -88,7 +88,7 @@ Item {
      }
 
      Keys.onReleased:      {
-
+    console.log("onReleased")
          switch(event.key){
 
          case Qt.Key_Up:{
@@ -184,7 +184,8 @@ Item {
                 id: vm_area
                 anchors.fill: parent
                 property double factor: 2.0
-                hoverEnabled: true
+           //     hoverEnabled: true
+                propagateComposedEvents: true
                 property int x_prev
                 property int y_prev
                 property int val_prev
@@ -197,7 +198,8 @@ Item {
 
 
                 onPressed: {
-                    if((root.storage_live==live)&&(root.pause_play==play)){
+                     console.log("onPressed")
+                    if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
 
                         var mx=mouseX-parent.width/2
                         var my=parent.height/2-mouseY
@@ -243,7 +245,8 @@ Item {
                 }
 
                 onReleased: {
-                    if((root.storage_live==live)&&(root.pause_play==play)){
+                     console.log("onReleased")
+                if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
                         stop_moving_timer.start()
                     }
                 }
@@ -251,7 +254,7 @@ Item {
 
                 function move(mx,my)
                 {
-                    //  console.log("move ",mx," ",my)
+                      console.log("move ",mx," ",my)
                     var value=Math.sqrt(mx*mx+my*my)
 
                     var val=0
@@ -409,7 +412,7 @@ Item {
                 onWheel:
                 {
                     console.log("onWheel")
-                    if(mode==Mode.LiveStreaming/*&&(root.pause_play==play)*/){
+                  if(supreme.activeFocus && vm.getMode()==Mode.LiveStreaming){
 
                         if(wheel.angleDelta.y > 0)  // zoom in
                             zoom=1
@@ -516,7 +519,7 @@ Item {
                 delay_timer.start()
                 mouse.accepted=false
             }
-
+/*
             onEntered: {
                 console.log(" containsMouse ",vvm_arrea.containsMouse)
                 supreme.forceActiveFocus()
@@ -530,6 +533,7 @@ Item {
                 dy=0;
                 vm_area.move(dx,dy)
             }
+            */
 
             onReleased: {
 
@@ -585,6 +589,8 @@ Item {
     //    vm.cid=cid
         vm.source=src
     }
+
+
 
     function vm_start(mmode){
         mode = mmode
