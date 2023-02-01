@@ -180,9 +180,10 @@ function update_from_cameraList() {
 
 
     model.clear()
+
       for(var j=0;j< root.cameraList.count;j++){
 
-         root.log(j," ",root.cameraList.get(j).name)
+         console.log(j," ",root.cameraList.get(j).name)
          model.append({obj: {
                               id: root.cameraList.get(j).id ,
                               name: root.cameraList.get(j).name ,
@@ -205,6 +206,7 @@ if(container.current>(-1))
 var x=container.page_model.get(container.current)
 
 add_to_space(x.obj.id)
+container.visible=false
 
 }
 

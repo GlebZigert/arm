@@ -346,14 +346,9 @@ Item {
     function set_current_cid(cid){
         for(var i = 0; i<grid.children.length; i++)
         {
-
             if(grid.children[i].selected){
-
-
                 grid.children[i].set_cid(cid)
-
             }
-
         }
     }
 

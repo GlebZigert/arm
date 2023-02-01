@@ -90,6 +90,10 @@ Item{
 
                 }
 
+                
+                function set_cid(cid){
+                 vm.set_vm_cid(cid)
+                }
 
             }
         }
