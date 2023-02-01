@@ -11,7 +11,7 @@ Item{
 
     signal selected_cid(int cid)
     signal give_me_a_camera
-
+    signal request_URL
 
     ListModel {
 
@@ -55,10 +55,22 @@ Item{
                 readonly property int uid: model.uid
 
 
+
                 Rectangle{
                     anchors.fill: parent
                     color: selected ? "lightgray" : "gray"
 
+                    Vvvvvvm{
+                        id: vvm
+
+                   //     readonly property int uid: model.uid
+
+                        anchors.fill: parent
+
+                        property int cid: -1
+                        property string url: ""
+
+                    }
 
                     Text{
                         anchors.fill: parent
@@ -94,13 +106,46 @@ Item{
 
                 }
 
+                function get_cid(){
+                return vvm.cid
+                }
+
+
 
                 function set_cid(cid){
-               //  vm.set_vm_cid(cid)
+                    vvm.cid=cid
+                 vvm.set_vm_cid(cid)
 
                  findAndSet(cids,vm.uid,"cid",cid)
                  findAndSet(w_model,vm.uid,"cid",cid)
                 }
+
+                function set_Scale(val){
+
+                    vvm.set_Scale(val)
+                }
+
+                function vm_start(mode){
+
+                    vvm.vm_start(mode)
+                }
+
+
+                function set_vm_source(cid,url){
+
+                    vvm.set_vm_source(cid,url)
+                    findAndSet(cids,vm.uid,"url",url)
+                    findAndSet(w_model,vm.uid,"url",url)
+                }
+
+                function saving_off(){
+                    vvm.saving_off()
+                }
+
+                function saving_on(){
+                vvm.saving_on()
+                }
+
 
                 function findAndSet(model,uid,property_string,val){
 
@@ -113,6 +158,18 @@ Item{
 
                              }
                       }
+                }
+
+                Component.onCompleted: {
+
+                 //   selected=false
+                 //   resize_vm()
+                    set_cid(model.cid)
+
+                    set_vm_source(model.cid,model.url)
+                 //   console.log("Rect ",index," создан ",uid," ",vm.cid," ",vm.url)
+                    vvm.vm_start(1)
+
                 }
 
             }
@@ -187,7 +244,7 @@ Item{
             for(var i=0;i<src.length;i++){
                 var lcl = src[i]
                 if(i>=cids.count){
-                    cids.append({cid:lcl,uid:index++})
+                    cids.append({cid:lcl,uid:index++,url:""})
                 }else{
                     cids.setProperty(i,"cid",lcl)
                 }
@@ -196,7 +253,37 @@ Item{
             for(var i=0;i<cids.count;i++){
                 console.log(cids.get(i).cid)
             }
+            rescale(scale)
+
+
+            var serviceId=Axxon.camera(cids.get(0).cid).serviceId
+
+
+            Axxon.request_URL(get_cids(), serviceId, "","utc")
+
         }
+    }
+
+    function get_cids(){
+
+        var res =[]
+        for(var i = 0; i<cids.count; i++)
+        {
+
+            var lcl = cids.get(i).cid
+            if(lcl!=-1){
+                var frash=true
+                for(var j in res){
+                    if(res[j]===lcl){
+                    frash=false
+                    }
+                }
+                if(frash){
+                res.push(lcl)
+                }
+            }
+        }
+        return res
     }
 
     function set_current_cid(cid){
@@ -215,6 +302,36 @@ Item{
           rescale(5)
     }
 
+    function vm_start(cid,src,mode){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+
+            var lcl = grid.children[i].get_cid()
+            if(lcl==cid){
+
+                console.log("mode ",mode)
+                grid.children[i].set_vm_source(cid,src)
+                grid.children[i].vm_start(mode)
+
+            }
+
+        }
+    }
+
+    function set_Scale(val){
+
+        for(var i = 0; i<grid.children.length; i++)
+        {
+
+            if(grid.children[i].selected){
+
+                grid.children[i].set_Scale(val)
+
+            }
+
+        }
+    }
+
 
 
     function rescale(scale){
@@ -222,9 +339,11 @@ Item{
 
         for(var i = 0;i<scale*scale; i++){
             if(i>=cids.count){
-                cids.append({cid:-1,uid:index++})
+                cids.append({cid:-1,uid:index++,url:""})
             }
         }
+
+        saving_on()
 
         var ww = width/scale
         var hh = height/scale
@@ -241,10 +360,31 @@ Item{
                                x: ww*(i%scale),
                                y: hh*((i<scale)?0:((i-(i%scale))/scale)),
                                uid: cids.get(i).uid,
-                               cid:cids.get(i).cid
+                               cid:cids.get(i).cid,
+                               url:cids.get(i).url
                            })
         }
+
+            saving_off()
     }
+
+    function saving_on(){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+          grid.children[i].saving_on()
+
+        }
+
+    }
+
+    function saving_off(){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+          grid.children[i].saving_off()
+
+        }
+    }
+
 
 
 }

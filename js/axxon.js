@@ -563,7 +563,7 @@ var lcl = root.cameraList.get(j)
  var lcld = data[i]
          if( data[i].id===root.cameraList.get(j).id){
 
-             root.log("[PROFIT]")
+             console.log("[PROFIT]")
 
 
 

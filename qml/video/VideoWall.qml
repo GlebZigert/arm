@@ -1,6 +1,6 @@
 import QtQuick 2.11
 import "../../js/axxon.js" as Axxon
-
+import MyQMLEnums 13.37
 
 Item{
     anchors.fill: parent
@@ -46,7 +46,7 @@ Item{
 
             multivm.set_current_cid(cid)
 
-            request_URL(v1.get_cids(),lcl.serviceId,dt)
+            request_URL(multivm.get_cids(),lcl.serviceId,dt)
         }
     }
 
@@ -54,9 +54,53 @@ Item{
 
     Component.onCompleted: {
 
+        root.frash_URL.connect(f_current_camera_update)
         multivm.give_me_a_camera.connect(give_him_a_camera)
+
         root.cameraList.updated.connect(camera_storage.update_from_cameraList)
         camera_storage.add_to_space.connect(f_change_camera)
+
+    }
+
+
+
+
+
+    function request_URL(cameraId, serviceId, dt){
+        Axxon.request_URL(cameraId, serviceId, dt,"utc")
+    }
+
+
+    function f_current_camera_update(){
+        console.log("f_current_camera_update")
+        update_vm()
+    }
+
+    function  update_vm()    {
+
+        var cids =  multivm.get_cids()
+        for(var one in cids)
+        {
+            var id=cids[one]
+            var lcl=Axxon.camera(id)
+
+
+            //    preset_list.clear_model()
+            //    Tlmtr.preset_info()
+
+            //   Tlmtr.capture_session()
+            //   timer.start()
+
+            //        v1.tform1.xScale =1
+            //        v1.tform1.yScale =1
+
+            multivm.set_Scale(1);
+
+            multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+
+
+
+        }
     }
 
 

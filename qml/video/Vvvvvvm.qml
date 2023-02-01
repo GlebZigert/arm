@@ -550,9 +550,6 @@ Item {
         }
     }
 
-    Text {
-        text: activeFocus ? "I have active focus!" : "I do not have active focus"
-    }
 
     function saving_off(){
         vm.saving_off()
