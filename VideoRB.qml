@@ -15,7 +15,7 @@ Item{
         height: 800
 
         visible: true
-        visibility: "FullScreen"
+   //     visibility: "FullScreen"
 
          screen: Qt.application.screens[1]
 
@@ -36,9 +36,15 @@ Item{
         height: 800
 
         visible: true
-        visibility: "FullScreen"
+    //    visibility: "FullScreen"
 
          screen: Qt.application.screens[1]
+
+        Video.StorageAlarm{
+
+             anchors.fill: parent
+
+         }
     }
 
 

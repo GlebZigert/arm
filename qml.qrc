@@ -323,5 +323,6 @@
         <file>VideoRB.qml</file>
         <file>qml/video/VideoWall.qml</file>
         <file>qml/video/MultiVMold.qml</file>
+        <file>qml/video/StorageAlarm.qml</file>
     </qresource>
 </RCC>

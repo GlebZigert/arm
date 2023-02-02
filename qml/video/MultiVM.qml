@@ -6,7 +6,7 @@ import "../../js/axxon_telemetry_control.js" as Tlmtr
 Item{
     property string videowall_id
     id: good
-    anchors.fill: parent
+  //  anchors.fill: parent
     property int scale:5
     property bool first_time: true
     property int index: 0
