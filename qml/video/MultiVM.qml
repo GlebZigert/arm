@@ -238,6 +238,7 @@ Item{
                      var lcl=Axxon.camera(lcl_cid)
                     if(lcl!==-1){
                     root.telemetryPoint=lcl.telemetryControlID
+
                           Tlmtr.preset_info()
                        Tlmtr.capture_session()
 

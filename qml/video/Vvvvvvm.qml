@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import VideoPlayer 1.0
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import "../../js/axxon.js" as Axxon
 import MyQMLEnums 13.37
 Item {
 
@@ -41,7 +42,7 @@ Item {
     console.log("onLeftPressed")
          dx=-1;
  stop_moving_timer_dx.stop()
-         if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
              vm_area.move(dx,dy)
 
@@ -60,7 +61,8 @@ Item {
          var x2=supreme.activeFocus
          var x3=(vm.getMode()===Mode.LiveStreaming)
 
-        if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
 
              vm_area.move(dx,dy)
 
@@ -73,7 +75,8 @@ Item {
     console.log("onLeftPressed")
          dy=1;
  stop_moving_timer_dy.stop()
-         if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
 
              vm_area.move(dx,dy)
 
@@ -86,7 +89,8 @@ Item {
     console.log("onLeftPressed")
          dy=-1;
  stop_moving_timer_dy.stop()
-        if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
 
              vm_area.move(dx,dy)
 
@@ -223,7 +227,8 @@ Item {
 
                 onPressed: {
                      console.log("onPressed")
-                    if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
 
                         var mx=mouseX-parent.width/2
                         var my=parent.height/2-mouseY
@@ -270,7 +275,8 @@ Item {
 
                 onReleased: {
                      console.log("onReleased")
-                if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
                         stop_moving_timer.start()
                     }
                 }
@@ -441,7 +447,8 @@ Item {
                     var x2=supreme.activeFocus
                     var x3=(vm.getMode()===Mode.LiveStreaming)
 
-                    if(vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
 
                         if(wheel.angleDelta.y > 0)  // zoom in
                             zoom=1
@@ -556,7 +563,7 @@ Item {
             hoverEnabled: true
 
             onPressed: {
-                console.log("vvm_arrea onPressed")
+                console.log("vvm_arrea onPressed ",vm.cid," ",vm.source)
                 delay_timer.start()
                 mouse.accepted=false
             }
