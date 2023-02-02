@@ -51,7 +51,7 @@ Item{
 
             multivm.set_current_cid(cid)
 
-            request_URL(multivm.get_cids(),lcl.serviceId,dt)
+            request_URL(multivm.videowall_id,multivm.get_cids(),lcl.serviceId,dt)
         }
     }
 

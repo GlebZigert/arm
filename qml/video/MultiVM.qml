@@ -4,6 +4,7 @@ import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
 Item{
+    property int videowall_id: -1
     id: good
     anchors.fill: parent
     property int scale:5
@@ -296,7 +297,7 @@ Item{
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
 
 
-            Axxon.request_URL(get_cids(), serviceId, "","utc")
+            Axxon.request_URL(videowall_id,get_cids(), serviceId, "","utc")
 
         }
     }

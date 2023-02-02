@@ -548,11 +548,11 @@ Axxon.prototype.receive_URL = function (data) {
      //    root.log(JSON.stringify(data))
           root.log(JSON.stringify(data))
      var i
-     for (i in data) {
-      console.log("id: ", data[i].id)
-      console.log("liveStream: ", data[i].liveStream)
-      console.log("storageStream: ", data[i].storageStream)
-      root.log("snapshot: ", data[i].snapshot)
+     for (i in data.data) {
+      console.log("id: ", data.data[i].id)
+      console.log("liveStream: ", data.data[i].liveStream)
+      console.log("storageStream: ", data.data[i].storageStream)
+      root.log("snapshot: ", data.data[i].snapshot)
 //      root.log("интервалы: ", JSON.stringify(data[i].intervals))
 
 
@@ -560,16 +560,16 @@ Axxon.prototype.receive_URL = function (data) {
      for(var j=0;j< root.cameraList.count;j++){
 
 var lcl = root.cameraList.get(j)
- var lcld = data[i]
-         if( data[i].id===root.cameraList.get(j).id){
+ var lcld = data.data[i]
+         if( data.data[i].id===root.cameraList.get(j).id){
 
              console.log("[PROFIT]")
 
 
 
-            root.cameraList.get(j).liveStream=data[i].liveStream
-            root.cameraList.get(j).storageStream=data[i].storageStream
-            root.cameraList.get(j).snapshot=data[i].snapshot
+            root.cameraList.get(j).liveStream=data.data[i].liveStream
+            root.cameraList.get(j).storageStream=data.data[i].storageStream
+            root.cameraList.get(j).snapshot=data.data[i].snapshot
 
 
          }
@@ -577,9 +577,11 @@ var lcl = root.cameraList.get(j)
  }
 }
  //root.update_intervals.updated()
+
+     console.log("videowall: ",data.videowall)
  root.frash_URL()
 
- root.update_intervals(data[i].intervals)
+ root.update_intervals(data.data[i].intervals)
 
 }
 
@@ -833,11 +835,12 @@ Axxon.prototype.handler_for_Telemetry_capture_session = function (data) {
 
 }
 
-function request_URL(cameraId, serviceId, dt, format_dt)
+function request_URL(videowall, cameraId, serviceId, dt, format_dt)
 {
 
 
     var data={
+        videowall: videowall,
     cameraId: cameraId,
     serviceId:serviceId ,
         dt:dt,
@@ -846,7 +849,8 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
         }
 
-            cameraId+";"+dt+" "+format_dt
+        //    cameraId+";"+dt+" "+format_dt
+    console.log("data.videowall : ",data.videowall)
     console.log("data.cameraId : ",data.cameraId)
     console.log("data.serviceId : ",data.serviceId)
     console.log("data.dt       : ",data.dt)
