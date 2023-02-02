@@ -547,8 +547,8 @@ Item {
             }
 
             Rectangle{
-                x:30
-                y:30
+
+                y:20
                 width: 20
                 height: 20
 

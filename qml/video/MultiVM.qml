@@ -7,11 +7,12 @@ Item{
     property string videowall_id
     id: good
   //  anchors.fill: parent
-    property int scale:5
+    property int scale: 2
     property bool first_time: true
     property int index: 0
 
     signal selected_cid(int cid)
+    signal open_in_alarm_window(int id)
     signal give_me_a_camera
     signal request_URL
 
@@ -130,6 +131,22 @@ Item{
 
                         console.log("onClicked .")
                         good.give_me_a_camera()
+                    }
+
+                    }
+
+                    Button{
+                    x:20
+                    y:10
+                    width: 10
+                    height: 10
+                    visible: selected ? true : false
+
+
+                    onClicked: {
+
+                        console.log("onClicked .")
+                        good.open_in_alarm_window(vvm.cid)
                     }
 
                     }
@@ -270,13 +287,13 @@ Item{
         MouseArea{
             anchors.fill:parent
             onClicked: {
-                if(scale<5){
-                    scale++
+                if(good.scale<5){
+                    good.scale++
                 }
                 else{
-                    scale=2
+                    good.scale=2
                 }
-                rescale(scale)
+                rescale(good.scale)
             }
         }
     }
@@ -322,7 +339,7 @@ Item{
             for(var i=0;i<cids.count;i++){
                 console.log(cids.get(i).cid)
             }
-            rescale(scale)
+            rescale(good.scale)
 
 
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
@@ -369,9 +386,9 @@ Item{
         videowall_id = generateUUID()
 
         console.log("videowall_id ",videowall_id)
-    //    root.cameraList.updated.connect(reconnect_livestream)
-         scale=5
-          rescale(5)
+    //
+         good.scale=5
+          rescale(good.scale)
     }
 
     function vm_start(cid,src,mode){
@@ -418,6 +435,7 @@ Item{
 
     function rescale(scale){
 
+                    console.log("and look at scale here: ",scale)
 
         for(var i = 0;i<scale*scale; i++){
             if(i>=cids.count){
@@ -469,6 +487,40 @@ Item{
         }
     }
 
+    function add_camera(id){
+
+        /*
+        var fl=true
+        for(var i=0;i<cids.count;i++){
+            console.log(cids.get(i).cid," ",id)
+            if(cids.get(i).cid===id){
+                fl=false
+                //выделить этот cid
+            }
+        }
+        */
+
+       // if(fl){
+
+            for(var i=0;i<cids.count;i++){
+
+                if(cids.get(i).cid===-1){
+                    cids.setProperty(i,"cid",id)
+
+
+                    break
+                    //выделить этот cid
+                }
+            }
+            console.log("look at scale: ",scale)
+            rescale(good.scale)
+
+
+            var serviceId=Axxon.camera(id).serviceId
+
+            Axxon.request_URL(videowall_id,get_cids(), serviceId, timeline.get_dt(),"utc")
+        }
+  //  }
 
 
 }

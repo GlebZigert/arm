@@ -11,6 +11,8 @@ Item{
     property int dy
     property int dx
 
+    signal open_in_alarm_window(int id)
+
     MultiVM{
         id: multivm
         anchors.fill: parent
@@ -65,9 +67,16 @@ Item{
         root.cameraList.updated.connect(camera_storage.update_from_cameraList)
         camera_storage.add_to_space.connect(f_change_camera)
 
+        multivm.open_in_alarm_window.connect(f_open_in_alarm_window)
+
+     //   root.cameraList.updated.connect(multivm.reconnect_livestream)
     }
 
+function f_open_in_alarm_window(id){
 
+    console.log("f_open_in_alarm_window")
+open_in_alarm_window(id)
+}
 
 
 

@@ -137,6 +137,10 @@ Rectangle {
 
     Component.onCompleted: {
 
+        timeline.to_live()
+        storage_live=live
+
+
         root.frash_URL.connect(f_current_camera_update)
         multivm.give_me_a_camera.connect(give_him_a_camera)
 
@@ -151,6 +155,8 @@ Rectangle {
         root.update_intervals.connect(timeline.update_slider_intervals)
 
           timeline.livestream_button_clicked.connect(f_set_live_play)
+
+
     }
 
     function f_set_live_play()    {
@@ -206,6 +212,14 @@ Rectangle {
 
 
         update_vm()
+    }
+
+    function add_camera(id){
+
+    console.log("storage wall: add_camera: ",id)
+
+      multivm.add_camera(id)
+        cid = id
     }
 
     function  update_vm()    {

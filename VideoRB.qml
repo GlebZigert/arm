@@ -8,19 +8,19 @@ Item{
 
     Window {
 
-        id: videowall
+
         x: 100
         y: 100
         width: 1000
         height: 800
 
         visible: true
-   //     visibility: "FullScreen"
+        //     visibility: "FullScreen"
 
-         screen: Qt.application.screens[1]
+        screen: Qt.application.screens[1]
 
         Video.VideoWall{
-
+            id: videowall
             anchors.fill: parent
 
         }
@@ -29,26 +29,34 @@ Item{
 
     Window {
 
-        id: alarmWindow
+
         x: 100
         y: 100
         width: 1000
         height: 800
 
         visible: true
-    //    visibility: "FullScreen"
+        //    visibility: "FullScreen"
 
-         screen: Qt.application.screens[1]
+        screen: Qt.application.screens[1]
 
         Video.StorageAlarm{
+            id: alarmWindow
+            anchors.fill: parent
 
-             anchors.fill: parent
-
-         }
+        }
     }
 
 
     EventLog{
         anchors.fill: parent
     }
+
+    Component.onCompleted:{
+
+        videowall.open_in_alarm_window.connect(alarmWindow.add_camera)
+
+    }
+
+
 }
