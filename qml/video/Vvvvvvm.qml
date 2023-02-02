@@ -22,7 +22,7 @@ Item {
     property  int mode: -1
 
      onActiveFocusChanged:{
-     console.log("vvvvvvm activeFocus: ",vm.source," ",supreme.activeFocus)
+   //  console.log("vvvvvvm activeFocus: ",vm.source," ",supreme.activeFocus)
 
 
      }
@@ -278,7 +278,7 @@ Item {
 
                 function move(mx,my)
                 {
-                      console.log("move ",mx," ",my)
+                 //     console.log("move ",mx," ",my)
                     var value=Math.sqrt(mx*mx+my*my)
 
                     var val=0
@@ -419,7 +419,7 @@ Item {
                         str=str+String(val)
                         str=str+" "
 
-                        console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
+                  //      console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
                         Tlmtr.move(str)
 
 
@@ -568,7 +568,7 @@ Item {
 
   */
             onExited:  {
-            console.log(" containsMouse ",vvm_arrea.containsMouse)
+          //  console.log(" containsMouse ",vvm_arrea.containsMouse)
                 supreme.focus=false
                 dx=0;
                 dy=0;
@@ -579,18 +579,18 @@ Item {
             onContainsMouseChanged: {
 
                 if(!containsMouse){
-                    console.log("--")
+              //      console.log("--")
                 supreme.focus=false
                 }
                 if(containsMouse){
-                      console.log("++")
+             //         console.log("++")
                 supreme.focus=true
                 }
             }
 
 
             onReleased: {
-    console.log("vvm_arrea onReleased")
+  //  console.log("vvm_arrea onReleased")
                 if(delay_timer.running)
                 {
 
@@ -633,7 +633,7 @@ Item {
     }
 
     function set_vm_cid(cid){
-        console.log("set_vm_source ",cid)
+     //   console.log("set_vm_source ",cid)
        vm.cid=cid
 
     }
