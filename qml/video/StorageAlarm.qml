@@ -116,7 +116,13 @@ Rectangle {
          //   root.log("telemetryControlID: ",lcl.telemetryControlID)
          //   root.telemetryPoint=lcl.telemetryControlID
 
+
+
             var dt=""
+            if(storage_live==storage){
+                dt=timeline.current_dt()
+
+            }
 
          //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
          //   timeline.set_camera_zone(lcl.name)
@@ -143,6 +149,15 @@ Rectangle {
         timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
 
         root.update_intervals.connect(timeline.update_slider_intervals)
+
+          timeline.livestream_button_clicked.connect(f_set_live_play)
+    }
+
+    function f_set_live_play()    {
+
+        storage_live=live
+        update_vm()
+        Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
     function f_moved_at_dt(dt){
