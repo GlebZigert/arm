@@ -76,8 +76,18 @@ Item{
     }
 
 
-    function f_current_camera_update(){
-        console.log("f_current_camera_update")
+    function f_current_camera_update(videowall){
+
+ console.log("f_current_camera_update")
+ console.log("videowall: ",videowall)
+ console.log("multivm.videowall_id: ",multivm.videowall_id)
+
+     if(videowall!==multivm.videowall_id){
+         console.log("это не та стена")
+         return
+     }
+
+
         update_vm()
     }
 

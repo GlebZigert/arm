@@ -544,9 +544,9 @@ Axxon.prototype.receive_URL = function (data) {
          console.log("[receive_URL]")
      console.log("")
 
-     //    root.log(data)
-     //    root.log(JSON.stringify(data))
-          root.log(JSON.stringify(data))
+         console.log(data)
+         console.log(JSON.stringify(data))
+          console.log(JSON.stringify(data))
      var i
      for (i in data.data) {
       console.log("id: ", data.data[i].id)
@@ -579,7 +579,7 @@ var lcl = root.cameraList.get(j)
  //root.update_intervals.updated()
 
      console.log("videowall: ",data.videowall)
- root.frash_URL()
+ root.frash_URL(data.videowall)
 
  root.update_intervals(data.data[i].intervals)
 

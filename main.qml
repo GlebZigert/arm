@@ -141,7 +141,7 @@ ApplicationWindow {
     property int videoPane
     property int  axxon_service_id
 
-    signal frash_URL()
+    signal frash_URL(var videowall)
     signal update_intervals(var x)
     signal event_on_camera(var x)
 
