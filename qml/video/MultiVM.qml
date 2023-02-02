@@ -212,6 +212,12 @@ Item{
                        Tlmtr.capture_session()
 
 
+                    }else{
+                        root.telemetryPoint=-1
+                              Tlmtr.preset_info()
+                           Tlmtr.capture_session()
+
+
                     }
                      grid.children[i].force_focus()
                     //   timer.start()

@@ -204,7 +204,7 @@ Item {
                 property int mouseY_prev
 
 
-
+/*
                 onContainsMouseChanged: {
 
                     if(!containsMouse){
@@ -216,6 +216,7 @@ Item {
                     supreme.focus=true
                     }
                 }
+                */
 
 
 
@@ -405,7 +406,7 @@ Item {
                         }
 
 
-                    console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
+
 
                     if((x_prev!=x)||(y_prev!=y)||(val_prev!=val))
                     {
@@ -418,7 +419,7 @@ Item {
                         str=str+String(val)
                         str=str+" "
 
-
+                        console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
                         Tlmtr.move(str)
 
 
@@ -565,7 +566,7 @@ Item {
                 supreme.forceActiveFocus()
                 }
 
-
+  */
             onExited:  {
             console.log(" containsMouse ",vvm_arrea.containsMouse)
                 supreme.focus=false
@@ -573,7 +574,20 @@ Item {
                 dy=0;
                 vm_area.move(dx,dy)
             }
-            */
+
+
+            onContainsMouseChanged: {
+
+                if(!containsMouse){
+                    console.log("--")
+                supreme.focus=false
+                }
+                if(containsMouse){
+                      console.log("++")
+                supreme.focus=true
+                }
+            }
+
 
             onReleased: {
     console.log("vvm_arrea onReleased")
