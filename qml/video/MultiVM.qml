@@ -49,6 +49,11 @@ Item{
         Repeater{
             model: w_model
 
+
+
+
+
+
             Item {
 
                 id: vm
@@ -57,6 +62,30 @@ Item{
                 y:model.y
                 width: model.w
                 height: model.h
+
+/*
+                onXChanged: {
+                    resize_vm()
+                }
+                onYChanged: {
+                    resize_vm()
+                }
+                onHeightChanged: {
+                    resize_vm()
+                }
+                onWidthChanged: {
+                    resize_vm()
+                }
+
+                function resize_vm(){
+                 //   console.log("resize_vm")
+                    vm.x=model.x
+                    vm.y=model.y
+                    vm.width=model.w
+                    vm.height=model.h
+                }
+                */
+
 
                 property bool selected
                 property bool contain_mouse: area.containsMouse ? true : false
@@ -258,6 +287,7 @@ Item{
 
     function resize(){
 
+        console.log("resize")
         var ww = width/scale
         var hh = height/scale
 
@@ -418,6 +448,8 @@ Item{
 
             saving_off()
     }
+
+
 
     function saving_on(){
         for(var i = 0; i<grid.children.length-1; i++)

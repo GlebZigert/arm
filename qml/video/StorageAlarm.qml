@@ -5,15 +5,18 @@ import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 import QtQuick.Controls 1.4
 Item{
+    id: base
     anchors.fill: parent
     property int cid: -1
 
     property string live: "live"
+    property string storage: "storage"
 
     property int dy
     property int dx
 
 
+    property string storage_live: ""
 
 
 
@@ -134,8 +137,17 @@ Rectangle {
         root.cameraList.updated.connect(camera_storage.update_from_cameraList)
         camera_storage.add_to_space.connect(f_change_camera)
 
+        timeline.moved_at_dt.connect(f_moved_at_dt)
+
 
         timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
+
+        root.update_intervals.connect(timeline.update_slider_intervals)
+    }
+
+    function f_moved_at_dt(dt){
+        storage_live=storage
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt)
     }
 
     function  f_show_or_hide_calendar()
@@ -159,6 +171,9 @@ Rectangle {
 
 
     function request_URL(cameraId, serviceId, dt){
+        if(dt==""){
+        storage_live=live
+        }
         Axxon.request_URL(multivm.videowall_id,cameraId, serviceId, dt,"utc")
     }
 
@@ -196,9 +211,20 @@ Rectangle {
             //        v1.tform1.xScale =1
             //        v1.tform1.yScale =1
 
-            multivm.set_Scale(1);
+            console.log("storage_live: ",storage_live)
 
+            if(storage_live===live){
+
+            multivm.set_Scale(1);
             multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+
+            }else  if(storage_live===storage){
+
+                multivm.set_Scale(1);
+                multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+
+
+            }
 
 
 
