@@ -472,6 +472,21 @@ Axxon.prototype.request_intervals_handler = function (data) {
     console.log("[request_intervals_handler]")
     console.log("")
     console.log(JSON.stringify(data))
+
+
+    var id = data[0].id
+    for(var i=0;i<root.cameraList.count;i++){
+
+
+        if(root.cameraList.get(i).id===id){
+
+            root.cameraList.get(i).intervals=data[0].intervals
+
+        }
+
+    }
+
+
    root.update_intervals(data[0].intervals)
 
 }
