@@ -9,10 +9,14 @@ Item{
     Window {
 
 
-        x: 100
-        y: 100
-        width: 1000
-        height: 800
+        width: Screen.width
+        height: Screen.height
+        minimumHeight: Screen.height
+        minimumWidth:Screen.width
+        maximumHeight: Screen.height
+        maximumWidth   :Screen.width
+
+
 
         visible: true
         //     visibility: "FullScreen"
@@ -30,10 +34,13 @@ Item{
     Window {
 
 
-        x: 100
-        y: 100
-        width: 1000
-        height: 800
+
+        width: Screen.width
+        height: Screen.height
+        minimumHeight: Screen.height
+        minimumWidth:Screen.width
+        maximumHeight: Screen.height
+        maximumWidth   :Screen.width
 
         visible: true
         //    visibility: "FullScreen"

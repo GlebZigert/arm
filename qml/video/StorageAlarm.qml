@@ -18,11 +18,20 @@ Item{
     property int dx
 
 
+
     property string storage_live: ""
     property string pause_play: ""
 
 
-
+    Timer {
+        id: update_intervals_timer
+        interval: 5000; running: true; repeat: true
+        onTriggered:
+        {
+            if(cid!=-1)
+                Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
+        }
+    }
 
 SplitView{
     anchors.fill:parent
@@ -159,8 +168,9 @@ Rectangle {
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
 
+        root.update_intervals.connect(update_slider_intervals)
 
-        root.update_intervals.connect(timeline.update_slider_intervals)
+        multivm.selected_cid.connect(send_signal_selected_sid)
 
 
 
@@ -170,6 +180,17 @@ Rectangle {
 
         storage_live=live
         pause_play=play
+    }
+
+    function send_signal_selected_sid(id){
+    cid=id
+        if(cid!=-1)
+            Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
+    }
+
+    function update_slider_intervals(){
+
+    timeline.update_slider_intervals(Axxon.get_intervals(cid))
     }
 
     function f_play(){

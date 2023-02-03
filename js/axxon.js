@@ -467,11 +467,11 @@ function getListDevices()
 }
 
 Axxon.prototype.request_intervals_handler = function (data) {
-    /*
-    root.log("")
-    root.log("[request_intervals_handler]")
-    root.log("")
-    root.log(JSON.stringify(data))*/
+
+    console.log("")
+    console.log("[request_intervals_handler]")
+    console.log("")
+    console.log(JSON.stringify(data))
    root.update_intervals(data[0].intervals)
 
 }
@@ -553,7 +553,7 @@ Axxon.prototype.receive_URL = function (data) {
       console.log("liveStream: ", data.data[i].liveStream)
       console.log("storageStream: ", data.data[i].storageStream)
       root.log("snapshot: ", data.data[i].snapshot)
-//      root.log("интервалы: ", JSON.stringify(data[i].intervals))
+      root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
 
      var cl = root.cameraList
@@ -570,7 +570,7 @@ var lcl = root.cameraList.get(j)
             root.cameraList.get(j).liveStream=data.data[i].liveStream
             root.cameraList.get(j).storageStream=data.data[i].storageStream
             root.cameraList.get(j).snapshot=data.data[i].snapshot
-
+            root.cameraList.get(j).intervals=data.data[i].intervals
 
          }
 
@@ -584,6 +584,8 @@ var lcl = root.cameraList.get(j)
  root.update_intervals(data.data[i].intervals)
 
 }
+
+
 
 Axxon.prototype.receive_strorage_stream = function (data) {
 root.log('[receive_strorage_stream]')
@@ -647,8 +649,8 @@ Axxon.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     }else{
-              root.log('Axxon',this.serviceId,': rebuild whole tree')
-              root.log(JSON.stringify(data))
+              console.log('Axxon',this.serviceId,': rebuild whole tree')
+              console.log(JSON.stringify(data))
 
               var current_sid=data[0].sid
         for(var j=0;j< root.cameraList.count;j++){
@@ -746,6 +748,8 @@ Axxon.prototype.rebuildTree = function (data) {
                     liveStream:"",
                     storageStream: "",
                     snapshot: "",
+
+                    intervals: data[i].Intervals,
                     ipadress: data[i].ipadress
 
 
@@ -928,7 +932,7 @@ function camera(id){
  //   root.log("...find camera... ",id)
     for(var i=0;i<root.cameraList.count;i++){
  //    root.log(root.cameraList.get(i).id)
-    if(root.cameraList.get(i).id==id){
+    if(root.cameraList.get(i).id===id){
  //     root.log("PROFIT")
     return root.cameraList.get(i)
     }
@@ -936,6 +940,22 @@ function camera(id){
     return -1
 
 }
+
+function get_intervals(id){
+ //   root.log("...find camera... ",id)
+    for(var i=0;i<root.cameraList.count;i++){
+ //    root.log(root.cameraList.get(i).id)
+    if(root.cameraList.get(i).id===id){
+ //     root.log("PROFIT")
+        var lcl = root.cameraList.get(i)
+    return root.cameraList.get(i).intervals
+    }
+    }
+    return -1
+
+}
+
+
 
 function get_serviceId(){
 return this.serviceId

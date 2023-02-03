@@ -282,7 +282,7 @@ Item{
                           Tlmtr.preset_info()
                        Tlmtr.capture_session()
 
-
+                       selected_cid(lcl_cid)
                     }else{
                         root.telemetryPoint=-1
                               Tlmtr.preset_info()
@@ -292,6 +292,8 @@ Item{
                     }
                      grid.children[i].force_focus()
                     //   timer.start()
+
+
                 }
                 else{
                     grid.children[i].selected=false
