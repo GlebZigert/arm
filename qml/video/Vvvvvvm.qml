@@ -474,50 +474,46 @@ Item {
                     }
                     else
                     {
-                        if(wheel.angleDelta.y > 0)  // zoom in
-                            var zoomFactor = factor
-                        else                        // zoom out
-                            zoomFactor = 1/factor
+                    if(wheel.angleDelta.y > 0)  // zoom in
+                        var zoomFactor = factor
+                    else                        // zoom out
+                        zoomFactor = 1/factor
 
-                        if(!(tform1.xScale *zoomFactor<1))
-                        {
-                            if(wheel.angleDelta.y > 0)
-                            {
-                                var realX = wheel.x * tform1.xScale
-                                var realY = wheel.y * tform1.yScale
-                          //      modelx += (1-zoomFactor)*realX
-                          //      modely += (1-zoomFactor)*realY
-                                tform1.xScale *=zoomFactor
-                                tform1.yScale *=zoomFactor
-                            }
-                            else
-                            {
-                                var realX = wheel.x * tform1.xScale
-                                var realY = wheel.y * tform1.yScale
+                    if(!(tform1.xScale *zoomFactor<1))
+                    {
+                     if(wheel.angleDelta.y > 0)
+                     {
+                        var realX = wheel.x * tform1.xScale
+                        var realY = wheel.y * tform1.yScale
+                        vm.x += (1-zoomFactor)*realX
+                        vm.y += (1-zoomFactor)*realY
+                        tform1.xScale *=zoomFactor
+                        tform1.yScale *=zoomFactor
+                      }
+                     else
+                     {
+                         var realX = wheel.x * tform1.xScale
+                         var realY = wheel.y * tform1.yScale
 
-                                tform1.xScale *=zoomFactor
-                                tform1.yScale *=zoomFactor
-
-
-                           //     modelx += (1-zoomFactor)*realX
-                           //     modely += (1-zoomFactor)*realY
-
-                                if(tform1.xScale==1)
-                                {
+                         tform1.xScale *=zoomFactor
+                         tform1.yScale *=zoomFactor
 
 
+                         vm.x += (1-zoomFactor)*realX
+                         vm.y += (1-zoomFactor)*realY
 
+                         if(tform1.xScale==1)
+                         {
 
-                                //    modelx=(supreme.width- modelwidth)/2
-                                //    modely=(supreme.height- modelheight)/2
+                         vm.x =(vm_rect.width- (vm_rect.height/1080)*1920)/2
+                         vm.y =0
 
-
-                                 //   root.log("rect.x ", modelx )
-                                 //   root.log("rect.y ",modely )
-                                }
-                            }
-                        }
+                         root.log("rect.x ", vm.x )
+                         root.log("rect.y ",vm.y )
+                         }
+                     }
                     }
+                }
                 }
             }
 

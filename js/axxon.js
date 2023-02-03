@@ -897,6 +897,20 @@ root.log("event.event: ",event.event)
 
 }
 
+function check_id(id){
+
+    for(var i=0;i<root.cameraList.count;i++){
+
+
+        if(root.cameraList.get(i).id===id){
+        return true
+        }
+
+    }
+    return false
+
+}
+
 function get_cids(){
     var cids=[]
     for(var i=0;i<root.cameraList.count;i++){

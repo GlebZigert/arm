@@ -257,6 +257,10 @@ Rectangle {
 
     console.log("storage wall: add_camera: ",id)
 
+        if(!Axxon.check_id(id)){
+            return
+        }
+
       multivm.add_camera(id)
         cid = id
     }
