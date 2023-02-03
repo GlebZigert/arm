@@ -201,6 +201,7 @@ Rectangle {
     function f_set_live_play()    {
 
         storage_live=live
+        pause_play=play
         update_vm()
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }

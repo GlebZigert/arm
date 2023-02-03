@@ -16,6 +16,8 @@ Item{
     signal give_me_a_camera
     signal request_URL
 
+    property bool full
+
     ListModel {
 
         id: w_model
@@ -147,6 +149,22 @@ Item{
 
                         console.log("onClicked .")
                         good.open_in_alarm_window(vvm.cid)
+                    }
+
+                    }
+
+                    Button{
+                    x:30
+                    y:10
+                    width: 10
+                    height: 10
+                    visible: selected ? true : false
+
+
+                    onClicked: {
+
+                        console.log("onClicked .")
+                        good.fuulscreen(vvm.cid)
                     }
 
                     }
@@ -305,10 +323,10 @@ Item{
 
 
 
-    onHeightChanged: resize()
-    onWidthChanged: resize()
+    onHeightChanged: resize(good.scale)
+    onWidthChanged: resize(good.scale)
 
-    function resize(){
+    function resize(scale){
 
         console.log("resize")
         var ww = width/scale
@@ -387,6 +405,8 @@ Item{
     }
 
     Component.onCompleted: {
+
+        full=false
 
         videowall_id = generateUUID()
 
@@ -540,7 +560,42 @@ Item{
 
             Axxon.request_URL(videowall_id,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
-  //  }
+
+    function fuulscreen(id){
+
+        full=!full
+
+        if(!full){
+            console.log("fuulscreen ")
+            if(Axxon.check_id(id)){
+                console.log("check_id")
+                for(var i=0;i<w_model.count;i++){
+                    console.log(".. ",w_model.get(i).cid," ",id)
+                    if(w_model.get(i).cid===id){
+                        console.log("++ ",w_model.get(i).cid," ",id)
+                        w_model.setProperty(i,"h",height)
+                        w_model.setProperty(i,"w",width)
+                        w_model.setProperty(i,"x",0)
+                        w_model.setProperty(i,"y",0)
+                    }else{
+                        console.log("-- ",w_model.get(i).cid," ",id)
+                        w_model.setProperty(i,"h",0)
+                        w_model.setProperty(i,"w",0)
+                        w_model.setProperty(i,"x",0)
+                        w_model.setProperty(i,"y",0)
+                    }
+
+                }
+            }
+        }else{
+            resize(good.scale)
+
+
+        }
+
+
+    }
+
 
 
 }
