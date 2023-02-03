@@ -149,13 +149,26 @@ Rectangle {
 
         timeline.moved_at_dt.connect(f_moved_at_dt)
 
+        calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
         timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
 
         root.update_intervals.connect(timeline.update_slider_intervals)
 
-          timeline.livestream_button_clicked.connect(f_set_live_play)
+        timeline.livestream_button_clicked.connect(f_set_live_play)
 
+        calendar.enabled=false
+        calendar_rect.visible=false
+        calendar_rect_area.enabled=false
+    }
+
+    function to_update_intervals_handler_and_go_to_this_dt()
+    {
+        var dt=timeline.current_dt()
+        storage_live=storage
+        timeline.to_storage()
+        var lcl=Axxon.camera(cid)
+        request_URL(multivm.get_cids(),lcl.serviceId,dt)
 
     }
 
