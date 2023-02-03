@@ -11,13 +11,15 @@ Item{
 
     property string live: "live"
     property string storage: "storage"
+    property string pause: "pause"
+    property string play: "play"
 
     property int dy
     property int dx
 
 
     property string storage_live: ""
-
+    property string pause_play: ""
 
 
 
@@ -148,18 +150,42 @@ Rectangle {
         camera_storage.add_to_space.connect(f_change_camera)
 
         timeline.moved_at_dt.connect(f_moved_at_dt)
+        timeline.paused_and_moved_at_dt.connect(f_paused_and_moved_at_dt)
+        timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
+        timeline.livestream_button_clicked.connect(f_set_live_play)
+        timeline.play_signal.connect(f_play)
+        timeline.pause_signal.connect(f_pause)
 
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
-        timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
+
 
         root.update_intervals.connect(timeline.update_slider_intervals)
 
-        timeline.livestream_button_clicked.connect(f_set_live_play)
+
 
         calendar.enabled=false
         calendar_rect.visible=false
         calendar_rect_area.enabled=false
+
+        storage_live=live
+        pause_play=play
+    }
+
+    function f_play(){
+        pause_play=play
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt())
+    }
+
+    function f_pause(){
+        pause_play=pause
+        multivm.vm_stop()
+    }
+
+    function f_paused_and_moved_at_dt(){
+        f_pause()
+        pause_play=pause
+        f_moved_at_dt(timeline.current_dt())
     }
 
     function to_update_intervals_handler_and_go_to_this_dt()
@@ -242,38 +268,57 @@ Rectangle {
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
+            if(pause_play==pause)
+            {
 
+                if(storage_live==storage)
+                {
+                    //vm.source=lcl.snapshot
 
-            //    preset_list.clear_model()
-            //    Tlmtr.preset_info()
+                    multivm.vm_start(id,lcl.snapshot,Mode.Snapshot)
 
-            //   Tlmtr.capture_session()
-            //   timer.start()
+                }
+                else
+                    if(storage_live==live)
+                    {
+                        multivm.vm_stop()
+                        //vm.stop()
 
-            //        v1.tform1.xScale =1
-            //        v1.tform1.yScale =1
-
-            console.log("storage_live: ",storage_live)
-
-            if(storage_live===live){
-
-            multivm.set_Scale(1);
-            multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
-
-            }else  if(storage_live===storage){
-
-                multivm.set_Scale(1);
-                multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
-
-
+                    }
             }
+            else
+                if(pause_play==play)
+                {
+                    if(storage_live==storage)
+                    {
+
+                        multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+
+                    }
+                    else
+                        if(storage_live==live)
+                        {
+                            //preset_list.clear_model()
+                            //Tlmtr.preset_info()
+
+                           // Tlmtr.capture_session()
+                           // timer.start()
+                            //        multivm.tform1.xScale =1
+                            //        multivm.tform1.yScale =1
+                            multivm.set_Scale(1);
 
 
 
+
+
+                            //    vm.source=lcl.liveStream
+                            //    vm.start()
+
+
+                            multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+                        }
+
+                }
         }
     }
-
-
-
-
 }

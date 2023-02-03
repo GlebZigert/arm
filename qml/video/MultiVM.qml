@@ -187,6 +187,11 @@ Item{
                     vvm.vm_start(mode)
                 }
 
+                function vm_stop(){
+
+                    vvm.vm_stop()
+                }
+
                 function force_focus(){
                 vvm.forceActiveFocus()
                 }
@@ -406,6 +411,21 @@ Item{
 
         }
     }
+
+    function vm_stop(){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+
+        //    if(grid.children[i].selected){
+
+                grid.children[i].vm_stop()
+
+       //     }
+
+        }
+    }
+
+
 
     function set_Scale(val){
 
