@@ -28,6 +28,55 @@ Item{
         visible: false
     }
 
+    Rectangle {
+
+        id: tlmt_rect
+        x:100
+        y:100
+        width: 260
+        height: 710
+        color: "gray"
+
+        Rectangle {
+            id: telemetry_menu
+
+            width: 260
+            height: 700
+            y:10
+
+            //  color: "lightgray"
+            color: "green"
+            Column{
+                height: parent.height
+
+                Preset_List{
+                    id: preset_list
+                    width: 260
+                    height: parent.height-telemetry.height
+
+                }
+
+                Test_Telemetry{
+                    id: telemetry
+
+                    width: 260
+                    height: 160
+
+
+                }
+            }
+        }
+        MouseArea {
+            id: tlmtr_rect_area
+            width: parent.width
+            height: 10
+            x:0
+            y:0
+            drag.target: parent
+        }
+    }
+
+
 
     function give_him_a_camera(){
         console.log("give_him_a_camera()")
