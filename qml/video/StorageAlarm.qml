@@ -322,7 +322,7 @@ Item{
     }
 
     function update_slider_intervals(){
-
+        console.log("update_slider_intervals for cid: ",cid)
         timeline.update_slider_intervals(Axxon.get_intervals(cid))
     }
 

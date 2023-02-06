@@ -474,7 +474,7 @@ Axxon.prototype.request_intervals_handler = function (data) {
     console.log(JSON.stringify(data))
 
 
-    var id = data[0].id
+    var id = data[0].Id
     for(var i=0;i<root.cameraList.count;i++){
 
 
@@ -961,7 +961,7 @@ function get_intervals(id){
     for(var i=0;i<root.cameraList.count;i++){
  //    root.log(root.cameraList.get(i).id)
     if(root.cameraList.get(i).id===id){
- //     root.log("PROFIT")
+      root.log("PROFIT")
         var lcl = root.cameraList.get(i)
     return root.cameraList.get(i).intervals
     }
