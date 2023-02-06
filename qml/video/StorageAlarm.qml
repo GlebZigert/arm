@@ -302,6 +302,10 @@ Item{
 
         storage_live=live
         pause_play=play
+
+        tlmt_rect.visible=false
+
+        multivm.rescale(multivm.scale)
     }
 
     function f_switch_tlmtr(){

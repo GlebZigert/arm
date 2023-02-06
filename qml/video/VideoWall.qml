@@ -125,6 +125,9 @@ Item{
         multivm.switch_tlmtr.connect(f_switch_tlmtr)
 
         //   root.cameraList.updated.connect(multivm.reconnect_livestream)
+
+        tlmt_rect.visible=false
+        multivm.rescale(multivm.scale)
     }
 
     function f_switch_tlmtr(){

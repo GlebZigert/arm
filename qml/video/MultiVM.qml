@@ -125,16 +125,14 @@ Item{
                         text: model.cid
                     }
 
-                    Row{
-                        x: 2
-                        y: 2
-                        spacing: 2
+
 
                     width: parent.width
                     height: 20
 
                     Button{
 
+                        x:0
                     width: 20
                     height: 20
                     visible: selected ? true : false
@@ -150,7 +148,7 @@ Item{
 
                     Button{
 
-
+   x:25
                         width: 20
                         height: 20
                     visible: selected ? true : false
@@ -165,7 +163,7 @@ Item{
                     }
 
                     Button{
-
+   x:50
                         width: 20
                         height: 20
                     visible: selected ? true : false
@@ -182,7 +180,7 @@ Item{
 
                     Button{
 
-
+   x:75
                         width: 20
                         height: 20
                     visible: selected ? true : false
@@ -196,7 +194,7 @@ Item{
 
                     }
 
-                    }
+
 
                     function get_cid(){
                     return vvm.cid
@@ -521,8 +519,8 @@ Item{
 
 
 
-        if(full&&Axxon.check_id(id)){
-
+        if(full && Axxon.check_id(id)){
+            console.log("rescale full")
             for(var i=0;i<cids.count;i++){
                 console.log(".. ",cids.get(i).cid," ",id)
                 if(cids.get(i).cid===id){
@@ -541,6 +539,7 @@ Item{
             }
 
         }else{
+                        console.log("rescale multi")
         for(var i=0;i<scale*scale;i++){
             w_model.append({h:hh,
                                w:ww,
@@ -661,7 +660,7 @@ Item{
 
         }
 
-        rescale(multivm.scale)
+        rescale(good.scale)
 
 
     }
