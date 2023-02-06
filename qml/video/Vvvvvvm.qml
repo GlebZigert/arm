@@ -17,6 +17,7 @@ Item {
 
     property string source
     property int cid
+     property int uid: -1
     signal return_source(string src)
     signal return_cid(int cid)
 

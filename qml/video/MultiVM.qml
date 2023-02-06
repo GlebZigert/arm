@@ -11,6 +11,8 @@ Item{
     property bool first_time: true
     property int index: 0
 
+    property int fullscreen_uid: -1
+
     signal selected_cid(int cid)
     signal open_in_alarm_window(int id)
     signal give_me_a_camera
@@ -122,11 +124,19 @@ Item{
                         anchors.fill: parent
                         text: model.cid
                     }
+
+                    Row{
+                        x: 2
+                        y: 2
+                        spacing: 2
+
+                    width: parent.width
+                    height: 20
+
                     Button{
-                    x:10
-                    y:10
-                    width: 10
-                    height: 10
+
+                    width: 20
+                    height: 20
                     visible: selected ? true : false
 
 
@@ -139,10 +149,10 @@ Item{
                     }
 
                     Button{
-                    x:20
-                    y:10
-                    width: 10
-                    height: 10
+
+
+                        width: 20
+                        height: 20
                     visible: selected ? true : false
 
 
@@ -155,26 +165,26 @@ Item{
                     }
 
                     Button{
-                    x:30
-                    y:10
-                    width: 10
-                    height: 10
+
+                        width: 20
+                        height: 20
                     visible: selected ? true : false
 
 
                     onClicked: {
 
                         console.log("onClicked .")
-                        good.fuulscreen(vvm.cid)
+                        var uuid = vvm.uid
+                        good.fullscreen(vvm.uid)
                     }
 
                     }
 
                     Button{
-                    x:40
-                    y:10
-                    width: 10
-                    height: 10
+
+
+                        width: 20
+                        height: 20
                     visible: selected ? true : false
 
 
@@ -182,6 +192,8 @@ Item{
 
                         console.log("onClicked .,.")
                         good.switch_tlmtr()
+                    }
+
                     }
 
                     }
@@ -265,6 +277,8 @@ Item{
                  //   resize_vm()
                     set_cid(model.cid)
 
+                    vvm.uid=model.uid
+
                     set_vm_source(model.cid,model.url)
                  //   console.log("Rect ",index," создан ",uid," ",vm.cid," ",vm.url)
                     vvm.vm_start(1)
@@ -327,6 +341,9 @@ Item{
         MouseArea{
             anchors.fill:parent
             onClicked: {
+
+                full=false
+                fullscreen_uid=-1
                 if(good.scale<5){
                     good.scale++
                 }
@@ -340,39 +357,7 @@ Item{
 
 
 
-    onHeightChanged: resize(good.scale)
-    onWidthChanged: resize(good.scale)
 
-    function resize(scale){
-        var www = width
-        var hhh = height
-
-        console.log("--> resize ",www," ",hhh)
-        var ww = www/scale
-        var hh = hhh/scale
-
-
-        console.log("ww ",ww," hh ",hh)
-
-
-
-        for(var i=0;i<w_model.count;i++){
-
-            var x = ww*(i%scale)
-            var y = hh*((i<scale)?0:((i-(i%scale))/scale))
-
-            console.log("ww ",ww," hh ",hh," x ",x," y ",y)
-
-            w_model.setProperty(i,"h",hh)
-            w_model.setProperty(i,"w",ww)
-            w_model.setProperty(i,"x",x)
-            w_model.setProperty(i,"y",y)
-
-
-        }
-
-        console.log("<-- resize ",width," ",height)
-    }
 
     function reconnect_livestream(){
 
@@ -526,6 +511,36 @@ Item{
 
         console.log("cids.count ",cids.count)
 
+        var id = -1
+        for(var i = 0;i < cids.count;i++){
+               if(cids.get(i).uid === fullscreen_uid){
+                id = cids.get(i).cid
+               }
+        }
+
+
+
+
+        if(full&&Axxon.check_id(id)){
+
+            for(var i=0;i<cids.count;i++){
+                console.log(".. ",cids.get(i).cid," ",id)
+                if(cids.get(i).cid===id){
+
+                    w_model.append({h:height,
+                                       w:width,
+                                       x: 0,
+                                       y: 0,
+                                       uid: cids.get(i).uid,
+                                       cid:cids.get(i).cid,
+                                       url:cids.get(i).url
+                                   })
+
+                    break;
+                }
+            }
+
+        }else{
         for(var i=0;i<scale*scale;i++){
             w_model.append({h:hh,
                                w:ww,
@@ -536,6 +551,11 @@ Item{
                                url:cids.get(i).url
                            })
         }
+        }
+
+
+
+
 
             saving_off()
     }
@@ -593,14 +613,28 @@ Item{
             Axxon.request_URL(videowall_id,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
 
-    function fuulscreen(id){
+    function fullscreen(id){
 
-        full=!full
+
 
         if(!full){
-            console.log("fuulscreen ")
-            if(Axxon.check_id(id)){
+            console.log("fullscreen ")
+
+            //найти cid этого uid
+            var current_cid = -1
+            for(var i = 0;i < w_model.count;i++){
+                   if(w_model.get(i).uid === id){
+                    current_cid = w_model.get(i).cid
+                   }
+            }
+
+
+            if(Axxon.check_id(current_cid)){
                 console.log("check_id")
+                full=true
+                fullscreen_uid = id
+
+                /*
                 for(var i=0;i<w_model.count;i++){
                     console.log(".. ",w_model.get(i).cid," ",id)
                     if(w_model.get(i).cid===id){
@@ -618,12 +652,16 @@ Item{
                     }
 
                 }
+                */
             }
         }else{
-            resize(good.scale)
+         full=false
+            fullscreen_uid=-1
 
 
         }
+
+        rescale(multivm.scale)
 
 
     }
