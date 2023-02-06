@@ -9,6 +9,7 @@ Item{
     anchors.fill: parent
     property int cid: -1
 
+
     property string live: "live"
     property string storage: "storage"
     property string pause: "pause"
@@ -22,6 +23,8 @@ Item{
     property string storage_live: ""
     property string pause_play: ""
 
+    signal switch_tlmtr
+
 
     Timer {
         id: update_intervals_timer
@@ -33,73 +36,73 @@ Item{
         }
     }
 
-SplitView{
-    anchors.fill:parent
-    orientation: Qt.Vertical
+    SplitView{
+        anchors.fill:parent
+        orientation: Qt.Vertical
 
-    MultiVM{
-        id: multivm
-        width: parent.width
-        Layout.fillWidth: true
-        Layout.fillHeight: true
+        MultiVM{
+            id: multivm
+            width: parent.width
+            Layout.fillWidth: true
+            Layout.fillHeight: true
 
+
+        }
+
+        Rectangle {
+            id: bottom_panel
+            width: parent.width
+            height: 100
+            Layout.maximumHeight: 100
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            color: "green"
+
+
+            MyProgressBar{
+                id: timeline
+                calendar: calendar
+                anchors.fill: parent
+            }
+        }
 
     }
+
 
     Rectangle {
-        id: bottom_panel
-        width: parent.width
-        height: 100
-        Layout.maximumHeight: 100
-        Layout.fillWidth: true
-        Layout.fillHeight: true
-        color: "green"
+
+        id: calendar_rect
+        x:100
+        y:100
+        width: 300
+        height: 300
+        color: "gray"
+
+        Calendar {
+            id: calendar
+
+            width: parent.width
+            height: parent.height-10
+            x:0
+            y:10
+
+            minimumDate: new Date(2021, 01, 1)
+            selectedDate: new Date()
+            Drag.active: calendar_rect_area.drag.active
+            Drag.hotSpot.x: 10
+            Drag.hotSpot.y: 10
 
 
-       MyProgressBar{
-            id: timeline
-            calendar: calendar
-            anchors.fill: parent
         }
-}
-
+        MouseArea {
+            id: calendar_rect_area
+            width: parent.width
+            height: 10
+            x:0
+            y:0
+            drag.target: parent
+        }
     }
-
-
-Rectangle {
-
-    id: calendar_rect
-    x:100
-    y:100
-    width: 300
-    height: 300
-    color: "gray"
-
-    Calendar {
-        id: calendar
-
-        width: parent.width
-        height: parent.height-10
-        x:0
-        y:10
-
-        minimumDate: new Date(2021, 01, 1)
-        selectedDate: new Date()
-        Drag.active: calendar_rect_area.drag.active
-        Drag.hotSpot.x: 10
-        Drag.hotSpot.y: 10
-
-
-    }
-    MouseArea {
-        id: calendar_rect_area
-        width: parent.width
-        height: 10
-        x:0
-        y:0
-        drag.target: parent
-    }
-}
 
     Loaded_cameras {
         anchors.fill: parent
@@ -119,13 +122,13 @@ Rectangle {
         if(lcl!==-1){
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
-         //   configPanel.state="hide"
+            //   configPanel.state="hide"
 
-         //   telemetry.set_serviceId(lcl.sid)
-         //   preset_list.serviceId=lcl.sid
+            //   telemetry.set_serviceId(lcl.sid)
+            //   preset_list.serviceId=lcl.sid
 
-         //   root.log("telemetryControlID: ",lcl.telemetryControlID)
-         //   root.telemetryPoint=lcl.telemetryControlID
+            //   root.log("telemetryControlID: ",lcl.telemetryControlID)
+            //   root.telemetryPoint=lcl.telemetryControlID
 
 
 
@@ -135,8 +138,8 @@ Rectangle {
 
             }
 
-         //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
-         //   timeline.set_camera_zone(lcl.name)
+            //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
+            //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
 
@@ -172,6 +175,8 @@ Rectangle {
 
         multivm.selected_cid.connect(send_signal_selected_sid)
 
+        multivm.switch_tlmtr.connect(f_switch_tlmtr)
+
 
 
         calendar.enabled=false
@@ -182,15 +187,21 @@ Rectangle {
         pause_play=play
     }
 
+    function f_switch_tlmtr(){
+        console.log("storageAlarm f_switch_tlmtr")
+        base.switch_tlmtr()
+    }
+
+
     function send_signal_selected_sid(id){
-    cid=id
+        cid=id
         if(cid!=-1)
             Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
     function update_slider_intervals(){
 
-    timeline.update_slider_intervals(Axxon.get_intervals(cid))
+        timeline.update_slider_intervals(Axxon.get_intervals(cid))
     }
 
     function f_play(){
@@ -254,7 +265,7 @@ Rectangle {
 
     function request_URL(cameraId, serviceId, dt){
         if(dt==""){
-        storage_live=live
+            storage_live=live
         }
         Axxon.request_URL(multivm.videowall_id,cameraId, serviceId, dt,"utc")
     }
@@ -262,14 +273,14 @@ Rectangle {
 
     function f_current_camera_update(videowall){
 
- console.log("f_current_camera_update")
- console.log("videowall: ",videowall)
- console.log("multivm.videowall_id: ",multivm.videowall_id)
+        console.log("f_current_camera_update")
+        console.log("videowall: ",videowall)
+        console.log("multivm.videowall_id: ",multivm.videowall_id)
 
-     if(videowall!==multivm.videowall_id){
-         console.log("это не та стена")
-         return
-     }
+        if(videowall!==multivm.videowall_id){
+            console.log("это не та стена")
+            return
+        }
 
 
         update_vm()
@@ -277,13 +288,13 @@ Rectangle {
 
     function add_camera(id){
 
-    console.log("storage wall: add_camera: ",id)
+        console.log("storage wall: add_camera: ",id)
 
         if(!Axxon.check_id(id)){
             return
         }
 
-      multivm.add_camera(id)
+        multivm.add_camera(id)
         cid = id
     }
 
@@ -327,8 +338,8 @@ Rectangle {
                             //preset_list.clear_model()
                             //Tlmtr.preset_info()
 
-                           // Tlmtr.capture_session()
-                           // timer.start()
+                            // Tlmtr.capture_session()
+                            // timer.start()
                             //        multivm.tform1.xScale =1
                             //        multivm.tform1.yScale =1
                             multivm.set_Scale(1);

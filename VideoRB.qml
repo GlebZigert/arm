@@ -63,6 +63,13 @@ Item{
 
         videowall.open_in_alarm_window.connect(alarmWindow.add_camera)
 
+        videowall.switch_tlmtr.connect(f_switch_tlmtr)
+        alarmWindow.switch_tlmtr.connect(f_switch_tlmtr)
+
+    }
+
+    function f_switch_tlmtr(){
+    console.log("f_switch_tlmtr")
     }
 
 

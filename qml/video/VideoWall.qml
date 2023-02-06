@@ -6,12 +6,16 @@ Item{
     anchors.fill: parent
     property int cid: -1
 
+    id: base
+
     property string live: "live"
 
     property int dy
     property int dx
 
     signal open_in_alarm_window(int id)
+
+    signal switch_tlmtr
 
     MultiVM{
         id: multivm
@@ -38,18 +42,18 @@ Item{
         if(lcl!==-1){
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
-         //   configPanel.state="hide"
+            //   configPanel.state="hide"
 
-         //   telemetry.set_serviceId(lcl.sid)
-         //   preset_list.serviceId=lcl.sid
+            //   telemetry.set_serviceId(lcl.sid)
+            //   preset_list.serviceId=lcl.sid
 
-         //   root.log("telemetryControlID: ",lcl.telemetryControlID)
-         //   root.telemetryPoint=lcl.telemetryControlID
+            //   root.log("telemetryControlID: ",lcl.telemetryControlID)
+            //   root.telemetryPoint=lcl.telemetryControlID
 
             var dt=""
 
-         //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
-         //   timeline.set_camera_zone(lcl.name)
+            //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
+            //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
 
@@ -69,14 +73,21 @@ Item{
 
         multivm.open_in_alarm_window.connect(f_open_in_alarm_window)
 
-     //   root.cameraList.updated.connect(multivm.reconnect_livestream)
+        multivm.switch_tlmtr.connect(f_switch_tlmtr)
+
+        //   root.cameraList.updated.connect(multivm.reconnect_livestream)
     }
 
-function f_open_in_alarm_window(id){
+    function f_switch_tlmtr(){
+            console.log("videowall f_switch_tlmtr")
+        base.switch_tlmtr()
+    }
 
-    console.log("f_open_in_alarm_window")
-open_in_alarm_window(id)
-}
+    function f_open_in_alarm_window(id){
+
+        console.log("f_open_in_alarm_window")
+        open_in_alarm_window(id)
+    }
 
 
 
@@ -87,14 +98,14 @@ open_in_alarm_window(id)
 
     function f_current_camera_update(videowall){
 
- console.log("f_current_camera_update")
- console.log("videowall: ",videowall)
- console.log("multivm.videowall_id: ",multivm.videowall_id)
+        console.log("f_current_camera_update")
+        console.log("videowall: ",videowall)
+        console.log("multivm.videowall_id: ",multivm.videowall_id)
 
-     if(videowall!==multivm.videowall_id){
-         console.log("это не та стена")
-         return
-     }
+        if(videowall!==multivm.videowall_id){
+            console.log("это не та стена")
+            return
+        }
 
 
         update_vm()

@@ -15,6 +15,7 @@ Item{
     signal open_in_alarm_window(int id)
     signal give_me_a_camera
     signal request_URL
+    signal switch_tlmtr
 
     property bool full
 
@@ -165,6 +166,22 @@ Item{
 
                         console.log("onClicked .")
                         good.fuulscreen(vvm.cid)
+                    }
+
+                    }
+
+                    Button{
+                    x:40
+                    y:10
+                    width: 10
+                    height: 10
+                    visible: selected ? true : false
+
+
+                    onClicked: {
+
+                        console.log("onClicked .,.")
+                        good.switch_tlmtr()
                     }
 
                     }
