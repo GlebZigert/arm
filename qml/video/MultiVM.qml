@@ -101,7 +101,7 @@ Item{
 
                 Rectangle{
                     anchors.fill: parent
-                    color: selected ? "lightgreen" : "green"
+                    color: selected ? "lightgray" : "gray";
                     MouseArea{
                         id: area
                         anchors.fill: parent
@@ -127,12 +127,18 @@ Item{
 
 
 
-                    width: parent.width
-                    height: 20
+                    Row{
+
+                        x:2
+                        y:2
+                        width: parent.width
+                        height: 20
+                        spacing: 2
+
 
                     Button{
 
-                        x:0
+
                     width: 20
                     height: 20
                     visible: selected ? true : false
@@ -148,7 +154,7 @@ Item{
 
                     Button{
 
-   x:25
+
                         width: 20
                         height: 20
                     visible: selected ? true : false
@@ -163,7 +169,7 @@ Item{
                     }
 
                     Button{
-   x:50
+
                         width: 20
                         height: 20
                     visible: selected ? true : false
@@ -180,7 +186,7 @@ Item{
 
                     Button{
 
-   x:75
+
                         width: 20
                         height: 20
                     visible: selected ? true : false
@@ -192,6 +198,7 @@ Item{
                         good.switch_tlmtr()
                     }
 
+                    }
                     }
 
 
@@ -225,6 +232,11 @@ Item{
                 function set_Scale(val){
 
                     vvm.set_Scale(val)
+                }
+
+                function set_selected(val){
+                selected=val
+                    vvm.set_selected(val)
                 }
 
                 function vm_start(mode){
@@ -295,7 +307,7 @@ Item{
             for(var i = 0; i<grid.children.length-1; i++)
             {
                 if(grid.children[i].contain_mouse){
-                    grid.children[i].selected=true
+                    grid.children[i].set_selected(true)
 
 
                     //    preset_list.clear_model()
@@ -323,7 +335,7 @@ Item{
 
                 }
                 else{
-                    grid.children[i].selected=false
+                    grid.children[i].set_selected(false)
                 }
             }
         }

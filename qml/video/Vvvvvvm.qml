@@ -10,7 +10,7 @@ Item {
      anchors.fill: parent
 
 
-        property bool selected: parent.selected
+        property bool selected: false
 
     signal playing
     signal selected
@@ -147,9 +147,15 @@ Item {
      }
 
     Rectangle {
-        color: supreme.activeFocus ? "lightgray" : "gray";
+        color: selected ? "lightblue" : supreme.activeFocus ? "lightgray" : "gray";
         id:vm_rect
-        anchors.fill: parent
+
+
+
+
+    anchors.fill: parent
+
+
         clip:true
 
 
@@ -163,13 +169,19 @@ Item {
 
         VideoPlayer{
 
+
+
        //     fillColor: "green"
             id: vm
+
             x:(parent.width- width)/2
             y:(parent.height- height)/2
 
             width: (height/1080)*1920
             height: parent.height
+
+
+
 
             onSourceChanged: (subject)=> {
 
@@ -536,6 +548,8 @@ Item {
         MouseArea{
 
 
+            /*
+
             Rectangle{
                 width: 20
                 height: 20
@@ -551,6 +565,8 @@ Item {
 
                 color:  mode===Mode.LiveStreaming ? "green" : "red"
             }
+
+            */
 
 
             id: vvm_arrea
@@ -616,6 +632,12 @@ Item {
             }
         }
     }
+
+    function set_selected(val){
+    selected=val
+
+    }
+
 
 
     function saving_off(){

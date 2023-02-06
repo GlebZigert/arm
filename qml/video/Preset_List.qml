@@ -289,7 +289,7 @@ anchors.fill: parent
          Component.onCompleted: {
              if(ind == -1)
                  text_field.visible=true
-             text_field.forceActiveFocus()
+         //    text_field.forceActiveFocus()
 
 }
 
