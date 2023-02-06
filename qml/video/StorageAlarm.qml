@@ -40,6 +40,12 @@ Item{
         anchors.fill:parent
         orientation: Qt.Vertical
 
+        SplitView{
+            width: parent.width
+            orientation: Qt.Horizontal
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+
         MultiVM{
             id: multivm
             width: parent.width
@@ -49,8 +55,23 @@ Item{
 
         }
 
+
         Rectangle {
-            id: bottom_panel
+            id: timelist_rect
+
+            width: 110
+            height: 700
+            Layout.maximumWidth: 110
+            color: "green"
+            TimeList{
+                id: timelist
+            }
+        }
+
+    }
+
+        Rectangle {
+            id: timeline_rect
             width: parent.width
             height: 100
             Layout.maximumHeight: 100
@@ -158,6 +179,51 @@ Item{
         }
     }
 
+    Rectangle{
+        width:40
+        height: 40
+
+        x:parent.width-45
+        y:parent.height-45
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "/qml/video/fullsize.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+               if(timelist_rect.width==0){
+               timelist_rect.width=110
+               }else{
+               timelist_rect.width=0
+               }
+
+               if(timeline_rect.height==0){
+               timeline_rect.height=100
+               }else{
+               timeline_rect.height=0
+               }
+
+               multivm.rescale(multivm.scale)
+
+
+
+            }
+        }
+    }
+
+
     function give_him_a_camera(){
         console.log("give_him_a_camera()")
         camera_storage.visible=true
@@ -226,6 +292,8 @@ Item{
 
         multivm.switch_tlmtr.connect(f_switch_tlmtr)
 
+        timelist.send_time.connect(timeline.set_time)
+        timeline.update_timelist.connect(timelist.set_current)
 
 
         calendar.enabled=false

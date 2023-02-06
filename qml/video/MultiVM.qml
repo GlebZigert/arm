@@ -231,7 +231,6 @@ Item{
                 vvm.forceActiveFocus()
                 }
 
-
                 function set_vm_source(cid,url){
 
                     vvm.set_vm_source(cid,url)
@@ -246,7 +245,6 @@ Item{
                 function saving_on(){
                 vvm.saving_on()
                 }
-
 
                 function findAndSet(model,uid,property_string,val){
 
@@ -346,20 +344,34 @@ Item{
     onWidthChanged: resize(good.scale)
 
     function resize(scale){
+        var www = width
+        var hhh = height
 
-        console.log("resize")
-        var ww = width/scale
-        var hh = height/scale
+        console.log("--> resize ",www," ",hhh)
+        var ww = www/scale
+        var hh = hhh/scale
+
+
+        console.log("ww ",ww," hh ",hh)
+
+
 
         for(var i=0;i<w_model.count;i++){
 
+            var x = ww*(i%scale)
+            var y = hh*((i<scale)?0:((i-(i%scale))/scale))
+
+            console.log("ww ",ww," hh ",hh," x ",x," y ",y)
+
             w_model.setProperty(i,"h",hh)
             w_model.setProperty(i,"w",ww)
-            w_model.setProperty(i,"x",ww*(i%scale))
-            w_model.setProperty(i,"y",hh*((i<scale)?0:((i-(i%scale))/scale)))
+            w_model.setProperty(i,"x",x)
+            w_model.setProperty(i,"y",y)
 
 
         }
+
+        console.log("<-- resize ",width," ",height)
     }
 
     function reconnect_livestream(){
@@ -515,7 +527,8 @@ Item{
         console.log("cids.count ",cids.count)
 
         for(var i=0;i<scale*scale;i++){
-            w_model.append({h:hh,w:ww,
+            w_model.append({h:hh,
+                               w:ww,
                                x: ww*(i%scale),
                                y: hh*((i<scale)?0:((i-(i%scale))/scale)),
                                uid: cids.get(i).uid,
