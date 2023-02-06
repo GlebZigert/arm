@@ -130,6 +130,7 @@ Item{
     function f_switch_tlmtr(){
             console.log("videowall f_switch_tlmtr")
         base.switch_tlmtr()
+        tlmt_rect.visible=!tlmt_rect.visible
     }
 
     function f_open_in_alarm_window(id){

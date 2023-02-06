@@ -239,6 +239,7 @@ Item{
     function f_switch_tlmtr(){
         console.log("storageAlarm f_switch_tlmtr")
         base.switch_tlmtr()
+        tlmt_rect.visible=!tlmt_rect.visible
     }
 
 
