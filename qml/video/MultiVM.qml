@@ -50,7 +50,8 @@ Item{
         rowSpacing: 0
         rows: 5
         columns: 5
-        baselineOffset: 1
+        baselineOffset: 0
+
 
 
 
@@ -103,7 +104,7 @@ Item{
 
                 Rectangle{
                     anchors.fill: parent
-                    color: selected ? "lightgray" : "gray";
+                    color: model.alarm ? "red" : "gray";
                     MouseArea{
                         id: area
                         anchors.fill: parent
@@ -115,21 +116,18 @@ Item{
 
                    //     readonly property int uid: model.uid
 
-                        anchors.fill: parent
+                        x:2
+                        y:2
+                        width: parent.width-4
+                        height: parent.height-4
+
+                      //  anchors.fill: parent
 
                         property int cid: -1
                         property string url: ""
 
                     }
 
-                    Rectangle{
-                    x:10
-                    y:10
-                    width: 30
-                    height: 30
-                    color: "red"
-                    visible: model.alarm ? true : false
-                    }
 
                     Text{
                         anchors.fill: parent
@@ -246,8 +244,17 @@ Item{
                 }
 
                 function set_selected(val){
+
                 selected=val
+
+                    if(val==true){
+                    findAndSet(cids,vm.uid,"alarm",false)
+                    findAndSet(w_model,vm.uid,"alarm",false)
+                    }
+
                     vvm.set_selected(val)
+
+
                 }
 
                 function vm_start(mode){
@@ -319,6 +326,8 @@ Item{
             {
                 if(grid.children[i].contain_mouse){
                     grid.children[i].set_selected(true)
+
+
 
 
                     //    preset_list.clear_model()

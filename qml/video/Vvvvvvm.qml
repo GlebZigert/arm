@@ -7,7 +7,7 @@ Item {
 
     id: supreme
 
-     anchors.fill: parent
+  //   anchors.fill: parent
 
 
         property bool selected: false
@@ -635,6 +635,8 @@ Item {
 
     function set_selected(val){
     selected=val
+
+
 
     }
 
