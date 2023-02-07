@@ -468,10 +468,10 @@ function getListDevices()
 
 Axxon.prototype.request_intervals_handler = function (data) {
 
-    console.log("")
-    console.log("[request_intervals_handler]")
-    console.log("")
-    console.log(JSON.stringify(data))
+    //console.log("")
+    //console.log("[request_intervals_handler]")
+    //console.log("")
+    //console.log(JSON.stringify(data))
 
 
     var id = data[0].Id
@@ -493,18 +493,18 @@ Axxon.prototype.request_intervals_handler = function (data) {
 
 Axxon.prototype.ExecCommand_handler = function (data) {
 
-     console.log("")
-     console.log("[ExecCommand_handler]")
-     console.log("")
+     //console.log("")
+     //console.log("[ExecCommand_handler]")
+     //console.log("")
 
 
 
     //взять id и сделать эту камеру текущей и перейтив  режим прямой трансляции.
 
-    console.log(data)
-    console.log(JSON.stringify(data))
+    //console.log(data)
+    //console.log(JSON.stringify(data))
     var id=data.id
-    console.log("id: ",id)
+    //console.log("id: ",id)
     root.event_on_camera(id)
 root.activePane=root.videoPane
 /*
@@ -555,18 +555,18 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     console.log("")
-         console.log("[receive_URL]")
-     console.log("")
+     //console.log("")
+         //console.log("[receive_URL]")
+     //console.log("")
 
-         console.log(data)
-         console.log(JSON.stringify(data))
-          console.log(JSON.stringify(data))
+         //console.log(data)
+         //console.log(JSON.stringify(data))
+          //console.log(JSON.stringify(data))
      var i
      for (i in data.data) {
-      console.log("id: ", data.data[i].id)
-      console.log("liveStream: ", data.data[i].liveStream)
-      console.log("storageStream: ", data.data[i].storageStream)
+      //console.log("id: ", data.data[i].id)
+      //console.log("liveStream: ", data.data[i].liveStream)
+      //console.log("storageStream: ", data.data[i].storageStream)
       root.log("snapshot: ", data.data[i].snapshot)
       root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
@@ -578,7 +578,7 @@ var lcl = root.cameraList.get(j)
  var lcld = data.data[i]
          if( data.data[i].id===root.cameraList.get(j).id){
 
-             console.log("[PROFIT]")
+             //console.log("[PROFIT]")
 
 
 
@@ -593,7 +593,7 @@ var lcl = root.cameraList.get(j)
 }
  //root.update_intervals.updated()
 
-     console.log("videowall: ",data.videowall)
+     //console.log("videowall: ",data.videowall)
  root.frash_URL(data.videowall)
 
  root.update_intervals(data.data[i].intervals)
@@ -664,13 +664,13 @@ Axxon.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     }else{
-              console.log('Axxon',this.serviceId,': rebuild whole tree')
-              console.log(JSON.stringify(data))
+              //console.log('Axxon',this.serviceId,': rebuild whole tree')
+              //console.log(JSON.stringify(data))
 
               var current_sid=data[0].sid
         for(var j=0;j< root.cameraList.count;j++){
 
-      //      console.log("dev: ",root.cameraList.get(j).sid )
+      //      //console.log("dev: ",root.cameraList.get(j).sid )
 
             if(root.cameraList.get(j).sid==current_sid)
             root.cameraList.get(j).actual=false
@@ -681,7 +681,7 @@ Axxon.prototype.rebuildTree = function (data) {
             var res=false
             for(var i=0;i<root.devices.get(0).children.count;i++){
               var scopeId=root.devices.get(0).children.get(i).scopeId
-            //console.log("i: ",scopeId)
+            ////console.log("i: ",scopeId)
                 if(root.cameraList.get(j).sid==scopeId)
                     res=true
 
@@ -696,7 +696,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
         for (i in data) {
 
-          //  console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," ",data[i].ipadress," от сервера ",data[i].sid)
+          //  //console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," ",data[i].ipadress," от сервера ",data[i].sid)
 
             var state =data[i].state
             var color="gray"
@@ -742,7 +742,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
             }
             if(res){
-           //     console.log("ДОБАВЛЯЮ ", data[i].id)
+           //     //console.log("ДОБАВЛЯЮ ", data[i].id)
 
                 root.cameraList.append(    {
                     sid: data[i].sid ,
@@ -779,7 +779,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
             root.log(j,".....",root.cameraList.get(j).name,"....",root.cameraList.get(j).actual)
             if(root.cameraList.get(j).actual==false){
-              console.log("УДАЛЯЮ ", root.cameraList.get(j).id)
+              //console.log("УДАЛЯЮ ", root.cameraList.get(j).id)
             root.cameraList.remove(j)
             }
         }
@@ -869,11 +869,11 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
         }
 
         //    cameraId+";"+dt+" "+format_dt
-    console.log("data.videowall : ",data.videowall)
-    console.log("data.cameraId : ",data.cameraId)
-    console.log("data.serviceId : ",data.serviceId)
-    console.log("data.dt       : ",data.dt)
-    console.log("data.format_dt: ",data.format_dt)
+    //console.log("data.videowall : ",data.videowall)
+    //console.log("data.cameraId : ",data.cameraId)
+    //console.log("data.serviceId : ",data.serviceId)
+    //console.log("data.dt       : ",data.dt)
+    //console.log("data.format_dt: ",data.format_dt)
 
       root.send(serviceId, 'request_URL', data)
 
@@ -881,7 +881,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
 
 function tlmtr_cmd(data)
 {
-   console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
+   //console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
 
      root.log("...this.serviceId ",root.axxon_service_id)
     root.send(root.axxon_service_id, 'Telemetry_command', data)

@@ -657,22 +657,28 @@ Item{
 
             for(var i=0;i<cids.count;i++){
 
+
+                if(i>=(good.scale*good.scale)){
+
+
+                console.log("--- i: ",i," scale: ",good.scale)
+                    good.scale++
+
+                }
+
                 if(cids.get(i).cid===-1){
                     cids.setProperty(i,"cid",id)
                     cids.setProperty(i,"alarm",alarm)
+ console.log("i: ",i," scale: ",good.scale)
 
-                    if(i>=(good.scale*good.scale)){
 
-                        good.scale++
-
-                    }
 
                     break
                     //выделить этот cid
 
                 }
             }
-            console.log("look at scale: ",scale)
+
             rescale(good.scale)
 
 
