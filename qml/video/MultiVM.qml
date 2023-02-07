@@ -122,6 +122,15 @@ Item{
 
                     }
 
+                    Rectangle{
+                    x:10
+                    y:10
+                    width: 30
+                    height: 30
+                    color: "red"
+                    visible: model.alarm ? true : false
+                    }
+
                     Text{
                         anchors.fill: parent
                         text: model.cid
@@ -371,16 +380,29 @@ Item{
 
     function add_alarm_camera(id){
 
-        if(!alarm_mode){
-
-            alarm_mode=true
-            w_model.clear()
-            cids.clear()
 
 
-        }
+          //  cids.clear()
 
-         add_camera(id)
+
+            good.scale=2
+
+
+            for(var i = 0;i<cids.count; i++){
+
+                if(cids.get(i).alarm==false){
+                  cids.setProperty(i,"cid",-1)
+                  cids.setProperty(i,"url","")
+                }
+
+
+            }
+
+
+
+
+
+         add_camera(id,true)
 
     }
 
@@ -395,7 +417,7 @@ Item{
             for(var i=0;i<src.length;i++){
                 var lcl = src[i]
                 if(i>=cids.count){
-                    cids.append({cid:lcl,uid:index++,url:""})
+                    cids.append({cid:lcl,uid:index++,url:"",alarm:false})
                 }else{
                     cids.setProperty(i,"cid",lcl)
                 }
@@ -521,7 +543,7 @@ Item{
 
         for(var i = 0;i<scale*scale; i++){
             if(i>=cids.count){
-                cids.append({cid:-1,uid:index++,url:""})
+                cids.append({cid:-1,uid:index++,url:"",alarm:false})
             }
         }
 
@@ -559,7 +581,8 @@ Item{
                                        y: 0,
                                        uid: cids.get(i).uid,
                                        cid:cids.get(i).cid,
-                                       url:cids.get(i).url
+                                       url:cids.get(i).url,
+                                       alarm:cids.get(i).alarm
                                    })
 
                     break;
@@ -575,7 +598,8 @@ Item{
                                y: hh*((i<scale)?0:((i-(i%scale))/scale)),
                                uid: cids.get(i).uid,
                                cid:cids.get(i).cid,
-                               url:cids.get(i).url
+                               url:cids.get(i).url,
+                               alarm:cids.get(i).alarm
                            })
         }
         }
@@ -606,7 +630,7 @@ Item{
         }
     }
 
-    function add_camera(id){
+    function add_camera(id,alarm){
 
         /*
         var fl=true
@@ -625,10 +649,17 @@ Item{
 
                 if(cids.get(i).cid===-1){
                     cids.setProperty(i,"cid",id)
+                    cids.setProperty(i,"alarm",alarm)
 
+                    if(i>=(good.scale*good.scale)){
+
+                        good.scale++
+
+                    }
 
                     break
                     //выделить этот cid
+
                 }
             }
             console.log("look at scale: ",scale)

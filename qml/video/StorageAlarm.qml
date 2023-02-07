@@ -436,7 +436,7 @@ Item{
             return
         }
 
-        multivm.add_camera(id)
+        multivm.add_camera(id,false)
         cid = id
     }
 
