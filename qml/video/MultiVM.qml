@@ -394,7 +394,8 @@ Item{
           //  cids.clear()
 
 
-            good.scale=2
+        full=false
+            good.scale=1
 
 
             for(var i = 0;i<cids.count; i++){
