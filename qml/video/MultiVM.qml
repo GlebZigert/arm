@@ -19,6 +19,8 @@ Item{
     signal request_URL
     signal switch_tlmtr
 
+    property bool alarm_mode: false
+
     property bool full
 
     ListModel {
@@ -367,6 +369,20 @@ Item{
 
 
 
+    function add_alarm_camera(id){
+
+        if(!alarm_mode){
+
+            alarm_mode=true
+            w_model.clear()
+            cids.clear()
+
+
+        }
+
+         add_camera(id)
+
+    }
 
 
     function reconnect_livestream(){

@@ -295,6 +295,8 @@ Item{
         timelist.send_time.connect(timeline.set_time)
         timeline.update_timelist.connect(timelist.set_current)
 
+        root.event_on_camera.connect(f_event_on_camera)
+
 
         calendar.enabled=false
         calendar_rect.visible=false
@@ -306,6 +308,24 @@ Item{
         tlmt_rect.visible=false
 
         multivm.rescale(multivm.scale)
+    }
+
+    function f_event_on_camera(id){
+
+
+            storage_live=live
+            pause_play=play
+            timeline.to_live()
+
+            multivm.add_alarm_camera(id)
+            //Для мультвм выставляем флаг тревожного режима
+            //При переходе в тревожный режим чистим его модель
+            //добавляем видеоплеер
+
+         //   f_change_camera(id)
+
+
+
     }
 
     function f_switch_tlmtr(){

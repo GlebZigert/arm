@@ -493,18 +493,18 @@ Axxon.prototype.request_intervals_handler = function (data) {
 
 Axxon.prototype.ExecCommand_handler = function (data) {
 
-     root.log("")
-     root.log("[ExecCommand_handler]")
-     root.log("")
+     console.log("")
+     console.log("[ExecCommand_handler]")
+     console.log("")
 
 
 
     //взять id и сделать эту камеру текущей и перейтив  режим прямой трансляции.
 
- //   root.log(data)
-    root.log(JSON.stringify(data))
-    var id=data[0].id
-    root.log("id: ",id)
+    console.log(data)
+    console.log(JSON.stringify(data))
+    var id=data.id
+    console.log("id: ",id)
     root.event_on_camera(id)
 root.activePane=root.videoPane
 /*
