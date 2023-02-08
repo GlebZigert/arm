@@ -14,6 +14,8 @@ ToolBar {
    function setAlarm(n, msg) {
        lastAlarm.text = msg
        alarmsCount.text = n < 100 ? n : '∞'
+       if (0 === n)
+           root.playAlarm("")
    }
 
    background: Rectangle {
