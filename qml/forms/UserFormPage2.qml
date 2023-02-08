@@ -53,21 +53,17 @@ ColumnLayout {
             iconProvider: getRuleIcon
             model: root.rules
             anchors.fill: parent
-            Component.onCompleted: if (changeable) selected.connect(markRule)
+            Component.onCompleted: if (changeable) {
+                   selected.connect(selectRule)
+                   activated.connect(useRule)
+            }
 
             function resetIcons() {
                 iconProvider = getRuleIcon
             }
 
-            function markRule(item) {
-                if (item.children) {
-                    currentRule = 0
-                    return
-                }
-                if (currentRule === item.id)
-                    useRule()
-                else
-                    currentRule = item.id
+            function selectRule(item) {
+                currentRule = item.children ? 0 : item.id
             }
         }
     }
@@ -77,10 +73,8 @@ ColumnLayout {
         if (currentZone === 0 || currentRule === 0)
             return
         // 1. find rule
-        if (!removeZR(currentZone, currentRule)) {
+        if (!removeZR(currentZone, currentRule))
             model.zones.append({scope: 0, id: currentZone, flags: currentRule})
-            console.log('ADDED')
-        } else console.log('REMOVED')
         zTree.resetIcons()
     }
 
