@@ -265,23 +265,25 @@ Popup {
             id: zMenu
               Instantiator {
                   delegate: MenuItem {
-                      //font.bold: true
+                      font.bold: model.bold
                       text: model.name
                       onTriggered: resetAlarms(model.zoneId)
                   }
 
                   model: ListModel {
                       id: menuItemsModel
-                      ListElement{zoneId: 0; name: "placeholder"} // !important
+                      ListElement{zoneId: 0; name: "placeholder"; bold: false} // !important
                   }
                   onObjectAdded: zMenu.insertItem(index, object)
                   onObjectRemoved: zMenu.removeItem(object)
               }
               function show(serviceId, deviceId) {
                   var i, j,
+                        id,
                         item,
-                        devices = {},
-                        zones = root.zones.get(0).children
+                        devices = {}, // devs with alarm
+                        zones = root.zones.get(0).children,
+                        devId = tableView.currentRow < 0 ? -1 : alarms.get(tableView.currentRow).deviceId
 
                   for (i = 0; i < alarms.count; i++) {
                       item = alarms.get(i)
@@ -291,12 +293,19 @@ Popup {
                   menuItemsModel.clear()
                   for (i = 0; i < zones.count; i++) {
                       item = zones.get(i)
-                      for (j = 0; j < item.devices.count; j++)
-                        if (item.devices.get(j).id in devices) {
-                            menuItemsModel.append({zoneId: item.id, name: item.name})
-                            break
-                        }
+                      let add = 0 // 0 - don't add, 1 - regular, 2 - bold
+                      for (j = 0; j < item.devices.count; j++) {
+                          id = item.devices.get(j).id
+                          if (id === devId)
+                              add |= 2
+                          else if (id in devices)
+                              add |= 1
+                      }
+
+                      if (add > 0)
+                          menuItemsModel.append({zoneId: item.id, name: item.name, bold: (add & 2) > 0})
                   }
+
                   zMenu.popup()
              }
         }
