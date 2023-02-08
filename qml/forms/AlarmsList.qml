@@ -24,6 +24,7 @@ Popup {
     onOpened: tableView.showRecent()
     Component.onCompleted: root.events.updated.connect(function (item) {
         //https://doc.qt.io/qt-5/qabstractitemmodel.html#rowsInserted
+        root.newAlarms.connect(openIfNeeded)
         if (null !== item)
             updateRecord(item)
         else

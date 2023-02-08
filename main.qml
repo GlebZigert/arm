@@ -53,6 +53,7 @@ ApplicationWindow {
     signal userIdentified(var event)
     signal planUpload(int id)
     signal userUpload(int id)
+    signal newAlarms()
 
     onNewTask: tasks.newTask(service, action, data, done, fail)
     onPlayAlarm: if (Utils.useAlarms()) alarmPlayer.playAlarm(name)

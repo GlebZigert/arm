@@ -138,7 +138,8 @@ function logEvents(events, silent) {
     root.events.updated(null)
     if (maxAlarmClass) {
         root.playAlarm(Utils.className(maxAlarmClass))
-        alarmsList.openIfNeeded()
+        if (maxAlarmClass >= Const.EC_LOST)
+            root.newAlarms()
     }
 }
 
