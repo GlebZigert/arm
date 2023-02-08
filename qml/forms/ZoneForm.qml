@@ -64,14 +64,16 @@ ColumnLayout {
             anchors.fill: parent
             getTNID: Utils.getDeviceTNID
             Component.onCompleted: {
-                if (changeable)
-                    tree.selected.connect(change)
+                if (changeable) {
+                    tree.selected.connect(select)
+                    tree.activated.connect(change)
+                }
                 root.devices.updated.connect(redrawIcons)
                 //root.users.updated.connect(update)
                 form.devicesChanged.connect(redrawIcons)
                 //update()
                 //redrawIcons()
-                console.log('ZoneForm INIT COMPLETED')
+                //console.log('ZoneForm INIT COMPLETED')
             }
 
             function redrawIcons() {
@@ -84,18 +86,18 @@ ColumnLayout {
                 return devices && Utils.findItem(devices, {scope: item.serviceId, id: item.id}) ? icons.check : icons.times
             }
 
+            function select(item) {
+                if (!item.isGroup) {
+                    currentItem.id = item.id
+                    currentItem.serviceId = item.serviceId
+                    currentItem.scopeId = item.scopeId
+                }
+            }
+
             function change(item) {
                 // ignore "Внешняя территория" and groups
                 if (1 === itemId || item.isGroup)
                     return
-                // check new item selected
-                if (currentItem.id !== item.id || currentItem.serviceId !== item.serviceId || currentItem.scopeId !== item.scopeId) {
-                    currentItem.id = item.id
-                    currentItem.serviceId = item.serviceId
-                    currentItem.scopeId = item.scopeId
-                    //console.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
-                    return
-                }
 
                 if (!removeDev(currentItem.serviceId, currentItem.id))
                     devices.append({scope: currentItem.serviceId, id: currentItem.id, flags: 0})
