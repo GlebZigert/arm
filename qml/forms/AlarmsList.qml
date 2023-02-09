@@ -141,6 +141,7 @@ Popup {
     // -1 => reset all
     // 0  => reset selected
     // n => reset zone #n
+    // WARN: also called from ZonesTree
     function resetAlarms(zoneId) {
         var counter,
             names = {},
