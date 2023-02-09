@@ -676,19 +676,23 @@ Item {
 
     function vm_start(mmode){
         mode = mmode
+        console.log("vm_start ",mode)
         vm.start(mmode)
 
     }
 
     function vm_stop(){
+                console.log("vm_stop ")
               vm.stop()
     }
 
     function vm_clear(){
+                console.log("m_clear ")
               vm.clear()
     }
 
     function vm_shot(){
+                console.log("vm_shot ")
               vm.shot()
     }
 
