@@ -403,7 +403,7 @@ Item{
                     good.scale++
                 }
                 else{
-                    good.scale=2
+                    good.scale=1
                 }
                 rescale(good.scale)
             }
