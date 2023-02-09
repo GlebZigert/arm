@@ -297,6 +297,8 @@ Item{
 
         root.event_on_camera.connect(f_event_on_camera)
 
+        root.eventSelected.connect(eventSelected_handler)
+
 
         calendar.enabled=false
         calendar_rect.visible=false
@@ -308,6 +310,82 @@ Item{
         tlmt_rect.visible=false
 
         multivm.rescale(multivm.scale)
+    }
+
+    function eventSelected_handler(event){
+
+        var lcl = event
+
+
+
+
+        var commands =  JSON.parse(event.commands)
+
+        console.log("eventSelected_handler")
+
+        var cids=[]
+
+
+
+
+        var dt=event.timeString
+
+        dt= dt.substring(6,10)+
+                dt.substring(3,5)+
+                dt.substring(0,2)+
+                "T"+
+                dt.substring(11,13)+
+                dt.substring(14,16)+
+                dt.substring(17,19)+
+                ".000000"
+
+
+
+        for(var i=0;i<commands.length;i++){
+
+       //   console.log(i," ...  ",commands[i][1])
+       //     cids.push(commands[i][1])
+
+            multivm.add_camera(commands[i][1],false)
+        }
+
+    timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
+        timeline.moved_at_dt(dt)
+      /*
+        var str=event.commands
+
+
+        str=str.replace(/(\[)/g, "")
+        str=str.replace(/(\])/g,"")
+        var arr=str.split(",",4)
+
+        var serviceId=arr[0]
+        var id=arr[1]
+        var cameraId="";
+
+
+
+        root.storage_live=storage
+        cid=id
+
+        console.log("    ")
+        console.log(dt)
+        console.log("    ")
+
+
+
+        var lcl=Axxon.camera(cid)
+        telemetry.set_serviceId(lcl.serviceId)
+        preset_list.serviceId=lcl.serviceId
+        root.log("telemetryControlID: ",lcl.telemetryControlID)
+        root.telemetryPoint=lcl.telemetryControlID
+
+
+
+        timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
+        Axxon.request_URL(v1.get_cids(),Axxon.camera(id).serviceId,dt,"utc")
+        */
+
     }
 
     function f_event_on_camera(id){

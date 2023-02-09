@@ -654,6 +654,13 @@ Item{
         */
 
        // if(fl){
+        for(var i=0;i<cids.count;i++){
+            if(cids.get(i).cid===id){
+               cids.setProperty(i,"alarm",alarm)
+                return
+
+            }
+        }
 
             for(var i=0;i<cids.count;i++){
 

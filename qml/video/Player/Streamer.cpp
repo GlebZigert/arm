@@ -5,7 +5,7 @@ int Streamer::index = 0;
 Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
 {
     m_index=index++;
-    qDebug()<<"Streamer::Streamer "<<m_index;
+    //qDebug()<<"Streamer::Streamer "<<m_index;
 
 
 
@@ -29,9 +29,9 @@ Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObjec
 Streamer::~Streamer()
 {
 
-    qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+    //qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 
-    qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+    //qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 }
 
 int Streamer::getFollowers() const
@@ -57,7 +57,7 @@ int Streamer::get_m_index() const
 void Streamer::followers_inc()
 {
     followers++;
-    qDebug()<<"followers "<<followers<<" "<<URL;
+    //qDebug()<<"followers "<<followers<<" "<<URL;
 }
 
 void Streamer::followers_dec()
@@ -65,7 +65,7 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-    qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
+    //qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
 
     if(followers==0 && mode !=Runner::Mode::LiveStreaming &&save==false){
        URL.clear();
@@ -80,7 +80,7 @@ bool Streamer::getSave() const
 
 void Streamer::setSave(bool newSave)
 {
-    qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
+    //qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
     save = newSave;
 }
 
@@ -108,7 +108,7 @@ startRunner();
 
 void Streamer::startRunner()
 {
-    qDebug()<<"Streamer::startRunner()";
+    //qDebug()<<"Streamer::startRunner()";
 
 
      if(mm!=nullptr){
@@ -119,7 +119,7 @@ void Streamer::startRunner()
      if(mm->thread->isFinished()){
      mm.clear();
      }else{
-         qDebug()<<"thread not finished !!";
+         //qDebug()<<"thread not finished !!";
           mm->stop();
          return;
 
@@ -139,21 +139,21 @@ void Streamer::startRunner()
 
 void Streamer::stop()
 {
- //   qDebug()<<"stop";
+ //   //qDebug()<<"stop";
     if(!isValid){
         return;
     }
 
     mode = Runner::Mode::TurnOff;
-  //  qDebug()<<"1";
+  //  //qDebug()<<"1";
     if(mm){
     mm->stop();
     }
 
 /*
-    qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
+    //qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
     if(mm->thread->isFinished()){
-   // qDebug()<<"2";
+   // //qDebug()<<"2";
 
         isValid=false;
 
@@ -176,14 +176,14 @@ AVPicture *Streamer::getData() const
 
 void Streamer::receiveFrame(QString URL)
 {
- //   qDebug()<<"+";
+ //   //qDebug()<<"+";
     emit frame(URL);
 }
 
 void Streamer::lostConnection(QString URL)
 {
 
-    qDebug()<<"lostConnection";
+    //qDebug()<<"lostConnection";
     emit lost(URL);
     tmrStart->stop();
     isValid=false;

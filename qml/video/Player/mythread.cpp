@@ -18,20 +18,20 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mod
 
 
         runner->moveToThread(thread);
-        qDebug()<<"  runner->moveToThread(thread);";
+        //qDebug()<<"  runner->moveToThread(thread);";
     }else{
-         qDebug()<<"  FUCK SHIT =mode::turnOff";
+         //qDebug()<<"  FUCK SHIT =mode::turnOff";
     }
 
 }
 
 MyThread::~MyThread()
 {
-     qDebug()<<"-->MyThread::~MyThread() "<<m_index;
-    qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<m_index;
+     //qDebug()<<"-->MyThread::~MyThread() "<<m_index;
+    //qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<m_index;
     delete runner;
     delete thread;
-     qDebug()<<"<--MyThread::~MyThread() "<<m_index;
+     //qDebug()<<"<--MyThread::~MyThread() "<<m_index;
 }
 
 void MyThread::stop()
@@ -41,7 +41,7 @@ void MyThread::stop()
 
 void MyThread::m_quit()
 {
-    qDebug()<<"MyThread::quit()";
+    //qDebug()<<"MyThread::quit()";
     thread->quit();
     isOver=true;
 }

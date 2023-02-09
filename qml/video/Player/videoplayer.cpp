@@ -5,7 +5,7 @@ StreamerContainer VideoPlayer::container;
 
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
-    qDebug()<<"VideoPlayer::VideoPlayer";
+    //qDebug()<<"VideoPlayer::VideoPlayer";
 
 
     connection = false;
@@ -24,19 +24,19 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
 VideoPlayer::~VideoPlayer()
 {
- //   qDebug()<<"--> ~VideoPlayer::VideoPlayer";
+ //   //qDebug()<<"--> ~VideoPlayer::VideoPlayer";
 
     if(current){
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
         current->followers_dec();
-        qDebug()<<"clear "<<current.data()->getURL();
+        //qDebug()<<"clear "<<current.data()->getURL();
         current.clear();
         data=NULL;
 
     }
-//    qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
+//    //qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
 }
 
 
@@ -51,7 +51,7 @@ void VideoPlayer::paint(QPainter *painter)
 */
 
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
- //   qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
+ //   //qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
 
 }
@@ -74,13 +74,13 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::Mode mode)
 {
-    qDebug()<<"VideoPlayer::start "<<m_source;
+    //qDebug()<<"VideoPlayer::start "<<m_source;
 
     if(current){
 
         if(current.data()->getURL()==m_source){
 
-            qDebug()<<"это он и  есть";
+            //qDebug()<<"это он и  есть";
             return;
         }
 
@@ -88,7 +88,7 @@ void VideoPlayer::start(Runner::Mode mode)
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
         current->followers_dec();
-        qDebug()<<"clear "<<current.data()->getURL();
+        //qDebug()<<"clear "<<current.data()->getURL();
         current.clear();
 
     }
@@ -120,12 +120,12 @@ void VideoPlayer::start(Runner::Mode mode)
 
 void VideoPlayer::stop()
 {
-    qDebug()<<"VideoPlayer::stop()";
+    //qDebug()<<"VideoPlayer::stop()";
     if(current){
     disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
     disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
     current->followers_dec();
-    qDebug()<<"clear "<<current.data()->getURL();
+    //qDebug()<<"clear "<<current.data()->getURL();
     current.data()->save=false;
     current.clear();
     data=NULL;
@@ -178,7 +178,7 @@ int VideoPlayer::getCid() const
 
 void VideoPlayer::setCid(int newCid)
 {
-   qDebug()<<"VideoPlayer::setCid(): "<< newCid;
+   //qDebug()<<"VideoPlayer::setCid(): "<< newCid;
     cid = newCid;
         emit cidChanged(cid);
 }
@@ -216,7 +216,7 @@ void VideoPlayer::frame(QString source){
 void VideoPlayer::lost(QString source)
 {
         connection = false;
-        qDebug()<<"lost";
+        //qDebug()<<"lost";
     if(source==this->m_source){
          img=QImage(":/qml/video/no_signal.jpeg");
     this->update();

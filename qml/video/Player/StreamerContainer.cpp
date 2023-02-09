@@ -7,8 +7,8 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
 {
-    qDebug()<<"StreamerContainer::start "<<url;
-    qDebug()<<"mode "<<mode;
+    //qDebug()<<"StreamerContainer::start "<<url;
+    //qDebug()<<"mode "<<mode;
 
 
 
@@ -18,7 +18,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
     streamer = find(url);
 
     if(streamer){
-        qDebug()<<"берем из контейера "<<url;
+        //qDebug()<<"берем из контейера "<<url;
     }
   //  }
 
@@ -27,14 +27,14 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
         streamer=QSharedPointer<Streamer>::create(url,mode);
         if(streamer){
             map.append(streamer);
-            qDebug()<<"добавляем в контейер "<<url;
+            //qDebug()<<"добавляем в контейер "<<url;
 
         streamer->start();
 
 
         }
         else{
-            qDebug()<<"ffFai;l";
+            //qDebug()<<"ffFai;l";
 
         }
 
@@ -52,19 +52,19 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
 
                {
-           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL();
+           //qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL();
            map.removeOne(one);
        }
 
     }
-    qDebug()<<" ";
-    qDebug()<<"Потоки: "<<map.count();
-     qDebug()<<" ";
+    //qDebug()<<" ";
+    //qDebug()<<"Потоки: "<<map.count();
+     //qDebug()<<" ";
     for(auto one :map){
 
-        qDebug()<<one.data()->getURL();
-         qDebug()<<"подписчики: "<<one.data()->getFollowers()<<"; завершен - " <<one.data()->mm->runner->thread()->isFinished();
- qDebug()<<" ";
+        //qDebug()<<one.data()->getURL();
+         //qDebug()<<"подписчики: "<<one.data()->getFollowers()<<"; завершен - " <<one.data()->mm->runner->thread()->isFinished();
+ //qDebug()<<" ";
 
     }
 
