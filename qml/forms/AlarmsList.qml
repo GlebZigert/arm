@@ -307,7 +307,8 @@ Popup {
                           menuItemsModel.append({zoneId: item.id, name: item.name, bold: (add & 2) > 0})
                   }
 
-                  zMenu.popup()
+                  if (menuItemsModel.count > 0)
+                    zMenu.popup()
              }
         }
     }
