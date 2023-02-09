@@ -42,6 +42,7 @@ class Runner : public QObject
 
 public:
 
+
     enum Mode
            {
         TurnOff,
@@ -68,6 +69,8 @@ public:
 int m_running;
     int running() const;
     int count;  // Счётчик, по которому будем ориентироваться на то,
+
+    bool is_over;
 
     QString str;
 

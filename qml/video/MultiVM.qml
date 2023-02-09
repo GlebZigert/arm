@@ -19,6 +19,8 @@ Item{
     signal request_URL
     signal switch_tlmtr
 
+    signal ready
+
     property bool alarm_mode: false
 
     property bool full
@@ -674,6 +676,8 @@ Item{
 
 
             saving_off()
+
+        good.ready()
     }
 
 
@@ -711,8 +715,8 @@ Item{
        // if(fl){
         for(var i=0;i<cids.count;i++){
             if(cids.get(i).cid===id){
-               cids.setProperty(i,"alarm",alarm)
-                return
+        //       cids.setProperty(i,"alarm",alarm)
+         //       return
 
             }
         }

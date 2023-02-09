@@ -177,6 +177,7 @@ AVPicture *Streamer::getData() const
 void Streamer::receiveFrame(QString URL)
 {
  //   //qDebug()<<"+";
+    got_frame=true;
     emit frame(URL);
 }
 

@@ -281,7 +281,7 @@ Item{
         timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
         timeline.livestream_button_clicked.connect(f_set_live_play)
         timeline.play_signal.connect(f_play)
-        timeline.pause_signal.connect(f_pause)
+        timeline.pause_signal.connect(f_paused_and_moved_at_dt)
 
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
@@ -299,6 +299,7 @@ Item{
 
         root.eventSelected.connect(eventSelected_handler)
 
+        multivm.ready.connect(update_vm)
 
         calendar.enabled=false
         calendar_rect.visible=false
@@ -437,7 +438,8 @@ Item{
     }
 
     function f_paused_and_moved_at_dt(){
-        f_pause()
+        pause_play=pause
+        multivm.vm_stop()
         pause_play=pause
         f_moved_at_dt(timeline.current_dt())
     }

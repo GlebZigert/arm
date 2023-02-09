@@ -47,7 +47,7 @@ public:
 
     QTimer *tmrStart;
 
-
+   bool got_frame=false;
 
     int delay;
 
@@ -69,6 +69,8 @@ public:
    void setSave(bool newSave);
 
 private:
+
+
 
     bool isOver=false;
 

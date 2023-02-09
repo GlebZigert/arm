@@ -74,13 +74,13 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::Mode mode)
 {
-    //qDebug()<<"VideoPlayer::start "<<m_source;
+    qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
 
     if(current){
 
-        if(current.data()->getURL()==m_source){
+        if(current.data()->getURL()==m_source && mode != Runner::Mode::Snapshot){
 
-            //qDebug()<<"это он и  есть";
+            qDebug()<<"это он и  есть";
             return;
         }
 
@@ -114,8 +114,24 @@ void VideoPlayer::start(Runner::Mode mode)
   }
 
 
+  if(mode==Runner::Mode::Snapshot && current.data()->got_frame){
+
+      data = current.data()->getData();
+      w = current.data()->getW();
+      h = current.data()->getH();
 
 
+          img=QImage(data->data[0],
+                  w,
+                  h,
+                  QImage::Format_RGB32);
+
+          connection = true;
+          this->update();
+
+
+
+}
 }
 
 void VideoPlayer::stop()
