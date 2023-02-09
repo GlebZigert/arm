@@ -281,7 +281,8 @@ Item{
         timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
         timeline.livestream_button_clicked.connect(f_set_live_play)
         timeline.play_signal.connect(f_play)
-        timeline.pause_signal.connect(f_paused_and_moved_at_dt)
+      //  timeline.pause_signal.connect(f_paused)
+          timeline.pause_signal.connect(f_paused_and_moved_at_dt)
 
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
@@ -432,7 +433,7 @@ Item{
         request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt())
     }
 
-    function f_pause(){
+    function f_paused(){
         pause_play=pause
         multivm.vm_stop()
     }
