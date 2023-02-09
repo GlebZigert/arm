@@ -54,7 +54,30 @@ ColumnLayout {
         clip: true
         Layout.fillHeight: true
         Layout.fillWidth: true
+        Menu {
+            id: menu
+            property var currentItem
 
+            MenuItem {
+              text: "Добавить всё"
+              onTriggered: menu.set(true)
+            }
+            MenuItem {
+              text: "Убрать всё"
+              onTriggered: menu.set(false)
+            }
+
+            function set(mode) {
+                tree.changeSubnodes(currentItem.children, mode)
+            }
+
+            function display(item) {
+                if (item.children && item.children.count > 0) {
+                    currentItem = item
+                    menu.popup()
+                }
+            }
+        }
         MyTree {
             id: tree
             //itemValues: ({serviceId: 1, id: 2, switchValue: 1})
@@ -67,6 +90,7 @@ ColumnLayout {
                 if (changeable) {
                     tree.selected.connect(select)
                     tree.activated.connect(change)
+                    tree.contextMenu.connect(menu.display)
                 }
                 root.devices.updated.connect(redrawIcons)
                 //root.users.updated.connect(update)
@@ -74,6 +98,24 @@ ColumnLayout {
                 //update()
                 //redrawIcons()
                 //console.log('ZoneForm INIT COMPLETED')
+            }
+
+            function changeSubnodes(model, mode) {
+                //console.log("MC", model.count)
+                if (!model)
+                    return
+                var item, key
+
+                for (var i = 0; i < model.count; i++) {
+                    item = model.get(i)
+                    if (!item.isGroup) {
+                        removeDev(item.serviceId, item.id)
+                        if (mode)
+                            devices.append({scope: item.serviceId, id: item.id, flags: 0})
+                    }
+                    changeSubnodes(item.children, mode)
+                }
+                iconProvider = getIcon // trigger update
             }
 
             function redrawIcons() {
