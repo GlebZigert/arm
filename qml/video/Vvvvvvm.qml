@@ -683,6 +683,11 @@ Item {
     function vm_stop(){
               vm.stop()
     }
+
+    function vm_clear(){
+              vm.clear()
+    }
+
     function vm_shot(){
               vm.shot()
     }

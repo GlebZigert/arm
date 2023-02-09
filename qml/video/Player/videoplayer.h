@@ -32,6 +32,8 @@ public:
     Q_INVOKABLE void  saving_on();
     Q_INVOKABLE void  saving_off();
 
+    Q_INVOKABLE void  clear();
+
 
     AVPicture *data;
     int h;

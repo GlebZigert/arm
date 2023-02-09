@@ -868,13 +868,16 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
 
         }
 
-        //    cameraId+";"+dt+" "+format_dt
-    //console.log("data.videowall : ",data.videowall)
-    //console.log("data.cameraId : ",data.cameraId)
-    //console.log("data.serviceId : ",data.serviceId)
-    //console.log("data.dt       : ",data.dt)
-    //console.log("data.format_dt: ",data.format_dt)
-
+ console.log(" ")
+     console.log("request_URL ")
+     console.log(" ")
+            cameraId+";"+dt+" "+format_dt
+    console.log("data.videowall : ",data.videowall)
+    console.log("data.cameraId : ",data.cameraId)
+    console.log("data.serviceId : ",data.serviceId)
+    console.log("data.dt       : ",data.dt)
+    console.log("data.format_dt: ",data.format_dt)
+ console.log(" ")
       root.send(serviceId, 'request_URL', data)
 
 }

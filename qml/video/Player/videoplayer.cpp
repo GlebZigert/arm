@@ -158,6 +158,12 @@ void VideoPlayer::saving_off()
 
 }
 
+void VideoPlayer::clear()
+{
+    img=QImage();
+    this->update();
+}
+
 Runner::Mode VideoPlayer::getMode()
 {
     if(!connection)

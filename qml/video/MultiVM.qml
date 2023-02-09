@@ -208,6 +208,31 @@ Item{
                     }
 
                     }
+
+
+                    Button{
+
+
+                        width: 20
+                        height: 20
+                    visible: selected ? true : false
+
+
+                    onClicked: {
+
+                        console.log("onClicked .,.")
+                        findAndSet(cids,vm.uid,"cid",-1)
+                        findAndSet(cids,vm.uid,"url","")
+                        vvm.vm_stop()
+                        vvm.vm_clear()
+
+
+                    }
+
+
+
+                    }
+
                     }
 
 
@@ -416,6 +441,35 @@ Item{
 
     }
 
+    function add_storage_camera(arr){
+
+
+
+          //  cids.clear()
+
+
+        full=false
+            good.scale=1
+
+
+            for(var i = 0;i<cids.count; i++){
+
+                if(cids.get(i).alarm==false){
+                  cids.setProperty(i,"cid",-1)
+                  cids.setProperty(i,"url","")
+                }
+
+
+            }
+
+
+
+        for(var i=0;i<arr.length;i++){
+
+         add_camera(arr[i],false)
+        }
+
+    }
 
     function reconnect_livestream(){
 

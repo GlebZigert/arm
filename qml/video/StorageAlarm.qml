@@ -340,17 +340,19 @@ Item{
                 ".000000"
 
 
-
+        var cids=[]
         for(var i=0;i<commands.length;i++){
 
        //   console.log(i," ...  ",commands[i][1])
-       //     cids.push(commands[i][1])
+            cids.push(commands[i][1])
 
-            multivm.add_camera(commands[i][1],false)
+
         }
+        multivm.add_storage_camera(cids)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
-        timeline.moved_at_dt(dt)
+        storage_live=storage
+        request_URL(multivm.get_cids(),Axxon.camera(commands[0][1]).serviceId,dt)
       /*
         var str=event.commands
 
