@@ -438,6 +438,8 @@ Row {
 
                     console.log("max :",max)
 
+                    max=max.substring(0,14)+"000000"
+
                     set_sliders_and_calendar_from_current_datetime_value(max)
 
 
