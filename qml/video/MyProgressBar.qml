@@ -97,7 +97,7 @@ Item {
                     storage_toolbox.visible=true
                     to_storage_toolbox.visible=false
 
-
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
                  moved_at_dt(get_dt(dt))
                     update_timelist(dt)
                  }
@@ -279,12 +279,17 @@ Row {
 
     Rectangle{
 
-        width: 120;
+        width: 160;
         height: 40
+        color: "lightgray"
 
     Row{
+        x:20
+        y:0
+        width: 120;
+        height: 40
         id: storage_toolbox
-        anchors.fill: parent
+
 
        Rectangle {
         id: prev
@@ -322,7 +327,7 @@ Row {
 
             storage_toolbox.visible=true
             to_storage_toolbox.visible=false
-
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
              paused_and_moved_at_dt(get_dt(dt))
        delay.start()
         }
@@ -411,9 +416,23 @@ Row {
 
     Rectangle{
         id: to_storage_toolbox
-        width: 120;
+        width: 160;
         height: 40
-        color: "green"
+        color: "lightgray"
+        radius: 6
+        border.width: 4
+        border.color: "gray"
+
+        Text {
+
+
+            x:10
+            y:5
+            font.family: "Helvetica"
+            font.pointSize: 20
+            color: "black"
+            text:"В АРХИВ"
+        }
 
         MouseArea {
             anchors.fill: parent
@@ -445,8 +464,8 @@ Row {
 
                     storage_toolbox.visible=true
                     to_storage_toolbox.visible=false
-
-                    moved_at_dt(get_dt(dt))
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+                    moved_at_dt(get_dt(max))
 
 
 
@@ -467,10 +486,10 @@ Row {
         border.width: 4
         border.color: "gray"
 
+
         Text {
 
             id: livestream_txt
-            text: m_item.mode
             x: 10
             y:5
             font.family: "Helvetica"
@@ -1056,7 +1075,7 @@ livestream_txt.text=m_item.mode
 
     storage_toolbox.visible=true
     to_storage_toolbox.visible=false
-
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
  moved_at_dt(get_dt(dt))
     update_timelist(dt)
