@@ -468,11 +468,11 @@ function getListDevices()
 
 Axxon.prototype.request_intervals_handler = function (data) {
 
-    //console.log("")
-    //console.log("[request_intervals_handler]")
-    //console.log("")
-    //console.log(JSON.stringify(data))
-
+    console.log("")
+    console.log("[request_intervals_handler]")
+    console.log("",Date())
+    console.log(JSON.stringify(data))
+    console.log("")
 
     var id = data[0].Id
     for(var i=0;i<root.cameraList.count;i++){
@@ -555,13 +555,14 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     //console.log("")
-         //console.log("[receive_URL]")
-     //console.log("")
+     console.log("")
+         console.log("[receive_URL]")
+     console.log("",Date())
 
-         //console.log(data)
-         //console.log(JSON.stringify(data))
-          //console.log(JSON.stringify(data))
+         console.log(data)
+         console.log(JSON.stringify(data))
+          console.log(JSON.stringify(data))
+      console.log("")
      var i
      for (i in data.data) {
       //console.log("id: ", data.data[i].id)

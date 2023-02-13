@@ -217,6 +217,7 @@ void VideoPlayer::onheightChanged(){
 
 void VideoPlayer::frame(QString source){
 
+//    qDebug()<<"VideoPlayer::frame "<<source;
     data = current.data()->getData();
     w = current.data()->getW();
     h = current.data()->getH();

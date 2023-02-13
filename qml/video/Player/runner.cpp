@@ -191,7 +191,7 @@ void Runner::free_settings()
     //  if(packet->buf){
     /*
     if(packet){
-        //qDebug()<<"av_packet_unref(packet);";
+        qDebug()<<"av_packet_unref(packet);";
 
      av_packet_unref(packet);
     }
@@ -202,12 +202,12 @@ void Runner::free_settings()
 
 
       if(pAVPicture){
-          //qDebug()<<"avpicture_free(pAVPicture);";
+          qDebug()<<"avpicture_free(pAVPicture);";
       avpicture_free(pAVPicture);
       }
 
       if(pFormatCtx){
-          //qDebug()<<"vformat_close_input(&pFormatCtx);";
+          qDebug()<<"vformat_close_input(&pFormatCtx);";
       avformat_close_input(&pFormatCtx);
       avformat_free_context(pFormatCtx);
       }
@@ -215,41 +215,41 @@ void Runner::free_settings()
 
 
       if(options){
-  //qDebug()<<"  av_dict_free(&options);";
+  qDebug()<<"  av_dict_free(&options);";
           av_dict_free(&options);
       }
 
        if(param)   {
-      //qDebug()<<"  avcodec_parameters_free(&param);";
+      qDebug()<<"  avcodec_parameters_free(&param);";
       avcodec_parameters_free(&param);
        }
 
        if(pAVCodecContext){
-               //qDebug()<<" avcodec_free_context(&pAVCodecContext);";
+               qDebug()<<" avcodec_free_context(&pAVCodecContext);";
       avcodec_free_context(&pAVCodecContext);
        }
 
 }
-//  //qDebug()<<" ";
+//  qDebug()<<" ";
 void Runner::free()
 {
     if(packet){
-     //qDebug()<<" av_free(packet); ";
+     qDebug()<<" av_free(packet); ";
     av_free(packet);
     }
 
     if(pAVFrame){
-        //qDebug()<<"av_frame_free(&pAVFrame); ";
+        qDebug()<<"av_frame_free(&pAVFrame); ";
     av_frame_free(&pAVFrame);
     }
 
     if(pAVPicture){
-        //qDebug()<<"av_free(pAVPicture); ";
+        qDebug()<<"av_free(pAVPicture); ";
     av_free(pAVPicture);
     }
 
     if(pSwsContext){
-        //qDebug()<<"sws_freeContext(pSwsContext); ";
+        qDebug()<<"sws_freeContext(pSwsContext); ";
     sws_freeContext(pSwsContext);
     }
     //if(pAVCodecContext)
@@ -332,7 +332,7 @@ bool Runner::capture()
 
 void Runner::run()
 {
-    qDebug()<<"run";
+    qDebug()<<QDateTime::currentDateTime()<<"Runner::run()";
 av_log_set_level(AV_LOG_QUIET);
 prev=clock();
 
@@ -364,7 +364,7 @@ is_over=false;
 
 while(m_running!=Mode::TurnOff){
 
-    //qDebug()<<URL<<"..                                          "<<delay;
+   // qDebug()<<URL<<"..                                          "<<delay;
    prev=clock();
 
 if(!is_over){
