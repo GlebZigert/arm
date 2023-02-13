@@ -93,6 +93,11 @@ Item {
                     var dt=datetime(slider.value)
 
                     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+
+                    storage_toolbox.visible=true
+                    to_storage_toolbox.visible=false
+
+
                  moved_at_dt(get_dt(dt))
                     update_timelist(dt)
                  }
@@ -272,6 +277,15 @@ Row {
         }
     }
 
+    Rectangle{
+
+        width: 120;
+        height: 40
+
+    Row{
+        id: storage_toolbox
+        anchors.fill: parent
+
        Rectangle {
         id: prev
         width: 40;
@@ -305,6 +319,10 @@ Row {
              m_item.play=false
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
+
+            storage_toolbox.visible=true
+            to_storage_toolbox.visible=false
+
              paused_and_moved_at_dt(get_dt(dt))
        delay.start()
         }
@@ -377,12 +395,64 @@ Row {
              m_item.play=false
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
-         paused_and_moved_at_dt(get_dt(dt))
+
+            storage_toolbox.visible=true
+            to_storage_toolbox.visible=false
+
+         paused_and_(get_dt(dt))
         delay.start()
 
         }
         }
         }
+    }
+
+    }
+
+    Rectangle{
+        id: to_storage_toolbox
+        width: 120;
+        height: 40
+        color: "green"
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+                    console.log("to_storage_toolbox")
+
+                    var max = "000000T000000.000000"
+                            console.log("m_intervals.length ",m_intervals.count)
+                    for (var i=0; i < m_intervals.count;i++) {
+
+                       var dt=m_intervals.get(i).end
+                         console.log(" dt: ",dt,"; max :",max)
+                        if(compare_dt(dt,max)>0){
+                        max=dt
+                        }
+
+
+
+
+                    }
+
+                    console.log("max :",max)
+
+                    set_sliders_and_calendar_from_current_datetime_value(max)
+
+
+                    storage_toolbox.visible=true
+                    to_storage_toolbox.visible=false
+
+                    moved_at_dt(get_dt(dt))
+
+
+
+                }
+            }
+
+    }
+
     }
 
     Rectangle {
@@ -414,6 +484,7 @@ Row {
 
                 if(m_item.mode==m_item.storage)
                 {
+
                     to_live()
                     livestream_button_clicked()
 
@@ -858,6 +929,10 @@ var value=hour*3600+min*60+sec*1
 return value
 }
 
+function check_dt(){
+
+}
+
 function update_slider_intervals(intervals)
 {
     console.log("update_slider_intervals: ",intervals)
@@ -962,6 +1037,8 @@ livestream_txt.text=m_item.mode
 
     calendar.selectedDate=dt
     timer.prev_date=new Date().getTime()
+    to_storage_toolbox.visible=true
+    storage_toolbox.visible=false
     timer.start()
 
 }
@@ -974,6 +1051,11 @@ livestream_txt.text=m_item.mode
     var dt=datetime(slider.value)
 
     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+
+    storage_toolbox.visible=true
+    to_storage_toolbox.visible=false
+
+
  moved_at_dt(get_dt(dt))
     update_timelist(dt)
 }
