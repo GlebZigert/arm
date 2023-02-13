@@ -404,7 +404,7 @@ Row {
             storage_toolbox.visible=true
             to_storage_toolbox.visible=false
 
-         paused_and_(get_dt(dt))
+         paused_and_moved_at_dt(get_dt(dt))
         delay.start()
 
         }
