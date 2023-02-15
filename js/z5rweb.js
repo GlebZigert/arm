@@ -2,9 +2,13 @@
 .import "constants.js" as Const
 .import "journal.js" as Journal
 
-var passageEvents = [16, 17, 4, 55, 54, 41, 32] // TODO: change to classes!
-var stickyStates = [102, 103, 12, 13, 14, 15/*, 8, 9*/]
+const passageEvents = [16, 17, 4, 55, 54, 41, 32] // TODO: change to classes!
+const stickyStates = [102, 103, 12, 13, 14, 15/*, 8, 9*/]
 
+const   EID_DEVICE_ONLINE = 101,
+        EID_DEVICE_OFFLINE = 102,
+        EID_DEVICE_ERROR = 103,
+        EID_EVENTS_LOADED = 104
 
 function Z5RWeb(model) {
     this.model = model
@@ -58,7 +62,10 @@ Z5RWeb.prototype.rebuildTree = function (data) {
 Z5RWeb.prototype.processEvents = function (events) {
     //console.log("Z5R Events", JSON.stringify(events))
     // [{"fromState":0,"state":2,"data":"","text":"ключ не найден в банке ключей (вход), #000000929F4C","deviceId":1,"userId":0,"time":"2021-04-22T16:35:20Z"}]
-    var i, item
+    var i,
+        item,
+        reloadJournal
+
     Journal.logEvents(events)
 
     for (i = 0; i < events.length; i++) {
@@ -73,8 +80,12 @@ Z5RWeb.prototype.processEvents = function (events) {
             //if (passageEvents.indexOf(events[i].event) >= 0)
             if (events[i].userId > 0)
                 root.userIdentified(events[i])
+            if (EID_EVENTS_LOADED === events[i].event)
+                reloadJournal = true
         } else this.statusUpdate(events[i].class)
     }
+    if (reloadJournal)
+        root.send(0, 'LoadJournal', this.serviceId)
 }
 
 Z5RWeb.prototype.update = function (dev) {

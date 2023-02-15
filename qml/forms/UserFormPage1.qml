@@ -316,6 +316,7 @@ Flickable {
                 font.family: faFont.name
                 font.pixelSize: 18
                 text: faFont.fa_check
+                hoverEnabled: true
                 ToolTip.text: "Сохранить"
                 ToolTip.visible: hovered
                 onClicked: cardsCombo.apply()
@@ -327,6 +328,7 @@ Flickable {
                 font.family: faFont.name
                 font.pixelSize: 18
                 text: faFont.fa_trash
+                hoverEnabled: true
                 ToolTip.text: "Удалить ключ"
                 ToolTip.visible: hovered
                 onClicked: cardsCombo.remove()
@@ -340,6 +342,7 @@ Flickable {
             font.family: faFont.name
             font.pixelSize: 18
             text: faFont.fa_address_card + " Распечатать"
+            hoverEnabled: true
             ToolTip.text: "Просмотр и печать карты доступа"
             ToolTip.visible: hovered
             onClicked: badgePreview.open()

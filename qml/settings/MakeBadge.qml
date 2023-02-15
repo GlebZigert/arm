@@ -185,6 +185,9 @@ ColumnLayout {
                 model: Array.from({length: 21}, (_, i) => i + base)
                 currentIndex: idx < 0 ? idx : idx - base
                 onCurrentIndexChanged: setProperty('font', currentIndex + base)
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Размер шрифта"
             }
 
             ComboBox {
@@ -195,6 +198,9 @@ ColumnLayout {
                 model: [faFont.fa_align_left, faFont.fa_align_right, faFont.fa_align_center]
                 currentIndex: getProperty('align', -1) // -1 || currentIndex
                 onCurrentIndexChanged: setProperty('align', currentIndex)
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Выравнивание"
             }
 
             // bold, italic, undeline
@@ -206,6 +212,9 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_bold
                 onClicked: parent.calcStyle()
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Жирный"
             }
 
             Button {
@@ -216,6 +225,9 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_italic
                 onClicked: parent.calcStyle()
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Курсив"
             }
 
             Button {
@@ -226,6 +238,9 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_underline
                 onClicked: parent.calcStyle()
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Подчёркнутый"
             }
             function calcStyle() {
                 var b = boldSwitch.checked ? 4 : 0,
@@ -242,6 +257,9 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_paint_roller
                 onClicked: colorDialog.set('background')
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Заливка"
             }
 
             Button {
@@ -249,6 +267,9 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_pen
                 onClicked: colorDialog.set('color')
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: "Текст"
             }
         }
         ///////////////////////////////////////////
@@ -262,7 +283,9 @@ ColumnLayout {
                 stepSize: 1
                 value: getProperty('width', 0) * 100
                 onValueChanged: enabled && Qt.callLater(setProperty, 'width', value / 100) // to avoid loopback
-                ToolTip {text: parent.value; visible: parent.hovered}
+                hoverEnabled: true
+                ToolTip.visible: hovered
+                ToolTip.text: value + '%'
             }
             CheckBox {
                 id: autoWidth
@@ -279,7 +302,9 @@ ColumnLayout {
             stepSize: 1
             value: getProperty('padding', from)
             onValueChanged: setProperty('padding', value)
-            ToolTip {text: parent.value; visible: parent.hovered}
+            hoverEnabled: true
+            ToolTip.visible: hovered
+            ToolTip.text: value
         }
     }
 
@@ -289,7 +314,9 @@ ColumnLayout {
             implicitWidth: height
             font.family: faFont.name
             text: faFont.fa_plus
-            ToolTip {text: "Добавить надпись"; visible: parent.hovered}
+            hoverEnabled: true
+            ToolTip.visible: hovered
+            ToolTip.text: "Добавить надпись"
             onClicked: {
                 badgeItem.labels.append({text: 'Текст', x: .5, y: .5, color: 'black', background: 'transparent', font: 14, style: 0, align: 0, width: 0, padding: 0})
                 currentLabel = badgeItem.labels.count - 1
@@ -301,7 +328,9 @@ ColumnLayout {
             implicitWidth: height
             font.family: faFont.name
             text: faFont.fa_trash
-            ToolTip {text: "Удалить надпись"; visible: parent.hovered}
+            hoverEnabled: true
+            ToolTip.visible: hovered
+            ToolTip.text: "Удалить надпись"
             onClicked: {
                 Qt.callLater(badgeItem.labels.remove, currentLabel)
                 currentLabel = -1

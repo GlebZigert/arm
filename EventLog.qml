@@ -37,4 +37,3 @@ RowLayout {
         Forms.EventsFilterForm{}
     }
 }
-

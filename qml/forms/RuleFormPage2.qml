@@ -54,6 +54,7 @@ ColumnLayout {
             font.family: faFont.name
             font.pixelSize: 18
             text: faFont.fa_check
+            hoverEnabled: true
             ToolTip.text: "Сохранить день"
             ToolTip.visible: hovered
             onClicked: updateSpecDay(specDate.text) || newSpecDay(specDate.text)
@@ -61,6 +62,7 @@ ColumnLayout {
         Button {
             enabled: changeable
             visible: !!(tree.current && tree.current.date)
+            hoverEnabled: true
             ToolTip.text: "Удалить день"
             ToolTip.visible: hovered
             implicitWidth: height
@@ -110,6 +112,7 @@ ColumnLayout {
             font.family: faFont.name
             font.pixelSize: 18
             text: faFont.fa_check
+            hoverEnabled: true
             ToolTip.text: "Сохранить интервал"
             ToolTip.visible: hovered
             onClicked: checkTimerange() && (updateTimerange() || newTimerange())
@@ -118,6 +121,7 @@ ColumnLayout {
         Button {
             enabled: changeable
             visible: tree.current && ('timeEnd' in tree.current)
+            hoverEnabled: true
             ToolTip.text: "Удалить интервал"
             ToolTip.visible: hovered
             implicitWidth: height

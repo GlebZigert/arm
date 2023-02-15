@@ -149,6 +149,7 @@ RowLayout {
     }
     Component.onCompleted: {
         root.planUpload.connect(resetCache)
+        root.newAlarms.connect(switchToAlarm)
     }
 
     /*Component.onCompleted: {
@@ -158,6 +159,26 @@ RowLayout {
     }*/
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    function switchToAlarm() {
+        if (activePane !== panePosition) return
+        if (checkActiveAlarms(root.maps.get(mapChooser.currentIndex).shapes)) return
+        for (var i = 0; i < root.maps.count; i++) {
+            if (checkActiveAlarms(root.maps.get(i).shapes)) {
+                mapChooser.currentIndex = i
+                break
+            }
+        }
+    }
+
+    function checkActiveAlarms(shapes) {
+        if (!shapes) return
+        for (var i = 0; i < shapes.count; i++)
+            if ('blink' === shapes.get(i).display)
+                return true
+        return false
+    }
+
 
     function selectMap() {
         mapChooser.currentIndex = 0

@@ -39,6 +39,7 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_times
                 font.pixelSize: 18
+                hoverEnabled: true
                 ToolTip.text: "Очистить"
                 ToolTip.visible: hovered
                 onClicked: typeCombo.currentIndex = -1
@@ -71,6 +72,7 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_times
                 font.pixelSize: 18
+                hoverEnabled: true
                 ToolTip.text: "Очистить"
                 ToolTip.visible: hovered
                 onClicked: deviceField.selected(null)
@@ -102,6 +104,7 @@ ColumnLayout {
                 font.family: faFont.name
                 text: faFont.fa_times
                 font.pixelSize: 18
+                hoverEnabled: true
                 ToolTip.text: "Очистить"
                 ToolTip.visible: hovered
                 onClicked: userField.selected(null)

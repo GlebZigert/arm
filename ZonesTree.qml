@@ -109,11 +109,14 @@ Item {
           Instantiator {
               delegate: MenuItem {
                   text: model.text
-                  onTriggered: {
-                      var payload = {zoneId: model.zoneId, command: model.command}
-                      console.log('Zone ContextMenu: Sending', JSON.stringify(payload))
-                      root.send(0, 'ZoneCommand', payload);
-                  }
+                  onTriggered:
+                    if (Const.EC_INFO_ALARM_RESET === model.command) {
+                        alarmsList.resetAlarms(model.zoneId)
+                    } else {
+                       let payload = {zoneId: model.zoneId, command: model.command}
+                       //console.log('Zone ContextMenu: Sending', JSON.stringify(payload))
+                       root.send(0, 'ZoneCommand', payload)
+                    }
               }
 
               model: ListModel {id: menuItemsModel}
@@ -159,8 +162,10 @@ Item {
             {zoneId: item.id, command: Const.EC_DISARMED, text: "Снять с охраны"},
             {zoneId: item.id, command: Const.EC_POINT_BLOCKED, text: "Заблокировать"},
             {zoneId: item.id, command: Const.EC_FREE_PASS, text: "Свободный проход"},
-            {zoneId: item.id, command: Const.EC_NORMAL_ACCESS, text: "Штатный доступ"}
+            {zoneId: item.id, command: Const.EC_NORMAL_ACCESS, text: "Штатный доступ"},
         ]
+        if (Utils.useAlarms())
+            list.unshift({zoneId: item.id, command: Const.EC_INFO_ALARM_RESET, text: "Сброс тревог"})
         menuItemsModel.clear()
         menuItemsModel.append(list)
         menu.popup()

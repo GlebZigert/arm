@@ -67,6 +67,7 @@ ColumnLayout {
             text: faFont.fa_plus
             font.pixelSize: 18
             onClicked: saveDev()
+            hoverEnabled: true
             ToolTip.visible: hovered
             ToolTip.text: "Добавить устройство"
         }

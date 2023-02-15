@@ -8,7 +8,8 @@ import "../forms" as Forms
 import "../../js/utils.js" as Utils
 
 Rectangle {
-    property int buttonSize: 48
+    property int iconSize: 48
+    property int buttonSize: 50
     property var currentDevice
 
     id: panel
@@ -45,10 +46,12 @@ Rectangle {
                     {name: "Прямоугольник", icon: "square"},
                     {name: "Многоугольник", icon: "polygon"},
                     {name: "Линия", icon: "polyline"},
+                    //{name: "Линк", icon: "polylin"},
                     {name: "Удалить", icon: "trash"},
                 ]
                 delegate: Button {
                     enabled: !!currentMap && !asyncWait
+                    hoverEnabled: true
                     ToolTip.text: modelData.name
                     ToolTip.visible: hovered
                     width: buttonSize
@@ -56,10 +59,16 @@ Rectangle {
                     onClicked: panel.btnAction(modelData.icon)
 
                     Image {
-                        opacity: 0.5
+                        opacity: 0.65
                         anchors.margins: 5
-                        anchors.fill: parent
+                        //anchors.fill: parent
+                        anchors.centerIn: parent
+                        mipmap: true
                         source: "qrc:/images/map-toolbar/" + modelData.icon + ".svg"
+                        width: parent.width - 12
+                        height: parent.height - 12
+                        sourceSize.width: 4 * width
+                        sourceSize.height: 4 * height
                     }
                 }
             }
@@ -82,11 +91,11 @@ Rectangle {
                 Repeater {
                     model: iconsList
                     delegate: Button {
-
+                        hoverEnabled: true
                         ToolTip.text: model.name
                         ToolTip.visible: hovered
-                        width: buttonSize
-                        height: buttonSize
+                        width: iconSize
+                        height: iconSize
                         onClicked: currentItem.data = model.icon
 
                         Image {

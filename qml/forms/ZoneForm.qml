@@ -54,7 +54,30 @@ ColumnLayout {
         clip: true
         Layout.fillHeight: true
         Layout.fillWidth: true
+        Menu {
+            id: menu
+            property var currentItem
 
+            MenuItem {
+              text: "Добавить всё"
+              onTriggered: menu.set(true)
+            }
+            MenuItem {
+              text: "Убрать всё"
+              onTriggered: menu.set(false)
+            }
+
+            function set(mode) {
+                tree.changeSubnodes(currentItem.children, mode)
+            }
+
+            function display(item) {
+                if (item.children && item.children.count > 0) {
+                    currentItem = item
+                    menu.popup()
+                }
+            }
+        }
         MyTree {
             id: tree
             //itemValues: ({serviceId: 1, id: 2, switchValue: 1})
@@ -64,14 +87,35 @@ ColumnLayout {
             anchors.fill: parent
             getTNID: Utils.getDeviceTNID
             Component.onCompleted: {
-                if (changeable)
-                    tree.selected.connect(change)
+                if (changeable) {
+                    tree.selected.connect(select)
+                    tree.activated.connect(change)
+                    tree.contextMenu.connect(menu.display)
+                }
                 root.devices.updated.connect(redrawIcons)
                 //root.users.updated.connect(update)
                 form.devicesChanged.connect(redrawIcons)
                 //update()
                 //redrawIcons()
-                console.log('ZoneForm INIT COMPLETED')
+                //console.log('ZoneForm INIT COMPLETED')
+            }
+
+            function changeSubnodes(model, mode) {
+                //console.log("MC", model.count)
+                if (!model)
+                    return
+                var item, key
+
+                for (var i = 0; i < model.count; i++) {
+                    item = model.get(i)
+                    if (!item.isGroup) {
+                        removeDev(item.serviceId, item.id)
+                        if (mode)
+                            devices.append({scope: item.serviceId, id: item.id, flags: 0})
+                    }
+                    changeSubnodes(item.children, mode)
+                }
+                iconProvider = getIcon // trigger update
             }
 
             function redrawIcons() {
@@ -84,18 +128,18 @@ ColumnLayout {
                 return devices && Utils.findItem(devices, {scope: item.serviceId, id: item.id}) ? icons.check : icons.times
             }
 
+            function select(item) {
+                if (!item.isGroup) {
+                    currentItem.id = item.id
+                    currentItem.serviceId = item.serviceId
+                    currentItem.scopeId = item.scopeId
+                }
+            }
+
             function change(item) {
                 // ignore "Внешняя территория" and groups
                 if (1 === itemId || item.isGroup)
                     return
-                // check new item selected
-                if (currentItem.id !== item.id || currentItem.serviceId !== item.serviceId || currentItem.scopeId !== item.scopeId) {
-                    currentItem.id = item.id
-                    currentItem.serviceId = item.serviceId
-                    currentItem.scopeId = item.scopeId
-                    //console.log(selected.id !== item.id, selected.serviceId !== item.serviceId, selected.scopeId !== item.scopeId)
-                    return
-                }
 
                 if (!removeDev(currentItem.serviceId, currentItem.id))
                     devices.append({scope: currentItem.serviceId, id: currentItem.id, flags: 0})
