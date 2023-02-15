@@ -23,8 +23,13 @@ ApplicationWindow {
     x: 400
     width: 1366
     height: 1024
-    visible: true
 
+    visible: true
+  //  visibility: "FullScreen"
+    screen: Qt.application.screens[0]
+
+
+    onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)
 
 
     //https://stackoverflow.com/questions/47175409/qml-asking-confirmation-before-closing-application
@@ -137,7 +142,7 @@ ApplicationWindow {
     property int videoPane
     property int  axxon_service_id
 
-    signal frash_URL()
+    signal frash_URL(var videowall)
     signal update_intervals(var x)
     signal event_on_camera(var x)
 

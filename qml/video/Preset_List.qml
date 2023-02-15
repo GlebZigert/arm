@@ -60,8 +60,9 @@ Item {
              MouseArea{
 
                  anchors.fill: parent
-             onClicked: {
+             onPressed: {
 
+                 console.log("+")
                  var res
                  res =true
                  for(var i=0;i<model.count;i++)
@@ -91,7 +92,8 @@ Item {
                  }
              MouseArea{
                  anchors.fill: parent
-             onClicked: {
+             onPressed: {
+                   console.log("-")
              remove(list.selected)
                  list.selected=-1
              }
@@ -109,15 +111,17 @@ Item {
                   }
 
               MouseArea{
+
                   anchors.fill: parent
-              onClicked: {
+              onPressed: {
+                   console.log("Ред")
                edit_text(list.selected)
               }
               }
               }
 
              }
-
+/*
              MouseArea{
              anchors.fill: parent
           //   propagateComposedEvents: true
@@ -126,6 +130,7 @@ Item {
                  mouse.accepted=false
              }
              }
+             */
          }
 
     Rectangle{
@@ -284,7 +289,7 @@ anchors.fill: parent
          Component.onCompleted: {
              if(ind == -1)
                  text_field.visible=true
-             text_field.forceActiveFocus()
+         //    text_field.forceActiveFocus()
 
 }
 

@@ -15,7 +15,8 @@ layouts[Const.ARM_ADMIN] = [
     {symbol: '2', views: [['MyMap', 'PassageView'], ['MyJournal', 'ZonesTree']]},
     {symbol: '3', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},
-    {symbol: '5', views: [['Video']]},
+    {symbol: '5', views: [['VideoRB']]},
+
 ]
 commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups", "ListSettings"]
 config[Const.ARM_ADMIN] = {

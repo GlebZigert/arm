@@ -4,10 +4,10 @@ import QtQuick 2.11
 import QtQuick.Controls 1.4
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.5
-
+import QtQuick.Window 2.11
 
 import QtQuick 2.4
-import QtQuick.Window 2.2
+import QtQuick.Window 2.11
 import QtQuick.Layouts 1.1
 
 import VideoPlayer 1.0
@@ -17,11 +17,15 @@ import "qml/video" as Video
 import "js/axxon_telemetry_control.js" as Tlmtr
 import "js/axxon.js" as Axxon
 
+import MyQMLEnums 13.37
+
 //Another player
 
 Item{
     id: srv
     anchors.fill: parent
+
+    property int item_style: Mode.LiveStreaming
     property int panePosition
     property var video: ({
                              'Loaded_cameras': Qt.createComponent('qml/video/Loaded_cameras.qml'),
@@ -51,100 +55,34 @@ Item{
     property int dy
     property int dx
 
+    Window {
 
-    focus: true
+        id: alarmWindow
+        x: 100
+        y: 100
+        width: 1000
+        height: 800
 
-    Keys.onPressed: {
-        console.log("!!!0004")
+        visible: true
+        visibility: "FullScreen"
 
+         screen: Qt.application.screens[1]
     }
 
-    Keys.onLeftPressed:   {
 
-        dx=-1;
-stop_moving_timer_dx.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
+/*
+                    Keys.onPressed: {
+                        console.log("!!!0004")
 
-            vm_area.move(dx,dy)
+                    }
+                    */
 
-        }
-
-
-
-    }
-
-    Keys.onRightPressed:  {
-
-        dx=1;
-stop_moving_timer_dx.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
-
-
-    }
-
-    Keys.onUpPressed:     {
-
-        dy=1;
-stop_moving_timer_dy.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
-
-
-    }
-
-    Keys.onDownPressed:   {
-
-        dy=-1;
-stop_moving_timer_dy.stop()
-        if((root.storage_live==live)&&(root.pause_play==play)){
-
-            vm_area.move(dx,dy)
-
-        }
-
-    }
-
-    Keys.onReleased:      {
-
-        switch(event.key){
-
-        case Qt.Key_Up:{
-       stop_moving_timer_dy.start()
-
-        }
-        break
-
-        case Qt.Key_Down:{
-
-       stop_moving_timer_dy.start()
-        }
-        break
-
-        case Qt.Key_Right:{
-       stop_moving_timer_dx.start()
-
-        }
-        break
-
-        case Qt.Key_Left:{
-       stop_moving_timer_dx.start()
-
-        }
-        break
-        }
+     onActiveFocusChanged:{
+     console.log("srv activeFocus: ", srv.activeFocus)
 
 
 
-
-    }
-
+     }
 
     onPanePositionChanged: {
 
@@ -162,6 +100,7 @@ stop_moving_timer_dy.stop()
             {
                 Tlmtr.hold_session()
                 timer.start()
+
             }
             else
             {
@@ -170,17 +109,7 @@ stop_moving_timer_dy.stop()
         }
     }
 
-    Timer {
-        id:zoom_timer
-        interval: 300; running: false; repeat: false
-        property int msec:0
-        onTriggered:
-        {
-            //root.log("zoom_timer_timeout")
-            Tlmtr.stop_zoom()
-            vm_area.zoom_prev=0
-        }
-    }
+
 
     Timer {
         id: update_intervals_timer
@@ -204,6 +133,9 @@ stop_moving_timer_dy.stop()
             Layout.fillHeight: true
             orientation: Qt.Horizontal
 
+
+
+
             Rectangle {
                 id:r2
                 width: 50
@@ -217,7 +149,9 @@ stop_moving_timer_dy.stop()
                     Component.onCompleted: {
 
                         root.deviceSelected.connect(deviceSelected)
-                        tree.selected.connect(selected)
+                        //tree.selected.connect(selected)
+                    //    v1.selected.connect(selected)
+
                     }
                     function selected(item) {
 
@@ -230,362 +164,44 @@ stop_moving_timer_dy.stop()
 
             }
 
+
             Rectangle {
                 id:rect
                 width: parent.width-timeline.width-telemetry_menu.width-eventlog.width
+                height: parent.height
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 color: "lightblue"
                 clip: true
 
-                Rectangle { color: "lightgray";
-                    id:vm_rect
+
+                MouseArea{
+
+
+
+
+                    anchors.fill:parent
+                    hoverEnabled: true
+                    propagateComposedEvents: true
+                    property int flag: 0
+
+                Video.MultiVM{
+                    id: v1
+
                     anchors.fill: parent
-                    clip:true
 
-                    VideoPlayer{
-                        id: vm
-                        x:(parent.width- width)/2
-                        width: (height/1080)*1920
-                        height: parent.height
-                        transform: Scale {
-                            id: tform1
-                        }
 
+                 //   x:0
+                //    y:0
+                //    width: 800
+               //     height: 400
 
-                        MouseArea {
-                            id: vm_area
-                            anchors.fill: parent
-                            property double factor: 2.0
-                            hoverEnabled: true
-                            property int x_prev
-                            property int y_prev
-                            property int val_prev
-                            property int mouseX_prev
-                            property int mouseY_prev
 
 
+                    onActiveFocusChanged:{
+                    console.log("v1 activeFocus: ", v1.activeFocus)
 
 
-                            onPressed: {
-                                if((root.storage_live==live)&&(root.pause_play==play)){
-
-                                    var mx=mouseX-parent.width/2
-                                    var my=parent.height/2-mouseY
-                                    var arctn=Math.abs(Math.atan(my/mx))
-                                    move(mx/2,my/2)
-                                }
-                            }
-
-                            Timer {
-                                id:stop_moving_timer
-                                interval: 100; running: false; repeat: false
-                                property int msec:0
-                                onTriggered:
-                                {
-                                    Tlmtr.stop_moving()
-                                    vm_area.x_prev=0
-                                    vm_area.y_prev=0
-                                }
-                            }
-
-                            Timer {
-                                id:stop_moving_timer_dx
-                                interval: 100; running: false; repeat: false
-                                property int msec:0
-                                onTriggered:
-                                {
-                                        console.log("stop_moving_timer_dx")
-                                   dx=0
-                                      vm_area.move(dx,dy)
-                                }
-                            }
-
-                            Timer {
-                                id:stop_moving_timer_dy
-                                interval: 100; running: false; repeat: false
-                                property int msec:0
-                                onTriggered:
-                                {
-                                    console.log("stop_moving_timer_dy")
-                                  dy=0
-                                       vm_area.move(dx,dy)
-                                }
-                            }
-
-                            onReleased: {
-                                if((root.storage_live==live)&&(root.pause_play==play)){
-                                    stop_moving_timer.start()
-                                }
-                            }
-
-
-                            function move(mx,my)
-                            {
-                                //  console.log("move ",mx," ",my)
-                                var value=Math.sqrt(mx*mx+my*my)
-
-                                var val=0
-                                if(value===0)
-                                    val=0
-
-                                if(value>0.4)
-                                    val=0.2
-
-                                if(value>0.4)
-                                    val=0.2
-
-                                if(value>0.9)
-                                    val=0.5
-
-                                //   console.log("val ",val)
-                                var arctn=Math.abs(Math.atan(my/mx))
-
-                                var x=0
-                                var y=0
-                                if(arctn<0.2)
-                                {
-                                    if(value>0.9)
-                                        rect.color="red"
-                                    else
-                                        if(value>0.4)
-                                            rect.color="yellow"
-                                        else
-                                            rect.color="lightgray"
-
-                                    if(mx>0)
-                                    {
-                                        x=1
-                                        y=0
-
-                                    }
-                                    else if(mx<0)
-                                    {
-                                        x=-1
-                                        y=0
-                                    }else{
-                                        x=0
-                                        y=0
-                                    }
-                                }
-                                else
-                                    if(arctn<1.3)
-
-                                    { if(value>0.9)
-                                            rect.color="green"
-                                        else
-                                            if(value>0.4)
-                                                rect.color="lightgreen"
-                                            else
-                                                rect.color="lightgray"
-
-                                        if(my>0)
-                                        {
-                                            if(mx>0)
-                                            {
-                                                x=1
-                                                y=1
-                                            }
-                                            else if(mx<0)
-                                            {
-                                                x=-1
-                                                y=1
-                                            }else{
-                                                x=0
-                                                y=1
-                                            }
-                                        }
-                                        else
-                                        {
-                                            if(mx>0)
-                                            {
-                                                x=1
-                                                y=-1
-                                            }
-                                            else if(mx<0)
-                                            {
-                                                x=-1
-                                                y=-1
-                                            }else{
-                                                x=0
-                                                y=-1
-                                            }
-
-                                        }
-
-
-
-
-
-                                    }
-                                    else
-                                    {          if(value>0.9)
-                                            rect.color="blue"
-                                        else
-                                            if(value>0.4)
-                                                rect.color="lightblue"
-                                            else
-                                                rect.color="lightgray"
-
-                                        if(my>0)
-                                        {
-                                            x=0
-                                            y=1
-                                        }
-                                        else if(my<0)
-                                        {
-                                            x=0
-                                            y=-1
-                                        }else{
-                                            x=0
-                                            y=0
-                                        }
-                                    }
-
-
-                                console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
-
-                                if((x_prev!=x)||(y_prev!=y)||(val_prev!=val))
-                                {
-                                    console.log("+")
-                                    var str=""
-                                    str=String(x)
-                                    str=str+" "
-                                    str=str+String(y)
-                                    str=str+" "
-                                    str=str+String(val)
-                                    str=str+" "
-
-
-                                    Tlmtr.move(str)
-
-
-                                    x_prev=x
-                                    y_prev=y
-                                    val_prev=val
-                                }
-                            }
-
-
-                            onEntered: {
-
-                            }
-                            property int zoom: 0
-                            property int zoom_prev: 0
-                            onWheel:
-                            {
-                                if((root.storage_live==live)&&(root.pause_play==play)){
-
-                                    if(wheel.angleDelta.y > 0)  // zoom in
-                                        zoom=1
-                                    else                        // zoom out
-                                        zoom=-1
-
-                                    if(zoom_prev!=zoom)
-                                    {
-                                        if (zoom==1)
-                                        {
-                                            Tlmtr.zoom_in()
-                                        }
-                                        if (zoom==-1)
-                                        {
-                                            Tlmtr.zoom_out()
-                                        }
-                                    }
-                                    zoom_prev=zoom
-                                    zoom_timer.stop()
-                                    zoom_timer.start()
-                                }
-                                else
-                                {
-                                    if(wheel.angleDelta.y > 0)  // zoom in
-                                        var zoomFactor = factor
-                                    else                        // zoom out
-                                        zoomFactor = 1/factor
-
-                                    if(!(tform1.xScale *zoomFactor<1))
-                                    {
-                                        if(wheel.angleDelta.y > 0)
-                                        {
-                                            var realX = wheel.x * tform1.xScale
-                                            var realY = wheel.y * tform1.yScale
-                                            vm.x += (1-zoomFactor)*realX
-                                            vm.y += (1-zoomFactor)*realY
-                                            tform1.xScale *=zoomFactor
-                                            tform1.yScale *=zoomFactor
-                                        }
-                                        else
-                                        {
-                                            var realX = wheel.x * tform1.xScale
-                                            var realY = wheel.y * tform1.yScale
-
-                                            tform1.xScale *=zoomFactor
-                                            tform1.yScale *=zoomFactor
-
-
-                                            vm.x += (1-zoomFactor)*realX
-                                            vm.y += (1-zoomFactor)*realY
-
-                                            if(tform1.xScale==1)
-                                            {
-
-                                                vm.x =(vm_rect.width- (vm_rect.height/1080)*1920)/2
-                                                vm.y =0
-
-                                                root.log("rect.x ", vm.x )
-                                                root.log("rect.y ",vm.y )
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-
-                    Timer{
-                        id: delay_timer
-                        interval: 100; running: false; repeat: false
-
-                        onTriggered:
-                        {
-
-                        }
-
-
-                    }
-
-
-                    MouseArea{
-                        anchors.fill:parent
-                        propagateComposedEvents: true
-
-                        onPressed: {
-                            delay_timer.start()
-                            mouse.accepted=false
-                        }
-
-                        onReleased: {
-
-                            if(delay_timer.running)
-                            {
-
-                                if(srv.interfase_visible)
-                                {
-                                    bottom_panel.height=0
-                                    timelist_rect.width=0
-                                }
-                                else
-                                {
-                                    bottom_panel.height=160
-                                    timelist_rect.width=100
-                                }
-                                srv.interfase_visible=!srv.interfase_visible
-                            }
-
-                            mouse.accepted=false
-
-                        }
                     }
                 }
 
@@ -637,11 +253,10 @@ stop_moving_timer_dy.stop()
 
                 }
 
-                MouseArea{
-                    anchors.fill:parent
-                    hoverEnabled: true
-                    propagateComposedEvents: true
-                    property int flag: 0
+
+
+
+
 
 
                     onClicked: {
@@ -653,7 +268,16 @@ stop_moving_timer_dy.stop()
                         mouse.accepted = false
                     }
 
+
+
+
                 }
+
+
+
+
+
+
             }
 
             Rectangle {
@@ -824,7 +448,19 @@ stop_moving_timer_dy.stop()
 
     Component.onCompleted: {
 
-        srv.forceActiveFocus()
+
+        var screens = Qt.application.screens;
+               for (var i = 0; i < screens.length; ++i)
+                   console.log("screen "+i+" "+ screens[i].name + " has geometry " +
+                               screens[i].virtualX + ", " + screens[i].virtualY + " " +
+                               screens[i].width + "x" + screens[i].height)
+
+
+        console.log("item_style: ",item_style)
+       // srv.forceActiveFocus()
+
+        console.log("srv focus: ",srv.activeFocus)
+
         Axxon.get_service_id()
         root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
         hide_menu()
@@ -844,7 +480,12 @@ stop_moving_timer_dy.stop()
         timeline.signal_telemetry_on_off.connect( f_telemetry_on_off)
         timeline.signal_loaded_cameras_on_off.connect(f_loaded_cameras_on_off)
         timeline.eventlog_on_off.connect( f_eventlog_on_off)
-        vm.playing.connect(start_timer_if_its_needed)
+    //    vm.playing.connect(start_timer_if_its_needed)
+
+        v1.playing.connect(start_timer_if_its_needed)
+
+        v1.selected_cid.connect(v1_selected)
+
         timeline.update_timelist.connect(timelist.set_current)
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
         root.cameraList.updated.connect(reconnect_livestream)
@@ -858,6 +499,14 @@ stop_moving_timer_dy.stop()
         root.storage_live=live
         root.pause_play=play
 
+    }
+    function v1_selected(vl){
+        if(vl==-1)
+            return
+
+    console.log("v1_selected ",vl)
+        cid=vl
+         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
     function select_camera_from_deviceTree(sid,id){
@@ -886,7 +535,7 @@ stop_moving_timer_dy.stop()
         root.storage_live=storage
         timeline.to_storage()
         var lcl=Axxon.camera(cid)
-        request_URL(lcl.id,lcl.serviceId,dt)
+        request_URL(v1.get_cids(),lcl.serviceId,dt)
 
     }
 
@@ -941,7 +590,7 @@ stop_moving_timer_dy.stop()
 
         cid=id
         var lcl
-        lcl=Axxon.camera(cid)
+        lcl=Axxon.camera(id)
         if(lcl!=-1){
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
@@ -960,7 +609,10 @@ stop_moving_timer_dy.stop()
             }
             root.deviceSelected(panePosition,lcl.sid,lcl.id)
             timeline.set_camera_zone(lcl.name)
-            request_URL(lcl.id,lcl.serviceId,dt)
+
+            v1.set_current_cid(cid)
+
+            request_URL(v1.get_cids(),lcl.serviceId,dt)
         }
     }
 
@@ -1013,12 +665,12 @@ stop_moving_timer_dy.stop()
 
     function f_play(){
         root.pause_play=play
-        request_URL(cid,Axxon.camera(cid).serviceId,timeline.current_dt())
+        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt())
     }
 
     function f_pause(){
         root.pause_play=pause
-        vm.stop()
+        v1.vm_stop()
     }
 
     function f_paused_and_moved_at_dt(dt){
@@ -1030,15 +682,14 @@ stop_moving_timer_dy.stop()
 
     function f_moved_at_dt(dt){
         root.storage_live=storage
-        request_URL(cid,Axxon.camera(cid).serviceId,dt)
+        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,dt)
     }
 
     function request_URL(cameraId, serviceId, dt){
         Axxon.request_URL(cameraId, serviceId, dt,"utc")
     }
 
-    function f_set_live_play()
-    {
+    function f_set_live_play()    {
         root.log("[f_set_live_play]")
         root.storage_live=live
         root.pause_play=play
@@ -1047,22 +698,28 @@ stop_moving_timer_dy.stop()
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
-    function  update_vm(id)
-    {
-        var lcl=Axxon.camera(cid)
+    function  update_vm(id)    {
+
+        var cids =  v1.get_cids()
+        for(var one in cids)
+        {
+            var id=cids[one]
+        var lcl=Axxon.camera(id)
         if(root.pause_play==pause)
         {
 
             if(root.storage_live==storage)
             {
-                vm.source=lcl.snapshot
-                vm.shot()
+                //vm.source=lcl.snapshot
+
+                v1.vm_start(id,lcl.snapshot,Mode.Snapshot)
 
             }
             else
                 if(root.storage_live==live)
                 {
-                    vm.stop()
+                    v1.vm_stop()
+                    //vm.stop()
 
                 }
         }
@@ -1071,8 +728,8 @@ stop_moving_timer_dy.stop()
             {
                 if(root.storage_live==storage)
                 {
-                    vm.source=lcl.storageStream
-                    vm.start()
+
+                    v1.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
 
                 }
                 else
@@ -1083,14 +740,23 @@ stop_moving_timer_dy.stop()
 
                         Tlmtr.capture_session()
                         timer.start()
-                        tform1.xScale =1
-                        tform1.yScale =1
+                //        v1.tform1.xScale =1
+                //        v1.tform1.yScale =1
+                        v1.set_Scale(1);
+
+
                         root.log("live")
-                        vm.source=lcl.liveStream
-                        vm.start()
+
+
+                    //    vm.source=lcl.liveStream
+                    //    vm.start()
+
+
+                        v1.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
                     }
 
             }
+    }
     }
 
     function f_telemetry_on_off(){
@@ -1154,7 +820,7 @@ stop_moving_timer_dy.stop()
 
 
         timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
-        Axxon.request_URL(cid,Axxon.camera(id).serviceId,dt,"utc")
+        Axxon.request_URL(v1.get_cids(),Axxon.camera(id).serviceId,dt,"utc")
 
     }
 
@@ -1165,6 +831,10 @@ stop_moving_timer_dy.stop()
             eventlog.width=700
 
     }
+
+
+
+
 
 }
 

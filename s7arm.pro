@@ -15,12 +15,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        printer.cpp
+        printer.cpp \
+        qml/video/Player/StreamerContainer.cpp
 !win32 {
     SOURCES += \
+    qml/video/Player/Streamer.cpp \
             qml/video/Player/mythread.cpp \
             qml/video/Player/runner.cpp \
-            qml/video/Player/threadlist.cpp \
            qml/video/Player/videoplayer.cpp \
            qml/video/Preview/Preview.cpp
 }
@@ -39,8 +40,8 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 !win32 {
     HEADERS += \
+    qml/video/Player/Streamer.h \
         qml/video/Player/mythread.h \
-        qml/video/Player/threadlist.h \
         qml/video/Player/runner.h \
         qml/video/Player/videoplayer.h \
         qml/video/Preview/Preview.h
@@ -53,4 +54,5 @@ DISTFILES += \
 }
 
 HEADERS += \
-    printer.h
+    printer.h \
+    qml/video/Player/StreamerContainer.h
