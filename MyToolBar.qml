@@ -22,6 +22,7 @@ ToolBar {
        implicitHeight: buttonSize
        color: "#225"
     }
+
     RowLayout {
         id: buttons
         spacing: 0
@@ -246,6 +247,15 @@ ToolBar {
             }
 
             onClicked: toolbar.activePane = bindPane
+
+            Shortcut {
+                property int n: parseInt(symbol)
+                enabled: sequence.length > 0
+                autoRepeat: false
+                context: Qt.ApplicationShortcut
+                sequence: n > 0 && n <= 8 ? ('F'+n) : ''
+                onActivated: toolbar.activePane = bindPane
+            }
         }
     }
 
