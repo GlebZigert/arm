@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Layouts 1.13
 import QtQuick.Controls 2.5
 import QtQml 2.13
+import QtQuick.Dialogs 1.1
 
 import "helpers.js" as Helpers
 import "../../js/journal.js" as Journal
@@ -30,6 +31,33 @@ Popup {
         else
             updateList()
     })
+
+
+    function resetLastAlarm() {
+        if (lastResetConfirmation.visible) {
+            lastResetConfirmation.reject()
+            return
+        }
+
+        if (0 === alarms.count) return
+
+        var item = alarms.get(alarms.count-1),
+            text = 'Сбросить тревогу "' + item.text + '"'
+        if (item.deviceName)
+            text += ' от устройства "' + item.deviceName + '"'
+        if (item.serviceName)
+            text += ' в подсистеме "' + item.serviceName + '"'
+        text += ', поступившую ' + item.timeString.replace(' ', ' в ') + '?'
+
+        lastResetConfirmation.ask(text, () => root.newTask(item.serviceId, 'ResetAlarm', [item.deviceId], null, null))
+    }
+
+    function toggle() {
+        if (visible)
+            close()
+        else
+            open()
+    }
 
     function openIfNeeded() {
         if (autoOpen.checked)
@@ -313,6 +341,27 @@ Popup {
              }
         }
     }
+
+    MessageDialog {
+        id: lastResetConfirmation
+        property var yesCb
+        property var noCb
+        onAccepted: yesCb && yesCb()
+        onRejected: noCb && noCb()
+        //onYes: accepted()
+        //onNo: rejected()
+
+        function ask(txt, yesCallback, noCallback) {
+            title = "Внимание"
+            text = txt
+            yesCb = yesCallback
+            noCb = noCallback
+            icon = StandardIcon.Question
+            standardButtons = StandardButton.Yes | StandardButton.No
+            open()
+        }
+    }
+
 
     onClosed: scale = 1 // fix for enter/exit animation side effect in Linux
     enter: Transition {

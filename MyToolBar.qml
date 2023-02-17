@@ -59,13 +59,13 @@ ToolBar {
                 }
             }
         }
-        /*Shortcut {
+        Shortcut {
             enabled: useAlarmShortcuts
             sequence: 'F9'
             autoRepeat: false
             context: Qt.ApplicationShortcut
             onActivated: alarmsList.resetLastAlarm()
-        }*/
+        }
 
     }
     RowLayout {
@@ -83,7 +83,7 @@ ToolBar {
                 font.family: faFont.name
                 text: faFont.fa_message
                 font.pixelSize: 24
-                onClicked: alarmsList.open()
+                onClicked: alarmsList.toggle()
                 hoverEnabled: true
                 ToolTip.visible: hovered
                 ToolTip.text: "Активные тревоги"
