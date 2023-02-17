@@ -77,6 +77,8 @@ ApplicationWindow {
         //layout.children[n].visible = true
     }*/
 
+    property var settings: ({})
+
     property ListModel devices: ListModel {
         signal updated(int serviceId, int deviceId)
         ListElement{label: "Подсистемы"; form: "service"; expanded: true; isGroup: true; children: []}
@@ -444,6 +446,7 @@ ApplicationWindow {
         } else
             menu.linkStatus = 'online'
     }
+
 
     function log(str){
  //   console.log(str)

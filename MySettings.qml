@@ -18,6 +18,7 @@ Item {
         'backup-db': Qt.createComponent('qml/settings/BackupDB.qml'),
         'get-log': Qt.createComponent('qml/settings/GetLog.qml'),
         'make-badge': Qt.createComponent('qml/settings/MakeBadge.qml'),
+        'settings': Qt.createComponent('qml/settings/Settings.qml'),
     })
     anchors.fill: parent
 
@@ -29,6 +30,7 @@ Item {
               {id: 100, label: 'Архивация БД', form: 'backup-db'},
               {id: 200, label: 'Журнал сервера', form: 'get-log'},
               {id: 300, label: 'Макет карты доступа', form: 'make-badge'},
+              {id: 400, label: 'Общие настройки', form: 'settings'},
             ]
         })
     }

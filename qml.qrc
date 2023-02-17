@@ -314,5 +314,6 @@
         <file>qml/forms/AlarmsList.qml</file>
         <file>qml/forms/EventTable.qml</file>
         <file>qml/forms/JournalStub.qml</file>
+        <file>qml/settings/Settings.qml</file>
     </qresource>
 </RCC>

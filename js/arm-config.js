@@ -38,7 +38,7 @@ layouts[Const.ARM_UNIT] = [
     {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},
 ]
-commands[Const.ARM_UNIT] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
+commands[Const.ARM_UNIT] = ["ListServices", "ListMaps", "ListZones", "LoadJournal", "ListSettings"]
 config[Const.ARM_UNIT] = {}
 
 /////////////////////////////////////////
@@ -49,7 +49,7 @@ layouts[Const.ARM_CHECKPOINT] = [
     {symbol: '2', views: [['Video']]},
     {symbol: '3', views: [['DevicesTree', 'PassageView'], ['MyJournal']]},
 ]
-commands[Const.ARM_CHECKPOINT] = ["ListServices", "ListMaps", "LoadJournal"]
+commands[Const.ARM_CHECKPOINT] = ["ListServices", "ListMaps", "LoadJournal", "ListSettings"]
 config[Const.ARM_CHECKPOINT] = {}
 
 /////////////////////////////////////
@@ -60,7 +60,7 @@ layouts[Const.ARM_GUARD] = [
     {symbol: '3', views: [['Video']]},
     {symbol: '2', views: [['ZonesTree'], ['MyJournal']]},
 ]
-commands[Const.ARM_GUARD] = ["ListServices", "ListMaps", "ListZones", "LoadJournal"]
+commands[Const.ARM_GUARD] = ["ListServices", "ListMaps", "ListZones", "LoadJournal", "ListSettings"]
 config[Const.ARM_GUARD] = {}
 
 //////////////////////////////////// read-only?
@@ -69,7 +69,7 @@ layouts[Const.ARM_OPERATOR] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
     {symbol: '2', views: [['Video']]},
 ]
-commands[Const.ARM_OPERATOR] = ["ListServices", "ListMaps", "LoadJournal"]
+commands[Const.ARM_OPERATOR] = ["ListServices", "ListMaps", "LoadJournal", "ListSettings"]
 config[Const.ARM_OPERATOR] = {}
 
 ///////////////////////////////////
@@ -80,7 +80,7 @@ layouts[Const.ARM_SECRET] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '2', views: [['EventLog']]}
 ]
-commands[Const.ARM_SECRET] = ["ListServices", "ListUsers", "ListRules", "ListZones", "LoadJournal"]
+commands[Const.ARM_SECRET] = ["ListServices", "ListUsers", "ListRules", "ListZones", "LoadJournal", "ListSettings"]
 config[Const.ARM_SECRET] = {
     UserTree: 2, // bit mask for tab's #
     RulesTree: 1,
