@@ -10,6 +10,7 @@ ToolBar {
    property string linkStatus: "offline"
    readonly property int buttonSize: 50
    property int activePane: 0
+   property bool useAlarmShortcuts: root.settings && root.settings.useAlarmShortcuts || false
 
    function setAlarm(n, msg) {
        lastAlarm.text = msg
@@ -58,6 +59,14 @@ ToolBar {
                 }
             }
         }
+        /*Shortcut {
+            enabled: useAlarmShortcuts
+            sequence: 'F9'
+            autoRepeat: false
+            context: Qt.ApplicationShortcut
+            onActivated: alarmsList.resetLastAlarm()
+        }*/
+
     }
     RowLayout {
         id: info
@@ -69,7 +78,7 @@ ToolBar {
             Layout.preferredWidth: buttonSize
             Layout.preferredHeight: buttonSize
             Button {
-                //visible: Utils.useAlarms()
+                id: alarmCounterBtn
                 anchors.fill: parent
                 font.family: faFont.name
                 text: faFont.fa_message
@@ -88,6 +97,14 @@ ToolBar {
                     cursorShape: Qt.PointingHandCursor
                     onPressed: mouse.accepted = false
                 }
+                Shortcut {
+                    enabled: useAlarmShortcuts
+                    sequence: 'F10'
+                    autoRepeat: false
+                    context: Qt.ApplicationShortcut
+                    onActivated: alarmCounterBtn.clicked()
+                }
+
             }
             Text {
                 id: alarmsCount
@@ -100,6 +117,7 @@ ToolBar {
             }
         }
         Button {
+            id: globalAlarmBtn
             visible: Utils.useAlarms()
             clip: true
             Layout.preferredWidth: buttonSize
@@ -124,8 +142,17 @@ ToolBar {
                 cursorShape: Qt.PointingHandCursor
                 onPressed: mouse.accepted = false
             }
+            Shortcut {
+                enabled: useAlarmShortcuts
+                sequence: 'F11'
+                autoRepeat: false
+                context: Qt.ApplicationShortcut
+                onActivated: globalAlarmBtn.clicked()
+            }
+
         }
         Button {
+            id: alarmSoundBtn
             visible: Utils.useAlarms()
             Layout.preferredWidth: buttonSize
             Layout.preferredHeight: buttonSize
@@ -146,6 +173,13 @@ ToolBar {
                 anchors.fill: parent
                 cursorShape: Qt.PointingHandCursor
                 onPressed: mouse.accepted = false
+            }
+            Shortcut {
+                enabled: useAlarmShortcuts
+                sequence: 'F12'
+                autoRepeat: false
+                context: Qt.ApplicationShortcut
+                onActivated: alarmSoundBtn.clicked()
             }
         }
         Text {
