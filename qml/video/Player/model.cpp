@@ -48,3 +48,8 @@ int Model::get_pages_count(QString vid)
     qDebug()<<"<-- Model::get_pages_count(QString vid)";
     return count;
 }
+
+Wall::~Wall()
+{
+ qDebug()<<"Wall::~Wall()";
+}

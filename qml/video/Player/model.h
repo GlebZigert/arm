@@ -25,4 +25,17 @@ signals:
 
 };
 
+class Wall : public QObject
+{
+    Q_OBJECT
+
+public:
+
+    explicit Wall( QObject *parent = nullptr);
+    ~Wall();
+
+
+
+};
+
 #endif // MODEL_H
