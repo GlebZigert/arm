@@ -546,15 +546,17 @@ Item{
     }
 
     Component.onCompleted: {
-
-
+console.log(md.get_info())
+    md.show()
 
         full=false
 
         videowall_id = generateUUID()
 
         console.log("videowall_id ",videowall_id)
-         console.log(md.get_info())
+
+        console.log(md.get_pages_count(videowall_id))
+        md.show()
     //
          good.scale=5
           rescale(good.scale)

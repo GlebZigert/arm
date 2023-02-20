@@ -11,6 +11,16 @@ public:
 
     Q_INVOKABLE QString get_info();
 
+    Q_INVOKABLE int get_vid_count();
+
+    Q_INVOKABLE void show();
+
+     Q_INVOKABLE int get_pages_count(QString vid);
+
+private:
+
+static QMap<QString,QSharedPointer<QList<int>>> mdl;
+
 signals:
 
 };
