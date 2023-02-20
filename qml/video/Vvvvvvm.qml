@@ -3,6 +3,7 @@ import VideoPlayer 1.0
 import "../../js/axxon_telemetry_control.js" as Tlmtr
 import "../../js/axxon.js" as Axxon
 import MyQMLEnums 13.37
+
 Item {
 
     id: supreme
@@ -663,6 +664,10 @@ Item {
     function set_vm_cid(cid){
      //   console.log("set_vm_source ",cid)
        vm.cid=cid
+
+        var lcl = vm.getCid()
+
+        console.log("lcl: ",lcl)
 
     }
 

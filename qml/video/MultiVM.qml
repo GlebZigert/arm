@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import Model 1.0
 Item{
     property string videowall_id
     id: good
@@ -24,6 +25,10 @@ Item{
     property bool alarm_mode: false
 
     property bool full
+
+    Model{
+    id: md
+    }
 
     ListModel {
 
@@ -73,6 +78,8 @@ Item{
                 y:model.y
                 width: model.w
                 height: model.h
+
+
 
 /*
                 onXChanged: {
@@ -159,6 +166,9 @@ Item{
 
                         console.log("onClicked .")
                         good.give_me_a_camera()
+
+
+
                     }
 
                     }
@@ -537,11 +547,14 @@ Item{
 
     Component.onCompleted: {
 
+
+
         full=false
 
         videowall_id = generateUUID()
 
         console.log("videowall_id ",videowall_id)
+         console.log(md.get_info())
     //
          good.scale=5
           rescale(good.scale)

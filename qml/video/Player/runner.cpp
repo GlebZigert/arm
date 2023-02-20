@@ -71,7 +71,7 @@ int Runner::interrupt_cb(void *ctx)
     Runner* pl=(Runner*)ctx;
     pl->delay=clock()-pl->prev;
    // qDebug()<<delay;
-    if(pl->delay>150000){
+    if(pl->delay>300000){
         qDebug()<<"Interrupt";
         pl->prev=clock();
         pl->m_running=Mode::TurnOff;

@@ -9,6 +9,7 @@
 
 #ifndef WIN32
 #include "qml/video/Player/videoplayer.h"
+#include "qml/video/Player/model.h"
 #endif
 
 
@@ -45,6 +46,7 @@ int main(int argc, char *argv[])
     #ifndef WIN32
     qmlRegisterType<Preview>("Preview",1,0,"Preview");
     qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
+    qmlRegisterType<Model>("Model",1,0,"Model");
     #endif
 
 

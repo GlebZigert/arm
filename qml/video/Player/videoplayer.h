@@ -35,6 +35,8 @@ public:
     Q_INVOKABLE void  clear();
 
 
+
+
     AVPicture *data;
     int h;
     int w;
@@ -46,7 +48,7 @@ public:
 
     Q_INVOKABLE Runner::Mode getMode();
 
-    int getCid() const;
+    Q_INVOKABLE int getCid() const;
     void setCid(int newCid);
 
 private:

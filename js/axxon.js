@@ -467,12 +467,13 @@ function getListDevices()
 }
 
 Axxon.prototype.request_intervals_handler = function (data) {
-
+/*
     console.log("")
     console.log("[request_intervals_handler]")
     console.log("",Date())
     console.log(JSON.stringify(data))
     console.log("")
+    */
 
     var id = data[0].Id
     for(var i=0;i<root.cameraList.count;i++){
@@ -554,7 +555,7 @@ root.activePane=root.videoPane
 
 
 Axxon.prototype.receive_URL = function (data) {
-
+/*
      console.log("")
          console.log("[receive_URL]")
      console.log("",Date())
@@ -563,13 +564,14 @@ Axxon.prototype.receive_URL = function (data) {
          console.log(JSON.stringify(data))
           console.log(JSON.stringify(data))
       console.log("")
+    */
      var i
      for (i in data.data) {
       //console.log("id: ", data.data[i].id)
       //console.log("liveStream: ", data.data[i].liveStream)
       //console.log("storageStream: ", data.data[i].storageStream)
-      root.log("snapshot: ", data.data[i].snapshot)
-      root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
+    //  root.log("snapshot: ", data.data[i].snapshot)
+   //   root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
 
      var cl = root.cameraList
@@ -868,7 +870,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
 
 
         }
-
+/*
  console.log(" ")
      console.log("request_URL ")
      console.log(" ")
@@ -879,6 +881,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
     console.log("data.dt       : ",data.dt)
     console.log("data.format_dt: ",data.format_dt)
  console.log(" ")
+    */
       root.send(serviceId, 'request_URL', data)
 
 }
