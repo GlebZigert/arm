@@ -98,6 +98,11 @@ bool Model::to_page( int page)
     qDebug()<<"Переход на видеостене "<<vid<<" на страницу "<<page;
 }
 
+int Model::current_page()
+{
+    return mdl.value(vid)->getCurrent_page();
+}
+
 bool Model::add_camera()
 {
  //   qDebug()<<""
@@ -105,6 +110,11 @@ bool Model::add_camera()
 
     return false;
 
+}
+
+void Model::next_scale()
+{
+    mdl.value(vid)->next_scale();
 }
 
 void Model::setVid(const QString src)
@@ -167,6 +177,12 @@ return page->add_camera();
 
 }
 
+void Wall::next_scale()
+{
+ auto page = list.at(current_page);
+ page->next_scale();
+}
+
 Wall::~Wall()
 {
     qDebug()<<"Wall::~Wall()";
@@ -185,12 +201,23 @@ void Wall::setCurrent_page(int newCurrent_page)
 Page::Page(QObject *parent)
 {
     qDebug()<<"Страница создана ";
+    scale=1;
 }
 
 bool Page::add_camera()
 {
     map.insert(uid++,QSharedPointer<Camera>::create());
     return true;
+}
+
+void Page::next_scale()
+{
+    if(scale<6){
+    scale++;
+    }else{
+        scale=1;
+    }
+
 }
 
 Page::~Page()

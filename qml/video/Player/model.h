@@ -22,8 +22,9 @@ class Page : public QObject
     Q_OBJECT
 
 private:
-      static int uid;
-     QMap<int ,QSharedPointer<Camera>> map;
+    static int uid;
+    QMap<int ,QSharedPointer<Camera>> map;
+    int scale;
 
 public:
 
@@ -32,9 +33,13 @@ public:
     explicit Page( QObject *parent = nullptr);
 
 
-        int count(){return map.count();};
-        QMap<int ,QSharedPointer<Camera>> get_map(){return map;};
-         bool add_camera();
+    int count(){return map.count();};
+    QMap<int ,QSharedPointer<Camera>> get_map(){return map;};
+
+    bool add_camera();
+
+    void next_scale();
+    int current_scale(){return scale;};
 
     ~Page();
 };
@@ -57,12 +62,16 @@ public:
 
     bool add_camera();
 
+    void next_scale();
 
+    int current_scale(){return list.at(current_page)->current_scale();};
 
     ~Wall();
 
      int getCurrent_page() const;
      void setCurrent_page(int newCurrent_page);
+
+
 
 private:
      int current_page;
@@ -95,7 +104,16 @@ public:
 
     Q_INVOKABLE bool to_page(int page);
 
+    Q_INVOKABLE int current_page();
+
     Q_INVOKABLE bool add_camera();
+
+    Q_INVOKABLE void next_scale();
+
+    Q_INVOKABLE int current_scale(){return mdl.value(vid)->current_scale();};
+
+
+
 
     void setVid(const QString vid);
 
