@@ -196,6 +196,11 @@ void Model::set_cid_for_uid(int cid, int uid)
     return mdl.value(vid)->set_cid_for_uid(cid,uid);
 }
 
+void Model::set_url_for_uid(QString url, int uid)
+{
+    return mdl.value(vid)->set_url_for_uid(url,uid);
+}
+
 
 
 void Model::setVid(const QString src)
@@ -330,6 +335,12 @@ int Wall::get_cid_at(int i)
 
 QString Wall::get_url_at(int i)
 {
+    if(current_page==-1)
+        return "";
+
+    if(list.at(current_page))
+    return list.at(current_page)->get_url_at(i);
+
     return "";
 }
 
@@ -347,7 +358,14 @@ void Wall::set_cid_for_uid(int cid, int uid)
 {
     if(current_page==-1)
         return;
-list.at(current_page)->set_cid_for_uid( cid, uid);
+    list.at(current_page)->set_cid_for_uid( cid, uid);
+}
+
+void Wall::set_url_for_uid(QString url, int uid)
+{
+    if(current_page==-1)
+        return;
+    list.at(current_page)->set_url_for_uid(url, uid);
 }
 
 Page::Page(QObject *parent)
@@ -427,6 +445,13 @@ void Page::set_cid_for_uid(int cid, int uid)
         map.value(uid)->cid=cid;
 }
 
+void Page::set_url_for_uid(QString url, int uid)
+{
+    qDebug()<<"set url "<<url<<" for uid "<<uid;
+    if(map.value(uid))
+        map.value(uid)->url=url;
+}
+
 int Page::get_uid_at(int i)
 {
     return map.keys().at(i);
@@ -436,7 +461,12 @@ int Page::get_uid_at(int i)
 
 int Page::get_cid_at(int i)
 {
-      return map.values().at(i)->cid;
+    return map.values().at(i)->cid;
+}
+
+QString Page::get_url_at(int i)
+{
+    return map.values().at(i)->url;
 }
 
 Page::~Page()

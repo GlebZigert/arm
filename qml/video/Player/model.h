@@ -16,6 +16,7 @@ public:
 
     int cid;
     bool alarm;
+    QString url;
 
 
 };
@@ -47,12 +48,13 @@ public:
     void check_the_scale(int id,bool alarm);
 
     void set_cid_for_uid(int cid, int uid);
+    void set_url_for_uid(QString url, int uid);
 
     int get_uid_at(int i);
 
     int get_cid_at(int i);
 
-    QString get_url_at(int i){return "";};
+    QString get_url_at(int i);
 
     bool get_alarm_at(int i){return true;};
 
@@ -96,7 +98,7 @@ public:
     void check_the_scale(int id,bool alarm);
 
     void set_cid_for_uid(int cid, int uid);
-
+    void set_url_for_uid(QString url, int uid);
 
      int current_page;
 private:
@@ -152,6 +154,7 @@ public:
 
     Q_INVOKABLE void set_cid_for_uid(int cid, int uid);
 
+    Q_INVOKABLE void set_url_for_uid(QString url, int uid);
 
     void setVid(const QString vid);
 

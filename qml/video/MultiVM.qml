@@ -317,7 +317,7 @@ Item{
                 function set_vm_source(cid,url){
 
                     vvm.set_vm_source(cid,url)
-                    findAndSet(cids,vm.uid,"url",url)
+                    md.set_url_for_uid(url,vm.uid)
                     findAndSet(w_model,vm.uid,"url",url)
                 }
 
