@@ -67,11 +67,19 @@ int Model::get_pages_count()
 bool Model::add_page()
 {
 qDebug()<<"на видеостене "<<vid<<" добавляем страницу ";
+
+    if(!mdl.value(vid))
+       add_vid();
+
     auto list = mdl.value(vid);
 
+    if(list){
     list->add_page(QSharedPointer<Page>::create());
 
     return true;
+    }
+
+    return false;
 }
 
 bool Model::delete_page( int page)
@@ -128,14 +136,49 @@ int Model::current_scale()
 
 }
 
+void Model::check_the_scale(int id, bool alarm)
+{
+    mdl.value(vid)->check_the_scale(id,alarm);
+}
+
 int Model::get_uid_at(int i)
 {
-   return mdl.value(vid)->get_uid_at(i);
+    return mdl.value(vid)->get_uid_at(i);
+}
+
+QList<int> Model::get_cids()
+{
+    QList<int> lst;
+    auto v1 =mdl.value(vid);
+
+    if(!mdl.value(vid)){
+        return lst;
+    }
+
+    auto v3=mdl.value(vid)->current_page;
+    if(v3=-1)
+        v3=0;
+
+    if(v3>=v1->list.count())
+        return lst;
+
+    auto v2=v1->list.at(v3);
+    auto v4=v2->map;
+
+
+
+
+
+            auto v5=v4.keys();
+
+            return v5;
+
+    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
 }
 
 int Model::get_cid_at(int i)
 {
-   return mdl.value(vid)->get_uid_at(i);
+   return mdl.value(vid)->get_cid_at(i);
 }
 
 QString Model::get_url_at(int i)
@@ -146,6 +189,11 @@ QString Model::get_url_at(int i)
 bool Model::get_alarm_at(int i)
 {
     return mdl.value(vid)->get_uid_at(i);
+}
+
+void Model::set_cid_for_uid(int cid, int uid)
+{
+    return mdl.value(vid)->set_cid_for_uid(cid,uid);
 }
 
 
@@ -216,6 +264,10 @@ return page->add_camera();
 
 void Wall::next_scale()
 {
+
+if(current_page==-1)
+    current_page=0;
+
     if(current_page<0 || current_page>=list.count())
         return;
 
@@ -256,13 +308,23 @@ void Wall::setCurrent_page(int newCurrent_page)
 
 int Wall::get_uid_at(int i)
 {
+    if(current_page==-1)
+        return -1;
+
+    if(list.at(current_page))
+    return list.at(current_page)->get_uid_at(i);
 
     return -1;
-
 }
 
 int Wall::get_cid_at(int i)
 {
+    if(current_page==-1)
+        return -1;
+
+    if(list.at(current_page))
+    return list.at(current_page)->get_cid_at(i);
+
     return -1;
 }
 
@@ -274,6 +336,18 @@ QString Wall::get_url_at(int i)
 bool Wall::get_alarm_at(int i)
 {
     return false;
+}
+
+void Wall::check_the_scale(int id,bool alarm)
+{
+    list.at(current_page)->check_the_scale(id, alarm);
+}
+
+void Wall::set_cid_for_uid(int cid, int uid)
+{
+    if(current_page==-1)
+        return;
+list.at(current_page)->set_cid_for_uid( cid, uid);
 }
 
 Page::Page(QObject *parent)
@@ -306,6 +380,65 @@ void Page::next_scale()
 
 }
 
+void Page::check_the_scale(int id,bool alarm)
+{
+    auto list = map.keys();
+
+    int i=0;
+    foreach(auto key , list){
+
+
+
+
+
+        if(i>=(scale*scale)){
+
+
+        qDebug()<<"--- i: "<<i<<" scale: "<<scale;
+        scale++;
+
+        }
+
+
+      //  if(cids.get(i).cid===-1){
+
+       if(map.value(key)->cid==-1){
+           map.value(key)->cid=id;
+           map.value(key)->cid=alarm;
+     //       cids.setProperty(i,"cid",id)
+     //       cids.setProperty(i,"alarm",alarm)
+qDebug()<<"i: "<<i<<" scale: "<<scale;
+
+
+
+            break;
+            //выделить этот cid
+
+        }
+         i++;
+    }
+
+}
+
+void Page::set_cid_for_uid(int cid, int uid)
+{
+    qDebug()<<"set cid "<<cid<<" for uid "<<uid;
+    if(map.value(uid))
+        map.value(uid)->cid=cid;
+}
+
+int Page::get_uid_at(int i)
+{
+    return map.keys().at(i);
+
+
+}
+
+int Page::get_cid_at(int i)
+{
+      return map.values().at(i)->cid;
+}
+
 Page::~Page()
 {
     qDebug()<<"Страница удалена";
@@ -314,6 +447,8 @@ Page::~Page()
 Camera::Camera(QObject *parent)
 {
     qDebug()<<"Камера добавлена";
+    cid=-1;
+
 }
 
 Camera::~Camera()

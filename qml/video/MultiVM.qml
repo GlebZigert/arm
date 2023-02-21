@@ -271,7 +271,13 @@ Item{
                     vvm.cid=cid
                  vvm.set_vm_cid(cid)
 
+                 //на текущем видеоэкране найти uid и выставить ему cid
                  findAndSet(cids,vm.uid,"cid",cid)
+
+
+                    md.set_cid_for_uid(cid,vm.uid)
+
+
                  findAndSet(w_model,vm.uid,"cid",cid)
                 }
 
@@ -410,15 +416,22 @@ Item{
             anchors.fill:parent
             onClicked: {
 
+
                 full=false
                 fullscreen_uid=-1
+
+                /*
                 if(good.scale<5){
                     good.scale++
                 }
                 else{
                     good.scale=1
                 }
+                */
+                md.next_scale()
+
                 rescale(good.scale)
+
             }
         }
     }
@@ -517,10 +530,12 @@ Item{
     function get_cids(){
 
         var res =[]
-        for(var i = 0; i<cids.count; i++)
+        var cids = md.get_cids()
+        var count = cids.length
+        for(var i = 0; i<cids.length; i++)
         {
 
-            var lcl = cids.get(i).cid
+            var lcl = md.get_cid_at(i)
             if(lcl!=-1){
                 var frash=true
                 for(var j in res){
@@ -533,6 +548,7 @@ Item{
                 }
             }
         }
+        console.log("cids: ",res)
         return res
     }
 
@@ -547,53 +563,17 @@ Item{
 
     Component.onCompleted: {
         console.log(md.get_info())
+
         md.show()
+
 
         full=false
 
         vid = generateUUID()
         md.vid=vid
-
-        console.log("vid ",vid)
-
-
-
-        md.to_page(5)
-
-        console.log(md.get_pages_count())
-        md.show()
-        md.to_page(5)
-        md.to_page(0)
-
-
-
-        md.add_page()
-        md.add_page()
-        md.add_page()
-        md.add_page()
         md.add_page()
 
-        md.to_page(3)
 
-        md.add_camera()
-        md.add_camera()
-        md.add_camera()
-
-        md.show()
-
-        md.delete_page(700)
-        md.delete_page(0)
-        md.delete_page(0)
-        md.show()
-
-        md.next_scale()
-        md.next_scale()
-        md.next_scale()
-        md.next_scale()
-        md.next_scale()
-        md.next_scale()
-        md.next_scale()
-        md.next_scale()
 
         md.show()
         //
@@ -663,7 +643,7 @@ Item{
                     console.log("and look at scale here: ",scale)
 
 
-
+ scale= md.current_scale()
 
         saving_on()
 
@@ -712,7 +692,7 @@ Item{
         }else{
                         console.log("rescale multi")
             */
-            var scale= md.current_scale()
+
 
         for(var i=0;i<scale*scale;i++){
 
@@ -790,6 +770,7 @@ Item{
                     good.scale++
 
                 }
+
 
                 if(cids.get(i).cid===-1){
                     cids.setProperty(i,"cid",id)

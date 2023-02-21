@@ -14,6 +14,9 @@ public:
 
     ~Camera();
 
+    int cid;
+    bool alarm;
+
 
 };
 
@@ -23,12 +26,12 @@ class Page : public QObject
 
 private:
     static int uid;
-    QMap<int ,QSharedPointer<Camera>> map;
+
     int scale;
 
 public:
 
-
+    QMap<int ,QSharedPointer<Camera>> map;
 
     explicit Page( QObject *parent = nullptr);
 
@@ -40,6 +43,18 @@ public:
 
     void next_scale();
     int current_scale(){return scale;};
+
+    void check_the_scale(int id,bool alarm);
+
+    void set_cid_for_uid(int cid, int uid);
+
+    int get_uid_at(int i);
+
+    int get_cid_at(int i);
+
+    QString get_url_at(int i){return "";};
+
+    bool get_alarm_at(int i){return true;};
 
     ~Page();
 };
@@ -78,12 +93,14 @@ public:
 
     bool get_alarm_at(int i);
 
+    void check_the_scale(int id,bool alarm);
+
+    void set_cid_for_uid(int cid, int uid);
 
 
-
-
-private:
      int current_page;
+private:
+
 
 
 
@@ -94,7 +111,7 @@ class Model : public QQuickItem
 {
     Q_OBJECT
 
-     Q_PROPERTY(QString vid WRITE setVid)
+    Q_PROPERTY(QString vid WRITE setVid)
 
 public:
     Model();
@@ -121,15 +138,24 @@ public:
 
     Q_INVOKABLE int current_scale();
 
-     Q_INVOKABLE int get_uid_at(int i);
+    Q_INVOKABLE void check_the_scale(int id,bool alarm);
 
-     Q_INVOKABLE int get_cid_at(int i);
+    Q_INVOKABLE int get_uid_at(int i);
 
-     Q_INVOKABLE QString get_url_at(int i);
+    Q_INVOKABLE QList<int> get_cids();
 
-     Q_INVOKABLE bool get_alarm_at(int i);
+    Q_INVOKABLE int get_cid_at(int i);
+
+    Q_INVOKABLE QString get_url_at(int i);
+
+    Q_INVOKABLE bool get_alarm_at(int i);
+
+    Q_INVOKABLE void set_cid_for_uid(int cid, int uid);
+
 
     void setVid(const QString vid);
+
+
 
 private:
 
