@@ -13,19 +13,28 @@ public:
     explicit Camera( QObject *parent = nullptr);
 
     ~Camera();
+
+
 };
 
 class Page : public QObject
 {
     Q_OBJECT
 
-
+private:
+      static int uid;
+     QMap<int ,QSharedPointer<Camera>> map;
 
 public:
 
-    QMap<int ,QSharedPointer<Camera>> list;
+
 
     explicit Page( QObject *parent = nullptr);
+
+
+        int count(){return map.count();};
+        QMap<int ,QSharedPointer<Camera>> get_map(){return map;};
+         bool add_camera();
 
     ~Page();
 };
@@ -46,9 +55,17 @@ public:
 
     bool delete_page(int page);
 
-    bool add_camera(int page);
+    bool add_camera();
+
+
 
     ~Wall();
+
+     int getCurrent_page() const;
+     void setCurrent_page(int newCurrent_page);
+
+private:
+     int current_page;
 
 
 
@@ -78,13 +95,17 @@ public:
 
     Q_INVOKABLE bool to_page(int page);
 
-    Q_INVOKABLE bool add_camera(int page);
+    Q_INVOKABLE bool add_camera();
 
     void setVid(const QString vid);
 
 private:
 
+
+
     QString vid;
+
+
 
     bool add_vid();
 

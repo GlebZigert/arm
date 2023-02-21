@@ -2,6 +2,7 @@
 
  QMap<QString,QSharedPointer<Wall>>  Model::mdl;
 
+ int Page::uid = 0;
 Model::Model()
 {
 
@@ -36,9 +37,10 @@ void Model::show()
         for(auto one : wall.data()->list){
 
             qDebug()<<"страница";
-             qDebug()<<"количество камер: "<<one->list.count();
-             for(auto camera : one->list){
-                 qDebug()<<"камера";
+             qDebug()<<"количество камер: "<<one->count();
+             auto map = one->get_map();
+             for(auto uid : map.keys()){
+                 qDebug()<<uid;
              }
 
         }
@@ -91,13 +93,15 @@ bool Model::to_page( int page)
 
     }
     return true;
+
+    mdl.value(vid)->setCurrent_page(page);
     qDebug()<<"Переход на видеостене "<<vid<<" на страницу "<<page;
 }
 
-bool Model::add_camera( int page)
+bool Model::add_camera()
 {
  //   qDebug()<<""
- //  return mdl.value(vid)->add_camera(page);
+   return mdl.value(vid)->add_camera();
 
     return false;
 
@@ -145,19 +149,48 @@ bool Wall::delete_page(int page)
  return true;
 }
 
-bool Wall::add_camera( int page)
+bool Wall::add_camera()
 {
+    qDebug()<<"Добавляем камеру ";
+ auto page = list.at(current_page);
+
+ if(!page){
+      qDebug()<<"нет страницы с таким номером "<<page;
+     return false;
+ }
+
+return page->add_camera();
+
+
+
+//page->list.insert(uid++,QSharedPointer<Camera>::create());
 
 }
 
 Wall::~Wall()
 {
- qDebug()<<"Wall::~Wall()";
+    qDebug()<<"Wall::~Wall()";
+}
+
+int Wall::getCurrent_page() const
+{
+    return current_page;
+}
+
+void Wall::setCurrent_page(int newCurrent_page)
+{
+    current_page = newCurrent_page;
 }
 
 Page::Page(QObject *parent)
 {
     qDebug()<<"Страница создана ";
+}
+
+bool Page::add_camera()
+{
+    map.insert(uid++,QSharedPointer<Camera>::create());
+    return true;
 }
 
 Page::~Page()

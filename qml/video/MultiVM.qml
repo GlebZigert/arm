@@ -565,11 +565,20 @@ Item{
         md.to_page(5)
         md.to_page(0)
 
+
+
         md.add_page()
         md.add_page()
         md.add_page()
         md.add_page()
         md.add_page()
+
+        md.to_page(3)
+
+        md.add_camera()
+        md.add_camera()
+        md.add_camera()
+
         md.show()
 
         md.delete_page(700)
