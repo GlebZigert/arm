@@ -3,18 +3,31 @@
 
 #include <QQuickItem>
 
+class Camera : public QObject
+{
+    Q_OBJECT
+
+
+public:
+
+    explicit Camera( QObject *parent = nullptr);
+
+    ~Camera();
+};
+
 class Page : public QObject
 {
     Q_OBJECT
 
+
+
 public:
+
+    QMap<int ,QSharedPointer<Camera>> list;
 
     explicit Page( QObject *parent = nullptr);
 
     ~Page();
-
-
-
 };
 
 class Wall : public QObject
@@ -32,9 +45,6 @@ public:
     bool add_page(QSharedPointer<Page>);
 
     bool delete_page(int page);
-
-
-
 
     ~Wall();
 
@@ -55,25 +65,24 @@ public:
 
     Q_INVOKABLE void show();
 
-     Q_INVOKABLE int get_pages_count(QString vid);
+    Q_INVOKABLE int get_pages_count(QString vid);
 
     Q_INVOKABLE bool add_page(QString vid);
 
-     Q_INVOKABLE   bool delete_page(QString vid, int page);
+    Q_INVOKABLE   bool delete_page(QString vid, int page);
 
     Q_INVOKABLE bool to_page(QString vid,int page);
+
+    Q_INVOKABLE bool add_camera(QString vid,int page);
 
 private:
 
     bool add_vid(QString vid);
 
-static QMap<QString,QSharedPointer<Wall>> mdl;
+    static QMap<QString,QSharedPointer<Wall>> mdl;
 
 signals:
 
 };
-
-
-
 
 #endif // MODEL_H

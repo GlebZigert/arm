@@ -36,6 +36,10 @@ void Model::show()
         for(auto one : wall.data()->list){
 
             qDebug()<<"страница";
+             qDebug()<<"количество камер: "<<one->list.count();
+             for(auto camera : one->list){
+                 qDebug()<<"камера";
+             }
 
         }
         qDebug()<<"<--";
@@ -90,6 +94,11 @@ bool Model::to_page(QString vid, int page)
     qDebug()<<"Переход на видеостене "<<vid<<" на страницу "<<page;
 }
 
+bool Model::add_camera(QString vid, int page)
+{
+
+}
+
 bool Model::add_vid(QString vid)
 {
     if(mdl.value(vid))
@@ -120,7 +129,7 @@ bool Wall::delete_page(int page)
 {
       qDebug()<<"удаляем страницу "<<page;
  if(page<0 || page>=list.count()){
-     qDebug()<<"нетс тарницы с таким номером "<<page;
+     qDebug()<<"нет старницы с таким номером "<<page;
           return false;
  }
  list.removeAt(page);
@@ -140,4 +149,14 @@ Page::Page(QObject *parent)
 Page::~Page()
 {
     qDebug()<<"Страница удалена";
+}
+
+Camera::Camera(QObject *parent)
+{
+    qDebug()<<"Камера добавлена";
+}
+
+Camera::~Camera()
+{
+    qDebug()<<"Камера удалена";
 }
