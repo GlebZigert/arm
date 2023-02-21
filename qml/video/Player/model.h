@@ -46,6 +46,8 @@ public:
 
     bool delete_page(int page);
 
+    bool add_camera(int page);
+
     ~Wall();
 
 
@@ -56,6 +58,9 @@ public:
 class Model : public QQuickItem
 {
     Q_OBJECT
+
+     Q_PROPERTY(QString vid WRITE setVid)
+
 public:
     Model();
 
@@ -65,19 +70,23 @@ public:
 
     Q_INVOKABLE void show();
 
-    Q_INVOKABLE int get_pages_count(QString vid);
+    Q_INVOKABLE int get_pages_count();
 
-    Q_INVOKABLE bool add_page(QString vid);
+    Q_INVOKABLE bool add_page();
 
-    Q_INVOKABLE   bool delete_page(QString vid, int page);
+    Q_INVOKABLE   bool delete_page(int page);
 
-    Q_INVOKABLE bool to_page(QString vid,int page);
+    Q_INVOKABLE bool to_page(int page);
 
-    Q_INVOKABLE bool add_camera(QString vid,int page);
+    Q_INVOKABLE bool add_camera(int page);
+
+    void setVid(const QString vid);
 
 private:
 
-    bool add_vid(QString vid);
+    QString vid;
+
+    bool add_vid();
 
     static QMap<QString,QSharedPointer<Wall>> mdl;
 

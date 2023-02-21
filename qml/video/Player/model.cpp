@@ -46,13 +46,13 @@ void Model::show()
     }
 }
 
-int Model::get_pages_count(QString vid)
+int Model::get_pages_count()
 {
     qDebug()<<"Model::get_pages_count(QString vid) -->";
     qDebug()<<"vid: "<<vid;
 
     if(!mdl.value(vid))
-       add_vid(vid);
+       add_vid();
 
     int count = mdl.value(vid).data()->count();
     qDebug()<<"количество страниц на видеостене: "<<vid<<" : "<<count;
@@ -60,7 +60,7 @@ int Model::get_pages_count(QString vid)
     return count;
 }
 
-bool Model::add_page(QString vid)
+bool Model::add_page()
 {
 qDebug()<<"на видеостене "<<vid<<" добавляем страницу ";
     auto list = mdl.value(vid);
@@ -70,18 +70,18 @@ qDebug()<<"на видеостене "<<vid<<" добавляем страниц
     return true;
 }
 
-bool Model::delete_page(QString vid, int page)
+bool Model::delete_page( int page)
 {
     qDebug()<<"на видеостене "<<vid<<" удаляем страницу ";
     return mdl.value(vid)->delete_page(page);
 }
 
-bool Model::to_page(QString vid, int page)
+bool Model::to_page( int page)
 {
     qDebug()<<"на видеостене "<<vid<<" переходим на страницу "<<page;
 
      if(!mdl.value(vid))
-        add_vid(vid);
+        add_vid();
 
     if(page<0 || page>=mdl.value(vid).data()->count()){
         qDebug()<<"у видеостены "<<vid<<" нет cтраницы c номером "<<page;
@@ -94,12 +94,21 @@ bool Model::to_page(QString vid, int page)
     qDebug()<<"Переход на видеостене "<<vid<<" на страницу "<<page;
 }
 
-bool Model::add_camera(QString vid, int page)
+bool Model::add_camera( int page)
 {
+ //   qDebug()<<""
+ //  return mdl.value(vid)->add_camera(page);
+
+    return false;
 
 }
 
-bool Model::add_vid(QString vid)
+void Model::setVid(const QString src)
+{
+    vid = src;
+}
+
+bool Model::add_vid()
 {
     if(mdl.value(vid))
         return true;
@@ -134,6 +143,11 @@ bool Wall::delete_page(int page)
  }
  list.removeAt(page);
  return true;
+}
+
+bool Wall::add_camera( int page)
+{
+
 }
 
 Wall::~Wall()

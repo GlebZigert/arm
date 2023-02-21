@@ -546,34 +546,37 @@ Item{
     }
 
     Component.onCompleted: {
-console.log(md.get_info())
-    md.show()
+        console.log(md.get_info())
+        md.show()
 
         full=false
 
         vid = generateUUID()
+        md.vid=vid
 
         console.log("vid ",vid)
 
-        md.to_page(vid,5)
 
-        console.log(md.get_pages_count(vid))
+
+        md.to_page(5)
+
+        console.log(md.get_pages_count())
         md.show()
-                md.to_page(vid,5)
-                md.to_page(vid,0)
+        md.to_page(5)
+        md.to_page(0)
 
-        md.add_page(vid)
-        md.add_page(vid)
-        md.add_page(vid)
-        md.add_page(vid)
-        md.add_page(vid)
-                md.show()
-
-        md.delete_page(vid,700)
-        md.delete_page(vid,0)
-        md.delete_page(vid,0)
+        md.add_page()
+        md.add_page()
+        md.add_page()
+        md.add_page()
+        md.add_page()
         md.show()
-    //
+
+        md.delete_page(700)
+        md.delete_page(0)
+        md.delete_page(0)
+        md.show()
+        //
          good.scale=5
           rescale(good.scale)
     }
