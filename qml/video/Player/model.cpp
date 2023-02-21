@@ -37,6 +37,8 @@ void Model::show()
         for(auto one : wall.data()->list){
 
             qDebug()<<"страница";
+
+            qDebug()<<"масштаб: "<<one->current_scale();
              qDebug()<<"количество камер: "<<one->count();
              auto map = one->get_map();
              for(auto uid : map.keys()){
@@ -117,6 +119,28 @@ void Model::next_scale()
     mdl.value(vid)->next_scale();
 }
 
+int Model::get_uid_at(int i)
+{
+   return mdl.value(vid)->get_uid_at(i);
+}
+
+int Model::get_cid_at(int i)
+{
+   return mdl.value(vid)->get_uid_at(i);
+}
+
+QString Model::get_url_at(int i)
+{
+   return mdl.value(vid)->get_url_at(i);
+}
+
+bool Model::get_alarm_at(int i)
+{
+    return mdl.value(vid)->get_uid_at(i);
+}
+
+
+
 void Model::setVid(const QString src)
 {
     vid = src;
@@ -138,7 +162,7 @@ bool Model::add_vid()
 
 Wall::Wall(QObject *parent)
 {
-
+current_page=-1;
 }
 
 bool Wall::add_page(QSharedPointer<Page> page)
@@ -183,6 +207,22 @@ void Wall::next_scale()
  page->next_scale();
 }
 
+int Wall::current_scale()
+{
+
+
+
+
+     if(current_page<0 || current_page>=list.count())
+         return -1;
+
+    if(!list.at(current_page))
+        return -1;
+
+    return list.at(current_page)->current_scale();
+
+}
+
 Wall::~Wall()
 {
     qDebug()<<"Wall::~Wall()";
@@ -196,6 +236,28 @@ int Wall::getCurrent_page() const
 void Wall::setCurrent_page(int newCurrent_page)
 {
     current_page = newCurrent_page;
+}
+
+int Wall::get_uid_at(int i)
+{
+
+    return -1;
+
+}
+
+int Wall::get_cid_at(int i)
+{
+    return -1;
+}
+
+QString Wall::get_url_at(int i)
+{
+    return "";
+}
+
+bool Wall::get_alarm_at(int i)
+{
+    return false;
 }
 
 Page::Page(QObject *parent)
@@ -216,6 +278,14 @@ void Page::next_scale()
     scale++;
     }else{
         scale=1;
+    }
+
+    qDebug()<<"scale: "<<scale;
+
+    for(int i = 0;i<scale*scale; i++){
+        if(i>=map.count()){
+           add_camera();
+        }
     }
 
 }

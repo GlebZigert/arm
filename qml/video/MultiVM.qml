@@ -585,6 +585,17 @@ Item{
         md.delete_page(0)
         md.delete_page(0)
         md.show()
+
+        md.next_scale()
+        md.next_scale()
+        md.next_scale()
+        md.next_scale()
+        md.next_scale()
+        md.next_scale()
+        md.next_scale()
+        md.next_scale()
+
+        md.show()
         //
          good.scale=5
           rescale(good.scale)
@@ -651,11 +662,8 @@ Item{
 
                     console.log("and look at scale here: ",scale)
 
-        for(var i = 0;i<scale*scale; i++){
-            if(i>=cids.count){
-                cids.append({cid:-1,uid:index++,url:"",alarm:false})
-            }
-        }
+
+
 
         saving_on()
 
@@ -667,10 +675,12 @@ Item{
 
         w_model.clear()
 
-        console.log("cids.count ",cids.count)
 
+
+        /*
         var id = -1
         for(var i = 0;i < cids.count;i++){
+            //найти на текущей странице камеру с uid и взять ее cid
                if(cids.get(i).uid === fullscreen_uid){
                 id = cids.get(i).cid
                }
@@ -701,18 +711,24 @@ Item{
 
         }else{
                         console.log("rescale multi")
+            */
+            var scale= md.current_scale()
+
         for(var i=0;i<scale*scale;i++){
+
+
+
             w_model.append({h:hh,
                                w:ww,
                                x: ww*(i%scale),
                                y: hh*((i<scale)?0:((i-(i%scale))/scale)),
-                               uid: cids.get(i).uid,
-                               cid:cids.get(i).cid,
-                               url:cids.get(i).url,
-                               alarm:cids.get(i).alarm
+                               uid: md.get_uid_at(i),//cids.get(i).uid,
+                               cid: md.get_cid_at(i),// cids.get(i).cid,
+                               url: md.get_url_at(i),// cids.get(i).url,
+                               alarm: md.get_alarm_at(i),// cids.get(i).alarm
                            })
         }
-        }
+      //  }
 
 
 

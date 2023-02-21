@@ -64,12 +64,21 @@ public:
 
     void next_scale();
 
-    int current_scale(){return list.at(current_page)->current_scale();};
-
+    int current_scale();
     ~Wall();
 
-     int getCurrent_page() const;
-     void setCurrent_page(int newCurrent_page);
+    int getCurrent_page() const;
+    void setCurrent_page(int newCurrent_page);
+
+    int get_uid_at(int i);
+
+    int get_cid_at(int i);
+
+    QString get_url_at(int i);
+
+    bool get_alarm_at(int i);
+
+
 
 
 
@@ -112,8 +121,13 @@ public:
 
     Q_INVOKABLE int current_scale(){return mdl.value(vid)->current_scale();};
 
+     Q_INVOKABLE int get_uid_at(int i);
 
+     Q_INVOKABLE int get_cid_at(int i);
 
+     Q_INVOKABLE QString get_url_at(int i);
+
+     Q_INVOKABLE bool get_alarm_at(int i);
 
     void setVid(const QString vid);
 
