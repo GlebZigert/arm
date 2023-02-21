@@ -119,6 +119,15 @@ void Model::next_scale()
     mdl.value(vid)->next_scale();
 }
 
+int Model::current_scale()
+{
+    if(!mdl.value(vid))
+       add_vid();
+    return mdl.value(vid)->current_scale();
+
+
+}
+
 int Model::get_uid_at(int i)
 {
    return mdl.value(vid)->get_uid_at(i);
@@ -186,6 +195,10 @@ bool Wall::delete_page(int page)
 bool Wall::add_camera()
 {
     qDebug()<<"Добавляем камеру ";
+
+if(current_page<0||current_page>=list.count())
+    return false;
+
  auto page = list.at(current_page);
 
  if(!page){
@@ -203,6 +216,9 @@ return page->add_camera();
 
 void Wall::next_scale()
 {
+    if(current_page<0 || current_page>=list.count())
+        return;
+
  auto page = list.at(current_page);
  page->next_scale();
 }

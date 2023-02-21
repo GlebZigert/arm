@@ -119,7 +119,7 @@ public:
 
     Q_INVOKABLE void next_scale();
 
-    Q_INVOKABLE int current_scale(){return mdl.value(vid)->current_scale();};
+    Q_INVOKABLE int current_scale();
 
      Q_INVOKABLE int get_uid_at(int i);
 
