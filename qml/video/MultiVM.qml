@@ -640,10 +640,10 @@ Item{
 
     function rescale(scale){
 
-                    console.log("and look at scale here: ",scale)
+        console.log("and look at scale here: ",scale)
 
 
- scale= md.current_scale()
+        scale= md.current_scale()
 
         saving_on()
 
@@ -657,13 +657,13 @@ Item{
 
 
 
-        /*
+
         var id = -1
-        for(var i = 0;i < cids.count;i++){
+        for(var i = 0;i < md.get_cids().length;i++){
             //найти на текущей странице камеру с uid и взять ее cid
-               if(cids.get(i).uid === fullscreen_uid){
-                id = cids.get(i).cid
-               }
+            if(md.get_uid_at(i) === fullscreen_uid){
+                id = md.get_cid_at(i)
+            }
         }
 
 
@@ -671,18 +671,18 @@ Item{
 
         if(full && Axxon.check_id(id)){
             console.log("rescale full")
-            for(var i=0;i<cids.count;i++){
-                console.log(".. ",cids.get(i).cid," ",id)
-                if(cids.get(i).cid===id){
+            for(var i=0;i<md.get_cids().length;i++){
+                console.log(".. ",md.get_cid_at(i)," ",id)
+                if(md.get_cid_at(i)===id){
 
                     w_model.append({h:height,
                                        w:width,
                                        x: 0,
                                        y: 0,
-                                       uid: cids.get(i).uid,
-                                       cid:cids.get(i).cid,
-                                       url:cids.get(i).url,
-                                       alarm:cids.get(i).alarm
+                                       uid: md.get_uid_at(i),
+                                       cid:md.get_cid_at(i),
+                                       url:md.get_url_at(i),
+                                       alarm: md.get_alarm_at(i),
                                    })
 
                     break;
@@ -690,31 +690,31 @@ Item{
             }
 
         }else{
-                        console.log("rescale multi")
-            */
-
-
-        for(var i=0;i<scale*scale;i++){
+            console.log("rescale multi")
 
 
 
-            w_model.append({h:hh,
-                               w:ww,
-                               x: ww*(i%scale),
-                               y: hh*((i<scale)?0:((i-(i%scale))/scale)),
-                               uid: md.get_uid_at(i),//cids.get(i).uid,
-                               cid: md.get_cid_at(i),// cids.get(i).cid,
-                               url: md.get_url_at(i),// cids.get(i).url,
-                               alarm: md.get_alarm_at(i),// cids.get(i).alarm
-                           })
+            for(var i=0;i<scale*scale;i++){
+
+
+
+                w_model.append({h:hh,
+                                   w:ww,
+                                   x: ww*(i%scale),
+                                   y: hh*((i<scale)?0:((i-(i%scale))/scale)),
+                                   uid: md.get_uid_at(i),//cids.get(i).uid,
+                                   cid: md.get_cid_at(i),// cids.get(i).cid,
+                                   url: md.get_url_at(i),// cids.get(i).url,
+                                   alarm: md.get_alarm_at(i),// cids.get(i).alarm
+                               })
+            }
         }
-      //  }
 
 
 
 
 
-            saving_off()
+        saving_off()
 
         good.ready()
     }
