@@ -561,6 +561,18 @@ console.log(md.get_info())
         md.show()
                 md.to_page(vid,5)
                 md.to_page(vid,0)
+
+        md.add_page(vid)
+        md.add_page(vid)
+        md.add_page(vid)
+        md.add_page(vid)
+        md.add_page(vid)
+                md.show()
+
+        md.delete_page(vid,700)
+        md.delete_page(vid,0)
+        md.delete_page(vid,0)
+        md.show()
     //
          good.scale=5
           rescale(good.scale)

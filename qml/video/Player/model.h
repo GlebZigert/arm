@@ -3,6 +3,46 @@
 
 #include <QQuickItem>
 
+class Page : public QObject
+{
+    Q_OBJECT
+
+public:
+
+    explicit Page( QObject *parent = nullptr);
+
+    ~Page();
+
+
+
+};
+
+class Wall : public QObject
+{
+    Q_OBJECT
+
+public:
+
+    explicit Wall( QObject *parent = nullptr);
+
+    QList<QSharedPointer<Page>> list;
+
+    int count(){return list.count();};
+
+    bool add_page(QSharedPointer<Page>);
+
+    bool delete_page(int page);
+
+
+
+
+    ~Wall();
+
+
+
+};
+
+
 class Model : public QQuickItem
 {
     Q_OBJECT
@@ -17,28 +57,23 @@ public:
 
      Q_INVOKABLE int get_pages_count(QString vid);
 
+    Q_INVOKABLE bool add_page(QString vid);
+
+     Q_INVOKABLE   bool delete_page(QString vid, int page);
+
     Q_INVOKABLE bool to_page(QString vid,int page);
 
 private:
 
-static QMap<QString,QSharedPointer<QList<int>>> mdl;
+    bool add_vid(QString vid);
+
+static QMap<QString,QSharedPointer<Wall>> mdl;
 
 signals:
 
 };
 
-class Wall : public QObject
-{
-    Q_OBJECT
-
-public:
-
-    explicit Wall( QObject *parent = nullptr);
-
-    ~Wall();
 
 
-
-};
 
 #endif // MODEL_H
