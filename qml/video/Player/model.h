@@ -17,6 +17,8 @@ public:
 
      Q_INVOKABLE int get_pages_count(QString vid);
 
+    Q_INVOKABLE bool to_page(QString vid,int page);
+
 private:
 
 static QMap<QString,QSharedPointer<QList<int>>> mdl;
@@ -32,6 +34,7 @@ class Wall : public QObject
 public:
 
     explicit Wall( QObject *parent = nullptr);
+
     ~Wall();
 
 

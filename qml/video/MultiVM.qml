@@ -5,7 +5,7 @@ import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
 import Model 1.0
 Item{
-    property string videowall_id
+    property string vid
     id: good
   //  anchors.fill: parent
     property int scale: 2
@@ -509,7 +509,7 @@ Item{
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
 
 
-            Axxon.request_URL(videowall_id,get_cids(), serviceId, "","utc")
+            Axxon.request_URL(vid,get_cids(), serviceId, "","utc")
 
         }
     }
@@ -551,12 +551,16 @@ console.log(md.get_info())
 
         full=false
 
-        videowall_id = generateUUID()
+        vid = generateUUID()
 
-        console.log("videowall_id ",videowall_id)
+        console.log("vid ",vid)
 
-        console.log(md.get_pages_count(videowall_id))
+        md.to_page(vid,5)
+
+        console.log(md.get_pages_count(vid))
         md.show()
+                md.to_page(vid,5)
+                md.to_page(vid,0)
     //
          good.scale=5
           rescale(good.scale)
@@ -765,7 +769,7 @@ console.log(md.get_info())
 
             var serviceId=Axxon.camera(id).serviceId
 
-            Axxon.request_URL(videowall_id,get_cids(), serviceId, timeline.get_dt(),"utc")
+            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
 
     function fullscreen(id){

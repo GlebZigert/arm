@@ -492,7 +492,7 @@ Item{
         if(dt==""){
             storage_live=live
         }
-        Axxon.request_URL(multivm.videowall_id,cameraId, serviceId, dt,"utc")
+        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc")
     }
 
 
@@ -500,9 +500,9 @@ Item{
 
         console.log("f_current_camera_update")
         console.log("videowall: ",videowall)
-        console.log("multivm.videowall_id: ",multivm.videowall_id)
+        console.log("multivm.vid: ",multivm.vid)
 
-        if(videowall!==multivm.videowall_id){
+        if(videowall!==multivm.vid){
             console.log("это не та стена")
             return
         }
