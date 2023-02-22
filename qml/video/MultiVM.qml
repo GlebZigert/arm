@@ -452,16 +452,15 @@ Item{
         full=false
             good.scale=1
 
-
+/*
             for(var i = 0;i<cids.count; i++){
 
                 if(cids.get(i).alarm==false){
                   cids.setProperty(i,"cid",-1)
                   cids.setProperty(i,"url","")
                 }
-
-
             }
+            */
 
 
 
@@ -481,7 +480,7 @@ Item{
         full=false
             good.scale=1
 
-
+/*
             for(var i = 0;i<cids.count; i++){
 
                 if(cids.get(i).alarm==false){
@@ -491,6 +490,7 @@ Item{
 
 
             }
+            */
 
 
 

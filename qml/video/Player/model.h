@@ -32,6 +32,8 @@ private:
 
 public:
 
+    QString name;
+
     QMap<int ,QSharedPointer<Camera>> map;
 
     explicit Page( QObject *parent = nullptr);
