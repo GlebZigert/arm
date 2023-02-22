@@ -138,6 +138,8 @@ int Model::current_scale()
 
 void Model::check_the_scale(int id, bool alarm)
 {
+
+
     mdl.value(vid)->check_the_scale(id,alarm);
 }
 
@@ -351,6 +353,16 @@ bool Wall::get_alarm_at(int i)
 
 void Wall::check_the_scale(int id,bool alarm)
 {
+    if(current_page==-1)
+        current_page=0;
+
+    if(list.count()==0){
+        list.append(QSharedPointer<Page>::create());
+
+        current_page=0;
+    }
+
+
     list.at(current_page)->check_the_scale(id, alarm);
 }
 
@@ -400,34 +412,32 @@ void Page::next_scale()
 
 void Page::check_the_scale(int id,bool alarm)
 {
+    if(map.count()==0){
+     for(int i=0;i<36;i++)
+        add_camera();
+    }
     auto list = map.keys();
 
-    int i=0;
+    int i=1;
+
     foreach(auto key , list){
 
 
-
-
-
-        if(i>=(scale*scale)){
+        if(i>(scale*scale)){
 
 
         qDebug()<<"--- i: "<<i<<" scale: "<<scale;
-        scale++;
+        next_scale();
+
 
         }
 
-
-      //  if(cids.get(i).cid===-1){
-
        if(map.value(key)->cid==-1){
            map.value(key)->cid=id;
-           map.value(key)->cid=alarm;
+           map.value(key)->alarm=alarm;
      //       cids.setProperty(i,"cid",id)
      //       cids.setProperty(i,"alarm",alarm)
 qDebug()<<"i: "<<i<<" scale: "<<scale;
-
-
 
             break;
             //выделить этот cid
@@ -435,6 +445,8 @@ qDebug()<<"i: "<<i<<" scale: "<<scale;
         }
          i++;
     }
+
+
 
 }
 
@@ -454,6 +466,7 @@ void Page::set_url_for_uid(QString url, int uid)
 
 int Page::get_uid_at(int i)
 {
+
     return map.keys().at(i);
 
 

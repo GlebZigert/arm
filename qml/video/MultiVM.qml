@@ -740,6 +740,7 @@ Item{
 
     function add_camera(id,alarm){
 
+        console.log("add_camera ",id)
         /*
         var fl=true
         for(var i=0;i<cids.count;i++){
@@ -752,6 +753,8 @@ Item{
         */
 
        // if(fl){
+
+        /*
         for(var i=0;i<cids.count;i++){
             if(cids.get(i).cid===id){
         //       cids.setProperty(i,"alarm",alarm)
@@ -759,7 +762,11 @@ Item{
 
             }
         }
+        */
 
+
+        md.check_the_scale(id,alarm)
+        /*
             for(var i=0;i<cids.count;i++){
 
 
@@ -784,6 +791,7 @@ Item{
 
                 }
             }
+            */
 
             rescale(good.scale)
 
