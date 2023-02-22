@@ -42,7 +42,7 @@ void Model::show()
              qDebug()<<"количество камер: "<<one->count();
              auto map = one->get_map();
              for(auto uid : map.keys()){
-                 qDebug()<<uid;
+                 qDebug()<<uid<< map.value(uid)->cid<<" "<<map.value(uid)->url<<" "<<map.value(uid)->alarm;
              }
 
         }
@@ -61,6 +61,7 @@ int Model::get_pages_count()
     int count = mdl.value(vid).data()->count();
     qDebug()<<"количество страниц на видеостене: "<<vid<<" : "<<count;
     qDebug()<<"<-- Model::get_pages_count(QString vid)";
+    show();
     return count;
 }
 
@@ -75,17 +76,17 @@ qDebug()<<"на видеостене "<<vid<<" добавляем страниц
 
     if(list){
     list->add_page(QSharedPointer<Page>::create());
-
+show();
     return true;
     }
-
+show();
     return false;
 }
 
 bool Model::delete_page( int page)
 {
     qDebug()<<"на видеостене "<<vid<<" удаляем страницу ";
-    return mdl.value(vid)->delete_page(page);
+    show();return mdl.value(vid)->delete_page(page);
 }
 
 bool Model::to_page( int page)
@@ -99,40 +100,46 @@ bool Model::to_page( int page)
         qDebug()<<"у видеостены "<<vid<<" нет cтраницы c номером "<<page;
         int count = mdl.value(vid).data()->count();
         qDebug()<<"количество страниц на видеостене: "<<vid<<" : "<<count;
-        return false;
+        show();return false;
 
     }
-    return true;
-
     mdl.value(vid)->setCurrent_page(page);
     qDebug()<<"Переход на видеостене "<<vid<<" на страницу "<<page;
+
+    show();return true;
+
+
 }
 
 int Model::current_page()
 {
-    return mdl.value(vid)->getCurrent_page();
+    show();return mdl.value(vid)->getCurrent_page();
 }
 
 bool Model::add_camera()
 {
  //   qDebug()<<""
-   return mdl.value(vid)->add_camera();
+    auto res = mdl.value(vid)->add_camera();
+   show();
+   return res;
 
-    return false;
+ //   show();return false;
 
 }
 
 void Model::next_scale()
 {
     mdl.value(vid)->next_scale();
+    show();
 }
 
 int Model::current_scale()
 {
     if(!mdl.value(vid))
        add_vid();
-    return mdl.value(vid)->current_scale();
-
+    auto res = mdl.value(vid)->current_scale();
+    show();
+    return res;
 
 }
 
@@ -141,11 +148,14 @@ void Model::check_the_scale(int id, bool alarm)
 
 
     mdl.value(vid)->check_the_scale(id,alarm);
+        show();
 }
 
 int Model::get_uid_at(int i)
 {
-    return mdl.value(vid)->get_uid_at(i);
+    auto res = mdl.value(vid)->get_uid_at(i);
+    show();
+    return res;
 }
 
 QList<int> Model::get_cids()
@@ -195,12 +205,15 @@ bool Model::get_alarm_at(int i)
 
 void Model::set_cid_for_uid(int cid, int uid)
 {
-    return mdl.value(vid)->set_cid_for_uid(cid,uid);
+
+     mdl.value(vid)->set_cid_for_uid(cid,uid);
+     show();
 }
 
 void Model::set_url_for_uid(QString url, int uid)
 {
-    return mdl.value(vid)->set_url_for_uid(url,uid);
+     mdl.value(vid)->set_url_for_uid(url,uid);
+     show();
 }
 
 
@@ -241,9 +254,10 @@ bool Wall::delete_page(int page)
       qDebug()<<"удаляем страницу "<<page;
  if(page<0 || page>=list.count()){
      qDebug()<<"нет старницы с таким номером "<<page;
-          return false;
+             return false;
  }
  list.removeAt(page);
+
  return true;
 }
 
