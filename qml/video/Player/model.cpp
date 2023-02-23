@@ -31,12 +31,12 @@ void Model::show()
 
         auto wall = mdl.value(vid);
 
-        qDebug()<<"количество страниц: "<<wall.data()->count();
-
+        qDebug()<<"количество страниц: "<<wall->count();
+        qDebug()<<"Активная страница: "<<wall->current_page;
 
         for(auto one : wall.data()->list){
 
-            qDebug()<<"страница";
+            qDebug()<<"страница: "<<one->name;
 
             qDebug()<<"масштаб: "<<one->current_scale();
              qDebug()<<"количество камер: "<<one->count();
@@ -65,17 +65,21 @@ int Model::get_pages_count()
     return count;
 }
 
-bool Model::add_page()
+bool Model::add_page(QString pageName)
 {
-qDebug()<<"на видеостене "<<vid<<" добавляем страницу ";
+qDebug()<<"на видеостене "<<vid<<" добавляем страницу :"<<pageName;
 
     if(!mdl.value(vid))
        add_vid();
 
-    auto list = mdl.value(vid);
+    auto wall = mdl.value(vid);
 
-    if(list){
-    list->add_page(QSharedPointer<Page>::create());
+    if(wall){
+    wall->add_page(QSharedPointer<Page>::create(pageName));
+    if(wall->list.count()>0){
+    mdl.value(vid)->setCurrent_page(wall->list.count()-1);
+    }
+
 show();
     return true;
     }
@@ -94,8 +98,7 @@ bool Model::to_page( int page)
     qDebug()<<"на видеостене "<<vid<<" переходим на страницу "<<page;
 
      if(!mdl.value(vid))
-        add_vid();
-
+       return false;
     if(page<0 || page>=mdl.value(vid).data()->count()){
         qDebug()<<"у видеостены "<<vid<<" нет cтраницы c номером "<<page;
         int count = mdl.value(vid).data()->count();
@@ -111,32 +114,65 @@ bool Model::to_page( int page)
 
 }
 
+bool Model::to_next_page()
+{
+    if(!mdl.value(vid))
+      return false;
+
+    int page =  mdl.value(vid)->current_page;
+
+    int count = mdl.value(vid)->list.count();
+
+    if(count<1)
+        return false;
+
+    if(page+1>=count)
+        page=0;
+    else
+        page=page+1;
+
+    mdl.value(vid)->current_page=page;
+
+    show();
+
+    return true;
+
+
+}
+
 int Model::current_page()
 {
+
+    qDebug()<<"Model::current_page()";
     show();return mdl.value(vid)->getCurrent_page();
 }
 
 bool Model::add_camera()
 {
- //   qDebug()<<""
+    qDebug()<<"Model::add_camera()";
+    //   qDebug()<<""
     auto res = mdl.value(vid)->add_camera();
-   show();
-   return res;
+    show();
+    return res;
 
- //   show();return false;
+    //   show();return false;
 
 }
 
 void Model::next_scale()
 {
+    qDebug()<<"Model::next_scale()";
     mdl.value(vid)->next_scale();
     show();
 }
 
 int Model::current_scale()
 {
-    if(!mdl.value(vid))
-       add_vid();
+    qDebug()<<"Model::current_scale()";
+    if(!mdl.value(vid)){
+        add_vid();
+    }
+
     auto res = mdl.value(vid)->current_scale();
     show();
     return res;
@@ -145,7 +181,7 @@ int Model::current_scale()
 
 void Model::check_the_scale(int id, bool alarm)
 {
-
+    qDebug()<<"Model::check_the_scale";
 
     mdl.value(vid)->check_the_scale(id,alarm);
         show();
@@ -153,6 +189,7 @@ void Model::check_the_scale(int id, bool alarm)
 
 int Model::get_uid_at(int i)
 {
+    qDebug()<<"Model::get_uid_at(int i)";
     auto res = mdl.value(vid)->get_uid_at(i);
     show();
     return res;
@@ -160,6 +197,7 @@ int Model::get_uid_at(int i)
 
 QList<int> Model::get_cids()
 {
+    qDebug()<<"Model::get_cids()";
     QList<int> lst;
     auto v1 =mdl.value(vid);
 
@@ -190,41 +228,69 @@ QList<int> Model::get_cids()
 
 int Model::get_cid_at(int i)
 {
+        qDebug()<<"Model::get_cid_at(int i)";
    return mdl.value(vid)->get_cid_at(i);
 }
 
 QString Model::get_url_at(int i)
 {
+        qDebug()<<"Model::get_url_at(int i)";
    return mdl.value(vid)->get_url_at(i);
 }
 
 bool Model::get_alarm_at(int i)
 {
-    return mdl.value(vid)->get_uid_at(i);
+            qDebug()<<"Model::get_alarm_at(int i)";
+    return mdl.value(vid)->get_alarm_at(i);
 }
 
 void Model::set_cid_for_uid(int cid, int uid)
 {
-
+        qDebug()<<"Model::set_cid_for_uid(int cid, int uid)";
      mdl.value(vid)->set_cid_for_uid(cid,uid);
      show();
 }
 
 void Model::set_url_for_uid(QString url, int uid)
 {
+            qDebug()<<"Model::set_url_for_uid(QString url, int uid)";
      mdl.value(vid)->set_url_for_uid(url,uid);
      show();
+}
+
+QString Model::get_current_page_name()
+{
+
+    if(!mdl.value(vid))
+        return "err";
+
+    if(mdl.value(vid)->list.count()==0 )
+        return "err";
+
+    if(mdl.value(vid)->current_page<0)
+        mdl.value(vid)->current_page=0;
+
+    if(mdl.value((vid))->list.count()<=current_page())
+        return "err";
+
+    QString res = mdl.value(vid)->list.at(current_page())->name;
+
+    return res;
 }
 
 
 
 void Model::setVid(const QString src)
 {
+            qDebug()<<"Model::setVid(const QString src)";
     vid = src;
+    if(!mdl.value(vid))
+       add_vid();
 }
 
 bool Model::add_vid()
 {
+            qDebug()<<"Model::add_vid()";
     if(mdl.value(vid))
         return true;
 
@@ -245,7 +311,14 @@ current_page=-1;
 bool Wall::add_page(QSharedPointer<Page> page)
 {
 
+
  list.append(page);
+ for(int i=0;i<36;i++){
+     page->add_camera();
+
+
+}
+
  return true;
 }
 
@@ -299,10 +372,11 @@ if(current_page==-1)
 int Wall::current_scale()
 {
 
+    if(current_page<0)
+        current_page=0;
 
 
-
-     if(current_page<0 || current_page>=list.count())
+     if(current_page>=list.count())
          return -1;
 
     if(!list.at(current_page))
@@ -332,6 +406,10 @@ int Wall::get_uid_at(int i)
     if(current_page==-1)
         return -1;
 
+
+    if(list.count()<=current_page)
+        return -1;
+
     if(list.at(current_page))
     return list.at(current_page)->get_uid_at(i);
 
@@ -341,6 +419,9 @@ int Wall::get_uid_at(int i)
 int Wall::get_cid_at(int i)
 {
     if(current_page==-1)
+        return -1;
+
+    if(list.count()<=current_page)
         return -1;
 
     if(list.at(current_page))
@@ -354,6 +435,9 @@ QString Wall::get_url_at(int i)
     if(current_page==-1)
         return "";
 
+    if(list.count()<=current_page)
+        return "";
+
     if(list.at(current_page))
     return list.at(current_page)->get_url_at(i);
 
@@ -362,6 +446,15 @@ QString Wall::get_url_at(int i)
 
 bool Wall::get_alarm_at(int i)
 {
+    if(current_page==-1)
+        return false;
+
+    if(list.count()<=current_page)
+        return false;
+
+    if(list.at(current_page))
+    return list.at(current_page)->get_alarm_at(i);
+
     return false;
 }
 
@@ -371,7 +464,7 @@ void Wall::check_the_scale(int id,bool alarm)
         current_page=0;
 
     if(list.count()==0){
-        list.append(QSharedPointer<Page>::create());
+        list.append(QSharedPointer<Page>::create("def"));
 
         current_page=0;
     }
@@ -384,20 +477,40 @@ void Wall::set_cid_for_uid(int cid, int uid)
 {
     if(current_page==-1)
         return;
+
+    if(list.count()<=current_page)
+        return;
+
+    if(list.at(current_page))
     list.at(current_page)->set_cid_for_uid( cid, uid);
+
+
 }
 
 void Wall::set_url_for_uid(QString url, int uid)
 {
     if(current_page==-1)
         return;
+
+    if(list.count()<=current_page)
+        return ;
+
+    if(list.at(current_page))
     list.at(current_page)->set_url_for_uid(url, uid);
 }
 
-Page::Page(QObject *parent)
+Page::Page(QString nm)
 {
     qDebug()<<"Страница создана ";
     scale=1;
+    name=nm;
+}
+
+Page::Page(QObject *parent, QString nm)
+{
+    qDebug()<<"Страница создана ";
+    scale=1;
+    name=nm;
 }
 
 bool Page::add_camera()
@@ -480,6 +593,8 @@ void Page::set_url_for_uid(QString url, int uid)
 
 int Page::get_uid_at(int i)
 {
+    if(map.count()<=i)
+        return -1;
 
     return map.keys().at(i);
 
@@ -488,12 +603,26 @@ int Page::get_uid_at(int i)
 
 int Page::get_cid_at(int i)
 {
+    if(map.count()<=i)
+        return -1;
+
     return map.values().at(i)->cid;
 }
 
 QString Page::get_url_at(int i)
 {
+    if(map.count()<=i)
+        return "";
+
     return map.values().at(i)->url;
+}
+
+bool Page::get_alarm_at(int i)
+{
+    if(map.count()<=i)
+        return false;
+
+    return map.values().at(i)->alarm;
 }
 
 Page::~Page()
@@ -505,6 +634,7 @@ Camera::Camera(QObject *parent)
 {
     qDebug()<<"Камера добавлена";
     cid=-1;
+    alarm = false;
 
 }
 

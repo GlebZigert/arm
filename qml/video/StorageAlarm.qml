@@ -266,6 +266,9 @@ Item{
 
     Component.onCompleted: {
 
+
+
+
         timeline.to_live()
         storage_live=live
 
@@ -312,6 +315,15 @@ Item{
         tlmt_rect.visible=false
 
         multivm.rescale(multivm.scale)
+
+        multivm.onCompleted.connect(set_the_multivm_settings)
+    }
+
+    function set_the_multivm_settings(){
+    console.log("set_the_multivm_settings")
+        multivm.multivm_add_page("Тревоги")
+        multivm.multivm_add_page("Архив")
+
     }
 
     function eventSelected_handler(event){

@@ -35,8 +35,8 @@ public:
     QString name;
 
     QMap<int ,QSharedPointer<Camera>> map;
-
-    explicit Page( QObject *parent = nullptr);
+    explicit Page(QString nm="default name");
+    explicit Page( QObject *parent = nullptr, QString nm="default name");
 
 
     int count(){return map.count();};
@@ -58,7 +58,7 @@ public:
 
     QString get_url_at(int i);
 
-    bool get_alarm_at(int i){return true;};
+    bool get_alarm_at(int i);
 
     ~Page();
 };
@@ -103,6 +103,8 @@ public:
     void set_url_for_uid(QString url, int uid);
 
      int current_page;
+
+
 private:
 
 
@@ -128,11 +130,13 @@ public:
 
     Q_INVOKABLE int get_pages_count();
 
-    Q_INVOKABLE bool add_page();
+    Q_INVOKABLE bool add_page(QString pageName);
 
     Q_INVOKABLE   bool delete_page(int page);
 
     Q_INVOKABLE bool to_page(int page);
+
+    Q_INVOKABLE bool to_next_page();
 
     Q_INVOKABLE int current_page();
 
@@ -157,6 +161,8 @@ public:
     Q_INVOKABLE void set_cid_for_uid(int cid, int uid);
 
     Q_INVOKABLE void set_url_for_uid(QString url, int uid);
+
+    Q_INVOKABLE QString get_current_page_name();
 
     void setVid(const QString vid);
 

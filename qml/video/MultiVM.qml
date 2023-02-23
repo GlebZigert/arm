@@ -22,6 +22,10 @@ Item{
 
     signal ready
 
+    signal onCompleted
+
+
+
     property bool alarm_mode: false
 
     property bool full
@@ -567,14 +571,18 @@ Item{
 
     Component.onCompleted: {
         console.log(md.get_info())
+        full=false
+        vid = generateUUID()
+        md.vid=vid
 
         md.show()
 
 
-        full=false
+        good.onCompleted()
 
-        vid = generateUUID()
-        md.vid=vid
+/*
+
+
         md.add_page()
 
 
@@ -583,6 +591,8 @@ Item{
         //
          good.scale=5
           rescale(good.scale)
+        */
+
     }
 
     function vm_start(cid,src,mode){
@@ -644,11 +654,11 @@ Item{
 
     function rescale(scale){
 
-        console.log("and look at scale here: ",scale)
+     //   console.log("and look at scale here: ",scale)
 
 
         scale= md.current_scale()
-
+ console.log("and look at scale here: ",scale)
         saving_on()
 
         var ww = width/scale
@@ -804,6 +814,24 @@ Item{
 
             Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
+
+    function multivm_add_page(name){
+        console.log("multivm ad_page: ",name)
+
+        console.log("...1")
+        md.add_page(name)
+        console.log("md.get_current_page_name() ",md.get_current_page_name())
+        rescale(good.scale)
+        console.log("...2")
+    }
+
+    function to_next_page(){
+
+        md.to_next_page()
+        rescale()
+
+
+    }
 
     function fullscreen(id){
 

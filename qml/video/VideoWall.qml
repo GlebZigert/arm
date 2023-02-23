@@ -1,6 +1,7 @@
 import QtQuick 2.11
 import "../../js/axxon.js" as Axxon
 import MyQMLEnums 13.37
+import QtQuick.Controls 2.4
 
 Item{
     anchors.fill: parent
@@ -74,6 +75,56 @@ Item{
             y:0
             drag.target: parent
         }
+
+
+
+    }
+
+    Row{
+
+        x:30
+        y:30
+        width: parent.width
+        height: 20
+        spacing: 2
+
+
+        Button{
+            width: 20
+            height: 20
+
+            onClicked: {
+                console.log("onClicked .")
+                multivm.to_next_page()
+            }
+        }
+
+        Button{
+            width: 20
+            height: 20
+
+            onClicked: {
+                console.log("onClicked .")
+            }
+        }
+
+        Button{
+            width: 20
+            height: 20
+
+            onClicked: {
+                console.log("onClicked .")
+            }
+        }
+
+        Button{
+            width: 20
+            height: 20
+
+            onClicked: {
+                console.log("onClicked .")
+            }
+        }
     }
 
 
@@ -124,10 +175,21 @@ Item{
 
         multivm.switch_tlmtr.connect(f_switch_tlmtr)
 
-     //   root.cameraList.updated.connect(multivm.reconnect_livestream)
+        //   root.cameraList.updated.connect(multivm.reconnect_livestream)
 
         tlmt_rect.visible=false
         multivm.rescale(multivm.scale)
+
+        multivm.onCompleted.connect(set_the_multivm_settings)
+    }
+
+    function set_the_multivm_settings(){
+        console.log("set_the_multivm_settings")
+        multivm.multivm_add_page("Вкладка 1")
+        multivm.multivm_add_page("Вкладка 2")
+        multivm.multivm_add_page("Вкладка 3")
+        multivm.multivm_add_page("Вкладка 4")
+        multivm.multivm_add_page("Вкладка 5")
     }
 
     function f_switch_tlmtr(){
