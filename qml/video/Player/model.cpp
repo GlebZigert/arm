@@ -22,6 +22,7 @@ int Model::get_vid_count()
 
 void Model::show()
 {
+    /*
     qDebug()<<"-->";
     qDebug()<<"количество видеоэкранов: "<<mdl.count();
 
@@ -48,6 +49,7 @@ void Model::show()
         }
         qDebug()<<"<--";
     }
+*/
 }
 
 int Model::get_pages_count()

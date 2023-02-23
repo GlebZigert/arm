@@ -18,6 +18,20 @@ Item{
 
     signal switch_tlmtr
 
+    Timer {
+        id: timer
+        interval: 5000; running: true; repeat: true
+        property int msec:0
+        property var prev_date : 0
+        property int sec : 0
+        onTriggered:
+        {
+            multivm.to_next_page()
+
+
+    }
+    }
+
     MultiVM{
         id: multivm
         anchors.fill: parent
