@@ -331,7 +331,9 @@ bool Wall::delete_page(int page)
      qDebug()<<"нет старницы с таким номером "<<page;
              return false;
  }
+
  list.removeAt(page);
+ current_page=0;
 
  return true;
 }

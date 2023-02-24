@@ -826,6 +826,13 @@ Item{
         good.currentPage(md.get_current_page_name())
     }
 
+    function multivm_delete_page(name){
+
+        md.delete_page(md.current_page())
+
+        good.currentPage(md.get_current_page_name())
+    }
+
     function to_next_page(){
 
         md.to_next_page()

@@ -144,6 +144,7 @@ Item{
 
             onClicked: {
                 console.log("onClicked .")
+                multivm.multivm_delete_page()
             }
         }
 
