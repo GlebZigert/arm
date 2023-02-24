@@ -153,7 +153,9 @@ Item{
 
             onClicked: {
                 console.log("onClicked .")
+                page_input_view.visible=true
             }
+
         }
 
         Rectangle {
@@ -182,6 +184,42 @@ Item{
 
 }
 }
+
+    Rectangle{
+    id: page_input_view
+    x:100
+    y:100
+    width: 500
+    height: 200
+    color: "lightgray"
+    visible: false
+
+    Row{
+        anchors.fill: parent
+    TextInput {
+        id: pageName_input
+        width: 400
+        height: 100
+        text: "Text"
+        cursorVisible: false
+    }
+
+    Button{
+    width: 100
+    height: 100
+
+    onClicked: {
+
+        multivm.multivm_add_page(pageName_input.text)
+        page_input_view.visible=false
+    }
+
+    }
+
+    }
+
+
+    }
     function give_him_a_camera(){
         console.log("give_him_a_camera()")
         camera_storage.visible=true
