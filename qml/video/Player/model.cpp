@@ -116,6 +116,21 @@ bool Model::to_page( int page)
 
 }
 
+bool Model::to_page(QString name)
+{
+    if(!mdl.value(vid))
+      return false;
+    int i=0;
+  for(auto one : mdl.value(vid)->list){
+      if(one->name==name){
+          to_page(i);
+          return true;
+      }
+      i++;
+  }
+  return false;
+}
+
 bool Model::to_next_page()
 {
     if(!mdl.value(vid))
@@ -161,11 +176,23 @@ bool Model::add_camera()
 
 }
 
+void Model::clear_if_not_alarm()
+{
+      mdl.value(vid)->clear_if_not_alarm();
+
+
+}
+
 void Model::next_scale()
 {
     qDebug()<<"Model::next_scale()";
     mdl.value(vid)->next_scale();
     show();
+}
+
+void Model::set_scale(int val)
+{
+    mdl.value(vid)->list.at(mdl.value(vid)->current_page)->scale=val;
 }
 
 int Model::current_scale()
@@ -500,7 +527,14 @@ void Wall::set_url_for_uid(QString url, int uid)
         return ;
 
     if(list.at(current_page))
-    list.at(current_page)->set_url_for_uid(url, uid);
+        list.at(current_page)->set_url_for_uid(url, uid);
+}
+
+void Wall::clear_if_not_alarm()
+{
+    auto page = list.at(current_page);
+
+    page->clear_if_not_alarm();
 }
 
 Page::Page(QString nm)
@@ -627,6 +661,21 @@ bool Page::get_alarm_at(int i)
         return false;
 
     return map.values().at(i)->alarm;
+}
+
+void Page::clear_if_not_alarm()
+{
+    for(auto one : map.values()){
+
+        if(one->alarm==0){
+            one->cid=-1;
+            one->url="";
+
+
+        }
+
+
+    }
 }
 
 Page::~Page()

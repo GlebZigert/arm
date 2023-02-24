@@ -317,13 +317,18 @@ Item{
         multivm.rescale(multivm.scale)
 
         multivm.onCompleted.connect(set_the_multivm_settings)
+
+        timeline.to_storage_cameras.connect(f_to_storage_cameras)
+    }
+
+    function f_to_storage_cameras(){
+    multivm.to_page("Архив")
     }
 
     function set_the_multivm_settings(){
     console.log("set_the_multivm_settings")
         multivm.multivm_add_page("Тревоги")
         multivm.multivm_add_page("Архив")
-
     }
 
     function eventSelected_handler(event){
@@ -410,6 +415,8 @@ Item{
             storage_live=live
             pause_play=play
             timeline.to_live()
+
+
 
             multivm.add_alarm_camera(id)
             //Для мультвм выставляем флаг тревожного режима

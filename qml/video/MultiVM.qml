@@ -448,7 +448,7 @@ Item{
 
     function add_alarm_camera(id){
 
-
+        md.to_page("Тревоги")
 
           //  cids.clear()
 
@@ -456,7 +456,10 @@ Item{
         full=false
             good.scale=1
 
-/*
+
+        md.clear_if_not_alarm()
+
+        /*
             for(var i = 0;i<cids.count; i++){
 
                 if(cids.get(i).alarm==false){
@@ -464,7 +467,7 @@ Item{
                   cids.setProperty(i,"url","")
                 }
             }
-            */
+          */
 
 
 
@@ -477,7 +480,7 @@ Item{
     function add_storage_camera(arr){
 
 
-
+ md.to_page("Архив")
           //  cids.clear()
 
 
@@ -778,7 +781,7 @@ Item{
         }
         */
 
-
+        md.set_scale(1)
         md.check_the_scale(id,alarm)
         /*
             for(var i=0;i<cids.count;i++){
@@ -824,6 +827,11 @@ Item{
         rescale(good.scale)
         console.log("...2")
         good.currentPage(md.get_current_page_name())
+    }
+
+    function to_page(name){
+    md.to_page(name)
+        rescale(good.scale)
     }
 
     function multivm_delete_page(name){

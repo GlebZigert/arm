@@ -35,6 +35,7 @@ Item {
     signal pause_signal()
     signal play_signal()
     signal show_or_hide_calendar()
+    signal to_storage_cameras()
 
     Timer {
         id: timer
@@ -627,6 +628,36 @@ color: "lightgray";
         font.pointSize: 20
         color: "black"
     }
+    }
+
+    Rectangle{
+        id: to_storage_cameras
+        width: 160;
+        height: 40
+        color: "lightgray"
+        radius: 6
+        border.width: 4
+        border.color: "gray"
+
+        Text {
+
+
+            x:10
+            y:5
+            font.family: "Helvetica"
+            font.pointSize: 20
+            color: "black"
+            text:"Вернуться к просмотру камер"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+                m_item.to_storage_cameras()
+                }
+            }
+
     }
 
 

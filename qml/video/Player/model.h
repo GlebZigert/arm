@@ -28,10 +28,12 @@ class Page : public QObject
 private:
     static int uid;
 
-    int scale;
+
 
 public:
 
+
+    int scale;
     QString name;
 
     QMap<int ,QSharedPointer<Camera>> map;
@@ -59,6 +61,8 @@ public:
     QString get_url_at(int i);
 
     bool get_alarm_at(int i);
+
+    void clear_if_not_alarm();
 
     ~Page();
 };
@@ -104,6 +108,8 @@ public:
 
      int current_page;
 
+     void clear_if_not_alarm();
+
 
 private:
 
@@ -136,13 +142,19 @@ public:
 
     Q_INVOKABLE bool to_page(int page);
 
+    Q_INVOKABLE bool to_page(QString name);
+
     Q_INVOKABLE bool to_next_page();
 
     Q_INVOKABLE int current_page();
 
     Q_INVOKABLE bool add_camera();
 
+    Q_INVOKABLE void clear_if_not_alarm();
+
     Q_INVOKABLE void next_scale();
+
+   Q_INVOKABLE void set_scale(int val);
 
     Q_INVOKABLE int current_scale();
 
