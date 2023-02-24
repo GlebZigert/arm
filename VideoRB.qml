@@ -11,10 +11,10 @@ Item{
 
         width: Screen.width
         height: Screen.height
-        minimumHeight: Screen.height
-        minimumWidth:Screen.width
-        maximumHeight: Screen.height
-        maximumWidth   :Screen.width
+  //      minimumHeight: Screen.height
+   //     minimumWidth:Screen.width
+   //     maximumHeight: Screen.height
+  //      maximumWidth   :Screen.width
 
 
 

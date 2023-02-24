@@ -2,6 +2,8 @@ import QtQuick 2.11
 import "../../js/axxon.js" as Axxon
 import MyQMLEnums 13.37
 import QtQuick.Controls 2.4
+import QtQuick.Controls 1.4
+import QtQuick.Layouts 1.5
 
 Item{
     anchors.fill: parent
@@ -31,6 +33,14 @@ Item{
 
     }
     }
+    SplitView{
+  anchors.fill: parent
+        orientation: Qt.Vertical
+    Rectangle {
+        width: parent.width
+        height: parent.height-30
+        Layout.fillWidth: true
+        Layout.fillHeight: true
 
     MultiVM{
         id: multivm
@@ -93,13 +103,15 @@ Item{
 
 
     }
+    }
 
     Row{
 
-        x:30
-        y:30
         width: parent.width
-        height: 20
+        height: 30
+        Layout.maximumHeight: 30
+        Layout.minimumWidth: 30
+
         spacing: 2
 
 
@@ -119,6 +131,10 @@ Item{
 
             onClicked: {
                 console.log("onClicked .")
+                if(timer.running)
+                    timer.stop()
+                else
+                    timer.start()
             }
         }
 
@@ -139,10 +155,33 @@ Item{
                 console.log("onClicked .")
             }
         }
+
+        Rectangle {
+
+            color: "lightblue";
+            width: 200
+            height: 20
+            visible: true
+    /*
+            radius: 6
+            border.width: 4
+            border.color: "gray"
+    */
+            Text {
+                x:10
+                y:5
+                id: pageName
+                text: ""
+                font.family: "Helvetica"
+                font.pointSize: 20
+                color: "black"
+            }
+
+
     }
 
-
-
+}
+}
     function give_him_a_camera(){
         console.log("give_him_a_camera()")
         camera_storage.visible=true
@@ -172,6 +211,8 @@ Item{
             multivm.set_current_cid(cid)
 
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
+
+
         }
     }
 
@@ -195,6 +236,15 @@ Item{
         multivm.rescale(multivm.scale)
 
         multivm.onCompleted.connect(set_the_multivm_settings)
+
+        multivm.currentPage.connect(f_currentPage)
+    }
+
+    function f_currentPage(nm){
+
+        console.log("f_currentPage: ",nm)
+ //   pageName.
+        pageName.text=nm
     }
 
     function set_the_multivm_settings(){

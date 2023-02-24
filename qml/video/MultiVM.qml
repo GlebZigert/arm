@@ -24,7 +24,7 @@ Item{
 
     signal onCompleted
 
-
+    signal currentPage(string nm)
 
     property bool alarm_mode: false
 
@@ -823,12 +823,14 @@ Item{
         console.log("md.get_current_page_name() ",md.get_current_page_name())
         rescale(good.scale)
         console.log("...2")
+        good.currentPage(md.get_current_page_name())
     }
 
     function to_next_page(){
 
         md.to_next_page()
         rescale()
+        good.currentPage(md.get_current_page_name())
 
 
     }
