@@ -198,6 +198,7 @@ private:
     bool add_vid();
 
     static QMap<QString,QSharedPointer<Wall>> mdl;
+    static bool fl;
 
 signals:
 
