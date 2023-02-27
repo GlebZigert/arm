@@ -5,7 +5,7 @@
  int Page::uid = 0;
 Model::Model()
 {
-
+    load_from_settings();
 }
 
 QString Model::get_info()
@@ -22,7 +22,7 @@ int Model::get_vid_count()
 
 void Model::show()
 {
-
+/*
     qDebug()<<"-->";
     qDebug()<<"количество видеоэкранов: "<<mdl.count();
 
@@ -49,9 +49,10 @@ void Model::show()
         }
         qDebug()<<"<--";
     }
+    */
 
     save_to_settings();
-    load_from_settings();
+  //
 }
 
 int Model::get_pages_count()
@@ -333,7 +334,7 @@ void Model::save_to_settings()
 
     QSettings settings("MySoft", "Star Runner");
     settings.beginGroup("Videowalls");
-    qDebug()<<"count: "<<mdl.count();
+ //   qDebug()<<"count: "<<mdl.count();
     settings.setValue("count",mdl.count());
     int i=0;
     for(auto vid : mdl.keys()){
@@ -342,7 +343,42 @@ void Model::save_to_settings()
         settings.setValue("vid",vid);
         settings.setValue("count",mdl.value(vid)->list.count());
 
+        int j=0;
+        for(auto page : mdl.value(vid)->list){
+            settings.beginGroup(QString("Page %1").arg(j));
+
+        //    qDebug()<<"страница: "<<page->name;
+        //    qDebug()<<"количеcтво камер: "<<page->map.count();
+            settings.setValue("name",page->name);
+            settings.setValue("count",page->map.count());
+            settings.setValue("scale",page->scale);
+
+            int ii=0;
+            for(auto uid : mdl.value(vid)->list.at(j)->map.keys()){
+                settings.beginGroup(QString("Camera %1").arg(ii));
+                ii++;
+
+                auto camera = mdl.value(vid)->list.at(j)->map.value(uid);
+
+                auto cid =  camera->cid;
+                auto url = camera->url;
+
+            //    qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
+
+                settings.setValue("uid",uid);
+                settings.setValue("cid",cid);
+                settings.setValue("url",url);
+
+                settings.endGroup();
+            }
+            j++;
+
+            settings.endGroup();
+        }
+
         settings.endGroup();
+
+
 
     }
     settings.endGroup();
@@ -365,20 +401,47 @@ void Model::load_from_settings()
 
     for(int i=0;i<count;i++){
         settings.beginGroup(QString("Videowall %1").arg(i));
-      auto vid = settings.value("vid").toString();
-      qDebug()<<"vid: "<<vid;
+        auto vid = settings.value("vid").toString();
+        qDebug()<<"vid: "<<vid;
 
-      auto count = settings.value("count").toInt();
-      qDebug()<<"количество страниц: "<<count;
+        auto count = settings.value("count").toInt();
+        qDebug()<<"количество страниц: "<<count;
+
+        for(int j=0;j<count;j++){
+            settings.beginGroup(QString("Page %1").arg(j));
+
+            auto name = settings.value("name").toString();
+            qDebug()<<"страница: "<<name;
+            auto count = settings.value("count").toInt();
+            qDebug()<<"количество камер: "<<count;
+            auto scale = settings.value("scale").toInt();
+            qDebug()<<"масштаб: "<<scale;
+
+            for(int ii=0;ii<count;ii++){
+                settings.beginGroup(QString("Camera %1").arg(ii));
+
+                auto uid = settings.value("uid").toInt();
+                auto cid =  settings.value("cid").toInt();
+                auto url = settings.value("url").toString();
+
+                qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
+
+
+
+
+
+                settings.endGroup();
+            }
+
+            settings.endGroup();
+
+        }
 
         settings.endGroup();
 
+        qDebug()<<"<------ ";
+        qDebug()<<" ";
     }
-
-    settings.endGroup();
-
-    qDebug()<<"<------ ";
-    qDebug()<<" ";
 }
 
 bool Model::add_vid()
