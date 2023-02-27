@@ -228,14 +228,14 @@ void Model::check_the_scale(int id, bool alarm)
     qDebug()<<"Model::check_the_scale";
 
     mdl.value(vid)->check_the_scale(id,alarm);
-        show();
+ //       show();
 }
 
 int Model::get_uid_at(int i)
 {
     qDebug()<<"Model::get_uid_at(int i)";
     auto res = mdl.value(vid)->get_uid_at(i);
-    show();
+   // show();
     return res;
 }
 

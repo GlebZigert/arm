@@ -21,6 +21,21 @@ Item{
     signal switch_tlmtr
 
     Timer {
+        id: start_timer
+        interval: 500; running: true; repeat: false
+
+        onTriggered:
+        {
+            multivm.rescale()
+            if(multivm.get_cids().length){
+            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
+            }
+
+
+    }
+    }
+
+    Timer {
         id: timer
         interval: 5000; running: true; repeat: true
         property int msec:0
