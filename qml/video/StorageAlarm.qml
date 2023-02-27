@@ -26,6 +26,29 @@ Item{
     signal switch_tlmtr
 
 
+    onVisibleChanged: {
+
+        if(visible==true){
+        rescale(1)
+        }
+
+    }
+
+    Timer {
+        id: start_timer
+        interval: 500; running: true; repeat: false
+
+        onTriggered:
+        {
+            multivm.rescale()
+            if(multivm.get_cids().length){
+            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
+            }
+
+
+    }
+    }
+
     Timer {
         id: update_intervals_timer
         interval: 5000; running: true; repeat: true
@@ -330,6 +353,8 @@ Item{
         multivm.setVid("storageAlarm")
         multivm.multivm_add_page("Тревоги")
         multivm.multivm_add_page("Архив")
+
+        multivm.rescale(1)
 
     }
 
