@@ -288,10 +288,14 @@ Item{
 
     function set_the_multivm_settings(){
         console.log("set_the_multivm_settings")
+        multivm.setVid("VideoWall")
         multivm.multivm_add_page("Вкладка 1")
         multivm.multivm_add_page("Вкладка 2")
         multivm.multivm_add_page("Вкладка 3")
         multivm.multivm_add_page("Вкладка 4")
+        multivm.multivm_add_page("Вкладка 5")
+        multivm.multivm_add_page("Вкладка 5")
+        multivm.multivm_add_page("Вкладка 5")
         multivm.multivm_add_page("Вкладка 5")
     }
 

@@ -22,7 +22,7 @@ int Model::get_vid_count()
 
 void Model::show()
 {
-    /*
+
     qDebug()<<"-->";
     qDebug()<<"количество видеоэкранов: "<<mdl.count();
 
@@ -49,7 +49,7 @@ void Model::show()
         }
         qDebug()<<"<--";
     }
-*/
+
 }
 
 int Model::get_pages_count()
@@ -77,6 +77,14 @@ qDebug()<<"на видеостене "<<vid<<" добавляем страниц
     auto wall = mdl.value(vid);
 
     if(wall){
+
+   //если стена уже содержит страницу с таким именем - уходим
+
+   if(wall->contain_page(pageName)){
+       qDebug()<<"уже есть такая старница "<<pageName;
+   return true;
+   }
+
     wall->add_page(QSharedPointer<Page>::create(pageName));
     if(wall->list.count()>0){
     mdl.value(vid)->setCurrent_page(wall->list.count()-1);
@@ -349,6 +357,16 @@ bool Wall::add_page(QSharedPointer<Page> page)
 }
 
  return true;
+}
+
+bool Wall::contain_page(QString nm)
+{
+    for(auto one : list){
+        if(one->name==nm){
+            return true;
+        }
+    }
+    return false;
 }
 
 bool Wall::delete_page(int page)

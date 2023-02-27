@@ -327,8 +327,10 @@ Item{
 
     function set_the_multivm_settings(){
     console.log("set_the_multivm_settings")
+        multivm.setVid("storageAlarm")
         multivm.multivm_add_page("Тревоги")
         multivm.multivm_add_page("Архив")
+
     }
 
     function eventSelected_handler(event){

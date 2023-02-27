@@ -81,6 +81,8 @@ public:
 
     bool add_page(QSharedPointer<Page>);
 
+    bool contain_page(QString name);
+
     bool delete_page(int page);
 
     bool add_camera();

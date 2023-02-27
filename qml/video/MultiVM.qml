@@ -486,7 +486,7 @@ Item{
 
         full=false
             good.scale=1
-
+   md.clear_if_not_alarm()
 /*
             for(var i = 0;i<cids.count; i++){
 
@@ -575,10 +575,10 @@ Item{
     Component.onCompleted: {
         console.log(md.get_info())
         full=false
-        vid = generateUUID()
-        md.vid=vid
+   //     vid = generateUUID()
+   //     md.vid=vid
 
-        md.show()
+   //     md.show()
 
 
         good.onCompleted()
@@ -817,6 +817,11 @@ Item{
 
             Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
+
+    function setVid(vid){
+        md.vid=vid
+
+    }
 
     function multivm_add_page(name){
         console.log("multivm ad_page: ",name)
