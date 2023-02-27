@@ -50,6 +50,8 @@ void Model::show()
         qDebug()<<"<--";
     }
 
+    save_to_settings();
+    load_from_settings();
 }
 
 int Model::get_pages_count()
@@ -81,7 +83,7 @@ qDebug()<<"на видеостене "<<vid<<" добавляем страниц
    //если стена уже содержит страницу с таким именем - уходим
 
    if(wall->contain_page(pageName)){
-       qDebug()<<"уже есть такая старница "<<pageName;
+       qDebug()<<"уже есть такая страница "<<pageName;
    return true;
    }
 
@@ -322,7 +324,61 @@ void Model::setVid(const QString src)
             qDebug()<<"Model::setVid(const QString src)";
     vid = src;
     if(!mdl.value(vid))
-       add_vid();
+        add_vid();
+}
+
+void Model::save_to_settings()
+{
+    qDebug()<<"save_to_settings: ";
+
+    QSettings settings("MySoft", "Star Runner");
+    settings.beginGroup("Videowalls");
+    qDebug()<<"count: "<<mdl.count();
+    settings.setValue("count",mdl.count());
+    int i=0;
+    for(auto vid : mdl.keys()){
+        settings.beginGroup(QString("Videowall %1").arg(i));
+        i++;
+        settings.setValue("vid",vid);
+        settings.setValue("count",mdl.value(vid)->list.count());
+
+        settings.endGroup();
+
+    }
+    settings.endGroup();
+
+}
+
+void Model::load_from_settings()
+{
+    qDebug()<<" ";
+    qDebug()<<"Читаем настройки --->: ";
+
+    QSettings settings("MySoft", "Star Runner");
+
+    settings.beginGroup("Videowalls");
+
+    int count = settings.value("count").toInt();
+
+    qDebug()<<"количество видеоэкранов: "<<count;
+
+
+    for(int i=0;i<count;i++){
+        settings.beginGroup(QString("Videowall %1").arg(i));
+      auto vid = settings.value("vid").toString();
+      qDebug()<<"vid: "<<vid;
+
+      auto count = settings.value("count").toInt();
+      qDebug()<<"количество страниц: "<<count;
+
+        settings.endGroup();
+
+    }
+
+    settings.endGroup();
+
+    qDebug()<<"<------ ";
+    qDebug()<<" ";
 }
 
 bool Model::add_vid()

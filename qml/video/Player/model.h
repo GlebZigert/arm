@@ -2,6 +2,7 @@
 #define MODEL_H
 
 #include <QQuickItem>
+#include <QSettings>
 
 class Camera : public QObject
 {
@@ -180,11 +181,15 @@ public:
 
     void setVid(const QString vid);
 
+    void save_to_settings();
+
+    void load_from_settings();
+
 
 
 private:
 
-
+  //  QString filename="./settings.txt";
 
     QString vid;
 
