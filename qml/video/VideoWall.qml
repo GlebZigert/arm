@@ -139,6 +139,38 @@ Item{
             }
         }
 
+        Rectangle{
+
+            width:40
+            height: 40
+
+
+
+            opacity: 1
+
+            color:"#00000000"
+
+            Image {
+
+
+                source: "/qml/video/fullsize.png"
+                anchors.fill: parent
+                visible: true
+            }
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+
+               multivm.next_scale()
+
+
+
+                }
+            }
+        }
+
         Button{
             width: 40
             height: 40
@@ -199,7 +231,7 @@ Item{
     }
 
         Rectangle{
-            x: panel.width-135
+            x: panel.width-90
             width:40
             height: 40
 
@@ -232,37 +264,7 @@ Item{
         }
 
 
-        Rectangle{
-            x: panel.width-90
-            width:40
-            height: 40
 
-
-
-            opacity: 1
-
-            color:"#00000000"
-
-            Image {
-
-
-                source: "/qml/video/fullsize.png"
-                anchors.fill: parent
-                visible: true
-            }
-
-            MouseArea{
-                anchors.fill: parent
-
-                onClicked: {
-
-               multivm.next_scale()
-
-
-
-                }
-            }
-        }
 
         Rectangle{
             x: panel.width-45
