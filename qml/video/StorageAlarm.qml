@@ -18,7 +18,7 @@ Item{
     property int dy
     property int dx
 
-
+    property var wnd
 
     property string storage_live: ""
     property string pause_play: ""
@@ -239,6 +239,16 @@ Item{
     function fullscreen()  {
 
 
+
+        console.log("visibility: ",wnd.visibility)
+
+        if(wnd.visibility===5){
+        wnd.visibility=1
+        }else{
+                         wnd.visibility=5
+        }
+           multivm.rescale_timer_start()
+/*
     if(timelist_rect.width==0){
        timelist_rect.width=110
     timeline_rect.height=100
@@ -246,6 +256,7 @@ Item{
     timeline_rect.height=0
     timelist_rect.width=0
     }
+    */
 
     multivm.rescale(multivm.scale)
 
@@ -353,6 +364,8 @@ Item{
         timeline.fullscreen_signal.connect(fullscreen)
 
         timeline.signal_scale.connect(scale)
+
+        timeline.hide_timelines.connect(hide_timelines)
     }
 
     function scale(){
@@ -583,6 +596,14 @@ Item{
         multivm.add_camera(id,false)
         multivm.save()
         cid = id
+    }
+
+    function hide_timelines(){
+
+        console.log("hide_timelines")
+        timeline_rect.height=0
+        timelist_rect.width=0
+        multivm.rescale()
     }
 
     function  update_vm()    {

@@ -8,6 +8,9 @@ Item{
 
     Window {
 
+        id: wnd1
+
+
 
         width: Screen.width
         height: Screen.height
@@ -19,13 +22,14 @@ Item{
 
 
         visible: true
-        //     visibility: "FullScreen"
+             visibility: "FullScreen"
 
         screen: Qt.application.screens[1]
 
         Video.VideoWall{
             id: videowall
             anchors.fill: parent
+            wnd: wnd1
 
         }
     }
@@ -33,7 +37,7 @@ Item{
 
     Window {
 
-
+ id: wnd2
 
         width: Screen.width
         height: Screen.height
@@ -50,8 +54,8 @@ Item{
         Video.StorageAlarm{
             id: alarmWindow
             anchors.fill: parent
-
-        }
+            wnd: wnd2
+          }
     }
 
 

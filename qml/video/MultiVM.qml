@@ -30,6 +30,20 @@ Item{
 
     property bool full
 
+
+    Timer {
+        id: rescale_timer
+        interval: 1; running: false; repeat: false
+        property int msec:0
+        property var prev_date : 0
+        property int sec : 0
+        onTriggered:
+        {
+            multivm.rescale()
+
+        }
+    }
+
     Model{
     id: md
     }
@@ -890,6 +904,10 @@ Item{
         fullscreen_uid=-1
     md.next_scale()
         rescale()
+    }
+
+    function rescale_timer_start(){
+    rescale_timer.start()
     }
 
 

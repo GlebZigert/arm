@@ -38,6 +38,7 @@ Item {
     signal to_storage_cameras()
     signal fullscreen_signal()
     signal signal_scale()
+    signal hide_timelines()
 
     Timer {
         id: timer
@@ -369,6 +370,8 @@ Row {
         }
     }
 
+
+
         Rectangle {
         id: next
         width: 40;
@@ -663,6 +666,38 @@ color: "lightgray";
     }
 
     Rectangle{
+        x: panel.width-135
+        width:40
+        height: 40
+
+
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "/qml/video/fullsize.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+            hide_timelines()
+
+
+
+            }
+        }
+    }
+
+    Rectangle{
         x: m_item.width-90
         width:40
         height: 40
@@ -725,6 +760,8 @@ color: "lightgray";
             }
         }
     }
+
+
 
 }
 }

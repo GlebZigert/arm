@@ -16,24 +16,16 @@ Item{
     property int dy
     property int dx
 
+    property var wnd
+
     signal open_in_alarm_window(int id)
 
     signal switch_tlmtr
 
-    Timer {
-        id: start_timer
-        interval: 500; running: true; repeat: false
-
-        onTriggered:
-        {
-            multivm.rescale()
-            if(multivm.get_cids().length){
-            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
-            }
 
 
-    }
-    }
+
+
 
     Timer {
         id: timer
@@ -206,9 +198,42 @@ Item{
 
     }
 
+        Rectangle{
+            x: panel.width-135
+            width:40
+            height: 40
+
+
+
+            opacity: 1
+
+            color:"#00000000"
+
+            Image {
+
+
+                source: "/qml/video/fullsize.png"
+                anchors.fill: parent
+                visible: true
+            }
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+
+              panel.height=0
+                    multivm.rescale()
+
+
+
+                }
+            }
+        }
+
 
         Rectangle{
-            x: base.width-90
+            x: panel.width-90
             width:40
             height: 40
 
@@ -240,7 +265,7 @@ Item{
         }
 
         Rectangle{
-            x: base.width-45
+            x: panel.width-45
             width:40
             height: 40
 
@@ -263,14 +288,31 @@ Item{
 
                 onClicked: {
 
+
+                    console.log("visibility: ",wnd.visibility)
+
+                    if(wnd.visibility===5){
+                    wnd.visibility=1
+                   //       multivm.rescale(multivm.scale)
+                    }else{
+                                     wnd.visibility=5
+                   //       multivm.rescale(multivm.scale)
+                    }
+                    multivm.rescale_timer_start()
+                    /*
+                    console.log("visibility: ",wnd.visibility)
+
                     if(panel.height==0){
                       panel.height=200
 
                     }else{
                       panel.height=0
                     }
+                    */
 
-                    multivm.rescale(multivm.scale)
+
+
+
 
 
 
@@ -463,6 +505,10 @@ Item{
 
         }
               multivm.save()
+    }
+
+    function rescale(){
+    multivm.rescale()
     }
 
 
