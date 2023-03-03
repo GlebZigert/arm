@@ -55,7 +55,7 @@ void Model::show()
     }
     */
 
-    save_to_settings();
+   // save_to_settings();
      //   load_from_settings();
 }
 

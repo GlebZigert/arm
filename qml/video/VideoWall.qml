@@ -120,19 +120,26 @@ Item{
     }
     }
 
+    Rectangle{
+          id: panel
+          width: parent.width
+          height: 40
+          Layout.maximumHeight: 40
+          Layout.minimumWidth: 40
+          color: "lightgray"
+
+
+
     Row{
 
-        width: parent.width
-        height: 30
-        Layout.maximumHeight: 30
-        Layout.minimumWidth: 30
+    anchors.fill: parent
 
         spacing: 2
 
 
         Button{
-            width: 20
-            height: 20
+            width: 40
+            height: 40
 
             onClicked: {
                 console.log("onClicked .")
@@ -141,8 +148,8 @@ Item{
         }
 
         Button{
-            width: 20
-            height: 20
+            width: 40
+            height: 40
 
             onClicked: {
                 console.log("onClicked .")
@@ -154,8 +161,8 @@ Item{
         }
 
         Button{
-            width: 20
-            height: 20
+            width: 40
+            height: 40
 
             onClicked: {
                 console.log("onClicked .")
@@ -164,8 +171,8 @@ Item{
         }
 
         Button{
-            width: 20
-            height: 20
+            width: 40
+            height: 40
 
             onClicked: {
                 console.log("onClicked .")
@@ -178,7 +185,7 @@ Item{
 
             color: "lightblue";
             width: 200
-            height: 20
+            height: 40
             visible: true
     /*
             radius: 6
@@ -196,10 +203,87 @@ Item{
             }
 
 
+
     }
 
+
+        Rectangle{
+            x: base.width-90
+            width:40
+            height: 40
+
+
+
+            opacity: 1
+
+            color:"#00000000"
+
+            Image {
+
+
+                source: "/qml/video/fullsize.png"
+                anchors.fill: parent
+                visible: true
+            }
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+
+               multivm.next_scale()
+
+
+
+                }
+            }
+        }
+
+        Rectangle{
+            x: base.width-45
+            width:40
+            height: 40
+
+
+
+            opacity: 1
+
+            color:"#00000000"
+
+            Image {
+
+
+                source: "/qml/video/fullsize.png"
+                anchors.fill: parent
+                visible: true
+            }
+
+            MouseArea{
+                anchors.fill: parent
+
+                onClicked: {
+
+                    if(panel.height==0){
+                      panel.height=200
+
+                    }else{
+                      panel.height=0
+                    }
+
+                    multivm.rescale(multivm.scale)
+
+
+
+                }
+            }
+        }
+
+
+
 }
-}
+
+      }
+    }
 
     Rectangle{
     id: page_input_view
@@ -292,6 +376,11 @@ Item{
         multivm.onCompleted.connect(set_the_multivm_settings)
 
         multivm.currentPage.connect(f_currentPage)
+
+
+   //     timeline.fullscreen_signal.connect(fullscreen)
+
+   //     timeline.signal_scale.connect(scale)
     }
 
     function f_currentPage(nm){
@@ -373,6 +462,7 @@ Item{
 
 
         }
+              multivm.save()
     }
 
 

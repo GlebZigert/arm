@@ -202,6 +202,7 @@ Item{
         }
     }
 
+    /*
     Rectangle{
         width:40
         height: 40
@@ -226,25 +227,31 @@ Item{
 
             onClicked: {
 
-               if(timelist_rect.width==0){
-               timelist_rect.width=110
-               }else{
-               timelist_rect.width=0
-               }
-
-               if(timeline_rect.height==0){
-               timeline_rect.height=100
-               }else{
-               timeline_rect.height=0
-               }
-
-               multivm.rescale(multivm.scale)
+            fullscreen_signal()
 
 
 
             }
         }
     }
+    */
+
+    function fullscreen()  {
+
+
+    if(timelist_rect.width==0){
+       timelist_rect.width=110
+    timeline_rect.height=100
+    }else{
+    timeline_rect.height=0
+    timelist_rect.width=0
+    }
+
+    multivm.rescale(multivm.scale)
+
+
+
+ }
 
 
     function give_him_a_camera(){
@@ -342,14 +349,22 @@ Item{
         multivm.onCompleted.connect(set_the_multivm_settings)
 
         timeline.to_storage_cameras.connect(f_to_storage_cameras)
+
+        timeline.fullscreen_signal.connect(fullscreen)
+
+        timeline.signal_scale.connect(scale)
+    }
+
+    function scale(){
+    multivm.next_scale()
     }
 
     function f_to_storage_cameras(){
-    multivm.to_page("Архив")
+        multivm.to_page("Архив")
     }
 
     function set_the_multivm_settings(){
-    console.log("set_the_multivm_settings")
+        console.log("set_the_multivm_settings")
         multivm.setVid("storageAlarm")
         multivm.multivm_add_page("Тревоги")
         multivm.multivm_add_page("Архив")
@@ -566,6 +581,7 @@ Item{
         }
 
         multivm.add_camera(id,false)
+        multivm.save()
         cid = id
     }
 
@@ -628,5 +644,6 @@ Item{
 
                 }
         }
+        multivm.save()
     }
 }

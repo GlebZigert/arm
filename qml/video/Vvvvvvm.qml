@@ -148,7 +148,8 @@ Item {
      }
 
     Rectangle {
-        color: selected ? "lightblue" : supreme.activeFocus ? "lightgray" : "gray";
+     //   color: selected ? "lightblue" : supreme.activeFocus ? "lightgray" : "gray";
+          color: selected ? "lightblue" : "gray";
         id:vm_rect
 
 

@@ -413,36 +413,7 @@ Item{
         }
     }
 
-    Rectangle{
-        x: parent.width-50
-        y: 20
-        width: 30
-        height: 30
-        color: "lightblue"
 
-        MouseArea{
-            anchors.fill:parent
-            onClicked: {
-
-
-                full=false
-                fullscreen_uid=-1
-
-                /*
-                if(good.scale<5){
-                    good.scale++
-                }
-                else{
-                    good.scale=1
-                }
-                */
-                md.next_scale()
-
-                rescale(good.scale)
-
-            }
-        }
-    }
 
 
 
@@ -474,7 +445,7 @@ Item{
 
 
          add_camera(id,true)
-
+ md.save_to_settings()
     }
 
     function add_storage_camera(arr){
@@ -505,7 +476,7 @@ Item{
 
          add_camera(arr[i],false)
         }
-
+ md.save_to_settings()
     }
 
     function reconnect_livestream(){
@@ -734,6 +705,7 @@ Item{
         saving_off()
 
         good.ready()
+        md.save_to_settings()
     }
 
 
@@ -783,6 +755,7 @@ Item{
 
         md.set_scale(1)
         md.check_the_scale(id,alarm)
+         md.save_to_settings()
         /*
             for(var i=0;i<cids.count;i++){
 
@@ -906,6 +879,17 @@ Item{
         rescale(good.scale)
 
 
+    }
+
+    function save(){
+    md.save_to_settings()
+    }
+
+    function next_scale(){
+        full=false
+        fullscreen_uid=-1
+    md.next_scale()
+        rescale()
     }
 
 

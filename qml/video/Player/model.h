@@ -181,7 +181,7 @@ public:
 
     void setVid(const QString vid);
 
-    void save_to_settings();
+    Q_INVOKABLE void save_to_settings();
 
     void load_from_settings();
 

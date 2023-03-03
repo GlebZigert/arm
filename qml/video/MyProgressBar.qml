@@ -36,6 +36,8 @@ Item {
     signal play_signal()
     signal show_or_hide_calendar()
     signal to_storage_cameras()
+    signal fullscreen_signal()
+    signal signal_scale()
 
     Timer {
         id: timer
@@ -632,7 +634,7 @@ color: "lightgray";
 
     Rectangle{
         id: to_storage_cameras
-        width: 160;
+        width: 400;
         height: 40
         color: "lightgray"
         radius: 6
@@ -660,6 +662,69 @@ color: "lightgray";
 
     }
 
+    Rectangle{
+        x: m_item.width-90
+        width:40
+        height: 40
+
+
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "/qml/video/fullsize.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+            signal_scale()
+
+
+
+            }
+        }
+    }
+
+    Rectangle{
+        x: m_item.width-45
+        width:40
+        height: 40
+
+
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "/qml/video/fullsize.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+            fullscreen_signal()
+
+
+
+            }
+        }
+    }
 
 }
 }
