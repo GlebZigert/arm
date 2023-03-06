@@ -5,9 +5,10 @@ int Streamer::index = 0;
 Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
 {
     m_index=index++;
-    //qDebug()<<"Streamer::Streamer "<<m_index;
+    start_time=QDateTime::currentDateTime();
+    qDebug()<<"Streamer::Streamer "<<m_index<<" "<<URL;
 
-
+    count = 0;
 
     this->URL=URL;
     this->data=NULL;
@@ -98,9 +99,21 @@ int Streamer::getH() const
 
 void Streamer::start()
 {
+ //   qDebug()<<QTime::currentTime()<<" start "<<URL;
 tmrStart->stop();
+count++;
+
 delay=10;
+if(count>5){
+    qDebug()<<"too long "<<URL;
+    delay=1000;
+}
+if(count>25){
+    qDebug()<<"too long "<<URL;
+    delay=30000;
+}
 if(!isValid){
+
 startRunner();
  tmrStart->singleShot(delay,this,SLOT(start()));
 }
@@ -108,7 +121,7 @@ startRunner();
 
 void Streamer::startRunner()
 {
-    //qDebug()<<"Streamer::startRunner()";
+    qDebug()<<QTime::currentTime()<< "Streamer::startRunner() "<<URL<<" "<<delay<<" "<<count;
 
 
      if(mm!=nullptr){
@@ -131,10 +144,17 @@ void Streamer::startRunner()
 
     connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
     connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
-
+    connect(mm.data(),SIGNAL(signal_isOver()),this,SLOT(thread_is_over()));
 
     mm->thread->start();
     isValid=true;
+}
+
+void Streamer::thread_is_over()
+{
+    qDebug()<<"thread_is_over for "<<m_index<<" "<<URL;
+    emit signal_thread_is_over();
+
 }
 
 void Streamer::stop()
@@ -178,13 +198,14 @@ void Streamer::receiveFrame(QString URL)
 {
  //   //qDebug()<<"+";
     got_frame=true;
+    count = 0;
     emit frame(URL);
 }
 
 void Streamer::lostConnection(QString URL)
 {
 
-    //qDebug()<<"lostConnection";
+    qDebug()<<"lostConnection";
     emit lost(URL);
     tmrStart->stop();
     isValid=false;

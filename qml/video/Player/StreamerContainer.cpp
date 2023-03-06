@@ -25,6 +25,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
     if(!streamer){
 
         streamer=QSharedPointer<Streamer>::create(url,mode);
+        connect(streamer.data(),SIGNAL(signal_thread_is_over()),this,SLOT(thread_is_over()));
         if(streamer){
             map.append(streamer);
             qDebug()<<"добавляем в контейер "<<url;
@@ -40,7 +41,17 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
     }
 
+
+
     for(auto one : map){
+
+
+
+
+
+
+
+
 
        if(
 
@@ -60,13 +71,25 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
     qDebug()<<" ";
     qDebug()<<"Потоки: "<<map.count();
      qDebug()<<" ";
-    for(auto one :map){
 
-        qDebug()<<one.data()->getURL();
-         qDebug()<<"подписчики: "<<one.data()->getFollowers()<<"; завершен - " <<one.data()->mm->runner->thread()->isFinished();
- qDebug()<<" ";
+        for(auto one : map){
+            qDebug()<<one.data()->getURL();
+            qDebug()<<one.data()->start_time.toString();
+            qDebug()<<"индекс потока    : "<<one.data()->get_m_index();
 
-    }
+
+            qDebug()<<"Подписчики       : "<<one.data()->getFollowers();
+            qDebug()<<"Хранится         : "<<one.data()->getSave();
+            qDebug()<<"runner завершен  :" <<one.data()->mm->runner->thread()->isFinished();
+            qDebug()<<"mode             :" <<one.data()->mode;
+            qDebug()<<"thread isFinished:" <<one.data()->mm->thread->isFinished();
+            qDebug()<<"thread isRunning :" <<one.data()->mm->thread->isRunning();
+            qDebug()<<" ";
+        }
+
+
+
+
 
 
 
@@ -89,6 +112,45 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
         }
     }
     return nullptr;
+}
+
+void StreamerContainer::thread_is_over()
+{
+    for(auto one : map){
+
+       if(
+
+               one.data()->mode == Runner::Mode::TurnOff &&
+               one.data()->mm->thread->isFinished()&&
+               !one.data()->mm->thread->isRunning()
+
+               )
+
+               {
+           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL();
+           map.removeOne(one);
+       }
+
+    }
+
+    qDebug()<<" ";
+    qDebug()<<"Потоки: "<<map.count();
+     qDebug()<<" ";
+
+        for(auto one : map){
+            qDebug()<<one.data()->getURL();
+            qDebug()<<one.data()->start_time.toString();
+            qDebug()<<"индекс потока    : "<<one.data()->get_m_index();
+
+
+            qDebug()<<"Подписчики       : "<<one.data()->getFollowers();
+            qDebug()<<"Хранится         : "<<one.data()->getSave();
+            qDebug()<<"runner завершен  :" <<one.data()->mm->runner->thread()->isFinished();
+            qDebug()<<"mode             :" <<one.data()->mode;
+            qDebug()<<"thread isFinished:" <<one.data()->mm->thread->isFinished();
+            qDebug()<<"thread isRunning :" <<one.data()->mm->thread->isRunning();
+            qDebug()<<" ";
+        }
 }
 
 

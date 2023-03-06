@@ -36,7 +36,7 @@ private:
     bool isOver=false;
     int m_index;
 signals:
-
+ void signal_isOver();
 
 };
 

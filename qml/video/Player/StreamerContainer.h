@@ -19,6 +19,9 @@ public:
 
     QSharedPointer<Streamer> find(QString url);
 
+public slots:
+    void thread_is_over();
+
 signals:
 
 };

@@ -47,9 +47,13 @@ public:
 
     QTimer *tmrStart;
 
+    QDateTime start_time;
+
    bool got_frame=false;
 
     int delay;
+
+    int count;
 
     AVPicture *getData() const;
 
@@ -92,10 +96,12 @@ public slots:
 
     void startRunner();
 
+    void thread_is_over();
+
 signals:
     void frame(QString URL);
     void lost(QString URL);
-
+ void signal_thread_is_over();
 };
 
 #endif // STREAMER_H
