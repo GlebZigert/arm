@@ -33,12 +33,13 @@ Item{
 
     Timer {
         id: rescale_timer
-        interval: 1; running: false; repeat: false
+        interval: 10; running: false; repeat: false
         property int msec:0
         property var prev_date : 0
         property int sec : 0
         onTriggered:
         {
+            console.log("rescale timer")
             multivm.rescale()
 
         }

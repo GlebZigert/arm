@@ -247,7 +247,7 @@ Item{
         }else{
                          wnd.visibility=5
         }
-           multivm.rescale_timer_start()
+        multivm.rescale_timer_start()
 /*
     if(timelist_rect.width==0){
        timelist_rect.width=110
@@ -258,7 +258,8 @@ Item{
     }
     */
 
-    multivm.rescale(multivm.scale)
+
+   // multivm.rescale(multivm.scale)
 
 
 
