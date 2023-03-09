@@ -166,6 +166,7 @@ Item{
             height: 40
 
             onClicked: {
+                        timer.stop()
                 console.log("onClicked .")
                 multivm.to_next_page()
             }
@@ -184,6 +185,7 @@ Item{
             MouseArea{
                 anchors.fill: parent
                 onClicked: {
+                            timer.stop()
                multivm.next_scale()
                 }
             }
@@ -217,6 +219,7 @@ Item{
 
             onClicked: {
                 console.log("onClicked .")
+                        timer.stop()
                 multivm.multivm_delete_page()
             }
         }
@@ -227,6 +230,7 @@ Item{
 
             onClicked: {
                 console.log("onClicked .")
+                        timer.stop()
                 page_input_view.visible=true
             }
 
@@ -331,6 +335,8 @@ Item{
                 anchors.fill: parent
 
                 onClicked: {
+
+
 
               panel.height=0
                     multivm.rescale()
