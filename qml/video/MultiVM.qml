@@ -30,6 +30,8 @@ Item{
 
     property bool full
 
+    signal clicked
+
 
     Timer {
         id: rescale_timer
@@ -66,7 +68,7 @@ Item{
     MouseArea{
         anchors.fill: parent
         hoverEnabled: true
-
+        propagateComposedEvents: true
 
     GridLayout {
 
@@ -385,9 +387,10 @@ Item{
     }
 
 
-        propagateComposedEvents: true
+
 
         onClicked: {
+            console.log("+++++++++++++++++++++++++++++")
             console.log("select by click")
             for(var i = 0; i<grid.children.length-1; i++)
             {
@@ -425,6 +428,7 @@ Item{
                     grid.children[i].set_selected(false)
                 }
             }
+           good.clicked()
         }
     }
 

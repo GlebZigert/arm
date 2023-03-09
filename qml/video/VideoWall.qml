@@ -64,11 +64,27 @@ Item{
         height: parent.height-30
         Layout.fillWidth: true
         Layout.fillHeight: true
+/*
+        MouseArea{
+             anchors.fill: parent
+       //      propagateComposedEvents: true
+             onClicked: {
 
-    MultiVM{
-        id: multivm
-        anchors.fill: parent
-    }
+             }
+
+   }
+        */
+
+            MultiVM{
+                id: multivm
+
+                anchors.fill: parent
+
+
+            }
+
+
+
 
     Loaded_cameras {
         anchors.fill: parent
@@ -486,9 +502,15 @@ Item{
 
                 multivm.selected_cid.connect(f_selected_sid)
 
+        multivm.clicked.connect(f_multivm_clicked)
+
    //     timeline.fullscreen_signal.connect(fullscreen)
 
    //     timeline.signal_scale.connect(scale)
+    }
+
+    function f_multivm_clicked(){
+    timer.stop()
     }
 
     function f_selected_sid(id){
