@@ -145,10 +145,10 @@ Item{
     Component.onDestruction: {
         settings.x1 = wnd1.x
         settings.y1 = wnd1.y
-        settings.visibility1 = wnd1.visibility
+        settings.visibility1 = (wnd1.visibility === 0 ? 2 :wnd1.visibility)
         settings.x2 = wnd2.x
         settings.y2 = wnd2.y
-        settings.visibility2 = wnd2.visibility
+        settings.visibility2 =  (wnd2.visibility === 0 ? 2 :wnd2.visibility)
         console.log("settings-->")
         console.log(settings.x1)
         console.log(settings.y1)
