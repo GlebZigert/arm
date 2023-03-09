@@ -102,9 +102,9 @@ bool Runner::load_settings()
 
 
     av_dict_set(&options, "buffer_size", "1024000", 0); //Set the cache size, 1080p can increase the value
-    av_dict_set(&options, "rtsp_transport", "udp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
+    av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
     av_dict_set(&options, "stimeout", "400000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
-    av_dict_set(&options, "max_delay", "50", 0); //Set the maximum delay
+    av_dict_set(&options, "max_delay", "100", 0); //Set the maximum delay
     //   qDebug()<<"avformat_open_input -->";
     int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
     //   qDebug()<<"<-- avformat_open_input";

@@ -220,7 +220,10 @@ void Streamer::lostConnection(QString URL)
         mm->stop();
         }
 
+        if(URL!=""){
+
         tmrStart->singleShot(delay,this,SLOT(start()));
+        }
         return;
 
 

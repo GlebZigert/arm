@@ -68,6 +68,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
        }
 
     }
+    /*
     qDebug()<<" ";
     qDebug()<<"Потоки: "<<map.count();
      qDebug()<<" ";
@@ -86,6 +87,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
             qDebug()<<"thread isRunning :" <<one.data()->mm->thread->isRunning();
             qDebug()<<" ";
         }
+        */
 
 
 
@@ -131,8 +133,10 @@ void StreamerContainer::thread_is_over()
            map.removeOne(one);
        }
 
-    }
 
+
+    }
+/*
     qDebug()<<" ";
     qDebug()<<"Потоки: "<<map.count();
      qDebug()<<" ";
@@ -151,6 +155,7 @@ void StreamerContainer::thread_is_over()
             qDebug()<<"thread isRunning :" <<one.data()->mm->thread->isRunning();
             qDebug()<<" ";
         }
+        */
 }
 
 

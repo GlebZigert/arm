@@ -299,6 +299,8 @@ Item{
 
             multivm.set_current_cid(cid)
 
+            timeline.set_camera_zone(lcl.name)
+
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
         }
     }
@@ -493,8 +495,14 @@ Item{
 
     function send_signal_selected_sid(id){
         cid=id
-        if(cid!=-1)
+        if(cid!=-1){
             Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
+            timeline.set_camera_zone(Axxon.camera(cid).name)
+
+        }else{
+         timeline.set_camera_zone("")
+        }
+
     }
 
     function update_slider_intervals(){

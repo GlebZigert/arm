@@ -432,8 +432,9 @@ void Model::load_from_settings()
 
 
             set_scale(scale);
-
+            if(name!="Архив")
             for(int ii=0;ii<count;ii++){
+
                 settings.beginGroup(QString("Camera %1").arg(ii));
 
 

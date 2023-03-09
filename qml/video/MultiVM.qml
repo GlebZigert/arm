@@ -838,6 +838,7 @@ Item{
         md.to_next_page()
         rescale()
         good.currentPage(md.get_current_page_name())
+        good.selected_cid(-1)
 
 
     }

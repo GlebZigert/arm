@@ -23,18 +23,32 @@ Item{
     signal switch_tlmtr
 
 
+    Timer {
+        id: start_timer
+        interval: 500; running: true; repeat: false
 
+        onTriggered:
+        {
+            multivm.rescale()
+            if(multivm.get_cids().length){
+            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
+            }
+
+
+    }
+    }
 
 
 
     Timer {
         id: timer
-        interval: 5000; running: true; repeat: true
+        interval: 5000; running: false; repeat: true
         property int msec:0
         property var prev_date : 0
         property int sec : 0
         onTriggered:
         {
+            interval: 5000
             multivm.to_next_page()
 
 
@@ -230,6 +244,33 @@ Item{
 
     }
 
+        Rectangle {
+
+            color: "lightblue";
+            width: 200
+            height: 40
+            visible: true
+    /*
+            radius: 6
+            border.width: 4
+            border.color: "gray"
+    */
+            Text {
+                x:10
+                y:5
+                id: cameraName
+                text: ""
+                font.family: "Helvetica"
+                font.pointSize: 20
+                color: "black"
+            }
+
+
+
+    }
+
+
+
         Rectangle{
             x: panel.width-90
             width:40
@@ -388,9 +429,9 @@ Item{
             var dt=""
 
             //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
-            //   timeline.set_camera_zone(lcl.name)
 
-            multivm.set_current_cid(cid)
+
+            cameraName.text=lcl.name
 
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
 
@@ -421,10 +462,21 @@ Item{
 
         multivm.currentPage.connect(f_currentPage)
 
+                multivm.selected_cid.connect(f_selected_sid)
 
    //     timeline.fullscreen_signal.connect(fullscreen)
 
    //     timeline.signal_scale.connect(scale)
+    }
+
+    function f_selected_sid(id){
+        if(id!==-1){
+
+            cameraName.text=(Axxon.camera(id).name)
+
+        }else{
+           cameraName.text=""
+        }
     }
 
     function f_currentPage(nm){
@@ -437,6 +489,8 @@ Item{
     function set_the_multivm_settings(){
         console.log("set_the_multivm_settings")
         multivm.setVid("VideoWall")
+
+        /*
         multivm.multivm_add_page("Вкладка 1")
         multivm.multivm_add_page("Вкладка 2")
         multivm.multivm_add_page("Вкладка 3")
@@ -445,6 +499,7 @@ Item{
         multivm.multivm_add_page("Вкладка 5")
         multivm.multivm_add_page("Вкладка 5")
         multivm.multivm_add_page("Вкладка 5")
+        */
     }
 
     function f_switch_tlmtr(){
