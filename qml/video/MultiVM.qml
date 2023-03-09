@@ -158,7 +158,7 @@ Item{
 
                     Text{
                         anchors.fill: parent
-                        text: model.cid
+                        text: model.cid==-1 ? "" : Axxon.camera(model.cid).name
                     }
 
 
@@ -823,7 +823,9 @@ Item{
 
     function to_page(name){
     md.to_page(name)
-        rescale(good.scale)
+        rescale()
+        good.currentPage(md.get_current_page_name())
+        good.selected_cid(-1)
     }
 
     function multivm_delete_page(name){

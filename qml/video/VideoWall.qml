@@ -29,10 +29,12 @@ Item{
 
         onTriggered:
         {
-            multivm.rescale()
+            multivm.to_page(0)
+        //    multivm.rescale()
             if(multivm.get_cids().length){
             request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
             }
+
 
 
     }
@@ -280,10 +282,11 @@ Item{
             border.width: 4
             border.color: "gray"
     */
-            Text {
+            TextInput {
                 x:10
                 y:5
                 id: cameraIpAddr
+                readOnly: true
                 text: ""
                 font.family: "Helvetica"
                 font.pointSize: 20
@@ -436,9 +439,10 @@ Item{
     function f_change_camera(id){
 
         cid=id
-        var lcl
-        lcl=Axxon.camera(id)
-        if(lcl!==-1){
+
+        if(id!==-1){
+            var lcl
+            lcl=Axxon.camera(id)
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
             //   configPanel.state="hide"
@@ -452,11 +456,11 @@ Item{
             var dt=""
 
             //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
-
-
-            cameraName.text=lcl.name
-            cameraIpAddr.text=lcl.ipaddr
+            multivm.set_current_cid(cid)
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
+            cameraName.text=lcl.name
+            cameraIpAddr.text=lcl.ipadress
+
 
 
         }

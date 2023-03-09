@@ -298,10 +298,10 @@ Item{
             //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
-
+            request_URL(multivm.get_cids(),lcl.serviceId,dt)
             timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
-            request_URL(multivm.get_cids(),lcl.serviceId,dt)
+
         }else{
         timeline.set_camera_zone("","")
         }
