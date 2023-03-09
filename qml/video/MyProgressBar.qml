@@ -616,7 +616,7 @@ color: "lightgray";
     Rectangle {
 
         color: "lightgray";
-        width: 300;
+        width: 200;
         height: 40
         visible: true
 
@@ -627,6 +627,28 @@ color: "lightgray";
         x:10
         y:5
         id: camera_name_zone
+        width: 40
+        height: 240
+        font.family: "Helvetica"
+        font.pointSize: 20
+        color: "black"
+    }
+    }
+
+    Rectangle {
+
+        color: "lightgray";
+        width: 170;
+        height: 40
+        visible: true
+
+        radius: 6
+
+
+    Text{
+        x:10
+        y:5
+        id: ipaddr
         width: 40
         height: 240
         font.family: "Helvetica"
@@ -666,7 +688,7 @@ color: "lightgray";
     }
 
     Rectangle{
-        x: panel.width-135
+        x: m_item.width-135
         width:40
         height: 40
 
@@ -1214,7 +1236,8 @@ livestream_txt.text=m_item.mode
     update_timelist(dt)
 }
 
-function  set_camera_zone(str){
-camera_name_zone.text=str
+function  set_camera_zone(name,ip){
+camera_name_zone.text=name
+ ipaddr.text=ip
 }
 }

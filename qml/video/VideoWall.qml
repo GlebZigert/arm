@@ -269,7 +269,30 @@ Item{
 
     }
 
+        Rectangle {
 
+            color: "lightblue";
+            width: 200
+            height: 40
+            visible: true
+    /*
+            radius: 6
+            border.width: 4
+            border.color: "gray"
+    */
+            Text {
+                x:10
+                y:5
+                id: cameraIpAddr
+                text: ""
+                font.family: "Helvetica"
+                font.pointSize: 20
+                color: "black"
+            }
+
+
+
+    }
 
         Rectangle{
             x: panel.width-90
@@ -432,7 +455,7 @@ Item{
 
 
             cameraName.text=lcl.name
-
+            cameraIpAddr.text=lcl.ipaddr
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
 
 
@@ -472,10 +495,12 @@ Item{
     function f_selected_sid(id){
         if(id!==-1){
 
-            cameraName.text=(Axxon.camera(id).name)
+            cameraName.text=Axxon.camera(id).name
+            cameraIpAddr.text=Axxon.camera(id).ipadress
 
         }else{
            cameraName.text=""
+           cameraIpAddr.text=""
         }
     }
 

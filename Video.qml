@@ -608,7 +608,7 @@ Item{
 
             }
             root.deviceSelected(panePosition,lcl.sid,lcl.id)
-            timeline.set_camera_zone(lcl.name)
+            timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
             v1.set_current_cid(cid)
 

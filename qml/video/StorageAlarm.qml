@@ -299,9 +299,11 @@ Item{
 
             multivm.set_current_cid(cid)
 
-            timeline.set_camera_zone(lcl.name)
+            timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
+        }else{
+        timeline.set_camera_zone("","")
         }
     }
 
@@ -497,10 +499,10 @@ Item{
         cid=id
         if(cid!=-1){
             Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
-            timeline.set_camera_zone(Axxon.camera(cid).name)
+            timeline.set_camera_zone(Axxon.camera(cid).name,Axxon.camera(cid).ipadress)
 
         }else{
-         timeline.set_camera_zone("")
+         timeline.set_camera_zone("","")
         }
 
     }
