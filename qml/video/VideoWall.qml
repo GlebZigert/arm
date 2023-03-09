@@ -156,49 +156,44 @@ Item{
         }
 
         Rectangle{
-
             width:40
             height: 40
-
-
-
             opacity: 1
-
             color:"#00000000"
-
             Image {
-
-
                 source: "/qml/video/fullsize.png"
                 anchors.fill: parent
                 visible: true
             }
-
             MouseArea{
                 anchors.fill: parent
-
                 onClicked: {
-
                multivm.next_scale()
-
-
-
                 }
             }
         }
 
-        Button{
-            width: 40
+        Rectangle{
+            width:40
             height: 40
-
-            onClicked: {
-                console.log("onClicked .")
-                if(timer.running)
-                    timer.stop()
-                else
-                    timer.start()
+            opacity: 1
+            color:"#00000000"
+            Image {
+                source: timer.running ? "Media-Play-40.png" : "Media-Pause-40.png"
+                anchors.fill: parent
+                visible: true
+            }
+            MouseArea{
+                anchors.fill: parent
+                onClicked: {
+                    if(timer.running)
+                        timer.stop()
+                    else
+                        timer.start()
+                }
             }
         }
+
 
         Button{
             width: 40
