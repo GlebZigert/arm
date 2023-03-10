@@ -378,7 +378,15 @@ Item{
     }
 
     function f_to_storage_cameras(){
+        if(multivm.get_current_page_name()==="Тревоги"){
         multivm.to_page("Архив")
+            timeline.set_to_storage_cameras_text("К тревогам")
+        }else{
+        multivm.to_page("Тревоги")
+                        timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
+        }
+
+
     }
 
     function set_the_multivm_settings(){
@@ -427,6 +435,7 @@ Item{
 
 
         }
+        timeline.set_to_storage_cameras_text("К тревогам")
         multivm.add_storage_camera(cids)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
@@ -476,7 +485,7 @@ Item{
             pause_play=play
             timeline.to_live()
 
-
+            timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
 
             multivm.add_alarm_camera(id)
             //Для мультвм выставляем флаг тревожного режима
