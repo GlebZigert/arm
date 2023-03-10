@@ -825,6 +825,10 @@ bool Page::get_alarm_at(int i)
     if(map.count()<=i)
         return false;
 
+    if(map.values().at(i)->cid==-1){
+        map.values().at(i)->alarm=false;
+    }
+
     return map.values().at(i)->alarm;
 }
 

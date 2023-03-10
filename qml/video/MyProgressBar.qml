@@ -668,7 +668,7 @@ color: "lightgray";
 
         Text {
 
-
+            id: to_storage_cameras_text
             x:10
             y:5
             font.family: "Helvetica"
@@ -1240,4 +1240,9 @@ function  set_camera_zone(name,ip){
 camera_name_zone.text=name
  ipaddr.text=ip
 }
+
+function set_to_storage_cameras_text(str){
+to_storage_cameras_text.text=str
+}
+
 }

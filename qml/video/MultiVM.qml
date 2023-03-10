@@ -918,6 +918,10 @@ Item{
     rescale_timer.start()
     }
 
+    function get_current_page_name(){
+    return md.get_current_page_name()
+    }
+
 
 
 }
