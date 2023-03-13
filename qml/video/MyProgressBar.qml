@@ -303,7 +303,7 @@ Row {
 
         Image {
 
-            source: "Arrowhead-Left-01-40.png"
+            source: "left.png"
             anchors.fill: parent
             visible: true
         }
@@ -324,7 +324,7 @@ Row {
 
             dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
-            image.source="Media-Pause-40.png"//it was play
+            image.source="pause.png"//it was play
              m_item.play=false
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
@@ -351,7 +351,7 @@ Row {
         Image {
             id: image
 
-            source:"Media-Play-40.png"
+            source:"play.png"
 
 
             anchors.fill: parent
@@ -382,7 +382,7 @@ Row {
         Image {
 
 
-            source: "Arrowhead-Right-01-40.png"
+            source: "right.png"
             anchors.fill: parent
               visible: true
         }
@@ -402,7 +402,7 @@ Row {
 
             dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
-            image.source="Media-Pause-40.png"//it was play
+            image.source="pause.png"//it was play
              m_item.play=false
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
@@ -702,7 +702,7 @@ color: "lightgray";
         Image {
 
 
-            source: "/qml/video/fullsize.png"
+            source: "down.png"
             anchors.fill: parent
             visible: true
         }
@@ -735,7 +735,7 @@ color: "lightgray";
         Image {
 
 
-            source: "/qml/video/fullsize.png"
+            source: "grid.png"
             anchors.fill: parent
             visible: true
         }
@@ -768,7 +768,7 @@ color: "lightgray";
         Image {
 
 
-            source: "/qml/video/fullsize.png"
+            source: "fullscreen.png"
             anchors.fill: parent
             visible: true
         }
@@ -999,7 +999,7 @@ function set_sliders_and_calendar_from_current_datetime_value(dt)
 function take_a_pause()
 {
 
-image.source="Media-Pause-40.png" //it was play
+image.source="pause.png" //it was play
 
 m_item.play=false
 
@@ -1026,7 +1026,7 @@ function play_or_pause()
 
     if(m_item.play==false)
     {
-        image.source="Media-Play-40.png"
+        image.source="play.png"
         m_item.play=true
 
         var dt=datetime(slider.value)
@@ -1041,7 +1041,7 @@ function play_or_pause()
     else
     {
 
-        image.source="Media-Pause-40.png"//it was play
+        image.source="pause.png"//it was play
          m_item.play=false
 
 
@@ -1210,7 +1210,7 @@ livestream_txt.text=m_item.mode
 
     slider.value=x
 
-    image.source="Media-Play-40.png"
+    image.source="pause.png"
     m_item.play=true
 
 
