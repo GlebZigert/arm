@@ -40,7 +40,8 @@ Item{
 
         onTriggered:
         {
-            multivm.rescale()
+             multivm.to_page(0)
+        //    multivm.rescale()
             if(multivm.get_cids().length){
             request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
             }
@@ -272,11 +273,12 @@ Item{
     }
 
     function f_change_camera(id){
-
+        console.log("f_change_camera ",id)
         cid=id
-        var lcl
-        lcl=Axxon.camera(id)
-        if(lcl!==-1){
+
+        if(id!==-1){
+            var lcl
+            lcl=Axxon.camera(id)
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
             //   configPanel.state="hide"
@@ -395,6 +397,8 @@ Item{
         multivm.multivm_add_page("Тревоги")
         multivm.multivm_add_page("Архив")
 
+        multivm.to_page("Архив")
+
         multivm.rescale(1)
 
     }
@@ -408,7 +412,7 @@ Item{
 
         var commands =  JSON.parse(event.commands)
 
-        console.log("eventSelected_handler")
+        console.log("StorageAlarm eventSelected_handler")
 
         var cids=[]
 
@@ -633,6 +637,14 @@ Item{
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
+
+            console.log("lcl: ",lcl.id
+                        ," "<<lcl.name
+                        ," "<<lcl.liveStream
+                        ," "<<lcl.storageStream
+                        ," "<<lcl.snapshot
+                       )
+
             if(pause_play==pause)
             {
 

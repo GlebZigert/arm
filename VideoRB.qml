@@ -46,7 +46,7 @@ Item{
 
             wnd1.x =   settings.x1
             wnd1.y =   settings.y1
-            wnd1.visibility =   settings.visibility1
+            wnd1.visibility =   wnd1.visibility === 0 ? 2 :wnd1.visibility
         }
     }
 
@@ -86,7 +86,7 @@ Item{
 
          wnd2.x =   settings.x2
          wnd2.y =   settings.y2
-         wnd2.visibility =   settings.visibility2
+         wnd2.visibility =   wnd2.visibility === 0 ? 2 :wnd2.visibility
         }
     }
 

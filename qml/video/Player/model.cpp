@@ -26,34 +26,34 @@ int Model::get_vid_count()
 
 void Model::show()
 {
-/*
-    //   qDebug()<<"-->";
-    //   qDebug()<<"количество видеоэкранов: "<<mdl.count();
+
+       qDebug()<<"-->";
+       qDebug()<<"количество видеоэкранов: "<<mdl.count();
 
     for(auto vid : mdl.keys()){
 
-        //   qDebug()<<"видеоэкран: "<< vid;
+           qDebug()<<"видеоэкран: "<< vid;
 
         auto wall = mdl.value(vid);
 
-        //   qDebug()<<"количество страниц: "<<wall->count();
-        //   qDebug()<<"Активная страница: "<<wall->current_page;
+           qDebug()<<"количество страниц: "<<wall->count();
+           qDebug()<<"Активная страница: "<<wall->current_page;
 
         for(auto one : wall.data()->list){
 
-            //   qDebug()<<"страница: "<<one->name;
+               qDebug()<<"страница: "<<one->name;
 
-            //   qDebug()<<"масштаб: "<<one->current_scale();
-             //   qDebug()<<"количество камер: "<<one->count();
+               qDebug()<<"масштаб: "<<one->current_scale();
+                qDebug()<<"количество камер: "<<one->count();
              auto map = one->get_map();
              for(auto uid : map.keys()){
-                 //   qDebug()<<uid<< map.value(uid)->cid<<" "<<map.value(uid)->url<<" "<<map.value(uid)->alarm;
+                    qDebug()<<uid<< map.value(uid)->cid<<" "<<map.value(uid)->url<<" "<<map.value(uid)->alarm;
              }
 
         }
-        //   qDebug()<<"<--";
+           qDebug()<<"<--";
     }
-    */
+
 
    // save_to_settings();
      //   load_from_settings();
@@ -70,7 +70,7 @@ int Model::get_pages_count()
     int count = mdl.value(vid).data()->count();
     //   qDebug()<<"количество страниц на видеостене: "<<vid<<" : "<<count;
     //   qDebug()<<"<-- Model::get_pages_count(QString vid)";
-    show();
+    //show();
     return count;
 }
 
@@ -97,17 +97,18 @@ bool Model::add_page(QString pageName)
     mdl.value(vid)->setCurrent_page(wall->list.count()-1);
     }
 
-show();
+//show();
     return true;
     }
-show();
+//show();
     return false;
 }
 
 bool Model::delete_page( int page)
 {
     //   qDebug()<<"на видеостене "<<vid<<" удаляем страницу ";
-    show();return mdl.value(vid)->delete_page(page);
+    //show();
+    return mdl.value(vid)->delete_page(page);
 }
 
 bool Model::to_page( int page)
@@ -120,13 +121,15 @@ bool Model::to_page( int page)
         //   qDebug()<<"у видеостены "<<vid<<" нет cтраницы c номером "<<page;
         int count = mdl.value(vid).data()->count();
         //   qDebug()<<"количество страниц на видеостене: "<<vid<<" : "<<count;
-        show();return false;
+        //show();
+        return false;
 
     }
     mdl.value(vid)->setCurrent_page(page);
     //   qDebug()<<"Переход на видеостене "<<vid<<" на страницу "<<page;
 
-    show();return true;
+    //show();
+    return true;
 
 
 }
@@ -165,18 +168,18 @@ bool Model::to_next_page()
 
     mdl.value(vid)->current_page=page;
 
-    show();
+    //show();
 
     return true;
 
 
 }
-
 int Model::current_page()
 {
 
     //   qDebug()<<"Model::current_page()";
-    show();return mdl.value(vid)->getCurrent_page();
+    //show();
+    return mdl.value(vid)->getCurrent_page();
 }
 
 bool Model::add_camera()
@@ -184,10 +187,11 @@ bool Model::add_camera()
     //   qDebug()<<"Model::add_camera()";
     //   //   qDebug()<<""
     auto res = mdl.value(vid)->add_camera();
-    show();
+    //show();
     return res;
 
-    //   show();return false;
+    //
+    return false;
 
 }
 
@@ -202,7 +206,7 @@ void Model::next_scale()
 {
     //   qDebug()<<"Model::next_scale()";
     mdl.value(vid)->next_scale();
-    show();
+    //show();
 }
 
 void Model::set_scale(int val)
@@ -218,7 +222,7 @@ int Model::current_scale()
     }
 
     auto res = mdl.value(vid)->current_scale();
-    show();
+    //show();
     return res;
 
 }
@@ -228,20 +232,22 @@ void Model::check_the_scale(int id, bool alarm)
     //   qDebug()<<"Model::check_the_scale";
 
     mdl.value(vid)->check_the_scale(id,alarm);
- //       show();
+ //       //show();
 }
 
 int Model::get_uid_at(int i)
 {
     //   qDebug()<<"Model::get_uid_at(int i)";
     auto res = mdl.value(vid)->get_uid_at(i);
-   // show();
+   // //show();
     return res;
 }
 
 QList<int> Model::get_cids()
 {
-    //   qDebug()<<"Model::get_cids()";
+ //      qDebug()<<"Model::get_cids() from "<<get_current_page_name();
+
+   //    show();
     QList<int> lst;
     auto v1 =mdl.value(vid);
 
@@ -252,22 +258,25 @@ QList<int> Model::get_cids()
     auto v3=mdl.value(vid)->current_page;
     if(v3=-1)
         v3=0;
-
-    if(v3>=v1->list.count())
+  //   qDebug()<<"v3 "<<v3;
+    if(v3>=v1->list.count()){
         return lst;
+   //      qDebug()<<"return lst; ";
+    }
 
     auto v2=v1->list.at(v3);
     auto v4=v2->map;
 
-
-
+//  qDebug()<<"v2->map.count ; "<<v2->map.count();
+// qDebug()<<"v2->map.keys ; "<<v2->map.keys();
 
 
             auto v5=v4.keys();
 
+     //    qDebug()<<"return v5; ";
             return v5;
 
-    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
+//    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
 }
 
 int Model::get_cid_at(int i)
@@ -292,14 +301,14 @@ void Model::set_cid_for_uid(int cid, int uid)
 {
      //   //   qDebug()<<"Model::set_cid_for_uid(int cid, int uid)";
      mdl.value(vid)->set_cid_for_uid(cid,uid);
-     show();
+     //show();
 }
 
 void Model::set_url_for_uid(QString url, int uid)
 {
         //    //   qDebug()<<"Model::set_url_for_uid(QString url, int uid)";
      mdl.value(vid)->set_url_for_uid(url,uid);
-     show();
+     //show();
 }
 
 QString Model::get_current_page_name()
@@ -461,6 +470,9 @@ void Model::load_from_settings()
 
                 settings.endGroup();
             }
+            if(mdl.value(vid)->list.count()==0){
+            mdl.value(vid)->list.at(mdl.value(vid)->list.count()-1)->add_camera();
+            }
 
             settings.endGroup();
 
@@ -599,16 +611,23 @@ void Wall::setCurrent_page(int newCurrent_page)
 
 int Wall::get_uid_at(int i)
 {
-    if(current_page==-1)
+    if(current_page==-1){
+        qDebug()<<"current_page==-1";
         return -1;
+    }
 
 
-    if(list.count()<=current_page)
+    if(list.count()<=current_page){
+        qDebug()<<"list.count()<=current_page";
         return -1;
+        return -1;
+    }
 
-    if(list.at(current_page))
+    if(list.at(current_page)){
+
     return list.at(current_page)->get_uid_at(i);
-
+    }
+ qDebug()<<"!list.at(current_page)";
     return -1;
 }
 

@@ -92,6 +92,22 @@ Item{
 
     }
 
+    Timer {
+        id: start_timer
+        interval: 500; running: true; repeat: false
+
+        onTriggered:
+        {
+
+        //    multivm.rescale()
+        //    if(v1.get_cids().length){
+        //    request_URL(multivm.get_cids(),Axxon.camera(v1.get_cids()[0]).serviceId,"")
+        //    }
+
+
+    }
+    }
+
 
     Timer {
         id:timer
@@ -237,6 +253,7 @@ Item{
                             PropertyChanges {
                                 target: configPanel
                                 opacity: 1
+
                                 anchors.rightMargin: 0
                                 width: 400
                             }
@@ -473,6 +490,8 @@ Item{
 
         root.cameraList.updated.connect(camera_storage.update_from_cameraList)
 
+        root.frash_URL.connect(f_current_camera_update)
+
         timeline.to_live()
         root.event_on_camera.connect(f_event_on_camera)
         timeline.moved_at_dt.connect(f_moved_at_dt)
@@ -678,6 +697,7 @@ Item{
             configPanel.state="hide"
         }else{
             configPanel.state="show"
+            camera_storage.visible=true
         }
     }
 
@@ -726,6 +746,13 @@ Item{
 
 
         var lcl=Axxon.camera(id)
+
+        console.log(lcl.id
+                    ," "<<lcl.name
+                    ," "<<lcl.liveStream
+                    ," "<<lcl.storageStream
+                    ," "<<lcl.snapshot
+                   )
         if(root.pause_play==pause)
         {
 
@@ -733,8 +760,9 @@ Item{
             {
                 //vm.source=lcl.snapshot
 
-                v1.vm_start(id,lcl.snapshot,Mode.Snapshot)
-
+             //   v1.vm_start(id,lcl.snapshot,Mode.Snapshot)
+                v1.set_vm_source(id,lcl.snapshot)
+               v1.vm_start(Mode.Snapshot)
             }
             else
                 if(root.storage_live==live)
@@ -750,7 +778,9 @@ Item{
                 if(root.storage_live==storage)
                 {
 
-                    v1.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                //    v1.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                    v1.set_vm_source(id,lcl.storageStream)
+                   v1.vm_start(Mode.StorageStreaming)
 
                 }
                 else
@@ -772,8 +802,8 @@ Item{
                     //    vm.source=lcl.liveStream
                     //    vm.start()
 
-
-                        v1.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+                         v1.set_vm_source(id,lcl.liveStream)
+                        v1.vm_start(Mode.LiveStreaming)
                     }
 
             }
@@ -803,6 +833,7 @@ Item{
 
     function eventSelected_handler(event){
 
+        console.log("Video eventSelected_handler")
         var str=event.commands
         str=str.replace(/(\[)/g, "")
         str=str.replace(/(\])/g,"")
@@ -838,10 +869,10 @@ Item{
         root.log("telemetryControlID: ",lcl.telemetryControlID)
         root.telemetryPoint=lcl.telemetryControlID
 
-
+        v1.cid=cid
 
         timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
-        Axxon.request_URL(v1.get_cids(),Axxon.camera(id).serviceId,dt,"utc")
+       request_URL(cid,Axxon.camera(cid).serviceId,dt,"utc")
 
     }
 

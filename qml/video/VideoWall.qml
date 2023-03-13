@@ -454,7 +454,7 @@ Item{
     }
 
     function f_change_camera(id){
-
+        console.log("f_change_camera ",cid)
         cid=id
 
         if(id!==-1){

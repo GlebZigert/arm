@@ -257,6 +257,7 @@ Item{
 
                         console.log("onClicked .,.")
 
+                        console.log("set cid for uid: ",-1," ",vm.uid)
                         md.set_cid_for_uid(-1,vm.uid)
                         md.set_url_for_uid("",vm.uid)
 
@@ -301,7 +302,7 @@ Item{
                  //на текущем видеоэкране найти uid и выставить ему cid
                  findAndSet(cids,vm.uid,"cid",cid)
 
-
+                    console.log("set cid for uid: ",cid," ",vm.uid)
                     md.set_cid_for_uid(cid,vm.uid)
 
 
@@ -379,7 +380,7 @@ Item{
                     vvm.uid=model.uid
 
                     set_vm_source(model.cid,model.url)
-                 //   console.log("Rect ",index," создан ",uid," ",vm.cid," ",vm.url)
+                    console.log("Rect ",index," создан uid ",uid," ",vm.cid," ",vm.url)
                     vvm.vm_start(1)
 
                 }
@@ -539,6 +540,7 @@ Item{
         {
 
             var lcl = md.get_cid_at(i)
+            console.log(i," ",lcl)
             if(lcl!=-1){
                 var frash=true
                 for(var j in res){
@@ -556,6 +558,7 @@ Item{
     }
 
     function set_current_cid(cid){
+        console.log("set_current_cid ",cid)
         for(var i = 0; i<grid.children.length; i++)
         {
             if(grid.children[i].selected){
@@ -591,6 +594,7 @@ Item{
     }
 
     function vm_start(cid,src,mode){
+        console.log("vm_start ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
@@ -649,7 +653,7 @@ Item{
 
     function rescale(scale){
 
-     //   console.log("and look at scale here: ",scale)
+       console.log("rescale-->")
 
 
         scale= md.current_scale()
@@ -684,6 +688,13 @@ Item{
                 console.log(".. ",md.get_cid_at(i)," ",id)
                 if(md.get_cid_at(i)===id){
 
+                    console.log("append ")
+                    console.log("uid  ",md.get_uid_at(i))
+                    console.log("cid  ",mmd.get_cid_at(i))
+                    console.log("url  ",mmd.get_url_at(i))
+                    console.log("alarm  ",mmd.get_alarm_at(i))
+
+
                     w_model.append({h:height,
                                        w:width,
                                        x: 0,
@@ -705,7 +716,11 @@ Item{
 
             for(var i=0;i<scale*scale;i++){
 
-
+                console.log("append ")
+                console.log("uid  ",md.get_uid_at(i))
+                console.log("cid  ",md.get_cid_at(i))
+                console.log("url  ",md.get_url_at(i))
+                console.log("alarm  ",md.get_alarm_at(i))
 
                 w_model.append({h:hh,
                                    w:ww,
@@ -727,6 +742,7 @@ Item{
 
         good.ready()
         md.save_to_settings()
+         console.log("<--rescale")
     }
 
 
