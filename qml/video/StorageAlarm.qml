@@ -314,7 +314,7 @@ Item{
 
     Component.onCompleted: {
 
-
+            timeline.storageAlarm_edition()
 
 
         timeline.to_live()

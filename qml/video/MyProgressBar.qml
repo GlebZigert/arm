@@ -688,6 +688,7 @@ color: "lightgray";
     }
 
     Rectangle{
+        id: hide_timelines_scale_rectangle
         x: m_item.width-135
         width:40
         height: 40
@@ -720,6 +721,7 @@ color: "lightgray";
     }
 
     Rectangle{
+        id: scale_rectangle
         x: m_item.width-90
         width:40
         height: 40
@@ -752,6 +754,7 @@ color: "lightgray";
     }
 
     Rectangle{
+        id: fullscreen_signal_rectangle
         x: m_item.width-45
         width:40
         height: 40
@@ -1244,5 +1247,30 @@ camera_name_zone.text=name
 function set_to_storage_cameras_text(str){
 to_storage_cameras_text.text=str
 }
+
+function singlewall_edition(){
+    to_storage_cameras.visible=false
+    scale_rectangle.visible=false
+    scale_rectangle.anchors.right=m_item.right
+    scale_rectangle.width=0
+
+    fullscreen_signal_rectangle.visible=false
+    fullscreen_signal_rectangle.anchors.right=m_item.right
+    fullscreen_signal_rectangle.width=0
+ //   hide_timelines_scale_rectangle.x=m_item.width-45
+    hide_timelines_scale_rectangle.anchors.right=m_item.right
+
+}
+
+function storageAlarm_edition(){
+    telemetry_on_off.visible=false
+    camera_list.visible=false
+    event_log.visible=false
+    tree.visible=false
+
+
+
+}
+
 
 }

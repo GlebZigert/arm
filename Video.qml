@@ -433,7 +433,7 @@ Item{
             drag.target: parent
         }
     }
-
+/*
     Rectangle{
         width:40
         height: 40
@@ -463,13 +463,19 @@ Item{
             }
         }
     }
+    */
 
+    function f_hide_timelines(){
+       hide_menu()
+    }
 
     Component.onCompleted: {
 
 
 
+        timeline.singlewall_edition()
 
+timeline.hide_timelines.connect(f_hide_timelines)
 
         var screens = Qt.application.screens;
                for (var i = 0; i < screens.length; ++i)
@@ -703,7 +709,7 @@ Item{
 
     function f_play(){
         root.pause_play=play
-        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt())
+        request_URL(v1.cid,Axxon.camera(cid).serviceId,timeline.current_dt())
     }
 
     function f_pause(){
