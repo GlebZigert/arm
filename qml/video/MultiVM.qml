@@ -20,6 +20,8 @@ Item{
     signal request_URL
     signal switch_tlmtr
 
+    signal playing
+
     signal ready
 
     signal onCompleted

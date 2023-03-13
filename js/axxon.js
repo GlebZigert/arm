@@ -555,7 +555,7 @@ Axxon.prototype.ExecCommand_handler = function (data) {
 
 
 Axxon.prototype.receive_URL = function (data) {
-/*
+
      console.log("")
          console.log("[receive_URL]")
      console.log("",Date())
@@ -564,12 +564,12 @@ Axxon.prototype.receive_URL = function (data) {
          console.log(JSON.stringify(data))
           console.log(JSON.stringify(data))
       console.log("")
-    */
+
      var i
      for (i in data.data) {
-      //console.log("id: ", data.data[i].id)
-      //console.log("liveStream: ", data.data[i].liveStream)
-      //console.log("storageStream: ", data.data[i].storageStream)
+      console.log("id: ", data.data[i].id)
+      console.log("liveStream: ", data.data[i].liveStream)
+      console.log("storageStream: ", data.data[i].storageStream)
     //  root.log("snapshot: ", data.data[i].snapshot)
    //   root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
@@ -581,7 +581,7 @@ var lcl = root.cameraList.get(j)
  var lcld = data.data[i]
          if( data.data[i].id===root.cameraList.get(j).id){
 
-             //console.log("[PROFIT]")
+             console.log("добавляю к ",data.data[i].id)
 
 
 
@@ -870,7 +870,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
 
 
         }
-/*
+
  console.log(" ")
      console.log("request_URL ")
      console.log(" ")
@@ -881,7 +881,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
     console.log("data.dt       : ",data.dt)
     console.log("data.format_dt: ",data.format_dt)
  console.log(" ")
-    */
+
       root.send(serviceId, 'request_URL', data)
 
 }
@@ -951,11 +951,16 @@ function get_cids(){
 }
 
 function camera(id){
- //   root.log("...find camera... ",id)
+    console.log("...find camera... ",id)
     for(var i=0;i<root.cameraList.count;i++){
- //    root.log(root.cameraList.get(i).id)
+     console.log(root.cameraList.get(i).id
+                 <<" "<<root.cameraList.get(i).name
+                 <<" "<<root.cameraList.get(i).liveStream
+                 <<" "<<root.cameraList.get(i).storageStream
+                 <<" "<<root.cameraList.get(i).snapshot
+                )
     if(root.cameraList.get(i).id===id){
- //     root.log("PROFIT")
+      console.log("PROFIT")
     return root.cameraList.get(i)
     }
     }

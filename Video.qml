@@ -25,6 +25,8 @@ Item{
     id: srv
     anchors.fill: parent
 
+    property string vid: "singlewall"
+
     property int item_style: Mode.LiveStreaming
     property int panePosition
     property var video: ({
@@ -185,7 +187,7 @@ Item{
                     propagateComposedEvents: true
                     property int flag: 0
 
-                Video.MultiVM{
+                Video.Vvvvvvm{
                     id: v1
 
                     anchors.fill: parent
@@ -449,6 +451,9 @@ Item{
     Component.onCompleted: {
 
 
+
+
+
         var screens = Qt.application.screens;
                for (var i = 0; i < screens.length; ++i)
                    console.log("screen "+i+" "+ screens[i].name + " has geometry " +
@@ -465,6 +470,9 @@ Item{
         root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
         hide_menu()
         show_menu()
+
+        root.cameraList.updated.connect(camera_storage.update_from_cameraList)
+
         timeline.to_live()
         root.event_on_camera.connect(f_event_on_camera)
         timeline.moved_at_dt.connect(f_moved_at_dt)
@@ -484,7 +492,7 @@ Item{
 
         v1.playing.connect(start_timer_if_its_needed)
 
-        v1.selected_cid.connect(v1_selected)
+       // v1.selected_cid.connect(v1_selected)
 
         timeline.update_timelist.connect(timelist.set_current)
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
@@ -610,9 +618,9 @@ Item{
             root.deviceSelected(panePosition,lcl.sid,lcl.id)
             timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
-            v1.set_current_cid(cid)
+            v1.cid=cid
 
-            request_URL(v1.get_cids(),lcl.serviceId,dt)
+            request_URL(v1.cid,lcl.serviceId,dt)
         }
     }
 
@@ -621,7 +629,17 @@ Item{
 
     }
 
-    function f_current_camera_update(){
+    function f_current_camera_update(videowall){
+
+        console.log("f_current_camera_update")
+        console.log("videowall: ",videowall)
+        console.log("multivm.vid: ",vid)
+
+        if(videowall!==vid){
+            console.log("это не та стена")
+            return
+        }
+
         var lcl
         lcl=Axxon.camera(cid)
         update_vm()
@@ -682,11 +700,14 @@ Item{
 
     function f_moved_at_dt(dt){
         root.storage_live=storage
-        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,dt)
+        request_URL(v1.cid,Axxon.camera(v1.cid).serviceId,dt)
     }
 
     function request_URL(cameraId, serviceId, dt){
-        Axxon.request_URL(cameraId, serviceId, dt,"utc")
+
+        var res =[]
+        res.push(cameraId)
+        Axxon.request_URL(vid,res, serviceId, dt,"utc")
     }
 
     function f_set_live_play()    {
@@ -698,12 +719,12 @@ Item{
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
-    function  update_vm(id)    {
+    function  update_vm()    {
 
-        var cids =  v1.get_cids()
-        for(var one in cids)
-        {
-            var id=cids[one]
+        var id= v1.cid
+        console.log("update_vm ",id)
+
+
         var lcl=Axxon.camera(id)
         if(root.pause_play==pause)
         {
@@ -756,7 +777,7 @@ Item{
                     }
 
             }
-    }
+
     }
 
     function f_telemetry_on_off(){
