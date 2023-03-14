@@ -15,8 +15,8 @@ layouts[Const.ARM_ADMIN] = [
     {symbol: '2', views: [['MyMap', 'PassageView'], ['MyJournal', 'ZonesTree']]},
     {symbol: '3', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},
-    {symbol: '5', views: [['Video']]},
-    {symbol: '6', views: [['VideoRB']]},
+    {symbol: '5', views: [['MyVideo']]},
+    //{symbol: '6', views: [['VideoRB']]},
 
 ]
 commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups", "ListSettings"]
@@ -36,7 +36,7 @@ config[Const.ARM_ADMIN] = {
 ///////////////////////////////////
 layouts[Const.ARM_UNIT] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
-    {symbol: '2', views: [['Video']]},
+    {symbol: '2', views: [['MyVideo']]},
     {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},
 ]
@@ -48,7 +48,7 @@ config[Const.ARM_UNIT] = {}
 /////////////////////////////////////////
 layouts[Const.ARM_CHECKPOINT] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
-    {symbol: '2', views: [['Video']]},
+    {symbol: '2', views: [['MyVideo']]},
     {symbol: '3', views: [['DevicesTree', 'PassageView'], ['MyJournal']]},
 ]
 commands[Const.ARM_CHECKPOINT] = ["ListServices", "ListMaps", "LoadJournal", "ListSettings"]
@@ -59,7 +59,7 @@ config[Const.ARM_CHECKPOINT] = {}
 ///////////////////////////////////
 layouts[Const.ARM_GUARD] = [
     {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
-    {symbol: '3', views: [['Video']]},
+    {symbol: '3', views: [['MyVideo']]},
     {symbol: '2', views: [['ZonesTree'], ['MyJournal']]},
 ]
 commands[Const.ARM_GUARD] = ["ListServices", "ListMaps", "ListZones", "LoadJournal", "ListSettings"]
@@ -69,7 +69,7 @@ config[Const.ARM_GUARD] = {}
 //{id: 5, text: "Оператор ТСО"},
 layouts[Const.ARM_OPERATOR] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
-    {symbol: '2', views: [['Video']]},
+    {symbol: '2', views: [['MyVideo']]},
 ]
 commands[Const.ARM_OPERATOR] = ["ListServices", "ListMaps", "LoadJournal", "ListSettings"]
 config[Const.ARM_OPERATOR] = {}

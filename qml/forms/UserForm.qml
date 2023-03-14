@@ -10,9 +10,10 @@ import "../../js/utils.js" as Utils
 import "../forms" as Forms
 
 ColumnLayout {
-    id: column
+    id: form
     property bool asyncWait
     property int savedId // for passing thru callbacks
+    property var userSettings: JSON.parse(model.settings || '{}')
 
     anchors.fill: parent
     spacing: 5
@@ -130,11 +131,24 @@ ColumnLayout {
                 fileDialog.reset()
             }
 
+            payload = makeSettings(payload)
             //console.log("USER PAYLOAD:", filename, JSON.stringify(payload))
             asyncWait = true
             root.newTask('configuration', 'UpdateUser', payload, done.bind(this, filename), fail)
         } else
             messageBox.error("Форма заполнена не полностью, либо неправильно.")
+    }
+
+    function makeSettings(payload) {
+        const fields = ['videoMode']
+        var settings = {}
+        for (const f of fields)
+            if (f in payload) {
+                settings[f] = payload[f]
+                delete payload[f]
+            }
+        payload.settings = JSON.stringify(settings)
+        return payload
     }
 
     function fail(txt) {
@@ -159,7 +173,7 @@ ColumnLayout {
         //console.log('done', JSON.stringify(msg))
     }
     function saveDone(filename) {
-        console.log("UserForm upload:", filename)
+        //console.log("UserForm upload:", filename)
         var url = Utils.makeURL("user", {id: savedId});
         if (filename) { // upload user image
             Upload.readFile(filename, function (arrayBuffer) {

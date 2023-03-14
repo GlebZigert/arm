@@ -158,6 +158,7 @@ function newItem(data) {
 
         label: label.length ? label.join(' ') : '',
         login: data.login || '',
+        settings: data.settings || '',
 
         //icon: 'fa_circle',
         color: "#666",

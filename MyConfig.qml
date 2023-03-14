@@ -56,8 +56,8 @@ RowLayout {
     // right pane - "content"
     StackLayout {
       id: layout
-      currentIndex: 0 // devices
-      //currentIndex: 1 // users
+      //currentIndex: 0 // devices
+      currentIndex: 1 // users
       //currentIndex: 2 // rules
       //currentIndex: 3 // zones
       //currentIndex: 4 // maps

@@ -28,7 +28,6 @@ Item{
     property string vid: "singlewall"
 
     property int item_style: Mode.LiveStreaming
-    property int panePosition
     property var video: ({
                              'Loaded_cameras': Qt.createComponent('qml/video/Loaded_cameras.qml'),
                              'Test_Telemetry': Qt.createComponent('qml/video/Test_Telemetry.qml'),
@@ -73,12 +72,6 @@ Item{
 
 
      }
-
-    onPanePositionChanged: {
-
-        root.videoPane=panePosition
-
-    }
 
     Timer {
         id: start_timer
@@ -150,7 +143,7 @@ Item{
                 DevicesTree{
                     id: devTree
                     anchors.fill: parent
-                    panePosition: srv.panePosition
+                    panePosition: panePosition
 
                     Component.onCompleted: {
 

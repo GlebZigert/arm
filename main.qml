@@ -47,6 +47,7 @@ ApplicationWindow {
     property string userLogin: ""
     property string userToken: ""
     property var currentUser
+    property var userSettings: JSON.parse(currentUser && currentUser.settings || '{}')
 
     property alias activePane: menu.activePane
     property var panes

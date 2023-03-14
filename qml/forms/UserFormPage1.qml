@@ -10,10 +10,13 @@ Flickable {
     ScrollBar.vertical: ScrollBar {policy: ScrollBar.AsNeeded} // .AlwaysOn
     property bool changeable: adminMode && (armConfig[activeComponent] & 1)
 
-    property var modelId: model.id
-    onModelIdChanged: {
-        fileDialog.reset()
-    }
+    property int modelId: model.id
+    onModelIdChanged: fileDialog.reset()
+
+    property var videoModes: ([
+        {id: 1, text: "Только во вкладке"},
+        {id: 2, text: "Отдельная видеостена"},
+    ])
 
     property var roles: ([
         {id: 0, text: "Без АРМ"},
@@ -38,7 +41,7 @@ Flickable {
     property var fields: ({
         0: [],
         1: ['name', 'add-children'],
-        2: ['photo', 'name', 'surename', 'middleName', 'rank', 'organization', 'position', 'role', 'login', 'password', 'cards'],
+        2: ['photo', 'name', 'surename', 'middleName', 'rank', 'organization', 'position', 'role', 'videoMode', 'login', 'password', 'cards'],
         3: ['photo', 'name', 'surename', 'middleName', 'organization', 'cards'],
         4: ['photo', 'name', 'surename', 'middleName', 'rank', 'organization', 'cards'],
     }[type].reduce(function (a, v){a[v] = true; return a}, {}))
@@ -198,6 +201,23 @@ Flickable {
             model: ListModel{} // all roles
             currentIndex: {for (var i = roles.length - 1; i > 0 && roles[i].id !== form.role0; i--); newItem ? 0 : i}
             Component.onCompleted: model.append(roles)
+
+            //color: model[currentIndex].value
+        }
+        ///////////////////////////////////////////
+        Text { text: "Режим видео"; visible: !!fields['videoMode']; Layout.alignment: Qt.AlignRight}
+        property int videoMode0: userSettings && userSettings.videoMode || 1 // is there workaround?
+        ComboBox {
+            id: vmCombo
+            Layout.fillWidth: true
+            property string name: 'videoMode'
+            property bool showIt: !!fields[name]
+            textRole: "text"
+            visible: showIt
+            enabled: showIt && changeable //&& newItem
+            model: ListModel{} // all roles
+            currentIndex: {for (var i = videoModes.length - 1; i > 0 && videoModes[i].id !== form.videoMode0; i--); newItem ? 0 : i}
+            Component.onCompleted: model.append(videoModes)
 
             //color: model[currentIndex].value
         }
