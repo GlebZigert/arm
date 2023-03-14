@@ -77,7 +77,7 @@ Item{
         visible: true
            //  property alias visibility: "FullScreen"
 
-        screen: Qt.application.screens[1]
+     //   screen: Qt.application.screens[0]
 
         Video.StorageAlarm{
             id: alarmWindow
@@ -127,12 +127,14 @@ Item{
         videowall.switch_tlmtr.connect(f_switch_tlmtr)
         alarmWindow.switch_tlmtr.connect(f_switch_tlmtr)
 
+        /*
         console.log("Экраны: ",
                     Qt.application.screens[0].virtualX," ",
                     Qt.application.screens[0].virtualY," ",
                     Qt.application.screens[1].virtualX," ",
                     Qt.application.screens[1].virtualY," "
                     )
+        */
 
 
 
