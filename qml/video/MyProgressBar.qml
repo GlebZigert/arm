@@ -151,6 +151,7 @@ Column {
 Slider {
             id: slider
             width: parent.width
+            height:30
 
             from: 0
             value: 25
