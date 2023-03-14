@@ -15,6 +15,7 @@ Item{
         x: settings.x1
         y:settings.y1
         visibility: settings.visibility1
+        title: "Видеостена"
 
 
 
@@ -59,6 +60,9 @@ Item{
  x: settings.x2
  y:settings.y2
  visibility: settings.visibility2
+
+ title: "Тревоги / архив"
+
 
         width: Screen.width
         height: Screen.height

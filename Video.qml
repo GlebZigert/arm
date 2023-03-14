@@ -57,19 +57,7 @@ Item{
     property int dy
     property int dx
 
-    Window {
 
-        id: alarmWindow
-        x: 100
-        y: 100
-        width: 1000
-        height: 800
-
-        visible: true
-        visibility: "FullScreen"
-
-         screen: Qt.application.screens[1]
-    }
 
 
 /*
