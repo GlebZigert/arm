@@ -3,8 +3,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import Model 1.0
 Item{
-    property string videowall_id
+    property string vid
     id: good
   //  anchors.fill: parent
     property int scale: 2
@@ -19,11 +20,38 @@ Item{
     signal request_URL
     signal switch_tlmtr
 
+    signal playing
+
     signal ready
+
+    signal onCompleted
+
+    signal currentPage(string nm)
 
     property bool alarm_mode: false
 
     property bool full
+
+    signal clicked
+
+
+    Timer {
+        id: rescale_timer
+        interval: 10; running: false; repeat: false
+        property int msec:0
+        property var prev_date : 0
+        property int sec : 0
+        onTriggered:
+        {
+            console.log("rescale timer")
+            multivm.rescale()
+
+        }
+    }
+
+    Model{
+    id: md
+    }
 
     ListModel {
 
@@ -42,7 +70,7 @@ Item{
     MouseArea{
         anchors.fill: parent
         hoverEnabled: true
-
+        propagateComposedEvents: true
 
     GridLayout {
 
@@ -73,6 +101,8 @@ Item{
                 y:model.y
                 width: model.w
                 height: model.h
+
+
 
 /*
                 onXChanged: {
@@ -133,7 +163,7 @@ Item{
 
                     Text{
                         anchors.fill: parent
-                        text: model.cid
+                        text: model.cid==-1 ? "" : Axxon.camera(model.cid).name
                     }
 
 
@@ -159,6 +189,9 @@ Item{
 
                         console.log("onClicked .")
                         good.give_me_a_camera()
+
+
+
                     }
 
                     }
@@ -223,8 +256,13 @@ Item{
                     onClicked: {
 
                         console.log("onClicked .,.")
-                        findAndSet(cids,vm.uid,"cid",-1)
-                        findAndSet(cids,vm.uid,"url","")
+
+                        console.log("set cid for uid: ",-1," ",vm.uid)
+                        md.set_cid_for_uid(-1,vm.uid)
+                        md.set_url_for_uid("",vm.uid)
+
+                    //    findAndSet(cids,vm.uid,"cid",-1)
+                    //    findAndSet(cids,vm.uid,"url","")
                         vvm.vm_stop()
                         vvm.vm_clear()
 
@@ -261,7 +299,13 @@ Item{
                     vvm.cid=cid
                  vvm.set_vm_cid(cid)
 
+                 //на текущем видеоэкране найти uid и выставить ему cid
                  findAndSet(cids,vm.uid,"cid",cid)
+
+                    console.log("set cid for uid: ",cid," ",vm.uid)
+                    md.set_cid_for_uid(cid,vm.uid)
+
+
                  findAndSet(w_model,vm.uid,"cid",cid)
                 }
 
@@ -301,7 +345,7 @@ Item{
                 function set_vm_source(cid,url){
 
                     vvm.set_vm_source(cid,url)
-                    findAndSet(cids,vm.uid,"url",url)
+                    md.set_url_for_uid(url,vm.uid)
                     findAndSet(w_model,vm.uid,"url",url)
                 }
 
@@ -336,7 +380,7 @@ Item{
                     vvm.uid=model.uid
 
                     set_vm_source(model.cid,model.url)
-                 //   console.log("Rect ",index," создан ",uid," ",vm.cid," ",vm.url)
+                    console.log("Rect ",index," создан uid ",uid," ",vm.cid," ",vm.url)
                     vvm.vm_start(1)
 
                 }
@@ -346,9 +390,10 @@ Item{
     }
 
 
-        propagateComposedEvents: true
+
 
         onClicked: {
+            console.log("+++++++++++++++++++++++++++++")
             console.log("select by click")
             for(var i = 0; i<grid.children.length-1; i++)
             {
@@ -386,38 +431,17 @@ Item{
                     grid.children[i].set_selected(false)
                 }
             }
+           good.clicked()
         }
     }
 
-    Rectangle{
-        x: parent.width-50
-        y: 20
-        width: 30
-        height: 30
-        color: "lightblue"
 
-        MouseArea{
-            anchors.fill:parent
-            onClicked: {
-
-                full=false
-                fullscreen_uid=-1
-                if(good.scale<5){
-                    good.scale++
-                }
-                else{
-                    good.scale=1
-                }
-                rescale(good.scale)
-            }
-        }
-    }
 
 
 
     function add_alarm_camera(id){
 
-
+        md.to_page("Тревоги")
 
           //  cids.clear()
 
@@ -426,35 +450,37 @@ Item{
             good.scale=1
 
 
+        md.clear_if_not_alarm()
+
+        /*
             for(var i = 0;i<cids.count; i++){
 
                 if(cids.get(i).alarm==false){
                   cids.setProperty(i,"cid",-1)
                   cids.setProperty(i,"url","")
                 }
-
-
             }
+          */
 
 
 
 
 
          add_camera(id,true)
-
+ md.save_to_settings()
     }
 
     function add_storage_camera(arr){
 
 
-
+ md.to_page("Архив")
           //  cids.clear()
 
 
         full=false
             good.scale=1
-
-
+   md.clear_if_not_alarm()
+/*
             for(var i = 0;i<cids.count; i++){
 
                 if(cids.get(i).alarm==false){
@@ -464,6 +490,7 @@ Item{
 
 
             }
+            */
 
 
 
@@ -471,7 +498,7 @@ Item{
 
          add_camera(arr[i],false)
         }
-
+ md.save_to_settings()
     }
 
     function reconnect_livestream(){
@@ -499,7 +526,7 @@ Item{
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
 
 
-            Axxon.request_URL(videowall_id,get_cids(), serviceId, "","utc")
+            Axxon.request_URL(vid,get_cids(), serviceId, "","utc")
 
         }
     }
@@ -507,10 +534,13 @@ Item{
     function get_cids(){
 
         var res =[]
-        for(var i = 0; i<cids.count; i++)
+        var cids = md.get_cids()
+        var count = cids.length
+        for(var i = 0; i<cids.length; i++)
         {
 
-            var lcl = cids.get(i).cid
+            var lcl = md.get_cid_at(i)
+            console.log(i," ",lcl)
             if(lcl!=-1){
                 var frash=true
                 for(var j in res){
@@ -523,10 +553,12 @@ Item{
                 }
             }
         }
+        console.log("cids: ",res)
         return res
     }
 
     function set_current_cid(cid){
+        console.log("set_current_cid ",cid)
         for(var i = 0; i<grid.children.length; i++)
         {
             if(grid.children[i].selected){
@@ -536,18 +568,33 @@ Item{
     }
 
     Component.onCompleted: {
-
+        console.log(md.get_info())
         full=false
+   //     vid = generateUUID()
+   //     md.vid=vid
 
-        videowall_id = generateUUID()
+   //     md.show()
 
-        console.log("videowall_id ",videowall_id)
-    //
+
+        good.onCompleted()
+
+/*
+
+
+        md.add_page()
+
+
+
+        md.show()
+        //
          good.scale=5
           rescale(good.scale)
+        */
+
     }
 
     function vm_start(cid,src,mode){
+        console.log("vm_start ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
@@ -606,14 +653,11 @@ Item{
 
     function rescale(scale){
 
-                    console.log("and look at scale here: ",scale)
+       console.log("rescale-->")
 
-        for(var i = 0;i<scale*scale; i++){
-            if(i>=cids.count){
-                cids.append({cid:-1,uid:index++,url:"",alarm:false})
-            }
-        }
 
+        scale= md.current_scale()
+ console.log("and look at scale here: ",scale)
         saving_on()
 
         var ww = width/scale
@@ -624,13 +668,15 @@ Item{
 
         w_model.clear()
 
-        console.log("cids.count ",cids.count)
+
+
 
         var id = -1
-        for(var i = 0;i < cids.count;i++){
-               if(cids.get(i).uid === fullscreen_uid){
-                id = cids.get(i).cid
-               }
+        for(var i = 0;i < md.get_cids().length;i++){
+            //найти на текущей странице камеру с uid и взять ее cid
+            if(md.get_uid_at(i) === fullscreen_uid){
+                id = md.get_cid_at(i)
+            }
         }
 
 
@@ -638,18 +684,25 @@ Item{
 
         if(full && Axxon.check_id(id)){
             console.log("rescale full")
-            for(var i=0;i<cids.count;i++){
-                console.log(".. ",cids.get(i).cid," ",id)
-                if(cids.get(i).cid===id){
+            for(var i=0;i<md.get_cids().length;i++){
+                console.log(".. ",md.get_cid_at(i)," ",id)
+                if(md.get_cid_at(i)===id){
+
+                    console.log("append ")
+                    console.log("uid  ",md.get_uid_at(i))
+                    console.log("cid  ",md.get_cid_at(i))
+                    console.log("url  ",md.get_url_at(i))
+                    console.log("alarm  ",md.get_alarm_at(i))
+
 
                     w_model.append({h:height,
                                        w:width,
                                        x: 0,
                                        y: 0,
-                                       uid: cids.get(i).uid,
-                                       cid:cids.get(i).cid,
-                                       url:cids.get(i).url,
-                                       alarm:cids.get(i).alarm
+                                       uid: md.get_uid_at(i),
+                                       cid:md.get_cid_at(i),
+                                       url:md.get_url_at(i),
+                                       alarm: md.get_alarm_at(i),
                                    })
 
                     break;
@@ -657,27 +710,39 @@ Item{
             }
 
         }else{
-                        console.log("rescale multi")
-        for(var i=0;i<scale*scale;i++){
-            w_model.append({h:hh,
-                               w:ww,
-                               x: ww*(i%scale),
-                               y: hh*((i<scale)?0:((i-(i%scale))/scale)),
-                               uid: cids.get(i).uid,
-                               cid:cids.get(i).cid,
-                               url:cids.get(i).url,
-                               alarm:cids.get(i).alarm
-                           })
+            console.log("rescale multi")
+
+
+
+            for(var i=0;i<scale*scale;i++){
+
+                console.log("append ")
+                console.log("uid  ",md.get_uid_at(i))
+                console.log("cid  ",md.get_cid_at(i))
+                console.log("url  ",md.get_url_at(i))
+                console.log("alarm  ",md.get_alarm_at(i))
+
+                w_model.append({h:hh,
+                                   w:ww,
+                                   x: ww*(i%scale),
+                                   y: hh*((i<scale)?0:((i-(i%scale))/scale)),
+                                   uid: md.get_uid_at(i),//cids.get(i).uid,
+                                   cid: md.get_cid_at(i),// cids.get(i).cid,
+                                   url: md.get_url_at(i),// cids.get(i).url,
+                                   alarm: md.get_alarm_at(i),// cids.get(i).alarm
+                               })
+            }
         }
-        }
 
 
 
 
 
-            saving_off()
+        saving_off()
 
         good.ready()
+        md.save_to_settings()
+         console.log("<--rescale")
     }
 
 
@@ -701,6 +766,7 @@ Item{
 
     function add_camera(id,alarm){
 
+        console.log("add_camera ",id)
         /*
         var fl=true
         for(var i=0;i<cids.count;i++){
@@ -713,6 +779,8 @@ Item{
         */
 
        // if(fl){
+
+        /*
         for(var i=0;i<cids.count;i++){
             if(cids.get(i).cid===id){
         //       cids.setProperty(i,"alarm",alarm)
@@ -720,7 +788,12 @@ Item{
 
             }
         }
+        */
 
+        md.set_scale(1)
+        md.check_the_scale(id,alarm)
+         md.save_to_settings()
+        /*
             for(var i=0;i<cids.count;i++){
 
 
@@ -731,6 +804,7 @@ Item{
                     good.scale++
 
                 }
+
 
                 if(cids.get(i).cid===-1){
                     cids.setProperty(i,"cid",id)
@@ -744,14 +818,55 @@ Item{
 
                 }
             }
+            */
 
             rescale(good.scale)
 
 
             var serviceId=Axxon.camera(id).serviceId
 
-            Axxon.request_URL(videowall_id,get_cids(), serviceId, timeline.get_dt(),"utc")
+            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
+
+    function setVid(vid){
+        md.vid=vid
+
+    }
+
+    function multivm_add_page(name){
+        console.log("multivm ad_page: ",name)
+
+        console.log("...1")
+        md.add_page(name)
+        console.log("md.get_current_page_name() ",md.get_current_page_name())
+        rescale(good.scale)
+        console.log("...2")
+        good.currentPage(md.get_current_page_name())
+    }
+
+    function to_page(name){
+    md.to_page(name)
+        rescale()
+        good.currentPage(md.get_current_page_name())
+        good.selected_cid(-1)
+    }
+
+    function multivm_delete_page(name){
+
+        md.delete_page(md.current_page())
+
+        good.currentPage(md.get_current_page_name())
+    }
+
+    function to_next_page(){
+
+        md.to_next_page()
+        rescale()
+        good.currentPage(md.get_current_page_name())
+        good.selected_cid(-1)
+
+
+    }
 
     function fullscreen(id){
 
@@ -804,6 +919,25 @@ Item{
         rescale(good.scale)
 
 
+    }
+
+    function save(){
+    md.save_to_settings()
+    }
+
+    function next_scale(){
+        full=false
+        fullscreen_uid=-1
+    md.next_scale()
+        rescale()
+    }
+
+    function rescale_timer_start(){
+    rescale_timer.start()
+    }
+
+    function get_current_page_name(){
+    return md.get_current_page_name()
     }
 
 

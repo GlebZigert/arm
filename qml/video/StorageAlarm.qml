@@ -18,13 +18,37 @@ Item{
     property int dy
     property int dx
 
-
+    property var wnd
 
     property string storage_live: ""
     property string pause_play: ""
 
     signal switch_tlmtr
 
+
+    onVisibleChanged: {
+
+        if(visible==true){
+        rescale(1)
+        }
+
+    }
+
+    Timer {
+        id: start_timer
+        interval: 500; running: true; repeat: false
+
+        onTriggered:
+        {
+             multivm.to_page(0)
+        //    multivm.rescale()
+            if(multivm.get_cids().length){
+            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
+            }
+
+
+    }
+    }
 
     Timer {
         id: update_intervals_timer
@@ -179,6 +203,7 @@ Item{
         }
     }
 
+    /*
     Rectangle{
         width:40
         height: 40
@@ -203,25 +228,43 @@ Item{
 
             onClicked: {
 
-               if(timelist_rect.width==0){
-               timelist_rect.width=110
-               }else{
-               timelist_rect.width=0
-               }
-
-               if(timeline_rect.height==0){
-               timeline_rect.height=100
-               }else{
-               timeline_rect.height=0
-               }
-
-               multivm.rescale(multivm.scale)
+            fullscreen_signal()
 
 
 
             }
         }
     }
+    */
+
+    function fullscreen()  {
+
+
+
+        console.log("visibility: ",wnd.visibility)
+
+        if(wnd.visibility===5){
+        wnd.visibility=1
+        }else{
+                         wnd.visibility=5
+        }
+        multivm.rescale_timer_start()
+/*
+    if(timelist_rect.width==0){
+       timelist_rect.width=110
+    timeline_rect.height=100
+    }else{
+    timeline_rect.height=0
+    timelist_rect.width=0
+    }
+    */
+
+
+   // multivm.rescale(multivm.scale)
+
+
+
+ }
 
 
     function give_him_a_camera(){
@@ -230,11 +273,12 @@ Item{
     }
 
     function f_change_camera(id){
-
+        console.log("f_change_camera ",id)
         cid=id
-        var lcl
-        lcl=Axxon.camera(id)
-        if(lcl!==-1){
+
+        if(id!==-1){
+            var lcl
+            lcl=Axxon.camera(id)
             root.axxon_service_id=lcl.sid
             root.log(lcl.name)
             //   configPanel.state="hide"
@@ -257,14 +301,21 @@ Item{
             //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
-
             request_URL(multivm.get_cids(),lcl.serviceId,dt)
+            timeline.set_camera_zone(lcl.name,lcl.ipadress)
+
+
+        }else{
+        timeline.set_camera_zone("","")
         }
     }
 
 
 
     Component.onCompleted: {
+
+            timeline.storageAlarm_edition()
+
 
         timeline.to_live()
         storage_live=live
@@ -312,6 +363,44 @@ Item{
         tlmt_rect.visible=false
 
         multivm.rescale(multivm.scale)
+
+        multivm.onCompleted.connect(set_the_multivm_settings)
+
+        timeline.to_storage_cameras.connect(f_to_storage_cameras)
+
+        timeline.fullscreen_signal.connect(fullscreen)
+
+        timeline.signal_scale.connect(scale)
+
+        timeline.hide_timelines.connect(hide_timelines)
+    }
+
+    function scale(){
+    multivm.next_scale()
+    }
+
+    function f_to_storage_cameras(){
+        if(multivm.get_current_page_name()==="Тревоги"){
+        multivm.to_page("Архив")
+            timeline.set_to_storage_cameras_text("К тревогам")
+        }else{
+        multivm.to_page("Тревоги")
+                        timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
+        }
+
+
+    }
+
+    function set_the_multivm_settings(){
+        console.log("set_the_multivm_settings")
+        multivm.setVid("storageAlarm")
+        multivm.multivm_add_page("Тревоги")
+        multivm.multivm_add_page("Архив")
+
+        multivm.to_page("Архив")
+
+        multivm.rescale(1)
+
     }
 
     function eventSelected_handler(event){
@@ -323,7 +412,7 @@ Item{
 
         var commands =  JSON.parse(event.commands)
 
-        console.log("eventSelected_handler")
+        console.log("StorageAlarm eventSelected_handler")
 
         var cids=[]
 
@@ -350,6 +439,7 @@ Item{
 
 
         }
+        timeline.set_to_storage_cameras_text("К тревогам")
         multivm.add_storage_camera(cids)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
@@ -399,6 +489,8 @@ Item{
             pause_play=play
             timeline.to_live()
 
+            timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
+
             multivm.add_alarm_camera(id)
             //Для мультвм выставляем флаг тревожного режима
             //При переходе в тревожный режим чистим его модель
@@ -419,8 +511,14 @@ Item{
 
     function send_signal_selected_sid(id){
         cid=id
-        if(cid!=-1)
+        if(cid!=-1){
             Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
+            timeline.set_camera_zone(Axxon.camera(cid).name,Axxon.camera(cid).ipadress)
+
+        }else{
+         timeline.set_camera_zone("","")
+        }
+
     }
 
     function update_slider_intervals(){
@@ -492,7 +590,7 @@ Item{
         if(dt==""){
             storage_live=live
         }
-        Axxon.request_URL(multivm.videowall_id,cameraId, serviceId, dt,"utc")
+        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc")
     }
 
 
@@ -500,9 +598,9 @@ Item{
 
         console.log("f_current_camera_update")
         console.log("videowall: ",videowall)
-        console.log("multivm.videowall_id: ",multivm.videowall_id)
+        console.log("multivm.vid: ",multivm.vid)
 
-        if(videowall!==multivm.videowall_id){
+        if(videowall!==multivm.vid){
             console.log("это не та стена")
             return
         }
@@ -520,7 +618,16 @@ Item{
         }
 
         multivm.add_camera(id,false)
+        multivm.save()
         cid = id
+    }
+
+    function hide_timelines(){
+
+        console.log("hide_timelines")
+        timeline_rect.height=0
+        timelist_rect.width=0
+        multivm.rescale()
     }
 
     function  update_vm()    {
@@ -530,6 +637,14 @@ Item{
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
+
+            console.log("lcl: ",lcl.id
+                        ," "<<lcl.name
+                        ," "<<lcl.liveStream
+                        ," "<<lcl.storageStream
+                        ," "<<lcl.snapshot
+                       )
+
             if(pause_play==pause)
             {
 
@@ -582,5 +697,6 @@ Item{
 
                 }
         }
+        multivm.save()
     }
 }

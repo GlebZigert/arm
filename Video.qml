@@ -25,6 +25,8 @@ Item{
     id: srv
     anchors.fill: parent
 
+    property string vid: "singlewall"
+
     property int item_style: Mode.LiveStreaming
     property int panePosition
     property var video: ({
@@ -55,19 +57,7 @@ Item{
     property int dy
     property int dx
 
-    Window {
 
-        id: alarmWindow
-        x: 100
-        y: 100
-        width: 1000
-        height: 800
-
-        visible: true
-        visibility: "FullScreen"
-
-         screen: Qt.application.screens[1]
-    }
 
 
 /*
@@ -88,6 +78,22 @@ Item{
 
         root.videoPane=panePosition
 
+    }
+
+    Timer {
+        id: start_timer
+        interval: 500; running: true; repeat: false
+
+        onTriggered:
+        {
+
+        //    multivm.rescale()
+        //    if(v1.get_cids().length){
+        //    request_URL(multivm.get_cids(),Axxon.camera(v1.get_cids()[0]).serviceId,"")
+        //    }
+
+
+    }
     }
 
 
@@ -185,7 +191,7 @@ Item{
                     propagateComposedEvents: true
                     property int flag: 0
 
-                Video.MultiVM{
+                Video.Vvvvvvm{
                     id: v1
 
                     anchors.fill: parent
@@ -235,6 +241,7 @@ Item{
                             PropertyChanges {
                                 target: configPanel
                                 opacity: 1
+
                                 anchors.rightMargin: 0
                                 width: 400
                             }
@@ -414,7 +421,7 @@ Item{
             drag.target: parent
         }
     }
-
+/*
     Rectangle{
         width:40
         height: 40
@@ -444,10 +451,19 @@ Item{
             }
         }
     }
+    */
 
+    function f_hide_timelines(){
+       hide_menu()
+    }
 
     Component.onCompleted: {
 
+
+
+        timeline.singlewall_edition()
+
+timeline.hide_timelines.connect(f_hide_timelines)
 
         var screens = Qt.application.screens;
                for (var i = 0; i < screens.length; ++i)
@@ -465,6 +481,11 @@ Item{
         root.log("Axxon.get_serviceId(): ",Axxon.get_serviceId())
         hide_menu()
         show_menu()
+
+        root.cameraList.updated.connect(camera_storage.update_from_cameraList)
+
+        root.frash_URL.connect(f_current_camera_update)
+
         timeline.to_live()
         root.event_on_camera.connect(f_event_on_camera)
         timeline.moved_at_dt.connect(f_moved_at_dt)
@@ -484,7 +505,7 @@ Item{
 
         v1.playing.connect(start_timer_if_its_needed)
 
-        v1.selected_cid.connect(v1_selected)
+       // v1.selected_cid.connect(v1_selected)
 
         timeline.update_timelist.connect(timelist.set_current)
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
@@ -608,11 +629,11 @@ Item{
 
             }
             root.deviceSelected(panePosition,lcl.sid,lcl.id)
-            timeline.set_camera_zone(lcl.name)
+            timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
-            v1.set_current_cid(cid)
+            v1.cid=cid
 
-            request_URL(v1.get_cids(),lcl.serviceId,dt)
+            request_URL(v1.cid,lcl.serviceId,dt)
         }
     }
 
@@ -621,7 +642,17 @@ Item{
 
     }
 
-    function f_current_camera_update(){
+    function f_current_camera_update(videowall){
+
+        console.log("f_current_camera_update")
+        console.log("videowall: ",videowall)
+        console.log("multivm.vid: ",vid)
+
+        if(videowall!==vid){
+            console.log("это не та стена")
+            return
+        }
+
         var lcl
         lcl=Axxon.camera(cid)
         update_vm()
@@ -660,12 +691,13 @@ Item{
             configPanel.state="hide"
         }else{
             configPanel.state="show"
+            camera_storage.visible=true
         }
     }
 
     function f_play(){
         root.pause_play=play
-        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt())
+        request_URL(v1.cid,Axxon.camera(cid).serviceId,timeline.current_dt())
     }
 
     function f_pause(){
@@ -682,11 +714,14 @@ Item{
 
     function f_moved_at_dt(dt){
         root.storage_live=storage
-        request_URL(v1.get_cids(),Axxon.camera(cid).serviceId,dt)
+        request_URL(v1.cid,Axxon.camera(v1.cid).serviceId,dt)
     }
 
     function request_URL(cameraId, serviceId, dt){
-        Axxon.request_URL(cameraId, serviceId, dt,"utc")
+
+        var res =[]
+        res.push(cameraId)
+        Axxon.request_URL(vid,res, serviceId, dt,"utc")
     }
 
     function f_set_live_play()    {
@@ -698,13 +733,20 @@ Item{
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
-    function  update_vm(id)    {
+    function  update_vm()    {
 
-        var cids =  v1.get_cids()
-        for(var one in cids)
-        {
-            var id=cids[one]
+        var id= v1.cid
+        console.log("update_vm ",id)
+
+
         var lcl=Axxon.camera(id)
+
+        console.log(lcl.id
+                    ," "<<lcl.name
+                    ," "<<lcl.liveStream
+                    ," "<<lcl.storageStream
+                    ," "<<lcl.snapshot
+                   )
         if(root.pause_play==pause)
         {
 
@@ -712,8 +754,9 @@ Item{
             {
                 //vm.source=lcl.snapshot
 
-                v1.vm_start(id,lcl.snapshot,Mode.Snapshot)
-
+             //   v1.vm_start(id,lcl.snapshot,Mode.Snapshot)
+                v1.set_vm_source(id,lcl.snapshot)
+               v1.vm_start(Mode.Snapshot)
             }
             else
                 if(root.storage_live==live)
@@ -729,7 +772,9 @@ Item{
                 if(root.storage_live==storage)
                 {
 
-                    v1.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                //    v1.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                    v1.set_vm_source(id,lcl.storageStream)
+                   v1.vm_start(Mode.StorageStreaming)
 
                 }
                 else
@@ -751,12 +796,12 @@ Item{
                     //    vm.source=lcl.liveStream
                     //    vm.start()
 
-
-                        v1.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+                         v1.set_vm_source(id,lcl.liveStream)
+                        v1.vm_start(Mode.LiveStreaming)
                     }
 
             }
-    }
+
     }
 
     function f_telemetry_on_off(){
@@ -782,6 +827,7 @@ Item{
 
     function eventSelected_handler(event){
 
+        console.log("Video eventSelected_handler")
         var str=event.commands
         str=str.replace(/(\[)/g, "")
         str=str.replace(/(\])/g,"")
@@ -817,10 +863,10 @@ Item{
         root.log("telemetryControlID: ",lcl.telemetryControlID)
         root.telemetryPoint=lcl.telemetryControlID
 
-
+        v1.cid=cid
 
         timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
-        Axxon.request_URL(v1.get_cids(),Axxon.camera(id).serviceId,dt,"utc")
+       request_URL(cid,Axxon.camera(cid).serviceId,dt,"utc")
 
     }
 

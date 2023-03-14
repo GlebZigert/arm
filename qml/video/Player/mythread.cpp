@@ -41,9 +41,10 @@ void MyThread::stop()
 
 void MyThread::m_quit()
 {
-    //qDebug()<<"MyThread::quit()";
+    qDebug()<<"MyThread::quit()";
     thread->quit();
     isOver=true;
+    emit signal_isOver();
 }
 
 int MyThread::get_m_index() const

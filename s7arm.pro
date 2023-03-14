@@ -16,7 +16,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         printer.cpp \
-        qml/video/Player/StreamerContainer.cpp
+        qml/video/Player/StreamerContainer.cpp \
+        qml/video/Player/model.cpp
 !win32 {
     SOURCES += \
     qml/video/Player/Streamer.cpp \
@@ -55,4 +56,5 @@ DISTFILES += \
 
 HEADERS += \
     printer.h \
-    qml/video/Player/StreamerContainer.h
+    qml/video/Player/StreamerContainer.h \
+    qml/video/Player/model.h
