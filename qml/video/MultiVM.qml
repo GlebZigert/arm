@@ -160,11 +160,12 @@ Item{
 
                     }
 
-
+/*
                     Text{
                         anchors.fill: parent
                         text: model.cid==-1 ? "" : Axxon.camera(model.cid).name
                     }
+                    */
 
 
 
