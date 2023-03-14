@@ -5,17 +5,19 @@
 #include <QImage>
 #include <QThread>
 #include <QTimer>
-#include "threadlist.h"
-
+#include "Streamer.h"
+#include "StreamerContainer.h"
 
 class VideoPlayer : public QQuickPaintedItem
 
 {
     Q_OBJECT
 
-    Q_PROPERTY(QString source READ source WRITE setSource )
+    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(int cid READ getCid WRITE setCid NOTIFY cidChanged)
 public:
     explicit  VideoPlayer(QQuickItem *parent = 0);
+    ~VideoPlayer();
     void paint(QPainter *painter) override;
 
 
@@ -23,9 +25,14 @@ public:
     void setSource(const QString source);
 
 
-    Q_INVOKABLE void start();
+    Q_INVOKABLE void start(Runner::Mode mode);
     Q_INVOKABLE void  stop();
     Q_INVOKABLE void  shot();
+
+    Q_INVOKABLE void  saving_on();
+    Q_INVOKABLE void  saving_off();
+
+    Q_INVOKABLE void  clear();
 
 
 
@@ -34,6 +41,15 @@ public:
     int h;
     int w;
 
+    int cid;
+
+    bool connection;
+
+
+    Q_INVOKABLE Runner::Mode getMode();
+
+    Q_INVOKABLE int getCid() const;
+    void setCid(int newCid);
 
 private:
 
@@ -41,13 +57,15 @@ private:
 
     QImage img;
 
-    threadList* list1;
-    threadList* list2;
+    static StreamerContainer container;
+
+    QSharedPointer<Streamer> current = nullptr;
 
 
 signals:
     void playing();
-
+    void sourceChanged(const QString &source);
+    void cidChanged(const int &cid);
 public slots:
 
     void onWidthChanged();

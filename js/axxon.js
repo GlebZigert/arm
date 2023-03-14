@@ -467,31 +467,47 @@ function getListDevices()
 }
 
 Axxon.prototype.request_intervals_handler = function (data) {
-    /*
-    root.log("")
-    root.log("[request_intervals_handler]")
-    root.log("")
-    root.log(JSON.stringify(data))*/
+/*
+    console.log("")
+    console.log("[request_intervals_handler]")
+    console.log("",Date())
+    console.log(JSON.stringify(data))
+    console.log("")
+    */
+
+    var id = data[0].Id
+    for(var i=0;i<root.cameraList.count;i++){
+
+
+        if(root.cameraList.get(i).id===id){
+
+            root.cameraList.get(i).intervals=data[0].intervals
+
+        }
+
+    }
+
+
    root.update_intervals(data[0].intervals)
 
 }
 
 Axxon.prototype.ExecCommand_handler = function (data) {
 
-     root.log("")
-     root.log("[ExecCommand_handler]")
-     root.log("")
+     //console.log("")
+     //console.log("[ExecCommand_handler]")
+     //console.log("")
 
 
 
     //взять id и сделать эту камеру текущей и перейтив  режим прямой трансляции.
 
- //   root.log(data)
-    root.log(JSON.stringify(data))
-    var id=data[0].id
-    root.log("id: ",id)
+    //console.log(data)
+    //console.log(JSON.stringify(data))
+    var id=data.id
+    //console.log("id: ",id)
     root.event_on_camera(id)
-root.activePane=root.videoPane
+//root.activePane=root.videoPane
 /*
 
     root.log("id",data[0].id)
@@ -540,56 +556,54 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     root.log("")
-         root.log("[receive_URL]")
-     root.log("")
+     console.log("")
+         console.log("[receive_URL]")
+     console.log("",Date())
 
-     //    root.log(data)
-     //    root.log(JSON.stringify(data))
-          root.log(JSON.stringify(data))
+         console.log(data)
+         console.log(JSON.stringify(data))
+          console.log(JSON.stringify(data))
+      console.log("")
+
      var i
-     for (i in data) {
-//      root.log("id: ", data[i].id)
-//      root.log("liveStream: ", data[i].liveStream)
-//      root.log("storageStream: ", data[i].storageStream)
-//      root.log("snapshot: ", data[i].snapshot)
-//      root.log("интервалы: ", JSON.stringify(data[i].intervals))
-     }
+     for (i in data.data) {
+      console.log("id: ", data.data[i].id)
+      console.log("liveStream: ", data.data[i].liveStream)
+      console.log("storageStream: ", data.data[i].storageStream)
+    //  root.log("snapshot: ", data.data[i].snapshot)
+   //   root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
+
+     var cl = root.cameraList
      for(var j=0;j< root.cameraList.count;j++){
 
-         if( data[i].id==root.cameraList.get(j).id){
+var lcl = root.cameraList.get(j)
+ var lcld = data.data[i]
+         if( data.data[i].id===root.cameraList.get(j).id){
 
-             root.log("[PROFIT]")
+             console.log("добавляю к ",data.data[i].id)
 
 
 
-            root.cameraList.get(j).liveStream=data[i].liveStream
-            root.cameraList.get(j).storageStream=data[i].storageStream
-            root.cameraList.get(j).snapshot=data[i].snapshot
-
+            root.cameraList.get(j).liveStream=data.data[i].liveStream
+            root.cameraList.get(j).storageStream=data.data[i].storageStream
+            root.cameraList.get(j).snapshot=data.data[i].snapshot
+            root.cameraList.get(j).intervals=data.data[i].intervals
 
          }
 
-
-
-
-
-
-
-
-
-
-
-
  }
-
+}
  //root.update_intervals.updated()
- root.frash_URL()
 
- root.update_intervals(data[i].intervals)
+     //console.log("videowall: ",data.videowall)
+ root.frash_URL(data.videowall)
+
+ root.update_intervals(data.data[i].intervals)
 
 }
+
+
 
 Axxon.prototype.receive_strorage_stream = function (data) {
 root.log('[receive_strorage_stream]')
@@ -632,7 +646,7 @@ function receive_preset_info(data) {
 var i
      root.camera_presets.clear()
       for (i in data) {
-    root.log(data[i].Id," ",data[i].Name)
+  //  root.log(data[i].Id," ",data[i].Name)
 
     root.camera_presets.append({index: data[i].Id ,
                                 name: data[i].Name,
@@ -653,13 +667,13 @@ Axxon.prototype.rebuildTree = function (data) {
     if (this.validateTree()) {
         this.update(data)
     }else{
-              root.log('Axxon',this.serviceId,': rebuild whole tree')
-              root.log(JSON.stringify(data))
+              //console.log('Axxon',this.serviceId,': rebuild whole tree')
+              //console.log(JSON.stringify(data))
 
               var current_sid=data[0].sid
         for(var j=0;j< root.cameraList.count;j++){
 
-      //      console.log("dev: ",root.cameraList.get(j).sid )
+      //      //console.log("dev: ",root.cameraList.get(j).sid )
 
             if(root.cameraList.get(j).sid==current_sid)
             root.cameraList.get(j).actual=false
@@ -670,7 +684,7 @@ Axxon.prototype.rebuildTree = function (data) {
             var res=false
             for(var i=0;i<root.devices.get(0).children.count;i++){
               var scopeId=root.devices.get(0).children.get(i).scopeId
-            //console.log("i: ",scopeId)
+            ////console.log("i: ",scopeId)
                 if(root.cameraList.get(j).sid==scopeId)
                     res=true
 
@@ -685,7 +699,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
         for (i in data) {
 
-          //  console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," ",data[i].ipadress," от сервера ",data[i].sid)
+          //  //console.log("У наc здесь пришла камера ",data[i].id," ",data[i].name," ",data[i].ipadress," от сервера ",data[i].sid)
 
             var state =data[i].state
             var color="gray"
@@ -731,7 +745,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
             }
             if(res){
-           //     console.log("ДОБАВЛЯЮ ", data[i].id)
+           //     //console.log("ДОБАВЛЯЮ ", data[i].id)
 
                 root.cameraList.append(    {
                     sid: data[i].sid ,
@@ -752,6 +766,8 @@ Axxon.prototype.rebuildTree = function (data) {
                     liveStream:"",
                     storageStream: "",
                     snapshot: "",
+
+                    intervals: data[i].Intervals,
                     ipadress: data[i].ipadress
 
 
@@ -766,7 +782,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
             root.log(j,".....",root.cameraList.get(j).name,"....",root.cameraList.get(j).actual)
             if(root.cameraList.get(j).actual==false){
-              console.log("УДАЛЯЮ ", root.cameraList.get(j).id)
+              //console.log("УДАЛЯЮ ", root.cameraList.get(j).id)
             root.cameraList.remove(j)
             }
         }
@@ -841,11 +857,12 @@ Axxon.prototype.handler_for_Telemetry_capture_session = function (data) {
 
 }
 
-function request_URL(cameraId, serviceId, dt, format_dt)
+function request_URL(videowall, cameraId, serviceId, dt, format_dt)
 {
 
 
     var data={
+        videowall: videowall,
     cameraId: cameraId,
     serviceId:serviceId ,
         dt:dt,
@@ -854,11 +871,16 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
         }
 
-      //      cameraId+";"+dt+" "+format_dt
- //   console.log("data.cameraId : ",data.cameraId)
- //   console.log("data.serviceId : ",data.serviceId)
- //   console.log("data.dt       : ",data.dt)
- //   console.log("data.format_dt: ",data.format_dt)
+ console.log(" ")
+     console.log("request_URL ")
+     console.log(" ")
+            cameraId+";"+dt+" "+format_dt
+    console.log("data.videowall : ",data.videowall)
+    console.log("data.cameraId : ",data.cameraId)
+    console.log("data.serviceId : ",data.serviceId)
+    console.log("data.dt       : ",data.dt)
+    console.log("data.format_dt: ",data.format_dt)
+ console.log(" ")
 
       root.send(serviceId, 'request_URL', data)
 
@@ -866,13 +888,13 @@ function request_URL(cameraId, serviceId, dt, format_dt)
 
 function tlmtr_cmd(data)
 {
-   console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
-if (root.storage_live=="live") {
+   //console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
+
      root.log("...this.serviceId ",root.axxon_service_id)
     root.send(root.axxon_service_id, 'Telemetry_command', data)
       root.log("...send")
 
-}
+
 
 }
 
@@ -901,12 +923,44 @@ root.log("event.event: ",event.event)
 
 }
 
-function camera(id){
- //   root.log("...find camera... ",id)
+function check_id(id){
+
     for(var i=0;i<root.cameraList.count;i++){
- //    root.log(root.cameraList.get(i).id)
-    if(root.cameraList.get(i).id==id){
- //     root.log("PROFIT")
+
+
+        if(root.cameraList.get(i).id===id){
+        return true
+        }
+
+    }
+    return false
+
+}
+
+function get_cids(){
+    var cids=[]
+    for(var i=0;i<root.cameraList.count;i++){
+
+
+
+     cids.push(root.cameraList.get(i).id)
+
+    }
+    return cids
+
+}
+
+function camera(id){
+    console.log("...find camera... ",id)
+    for(var i=0;i<root.cameraList.count;i++){
+     console.log(root.cameraList.get(i).id
+                 ," "<<root.cameraList.get(i).name
+                 ," "<<root.cameraList.get(i).liveStream
+                 ," "<<root.cameraList.get(i).storageStream
+                 ," "<<root.cameraList.get(i).snapshot
+                )
+    if(root.cameraList.get(i).id===id){
+      console.log("PROFIT")
     return root.cameraList.get(i)
     }
     }
@@ -914,8 +968,26 @@ function camera(id){
 
 }
 
+function get_intervals(id){
+ //   root.log("...find camera... ",id)
+    for(var i=0;i<root.cameraList.count;i++){
+ //    root.log(root.cameraList.get(i).id)
+    if(root.cameraList.get(i).id===id){
+      root.log("PROFIT")
+        var lcl = root.cameraList.get(i)
+    return root.cameraList.get(i).intervals
+    }
+    }
+    return -1
+
+}
+
+
+
 function get_serviceId(){
 return this.serviceId
 }
+
+
 
 

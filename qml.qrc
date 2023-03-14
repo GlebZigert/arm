@@ -315,5 +315,24 @@
         <file>qml/forms/EventTable.qml</file>
         <file>qml/forms/JournalStub.qml</file>
         <file>qml/settings/Settings.qml</file>
+        <file>qml/video/Vvvvvvm.qml</file>
+        <file>1.qml</file>
+        <file>Reqqt.qml</file>
+        <file>qml/video/DoubleVm.qml</file>
+        <file>qml/video/MultiVM.qml</file>
+        <file>VideoWall_panel.qml</file>
+        <file>VideoRB.qml</file>
+        <file>qml/video/VideoWall.qml</file>
+        <file>qml/video/MultiVMold.qml</file>
+        <file>qml/video/StorageAlarm.qml</file>
+        <file>qml/video/add.png</file>
+        <file>qml/video/delete.png</file>
+        <file>qml/video/down.png</file>
+        <file>qml/video/pause.png</file>
+        <file>qml/video/play.png</file>
+        <file>qml/video/right.png</file>
+        <file>qml/video/left.png</file>
+        <file>qml/video/fullscreen.png</file>
+        <file>qml/video/grid.png</file>
     </qresource>
 </RCC>

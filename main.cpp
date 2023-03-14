@@ -5,9 +5,11 @@
 #include <QQuickWindow>
 #include "qml/video/Preview/Preview.h"
 #include "printer.h"
+#include "qml/video/Player/runner.h"
 
 #ifndef WIN32
 #include "qml/video/Player/videoplayer.h"
+#include "qml/video/Player/model.h"
 #endif
 
 
@@ -19,6 +21,8 @@ int main(int argc, char *argv[])
     #ifdef QT_NO_DEBUG
     //qputenv("QT_LOGGING_RULES", "*.debug=false;qml=false");
     #endif
+
+    Runner::declareQML();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
     //QQuickWindow::setSceneGraphBackend(QSGRendererInterface::Direct3D12);
@@ -42,6 +46,7 @@ int main(int argc, char *argv[])
     #ifndef WIN32
     qmlRegisterType<Preview>("Preview",1,0,"Preview");
     qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
+    qmlRegisterType<Model>("Model",1,0,"Model");
     #endif
 
 

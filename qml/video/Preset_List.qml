@@ -11,9 +11,28 @@ Item {
     property var serviceId
     property int current_tlmtr_id: -1
 
+
+
     Rectangle{
     anchors.fill: parent
     color: "gray"
+
+  //  propagateComposedEvents: true
+
+
+
+          MouseArea{
+
+              hoverEnabled: true
+              id:area1
+              anchors.fill: parent
+
+
+
+          }
+
+   //    activeFocusOnPress: true
+
 
 
     Column{
@@ -39,9 +58,11 @@ Item {
              text: "   +"
                  }
              MouseArea{
-                 anchors.fill: parent
-             onClicked: {
 
+                 anchors.fill: parent
+             onPressed: {
+
+                 console.log("+")
                  var res
                  res =true
                  for(var i=0;i<model.count;i++)
@@ -71,7 +92,8 @@ Item {
                  }
              MouseArea{
                  anchors.fill: parent
-             onClicked: {
+             onPressed: {
+                   console.log("-")
              remove(list.selected)
                  list.selected=-1
              }
@@ -89,23 +111,26 @@ Item {
                   }
 
               MouseArea{
+
                   anchors.fill: parent
-              onClicked: {
+              onPressed: {
+                   console.log("Ред")
                edit_text(list.selected)
               }
               }
               }
 
              }
-
+/*
              MouseArea{
              anchors.fill: parent
-             propagateComposedEvents: true
+          //   propagateComposedEvents: true
              onClicked: {
 
                  mouse.accepted=false
              }
              }
+             */
          }
 
     Rectangle{
@@ -123,6 +148,8 @@ Item {
     color: "lightblue"
 
     clip:true
+
+
 
     ListModel{
         id: model
@@ -182,13 +209,20 @@ anchors.fill: parent
              width: parent.width
              height: 30
              placeholderText: qsTr("Enter name")
-             focus: true
-             activeFocusOnPress: true
-
+        //     focus: true
+       //      activeFocusOnPress: true
+       //      Keys.onLeftPressed: console.log("move left")
 
              property int ind: index
 
+
+
+
               onAccepted:{
+
+//Если мышь не в этом поле то идешь ты вдаль
+
+                if(area1.containsMouse){
 
 
               if(ind<0)
@@ -197,20 +231,31 @@ anchors.fill: parent
               }
               else
               {
+                  console.log("this is ")
               Tlmtr.edit(ind,text_field.text,serviceId)
               }
 
 
+              }else
+                    console.log("where is fucking mouse")
               }
 
+
+           //   focus: true
+
+              /*
               Keys.onPressed: {
+                   console.log(" Keys.onPressed !!! :")
+
                       if (event.key == Qt.Key_Enter) {
 
                           text_field.visible=false
                           event.accepted = true
 
                       }
+
                   }
+              */
 
 
 
@@ -244,7 +289,7 @@ anchors.fill: parent
          Component.onCompleted: {
              if(ind == -1)
                  text_field.visible=true
-             text_field.forceActiveFocus()
+         //    text_field.forceActiveFocus()
 
 }
 

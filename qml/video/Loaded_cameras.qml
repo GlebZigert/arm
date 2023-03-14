@@ -18,10 +18,10 @@ Item {
     signal refresh(var y)
 
 
-ListModel{
-id: model
+     ListModel{
+     id: model
 
-}
+     }
 
 property ListModel page_model: ListModel{ }
 
@@ -178,8 +178,9 @@ go_to_page(current_page)
 }
 function update_from_cameraList() {
 
-
+ root.log("update_from_cameraList")
     model.clear()
+
       for(var j=0;j< root.cameraList.count;j++){
 
          root.log(j," ",root.cameraList.get(j).name)
@@ -205,6 +206,7 @@ if(container.current>(-1))
 var x=container.page_model.get(container.current)
 
 add_to_space(x.obj.id)
+container.visible=false
 
 }
 

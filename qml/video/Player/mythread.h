@@ -10,7 +10,7 @@ class MyThread : public QObject
     Q_OBJECT
 
 public:
-    explicit MyThread(AVPicture** data,int *h, int *w,QString str,int mode, QObject *parent = nullptr);
+    explicit MyThread(AVPicture** data,int *h, int *w,QString str,Runner::Mode mode, int index, QObject *parent = nullptr);
 
     ~MyThread();
 
@@ -20,13 +20,23 @@ public:
 
     void stop();
 
+    bool getIsOver() const;
+
+    int index() const;
+
+    int get_m_index() const;
+
 public slots:
+
+   void m_quit();
 
 
 private:
     QString URL;
+    bool isOver=false;
+    int m_index;
 signals:
-
+ void signal_isOver();
 
 };
 

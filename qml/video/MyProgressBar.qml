@@ -35,6 +35,10 @@ Item {
     signal pause_signal()
     signal play_signal()
     signal show_or_hide_calendar()
+    signal to_storage_cameras()
+    signal fullscreen_signal()
+    signal signal_scale()
+    signal hide_timelines()
 
     Timer {
         id: timer
@@ -93,6 +97,11 @@ Item {
                     var dt=datetime(slider.value)
 
                     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+
+                    storage_toolbox.visible=true
+                    to_storage_toolbox.visible=false
+
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
                  moved_at_dt(get_dt(dt))
                     update_timelist(dt)
                  }
@@ -272,6 +281,20 @@ Row {
         }
     }
 
+    Rectangle{
+
+        width: 160;
+        height: 40
+        color: "lightgray"
+
+    Row{
+        x:20
+        y:0
+        width: 120;
+        height: 40
+        id: storage_toolbox
+
+
        Rectangle {
         id: prev
         width: 40;
@@ -280,7 +303,7 @@ Row {
 
         Image {
 
-            source: "Arrowhead-Left-01-40.png"
+            source: "left.png"
             anchors.fill: parent
             visible: true
         }
@@ -301,10 +324,14 @@ Row {
 
             dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
-            image.source="Media-Pause-40.png"//it was play
+            image.source="pause.png"//it was play
              m_item.play=false
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
+
+            storage_toolbox.visible=true
+            to_storage_toolbox.visible=false
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
              paused_and_moved_at_dt(get_dt(dt))
        delay.start()
         }
@@ -324,7 +351,7 @@ Row {
         Image {
             id: image
 
-            source:"Media-Play-40.png"
+            source:"play.png"
 
 
             anchors.fill: parent
@@ -343,6 +370,8 @@ Row {
         }
     }
 
+
+
         Rectangle {
         id: next
         width: 40;
@@ -353,7 +382,7 @@ Row {
         Image {
 
 
-            source: "Arrowhead-Right-01-40.png"
+            source: "right.png"
             anchors.fill: parent
               visible: true
         }
@@ -373,16 +402,84 @@ Row {
 
             dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
-            image.source="Media-Pause-40.png"//it was play
+            image.source="pause.png"//it was play
              m_item.play=false
             m_item.mode=m_item.storage
         livestream_txt.text=m_item.mode
+
+            storage_toolbox.visible=true
+            to_storage_toolbox.visible=false
+
          paused_and_moved_at_dt(get_dt(dt))
         delay.start()
 
         }
         }
         }
+    }
+
+    }
+
+    Rectangle{
+        id: to_storage_toolbox
+        width: 160;
+        height: 40
+        color: "lightgray"
+        radius: 6
+        border.width: 4
+        border.color: "gray"
+
+        Text {
+
+
+            x:10
+            y:5
+            font.family: "Helvetica"
+            font.pointSize: 20
+            color: "black"
+            text:"В АРХИВ"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+                    console.log("to_storage_toolbox")
+
+                    var max = "000000T000000.000000"
+                            console.log("m_intervals.length ",m_intervals.count)
+                    for (var i=0; i < m_intervals.count;i++) {
+
+                       var dt=m_intervals.get(i).end
+                         console.log(" dt: ",dt,"; max :",max)
+                        if(compare_dt(dt,max)>0){
+                        max=dt
+                        }
+
+
+
+
+                    }
+
+                    console.log("max :",max)
+
+                    max=max.substring(0,14)+"000000"
+
+                    set_sliders_and_calendar_from_current_datetime_value(max)
+
+
+                    storage_toolbox.visible=true
+                    to_storage_toolbox.visible=false
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+                    moved_at_dt(get_dt(max))
+
+
+
+                }
+            }
+
+    }
+
     }
 
     Rectangle {
@@ -395,10 +492,10 @@ Row {
         border.width: 4
         border.color: "gray"
 
+
         Text {
 
             id: livestream_txt
-            text: m_item.mode
             x: 10
             y:5
             font.family: "Helvetica"
@@ -414,6 +511,7 @@ Row {
 
                 if(m_item.mode==m_item.storage)
                 {
+
                     to_live()
                     livestream_button_clicked()
 
@@ -518,7 +616,7 @@ color: "lightgray";
     Rectangle {
 
         color: "lightgray";
-        width: 300;
+        width: 200;
         height: 40
         visible: true
 
@@ -536,6 +634,158 @@ color: "lightgray";
         color: "black"
     }
     }
+
+    Rectangle {
+
+        color: "lightgray";
+        width: 170;
+        height: 40
+        visible: true
+
+        radius: 6
+
+
+    Text{
+        x:10
+        y:5
+        id: ipaddr
+        width: 40
+        height: 240
+        font.family: "Helvetica"
+        font.pointSize: 20
+        color: "black"
+    }
+    }
+
+    Rectangle{
+        id: to_storage_cameras
+        width: 400;
+        height: 40
+        color: "lightgray"
+        radius: 6
+        border.width: 4
+        border.color: "gray"
+
+        Text {
+
+            id: to_storage_cameras_text
+            x:10
+            y:5
+            font.family: "Helvetica"
+            font.pointSize: 20
+            color: "black"
+            text:"Вернуться к просмотру камер"
+        }
+
+        MouseArea {
+            anchors.fill: parent
+            onClicked: {
+
+                m_item.to_storage_cameras()
+                }
+            }
+
+    }
+
+    Rectangle{
+        id: hide_timelines_scale_rectangle
+        x: m_item.width-135
+        width:40
+        height: 40
+
+
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "down.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+            hide_timelines()
+
+
+
+            }
+        }
+    }
+
+    Rectangle{
+        id: scale_rectangle
+        x: m_item.width-90
+        width:40
+        height: 40
+
+
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "grid.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+            signal_scale()
+
+
+
+            }
+        }
+    }
+
+    Rectangle{
+        id: fullscreen_signal_rectangle
+        x: m_item.width-45
+        width:40
+        height: 40
+
+
+
+        opacity: 1
+
+        color:"#00000000"
+
+        Image {
+
+
+            source: "fullscreen.png"
+            anchors.fill: parent
+            visible: true
+        }
+
+        MouseArea{
+            anchors.fill: parent
+
+            onClicked: {
+
+            fullscreen_signal()
+
+
+
+            }
+        }
+    }
+
 
 
 }
@@ -749,7 +999,7 @@ function set_sliders_and_calendar_from_current_datetime_value(dt)
 function take_a_pause()
 {
 
-image.source="Media-Pause-40.png" //it was play
+image.source="pause.png" //it was play
 
 m_item.play=false
 
@@ -776,7 +1026,7 @@ function play_or_pause()
 
     if(m_item.play==false)
     {
-        image.source="Media-Play-40.png"
+        image.source="play.png"
         m_item.play=true
 
         var dt=datetime(slider.value)
@@ -791,7 +1041,7 @@ function play_or_pause()
     else
     {
 
-        image.source="Media-Pause-40.png"//it was play
+        image.source="pause.png"//it was play
          m_item.play=false
 
 
@@ -858,8 +1108,13 @@ var value=hour*3600+min*60+sec*1
 return value
 }
 
+function check_dt(){
+
+}
+
 function update_slider_intervals(intervals)
 {
+    console.log("update_slider_intervals: ",intervals)
 
 m_intervals.clear()
 var dt=datetime(0)
@@ -955,12 +1210,14 @@ livestream_txt.text=m_item.mode
 
     slider.value=x
 
-    image.source="Media-Play-40.png"
+    image.source="pause.png"
     m_item.play=true
 
 
     calendar.selectedDate=dt
     timer.prev_date=new Date().getTime()
+    to_storage_toolbox.visible=true
+    storage_toolbox.visible=false
     timer.start()
 
 }
@@ -973,11 +1230,47 @@ livestream_txt.text=m_item.mode
     var dt=datetime(slider.value)
 
     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+
+    storage_toolbox.visible=true
+    to_storage_toolbox.visible=false
+    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+
  moved_at_dt(get_dt(dt))
     update_timelist(dt)
 }
 
-function  set_camera_zone(str){
-camera_name_zone.text=str
+function  set_camera_zone(name,ip){
+camera_name_zone.text=name
+ ipaddr.text=ip
 }
+
+function set_to_storage_cameras_text(str){
+to_storage_cameras_text.text=str
+}
+
+function singlewall_edition(){
+    to_storage_cameras.visible=false
+    scale_rectangle.visible=false
+    scale_rectangle.anchors.right=m_item.right
+    scale_rectangle.width=0
+
+    fullscreen_signal_rectangle.visible=false
+    fullscreen_signal_rectangle.anchors.right=m_item.right
+    fullscreen_signal_rectangle.width=0
+ //   hide_timelines_scale_rectangle.x=m_item.width-45
+    hide_timelines_scale_rectangle.anchors.right=m_item.right
+
+}
+
+function storageAlarm_edition(){
+    telemetry_on_off.visible=false
+    camera_list.visible=false
+    event_log.visible=false
+    tree.visible=false
+
+
+
+}
+
+
 }
