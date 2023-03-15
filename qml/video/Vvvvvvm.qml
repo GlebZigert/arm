@@ -13,6 +13,8 @@ Item {
 
         property bool selected: false
 
+    property bool mouse_pressed
+
     signal playing
     signal selected
 
@@ -23,6 +25,9 @@ Item {
     signal return_cid(int cid)
 
     property  int mode: -1
+
+    property int mouse_x
+    property int mouse_y
 
      onActiveFocusChanged:{
    //  console.log("vvvvvvm activeFocus: ",vm.source," ",supreme.activeFocus)
@@ -240,9 +245,51 @@ Item {
                 */
 
 
+                onMouseXChanged: {
+                    if(mouse_pressed)
+                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
+
+                         //   console.log(mouse_x," ",mouseX," ",mouse_y," ",mouseY)
+
+
+
+                            var mx=mouseX-mouse_x
+                             var my=mouse_y-mouseY
+                            var arctn=Math.abs(Math.atan(my/mx))
+
+                            var value=Math.sqrt(mx*mx+my*my)
+
+                       //     console.log(mx," ",my," ",value)
+
+                            move(mx/2,my/2)
+                        }
+                }
+
+                onMouseYChanged: {
+                    if(mouse_pressed)
+                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+
+
+                        //    console.log(mouse_x," ",mouseX," ",mouse_y," ",mouseY)
+
+                            var mx=mouseX-mouse_x
+                            var my=mouse_y-mouseY
+                            var arctn=Math.abs(Math.atan(my/mx))
+
+                            var value=Math.sqrt(mx*mx+my*my)
+
+                        //    console.log(mx," ",my," ",value)
+                            move(mx/2,my/2)
+                        }
+                }
 
 
                 onPressed: {
+                    mouse_pressed=true
+                    mouse_x=mouseX
+                    mouse_y=mouseY
+                    /*
                      console.log("onPressed")
                     if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
@@ -252,7 +299,9 @@ Item {
                         var arctn=Math.abs(Math.atan(my/mx))
                         move(mx/2,my/2)
                     }
+                    */
                 }
+
 
                 Timer {
                     id:stop_moving_timer
@@ -291,6 +340,9 @@ Item {
                 }
 
                 onReleased: {
+
+                      mouse_pressed=false
+
                      console.log("onReleased")
                 if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
@@ -308,13 +360,13 @@ Item {
                     if(value===0)
                         val=0
 
-                    if(value>0.4)
+                    if(value>1)
                         val=0.2
 
-                    if(value>0.4)
+                    if(value>10)
                         val=0.2
 
-                    if(value>0.9)
+                    if(value>50)
                         val=0.5
 
                     //   console.log("val ",val)
@@ -442,7 +494,7 @@ Item {
                         str=str+String(val)
                         str=str+" "
 
-                  //      console.log("move.. ",x," ",y,"    ",x_prev," ",y_prev,"     ",str)
+                        console.log("move.. ",x," ",y,"    ",value," ",x_prev," ",y_prev,"     ",str)
                         Tlmtr.move(str)
 
 
