@@ -328,7 +328,7 @@ Row {
 
                 dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
-                image.source="pause.png"//it was play
+              //  image.source="pause.png"//it was play
                  m_item.play=false
                 m_item.mode=m_item.storage
             livestream_txt.text=m_item.mode
@@ -354,7 +354,7 @@ Row {
                 label: Image {
                     id: image
 
-                    source:"play.png"
+                    source:m_item.play ? "play.png" : "pause.png"
                     fillMode: Image.PreserveAspectFit  // ensure it fits
                 }
             }
@@ -394,7 +394,7 @@ Row {
 
                 dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
-                image.source="pause.png"//it was play
+            //    image.source="pause.png"//it was play
                  m_item.play=false
                 m_item.mode=m_item.storage
             livestream_txt.text=m_item.mode
@@ -961,7 +961,7 @@ function set_sliders_and_calendar_from_current_datetime_value(dt)
 function take_a_pause()
 {
 
-image.source="pause.png" //it was play
+//image.source="pause.png" //it was play
 
 m_item.play=false
 
@@ -988,7 +988,7 @@ function play_or_pause()
 
     if(m_item.play==false)
     {
-        image.source="play.png"
+     //   image.source="play.png"
         m_item.play=true
 
         var dt=datetime(slider.value)
@@ -1003,7 +1003,7 @@ function play_or_pause()
     else
     {
 
-        image.source="pause.png"//it was play
+   //     image.source="pause.png"//it was play
          m_item.play=false
 
 
