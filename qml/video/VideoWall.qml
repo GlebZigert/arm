@@ -2,9 +2,9 @@ import QtQuick 2.11
 import "../../js/axxon.js" as Axxon
 import MyQMLEnums 13.37
 import QtQuick.Controls 2.4
-import QtQuick.Controls 1.4
 import QtQuick.Layouts 1.5
-
+import QtQuick.Controls.Styles 1.4
+    import QtQuick.Controls 1.4
 Item{
     anchors.fill: parent
     property int cid: -1
@@ -165,13 +165,42 @@ Item{
             width: 40
             height: 40
 
+            style: ButtonStyle {
+
+                label: Image {
+                    source: "video-wall-right.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
             onClicked: {
                         timer.stop()
                 console.log("onClicked .")
+                timer.stop()
                 multivm.to_next_page()
             }
         }
 
+        Button{
+            width: 40
+            height: 40
+
+            style: ButtonStyle {
+
+                label: Image {
+                    source: "fullsize.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
+            onClicked: {
+                        timer.stop()
+                console.log("onClicked .")
+                timer.stop()
+   multivm.next_scale()
+            }
+        }
+        /*
         Rectangle{
             width:40
             height: 40
@@ -190,7 +219,31 @@ Item{
                 }
             }
         }
+        */
 
+        Button{
+            width: 40
+            height: 40
+
+            style: ButtonStyle {
+
+                label: Image {
+                    source:  timer.running ? "play.png" : "pause.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
+            onClicked: {
+                        timer.stop()
+                console.log("onClicked .")
+                if(timer.running)
+                    timer.stop()
+                else
+                    timer.start()
+            }
+        }
+
+        /*
         Rectangle{
             width:40
             height: 40
@@ -211,11 +264,21 @@ Item{
                 }
             }
         }
+        */
 
 
         Button{
             width: 40
             height: 40
+
+
+            style: ButtonStyle {
+
+                label: Image {
+                    source:  "video-wall-remove.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
 
             onClicked: {
                 console.log("onClicked .")
@@ -227,6 +290,14 @@ Item{
         Button{
             width: 40
             height: 40
+
+            style: ButtonStyle {
+
+                label: Image {
+                    source:  "video-wall-add.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
 
             onClicked: {
                 console.log("onClicked .")
@@ -312,19 +383,32 @@ Item{
 
     }
 
+        Button{
+            width: 40
+            height: 40
+
+            style: ButtonStyle {
+
+                label: Image {
+                    source:  "down.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
+            onClicked: {
+                panel.height=0
+                      multivm.rescale()
+            }
+        }
+        /*
         Rectangle{
             x: panel.width-90
             width:40
             height: 40
-
-
-
             opacity: 1
-
             color:"#00000000"
 
             Image {
-
 
                 source: "/qml/video/fullsize.png"
                 anchors.fill: parent
@@ -336,35 +420,51 @@ Item{
 
                 onClicked: {
 
-
-
               panel.height=0
                     multivm.rescale()
-
-
-
                 }
+            }
+        }
+        */
+
+        Button{
+            width: 40
+            height: 40
+
+            style: ButtonStyle {
+
+                label: Image {
+                    source:  "fullscreen.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
+            onClicked: {
+
+                console.log("visibility: ",wnd.visibility)
+
+                if(wnd.visibility===5){
+                wnd.visibility=1
+                }else{
+                                 wnd.visibility=5
+                }
+                multivm.rescale_timer_start()
             }
         }
 
 
 
-
+        /*
         Rectangle{
             x: panel.width-45
             width:40
             height: 40
-
-
-
             opacity: 1
-
             color:"#00000000"
 
             Image {
 
-
-                source: "/qml/video/fullsize.png"
+               source: "/qml/video/fullsize.png"
                 anchors.fill: parent
                 visible: true
             }
@@ -373,31 +473,20 @@ Item{
                 anchors.fill: parent
 
                 onClicked: {
-
 
                     console.log("visibility: ",wnd.visibility)
 
                     if(wnd.visibility===5){
                     wnd.visibility=1
-                   //       multivm.rescale(multivm.scale)
                     }else{
                                      wnd.visibility=5
-                   //       multivm.rescale(multivm.scale)
                     }
                     multivm.rescale_timer_start()
-                    /*
-                    console.log("visibility: ",wnd.visibility)
 
-                    if(panel.height==0){
-                      panel.height=200
-
-                    }else{
-                      panel.height=0
-                    }
-                    */
                 }
             }
         }
+        */
 
 
 

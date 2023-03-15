@@ -68,7 +68,7 @@ void Streamer::followers_dec()
     }
     //qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
 
-    if(followers==0 && mode !=Runner::Mode::LiveStreaming &&save==false){
+    if(followers==0 && /*mode !=Runner::Mode::LiveStreaming && */save==false ){
        URL.clear();
         stop();
     }
@@ -81,7 +81,7 @@ bool Streamer::getSave() const
 
 void Streamer::setSave(bool newSave)
 {
-    //qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
+    qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
     save = newSave;
 }
 

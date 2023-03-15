@@ -334,5 +334,16 @@
         <file>qml/video/left.png</file>
         <file>qml/video/fullscreen.png</file>
         <file>qml/video/grid.png</file>
+        <file>qml/video/video-wall-right.png</file>
+        <file>qml/video/video-wall-remove.png</file>
+        <file>qml/video/video-wall-left.png</file>
+        <file>qml/video/video-wall-add.png</file>
+        <file>qml/video/select-camera.png</file>
+        <file>qml/video/no_signal.png</file>
+        <file>qml/video/journal.png</file>
+        <file>qml/video/flip-camera.png</file>
+        <file>qml/video/eye-slash.png</file>
+        <file>qml/video/empty.png</file>
+        <file>qml/video/device-tree.png</file>
     </qresource>
 </RCC>
