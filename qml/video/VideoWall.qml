@@ -188,7 +188,7 @@ Item{
             style: ButtonStyle {
 
                 label: Image {
-                    source: "fullsize.png"
+                    source: "grid.png"
                     fillMode: Image.PreserveAspectFit  // ensure it fits
                 }
             }

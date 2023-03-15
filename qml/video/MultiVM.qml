@@ -3,6 +3,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4
+
 import Model 1.0
 Item{
     property string vid
@@ -161,6 +164,9 @@ Item{
                     }
 
                     Row{
+                        id: rrow
+
+
 
                         x:2
                         y:2
@@ -172,15 +178,23 @@ Item{
                     Button{
 
 
-                    width: 20
-                    height: 20
+                    width: 40
+                    height: 40
                     visible: selected ? true : false
 
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "select-camera.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
                     onClicked: {
 
                         console.log("onClicked .")
                         good.give_me_a_camera()
+  rrow.visible=false
 
 
 
@@ -191,58 +205,90 @@ Item{
                     Button{
 
 
-                        width: 20
-                        height: 20
+                        width: 40
+                        height: 40
                     visible: selected ? true : false
 
+
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "flip-camera.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
                     onClicked: {
 
                         console.log("onClicked .")
                         good.open_in_alarm_window(vvm.cid)
+  rrow.visible=false
                     }
 
                     }
 
                     Button{
 
-                        width: 20
-                        height: 20
+                        width: 40
+                        height: 40
                     visible: selected ? true : false
 
+
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "fullscreen.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
                     onClicked: {
 
                         console.log("onClicked .")
                         var uuid = vvm.uid
                         good.fullscreen(vvm.uid)
+  rrow.visible=false
                     }
 
                     }
 
                     Button{
 
+                        width: 40
+                        height: 40
+                        visible: selected ? true : false
 
-                        width: 20
-                        height: 20
-                    visible: selected ? true : false
+                        style: ButtonStyle {
 
+                            label: Image {
+                                source: "telemetry.png"
+                                fillMode: Image.PreserveAspectFit  // ensure it fits
+                            }
+                        }
 
-                    onClicked: {
+                        onClicked: {
 
-                        console.log("onClicked .,.")
-                        good.switch_tlmtr()
-                    }
-
+                            console.log("onClicked .,.")
+                            good.switch_tlmtr()
+                            rrow.visible=false
+                        }
                     }
 
 
                     Button{
 
 
-                        width: 20
-                        height: 20
+                        width: 40
+                        height: 40
                     visible: selected ? true : false
+
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "delete.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
 
                     onClicked: {
@@ -257,6 +303,7 @@ Item{
                     //    findAndSet(cids,vm.uid,"url","")
                         vvm.vm_stop()
                         vvm.vm_clear()
+  rrow.visible=false
 
 
                     }
@@ -311,8 +358,12 @@ Item{
                 selected=val
 
                     if(val==true){
+
+                        rrow.visible=!rrow.visible
                     findAndSet(cids,vm.uid,"alarm",false)
                     findAndSet(w_model,vm.uid,"alarm",false)
+                    }else{
+                     rrow.visible=false
                     }
 
                     vvm.set_selected(val)
