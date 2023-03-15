@@ -15,16 +15,16 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         main.cpp \
-        printer.cpp \
-        qml/video/Player/StreamerContainer.cpp \
-        qml/video/Player/model.cpp
+        printer.cpp
 !win32 {
     SOURCES += \
-    qml/video/Player/Streamer.cpp \
-            qml/video/Player/mythread.cpp \
-            qml/video/Player/runner.cpp \
-           qml/video/Player/videoplayer.cpp \
-           qml/video/Preview/Preview.cpp
+        qml/video/Player/Streamer.cpp \
+        qml/video/Player/mythread.cpp \
+        qml/video/Player/runner.cpp \
+        qml/video/Player/videoplayer.cpp \
+        qml/video/Preview/Preview.cpp \
+        qml/video/Player/StreamerContainer.cpp \
+        qml/video/Player/model.cpp
 }
 RESOURCES += qml.qrc
 
@@ -39,13 +39,18 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
+HEADERS += \
+    printer.h
+
 !win32 {
     HEADERS += \
-    qml/video/Player/Streamer.h \
+        qml/video/Player/Streamer.h \
         qml/video/Player/mythread.h \
         qml/video/Player/runner.h \
         qml/video/Player/videoplayer.h \
-        qml/video/Preview/Preview.h
+        qml/video/Preview/Preview.h \
+        qml/video/Player/StreamerContainer.h \
+        qml/video/Player/model.h
 }
 DISTFILES += \
     qml/video/Player/no_signal.jpeg \
@@ -53,8 +58,3 @@ DISTFILES += \
 !win32 {
     LIBS +=  -lavformat -lswscale  -lavcodec -lavutil
 }
-
-HEADERS += \
-    printer.h \
-    qml/video/Player/StreamerContainer.h \
-    qml/video/Player/model.h
