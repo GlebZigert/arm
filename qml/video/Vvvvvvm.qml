@@ -369,6 +369,9 @@ Item {
                     if(value>50)
                         val=0.5
 
+                    if(value>100)
+                        val=1
+
                     //   console.log("val ",val)
                     var arctn=Math.abs(Math.atan(my/mx))
 
