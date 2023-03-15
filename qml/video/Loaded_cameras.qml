@@ -169,13 +169,19 @@ head.current_page.connect(change_current_page)
 model.clear()
 var xx=model.count/page_size+1
 head.set_count(Math.floor(model.count/page_size)+1)
+head.cancel.connect(f_cancel)
 
 }
+
+function f_cancel(){
+container.visible=false
+}
+
 function change_current_page(page){
 current_page=page
 go_to_page(current_page)
-
 }
+
 function update_from_cameraList() {
 
  root.log("update_from_cameraList")

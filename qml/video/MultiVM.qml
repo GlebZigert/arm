@@ -38,6 +38,8 @@ Item{
     signal clicked
 
 
+
+
     Timer {
         id: rescale_timer
         interval: 10; running: false; repeat: false
@@ -74,7 +76,9 @@ Item{
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true
-
+Rectangle{
+           anchors.fill: parent
+           color:"gray"
     GridLayout {
 
         anchors.fill: parent
@@ -362,6 +366,9 @@ Item{
                         rrow.visible=!rrow.visible
                     findAndSet(cids,vm.uid,"alarm",false)
                     findAndSet(w_model,vm.uid,"alarm",false)
+
+                  console.log("выбран cid: ",vm.cid)
+
                     }else{
                      rrow.visible=false
                     }
@@ -431,7 +438,7 @@ Item{
             }
         }
     }
-
+}
 
 
 
@@ -451,13 +458,15 @@ Item{
 
                         var lcl_cid = grid.children[i].cid
                      var lcl=Axxon.camera(lcl_cid)
+                           selected_cid(lcl_cid)
+
                     if(lcl!==-1){
                     root.telemetryPoint=lcl.telemetryControlID
 
                           Tlmtr.preset_info()
                        Tlmtr.capture_session()
 
-                       selected_cid(lcl_cid)
+
                     }else{
                         root.telemetryPoint=-1
                               Tlmtr.preset_info()

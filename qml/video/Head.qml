@@ -1,12 +1,15 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
-
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4 as QQC1
 
 Rectangle{
     id:container
     property int side: (width>height)?height:width
 
     color: "gray"
+
+    signal cancel
 
     signal current_page(int page)
     signal do_it()
@@ -32,11 +35,15 @@ Rectangle{
 
        }
 
-       Button{
+        QQC1.Button{
 
            width:height*3
            height:container.side
-
+           style: ButtonStyle {
+               label: Text {
+                   text:"Назад"
+               }
+           }
            onClicked: {
            var index=combo.currentIndex
            if(index>0)
@@ -52,10 +59,14 @@ Rectangle{
        }
 
 
-       Button{
+        QQC1.Button{
            width:height*3
            height:container.side
-
+           style: ButtonStyle {
+               label: Text {
+                   text:"Вперед"
+               }
+           }
            onClicked: {
            var index=combo.currentIndex
            if(index<combo.count-1)
@@ -70,6 +81,23 @@ Rectangle{
            }
 
        }
+
+
+        QQC1.Button{
+           width:height*3
+           height:container.side
+           style: ButtonStyle {
+               label: Text {
+                   text:"Отмена"
+               }
+           }
+           onClicked: {
+              container.cancel()
+           }
+
+       }
+
+
 
     }
 
@@ -94,5 +122,6 @@ Rectangle{
 
 
 }
+
 
 

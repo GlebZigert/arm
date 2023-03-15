@@ -150,6 +150,8 @@ Item {
     Rectangle {
      //   color: selected ? "lightblue" : supreme.activeFocus ? "lightgray" : "gray";
           color: selected ? "lightblue" : "gray";
+       //   border.width: 2
+       //   border.color: "black"
         id:vm_rect
 
 
