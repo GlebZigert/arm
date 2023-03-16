@@ -1076,7 +1076,7 @@ function check_dt(){
 
 function update_slider_intervals(intervals)
 {
-    console.log("update_slider_intervals: ",intervals)
+//    console.log("update_slider_intervals: ",intervals)
 
 m_intervals.clear()
 var dt=datetime(0)

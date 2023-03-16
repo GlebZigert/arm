@@ -561,6 +561,13 @@ Item{
                     }
                 }
                 onClicked: {
+
+                    if(pageName_input.text=="Архив")
+                        return
+
+                    if(pageName_input.text=="Тревоги")
+                        return
+
                     multivm.multivm_add_page(pageName_input.text)
                     page_input_view.visible=false
                 }

@@ -149,6 +149,8 @@ Item{
     }
 
     Component.onDestruction: {
+
+
         settings.x1 = wnd1.x
         settings.y1 = wnd1.y
         settings.visibility1 = (wnd1.visibility === 0 ? 2 :wnd1.visibility)

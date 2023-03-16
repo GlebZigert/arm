@@ -181,6 +181,10 @@ Rectangle{
 
                     Button{
 
+                        id: btn_select_camera
+
+
+
 
                     width: 40
                     height: 40
@@ -207,6 +211,8 @@ Rectangle{
                     }
 
                     Button{
+
+                             id: btn_flip_camera
 
 
                         width: 40
@@ -422,6 +428,22 @@ Rectangle{
                 }
 
                 Component.onCompleted: {
+
+                    if(md.get_current_page_name()=="Тревоги"){
+                    btn_select_camera.visible=false
+                        btn_select_camera.width=0
+
+                        btn_flip_camera.visible=false
+                            btn_flip_camera.width=0
+
+                    }
+
+                    if(md.get_current_page_name()=="Архив"){
+
+                        btn_flip_camera.visible=false
+                            btn_flip_camera.width=0
+
+                    }
 
                  //   selected=false
                  //   resize_vm()
