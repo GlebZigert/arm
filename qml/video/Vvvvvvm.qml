@@ -49,7 +49,7 @@ Item {
  //   console.log("onLeftPressed")
          dx=-50;
  stop_moving_timer_dx.stop()
-          console.log("Keys.onLeftPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
+          console.log("Keys.onLeftPressed "," ",cid," ",vm.cid," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
          if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
              vm_area.move(dx,dy,0.5)
@@ -360,7 +360,7 @@ console.log("Key_Down")
 
                 function move(mx,my,val)
                 {
-                 //     console.log("move ",mx," ",my)
+                      console.log("move ",mx," ",my)
 
                     if(val===-1){
                      var value=Math.sqrt(mx*mx+my*my)
@@ -528,6 +528,7 @@ console.log("Key_Down")
                     var x2=supreme.activeFocus
                     var x3=(vm.getMode()===Mode.LiveStreaming)
 
+                    console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",Mode.LiveStreaming)
                     if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
 

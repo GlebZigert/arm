@@ -627,6 +627,9 @@ timeline.hide_timelines.connect(f_hide_timelines)
             timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
             v1.cid=cid
+            v1.set_vm_cid(cid)
+
+            v1.forceActiveFocus()
 
             request_URL(v1.cid,lcl.serviceId,dt)
         }
