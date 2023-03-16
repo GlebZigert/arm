@@ -22,7 +22,6 @@ Item{
 
     signal switch_tlmtr
 
-
     Timer {
         id: start_timer
         interval: 500; running: true; repeat: false
