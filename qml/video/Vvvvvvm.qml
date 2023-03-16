@@ -46,12 +46,13 @@ Item {
      }
 
      Keys.onLeftPressed:   {
-    console.log("onLeftPressed")
-         dx=-1;
+ //   console.log("onLeftPressed")
+         dx=-50;
  stop_moving_timer_dx.stop()
+          console.log("Keys.onLeftPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
          if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
-             vm_area.move(dx,dy)
+             vm_area.move(dx,dy,0.5)
 
          }
 
@@ -60,18 +61,18 @@ Item {
      }
 
      Keys.onRightPressed:  {
-    console.log("onLeftPressed")
-         dx=1;
+  //  console.log("onLeftPressed")
+         dx=50;
  stop_moving_timer_dx.stop()
 
          var x1=vvm_arrea.containsMouse
          var x2=supreme.activeFocus
          var x3=(vm.getMode()===Mode.LiveStreaming)
-
+ console.log("Keys.onRightPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
 
-             vm_area.move(dx,dy)
+             vm_area.move(dx,dy,0.5)
 
          }
 
@@ -79,13 +80,14 @@ Item {
      }
 
      Keys.onUpPressed:     {
-    console.log("onLeftPressed")
-         dy=1;
+ //   console.log("onLeftPressed")
+         dy=50;
  stop_moving_timer_dy.stop()
+         console.log("Keys.onUpPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
          if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
 
-             vm_area.move(dx,dy)
+             vm_area.move(dx,dy,0.5)
 
          }
 
@@ -93,41 +95,46 @@ Item {
      }
 
      Keys.onDownPressed:   {
-    console.log("onLeftPressed")
-         dy=-1;
+   // console.log("onDownPressed")
+         dy=-50;
  stop_moving_timer_dy.stop()
+          console.log("Keys.onDownPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
 
-             vm_area.move(dx,dy)
+             vm_area.move(dx,dy,0.5)
 
          }
 
      }
 
      Keys.onReleased:      {
-    console.log("onReleased")
+    console.log("Keys.onReleased")
+
          switch(event.key){
 
          case Qt.Key_Up:{
+             console.log("Key_Up")
         stop_moving_timer_dy.start()
 
          }
          break
 
          case Qt.Key_Down:{
-
+console.log("Key_Down")
         stop_moving_timer_dy.start()
          }
          break
 
          case Qt.Key_Right:{
+             console.log("Key_Right")
         stop_moving_timer_dx.start()
 
          }
          break
 
          case Qt.Key_Left:{
+             console.log("Key_Left")
         stop_moving_timer_dx.start()
 
          }
@@ -262,7 +269,7 @@ Item {
 
                        //     console.log(mx," ",my," ",value)
 
-                            move(mx/2,my/2)
+                            move(mx/2,my/2,-1)
                         }
                 }
 
@@ -280,7 +287,7 @@ Item {
                             var value=Math.sqrt(mx*mx+my*my)
 
                         //    console.log(mx," ",my," ",value)
-                            move(mx/2,my/2)
+                            move(mx/2,my/2,-1)
                         }
                 }
 
@@ -305,7 +312,7 @@ Item {
 
                 Timer {
                     id:stop_moving_timer
-                    interval: 100; running: false; repeat: false
+                    interval: 200; running: false; repeat: false
                     property int msec:0
                     onTriggered:
                     {
@@ -323,7 +330,7 @@ Item {
                     {
                             console.log("stop_moving_timer_dx")
                        dx=0
-                          vm_area.move(dx,dy)
+                          vm_area.move(dx,dy,-1)
                     }
                 }
 
@@ -335,7 +342,7 @@ Item {
                     {
                         console.log("stop_moving_timer_dy")
                       dy=0
-                           vm_area.move(dx,dy)
+                           vm_area.move(dx,dy,-1)
                     }
                 }
 
@@ -351,12 +358,14 @@ Item {
                 }
 
 
-                function move(mx,my)
+                function move(mx,my,val)
                 {
                  //     console.log("move ",mx," ",my)
-                    var value=Math.sqrt(mx*mx+my*my)
 
-                    var val=0
+                    if(val===-1){
+                     var value=Math.sqrt(mx*mx+my*my)
+
+
                     if(value===0)
                         val=0
 
@@ -371,7 +380,7 @@ Item {
 
                     if(value>100)
                         val=1
-
+                    }
                     //   console.log("val ",val)
                     var arctn=Math.abs(Math.atan(my/mx))
 
@@ -488,7 +497,7 @@ Item {
 
                     if((x_prev!=x)||(y_prev!=y)||(val_prev!=val))
                     {
-                        console.log("+")
+                        console.log("++")
                         var str=""
                         str=String(x)
                         str=str+" "
@@ -531,7 +540,7 @@ Item {
                         {
                             if (zoom==1)
                             {
-                                console.log("+")
+                                console.log("+++")
                                 Tlmtr.zoom_in()
                             }
                             if (zoom==-1)
@@ -651,7 +660,7 @@ Item {
                 supreme.focus=false
                 dx=0;
                 dy=0;
-                vm_area.move(dx,dy)
+                vm_area.move(dx,dy,-1)
             }
 
 
