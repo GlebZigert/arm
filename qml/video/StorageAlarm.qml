@@ -160,15 +160,19 @@ Item{
         id: tlmt_rect
         x:100
         y:100
-        width: 260
-        height: 710
+        width: 265
+        height: 711
         color: "gray"
+
+        border.width: 1
+        border.color: black
 
         Rectangle {
             id: telemetry_menu
 
             width: 260
             height: 700
+            x:1
             y:10
 
             //  color: "lightgray"
