@@ -3,6 +3,9 @@ import QtQuick.Layouts 1.0
 import QtQuick.Controls 2.4
 import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4
+
 import Model 1.0
 Item{
     property string vid
@@ -33,6 +36,8 @@ Item{
     property bool full
 
     signal clicked
+
+
 
 
     Timer {
@@ -71,7 +76,9 @@ Item{
         anchors.fill: parent
         hoverEnabled: true
         propagateComposedEvents: true
-
+Rectangle{
+           anchors.fill: parent
+           color:"gray"
     GridLayout {
 
         anchors.fill: parent
@@ -161,6 +168,9 @@ Item{
                     }
 
                     Row{
+                        id: rrow
+
+
 
                         x:2
                         y:2
@@ -171,16 +181,28 @@ Item{
 
                     Button{
 
+                        id: btn_select_camera
 
-                    width: 20
-                    height: 20
+
+
+
+                    width: 40
+                    height: 40
                     visible: selected ? true : false
 
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "select-camera.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
                     onClicked: {
 
                         console.log("onClicked .")
                         good.give_me_a_camera()
+  rrow.visible=false
 
 
 
@@ -190,59 +212,93 @@ Item{
 
                     Button{
 
+                             id: btn_flip_camera
 
-                        width: 20
-                        height: 20
+
+                        width: 40
+                        height: 40
                     visible: selected ? true : false
 
+
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "flip-camera.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
                     onClicked: {
 
                         console.log("onClicked .")
                         good.open_in_alarm_window(vvm.cid)
+  rrow.visible=false
                     }
 
                     }
 
                     Button{
 
-                        width: 20
-                        height: 20
+                        width: 40
+                        height: 40
                     visible: selected ? true : false
 
+
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "fullscreen.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
                     onClicked: {
 
                         console.log("onClicked .")
                         var uuid = vvm.uid
                         good.fullscreen(vvm.uid)
+  rrow.visible=false
                     }
 
                     }
 
                     Button{
 
+                        width: 40
+                        height: 40
+                        visible: selected ? true : false
 
-                        width: 20
-                        height: 20
-                    visible: selected ? true : false
+                        style: ButtonStyle {
 
+                            label: Image {
+                                source: "telemetry.png"
+                                fillMode: Image.PreserveAspectFit  // ensure it fits
+                            }
+                        }
 
-                    onClicked: {
+                        onClicked: {
 
-                        console.log("onClicked .,.")
-                        good.switch_tlmtr()
-                    }
-
+                            console.log("onClicked .,.")
+                            good.switch_tlmtr()
+                            rrow.visible=false
+                        }
                     }
 
 
                     Button{
 
 
-                        width: 20
-                        height: 20
+                        width: 40
+                        height: 40
                     visible: selected ? true : false
+
+                    style: ButtonStyle {
+
+                        label: Image {
+                            source: "delete.png"
+                            fillMode: Image.PreserveAspectFit  // ensure it fits
+                        }
+                    }
 
 
                     onClicked: {
@@ -257,6 +313,7 @@ Item{
                     //    findAndSet(cids,vm.uid,"url","")
                         vvm.vm_stop()
                         vvm.vm_clear()
+  rrow.visible=false
 
 
                     }
@@ -311,8 +368,15 @@ Item{
                 selected=val
 
                     if(val==true){
+
+                        rrow.visible=!rrow.visible
                     findAndSet(cids,vm.uid,"alarm",false)
                     findAndSet(w_model,vm.uid,"alarm",false)
+
+                  console.log("выбран cid: ",vm.cid)
+
+                    }else{
+                     rrow.visible=false
                     }
 
                     vvm.set_selected(val)
@@ -365,6 +429,22 @@ Item{
 
                 Component.onCompleted: {
 
+                    if(md.get_current_page_name()=="Тревоги"){
+                    btn_select_camera.visible=false
+                        btn_select_camera.width=0
+
+                        btn_flip_camera.visible=false
+                            btn_flip_camera.width=0
+
+                    }
+
+                    if(md.get_current_page_name()=="Архив"){
+
+                        btn_flip_camera.visible=false
+                            btn_flip_camera.width=0
+
+                    }
+
                  //   selected=false
                  //   resize_vm()
                     set_cid(model.cid)
@@ -380,7 +460,7 @@ Item{
             }
         }
     }
-
+}
 
 
 
@@ -400,13 +480,15 @@ Item{
 
                         var lcl_cid = grid.children[i].cid
                      var lcl=Axxon.camera(lcl_cid)
+                           selected_cid(lcl_cid)
+
                     if(lcl!==-1){
                     root.telemetryPoint=lcl.telemetryControlID
 
                           Tlmtr.preset_info()
                        Tlmtr.capture_session()
 
-                       selected_cid(lcl_cid)
+
                     }else{
                         root.telemetryPoint=-1
                               Tlmtr.preset_info()

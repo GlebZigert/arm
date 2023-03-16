@@ -1,11 +1,14 @@
 import QtQuick 2.0
 import QtMultimedia 5.11
 import QtQuick 2.11
-import QtQuick.Controls 1.4
+
 import QtQuick.Layouts 1.5
-import QtQuick.Controls.Styles 1.4
+
 import QtQuick 2.9
 import QtQuick.Controls 2.2
+import QtQuick.Controls.Styles 1.4
+import QtQuick.Controls 1.4 as QQC1
+
 import "../../js/axxon.js" as Axxon
 
 Item {
@@ -249,7 +252,7 @@ Slider {
         }
 
 Row {
-    spacing: 6
+    spacing: 1
     padding: 10
 
 
@@ -296,128 +299,117 @@ Row {
         id: storage_toolbox
 
 
-       Rectangle {
-        id: prev
-        width: 40;
-        height: 40
-        color: "lightgray";
+       QQC1.Button{
 
-        Image {
-
-            source: "left.png"
-            anchors.fill: parent
-            visible: true
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-            if(!delay.running){
-            timer.stop()
-            timer.msec=timer.msec-50
-            if(timer.msec<1)
-              {
-              timer.msec=999
-            slider.value=slider.value-1
-
-              }
-            var dt=datetime(slider.value)
-
-            dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
-
-            image.source="pause.png"//it was play
-             m_item.play=false
-            m_item.mode=m_item.storage
-        livestream_txt.text=m_item.mode
-
-            storage_toolbox.visible=true
-            to_storage_toolbox.visible=false
-    dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
-             paused_and_moved_at_dt(get_dt(dt))
-       delay.start()
-        }
-
-        }
-        }
-    }
-
-    Rectangle {
-        width: 40
-        height: 40
-        id: play
-
-        color: "lightgray";
+            width: 40
+            height: 40
 
 
-        Image {
-            id: image
+            style: ButtonStyle {
 
-            source:"play.png"
-
-
-            anchors.fill: parent
-              visible: true
-        }
-
-        MouseArea {
-            anchors.fill: parent
-            onClicked: {
-
-
-                play_or_pause()
-
+                label: Image {
+                    source: "left.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
             }
 
-        }
-    }
+            onClicked: {
 
+                if(!delay.running){
+                timer.stop()
+                timer.msec=timer.msec-50
+                if(timer.msec<1)
+                  {
+                  timer.msec=999
+                slider.value=slider.value-1
 
+                  }
+                var dt=datetime(slider.value)
 
-        Rectangle {
-        id: next
-        width: 40;
-        height: 40
+                dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
 
- color: "lightgray";
+              //  image.source="pause.png"//it was play
+                 m_item.play=false
+                m_item.mode=m_item.storage
+            livestream_txt.text=m_item.mode
 
-        Image {
-
-
-            source: "right.png"
-            anchors.fill: parent
-              visible: true
-        }
-        MouseArea {
-            anchors.fill: parent
-        onClicked: {
-            if(!delay.running){
-            timer.stop()
-            timer.msec=timer.msec+50
-            if(timer.msec>999)
-              {
-                timer.msec=0
-                increase()
-
-              }
-            var dt=datetime(slider.value)
-
-            dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
-
-            image.source="pause.png"//it was play
-             m_item.play=false
-            m_item.mode=m_item.storage
-        livestream_txt.text=m_item.mode
-
-            storage_toolbox.visible=true
-            to_storage_toolbox.visible=false
-
-         paused_and_moved_at_dt(get_dt(dt))
-        delay.start()
-
+                storage_toolbox.visible=true
+                to_storage_toolbox.visible=false
+        dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+                 paused_and_moved_at_dt(get_dt(dt))
+           delay.start()
+            }
         }
         }
+
+
+         QQC1.Button{
+
+            width: 40
+            height: 40
+
+
+            style: ButtonStyle {
+
+                label: Image {
+                    id: image
+
+                    source:m_item.play ? "play.png" : "pause.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
+            onClicked: {
+                 play_or_pause()
+
         }
-    }
+        }
+
+         QQC1.Button{
+
+            width: 40
+            height: 40
+
+            style: ButtonStyle {
+
+                label: Image {
+
+
+                    source:"right.png"
+                    fillMode: Image.PreserveAspectFit  // ensure it fits
+                }
+            }
+
+            onClicked: {
+                if(!delay.running){
+                timer.stop()
+                timer.msec=timer.msec+50
+                if(timer.msec>999)
+                  {
+                    timer.msec=0
+                    increase()
+
+                  }
+                var dt=datetime(slider.value)
+
+                dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+
+            //    image.source="pause.png"//it was play
+                 m_item.play=false
+                m_item.mode=m_item.storage
+            livestream_txt.text=m_item.mode
+
+                storage_toolbox.visible=true
+                to_storage_toolbox.visible=false
+
+             paused_and_moved_at_dt(get_dt(dt))
+            delay.start()
+
+            }
+            }
+        }
+
+
 
     }
 
@@ -521,98 +513,93 @@ Row {
             }
     }
 
-    Rectangle {
-     id: telemetry_on_off
-     width: 40;
-     height: 40
-color: "lightgray";
 
-     Image {
-         source: "telemetry.png"
-         anchors.fill: parent
-         visible: true
-     }
+     QQC1.Button{
+        id: telemetry_on_off
+        width: 40
+        height: 40
 
-     MouseArea {
-         anchors.fill: parent
-     onClicked: {
+
+        style: ButtonStyle {
+
+            label: Image {
+                source: "telemetry.png"
+                fillMode: Image.PreserveAspectFit  // ensure it fits
+            }
+        }
+
+        onClicked: {
+
+            console.log("onClicked .,.")
          signal_telemetry_on_off()
+        }
+    }
 
-     }
-     }
- }
-
-    Rectangle {
-     id: camera_list
-     width: 40;
-     height: 40
-color: "lightgray";
-
-     Image {
+     QQC1.Button{
+        id: camera_list
+        width: 40
+        height: 40
 
 
-         source: "camera_list.png"
-         anchors.fill: parent
-           visible: true
-     }
+        style: ButtonStyle {
 
-     MouseArea {
-         anchors.fill: parent
-     onClicked: {
+            label: Image {
+                source: "select-camera.png"
+                fillMode: Image.PreserveAspectFit  // ensure it fits
+            }
+        }
 
-          signal_loaded_cameras_on_off()
+        onClicked: {
 
-     }
-     }
- }
-
-    Rectangle {
-     id: event_log
-     width: 40;
-     height: 40
-color: "lightgray";
-
-     Image {
+            console.log("onClicked .,.")
+         signal_loaded_cameras_on_off()
+        }
+    }
 
 
-         source: "eventlog.png"
-         anchors.fill: parent
-           visible: true
-     }
+     QQC1.Button{
 
-     MouseArea {
-         anchors.fill: parent
-     onClicked: {
-
-          eventlog_on_off()
-
-     }
-     }
- }
-
-    Rectangle {
-     id: tree
-     width: 40;
-     height: 40
-color: "lightgray";
-
-     Image {
+        id: event_log
+        width: 40
+        height: 40
 
 
-         source: "tree.png"
-         anchors.fill: parent
-           visible: true
-     }
+        style: ButtonStyle {
 
-     MouseArea {
-         anchors.fill: parent
-     onClicked: {
+            label: Image {
+                source: "journal.png"
+                fillMode: Image.PreserveAspectFit  // ensure it fits
+            }
+        }
 
-          tree_on_off()
+        onClicked: {
 
-     }
-     }
- }
+            console.log("onClicked .,.")
+         eventlog_on_off()
+        }
+    }
+
+
+     QQC1.Button{
+    id: tree
+        width: 40
+        height: 40
+
+        style: ButtonStyle {
+
+            label: Image {
+                source: "device-tree.png"
+                fillMode: Image.PreserveAspectFit  // ensure it fits
+            }
+        }
+
+        onClicked: {
+
+            console.log("onClicked .,.")
+         tree_on_off()
+        }
+    }
+
 
     Rectangle {
 
@@ -688,104 +675,78 @@ color: "lightgray";
 
     }
 
-    Rectangle{
-        id: hide_timelines_scale_rectangle
-        x: m_item.width-135
-        width:40
-        height: 40
+    QQC1.Button{
+
+       width: 40
+       height: 40
+
+       id: hide_timelines_scale_rectangle
 
 
+       style: ButtonStyle {
 
-        opacity: 1
+           label: Image {
 
-        color:"#00000000"
+               source:"down.png"
+               fillMode: Image.PreserveAspectFit  // ensure it fits
+           }
+       }
 
-        Image {
-
-
-            source: "down.png"
-            anchors.fill: parent
-            visible: true
-        }
-
-        MouseArea{
-            anchors.fill: parent
-
-            onClicked: {
-
+       onClicked: {
             hide_timelines()
 
-
-
-            }
-        }
-    }
-
-    Rectangle{
-        id: scale_rectangle
-        x: m_item.width-90
-        width:40
-        height: 40
+   }
+   }
 
 
 
-        opacity: 1
+    QQC1.Button{
 
-        color:"#00000000"
+       width: 40
+       height: 40
+       id: scale_rectangle
 
-        Image {
+       style: ButtonStyle {
+
+           label: Image {
+
+               source:"grid.png"
+               fillMode: Image.PreserveAspectFit  // ensure it fits
+           }
+       }
+
+       onClicked: {
+          signal_scale()
+
+   }
+   }
 
 
-            source: "grid.png"
-            anchors.fill: parent
-            visible: true
-        }
-
-        MouseArea{
-            anchors.fill: parent
-
-            onClicked: {
-
-            signal_scale()
 
 
+    QQC1.Button{
 
-            }
-        }
-    }
+       width: 40
+       height: 40
 
-    Rectangle{
         id: fullscreen_signal_rectangle
-        x: m_item.width-45
-        width:40
-        height: 40
+
+       style: ButtonStyle {
+
+           label: Image {
+
+               source:"fullscreen.png"
+               fillMode: Image.PreserveAspectFit  // ensure it fits
+           }
+       }
+
+       onClicked: {
+          fullscreen_signal()
+
+   }
+   }
 
 
-
-        opacity: 1
-
-        color:"#00000000"
-
-        Image {
-
-
-            source: "fullscreen.png"
-            anchors.fill: parent
-            visible: true
-        }
-
-        MouseArea{
-            anchors.fill: parent
-
-            onClicked: {
-
-            fullscreen_signal()
-
-
-
-            }
-        }
-    }
 
 
 
@@ -1000,7 +961,7 @@ function set_sliders_and_calendar_from_current_datetime_value(dt)
 function take_a_pause()
 {
 
-image.source="pause.png" //it was play
+//image.source="pause.png" //it was play
 
 m_item.play=false
 
@@ -1027,7 +988,7 @@ function play_or_pause()
 
     if(m_item.play==false)
     {
-        image.source="play.png"
+     //   image.source="play.png"
         m_item.play=true
 
         var dt=datetime(slider.value)
@@ -1042,7 +1003,7 @@ function play_or_pause()
     else
     {
 
-        image.source="pause.png"//it was play
+   //     image.source="pause.png"//it was play
          m_item.play=false
 
 
@@ -1115,7 +1076,7 @@ function check_dt(){
 
 function update_slider_intervals(intervals)
 {
-    console.log("update_slider_intervals: ",intervals)
+//    console.log("update_slider_intervals: ",intervals)
 
 m_intervals.clear()
 var dt=datetime(0)
@@ -1211,7 +1172,7 @@ livestream_txt.text=m_item.mode
 
     slider.value=x
 
-    image.source="pause.png"
+  //  image.source="pause.png"
     m_item.play=true
 
 

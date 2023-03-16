@@ -276,7 +276,7 @@ Item{
         console.log("f_change_camera ",id)
         cid=id
 
-        if(id!==-1){
+        if(id!==-1 && multivm.get_current_page_name()==="Архив"){
             var lcl
             lcl=Axxon.camera(id)
             root.axxon_service_id=lcl.sid
@@ -306,7 +306,9 @@ Item{
 
 
         }else{
+            if(id===-1 && multivm.get_current_page_name()!=="Архив"){
         timeline.set_camera_zone("","")
+            }
         }
     }
 

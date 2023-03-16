@@ -951,16 +951,18 @@ function get_cids(){
 }
 
 function camera(id){
-    console.log("...find camera... ",id)
+  //  console.log("...find camera... ",id)
     for(var i=0;i<root.cameraList.count;i++){
+        /*
      console.log(root.cameraList.get(i).id
                  ," "<<root.cameraList.get(i).name
                  ," "<<root.cameraList.get(i).liveStream
                  ," "<<root.cameraList.get(i).storageStream
                  ," "<<root.cameraList.get(i).snapshot
                 )
+                */
     if(root.cameraList.get(i).id===id){
-      console.log("PROFIT")
+      //console.log("PROFIT")
     return root.cameraList.get(i)
     }
     }

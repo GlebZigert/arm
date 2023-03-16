@@ -64,6 +64,7 @@ Item{
         height: parent.height-30
         Layout.fillWidth: true
         Layout.fillHeight: true
+        color: "gray"
 /*
         MouseArea{
              anchors.fill: parent
@@ -188,7 +189,7 @@ Item{
             style: ButtonStyle {
 
                 label: Image {
-                    source: "fullsize.png"
+                    source: "grid.png"
                     fillMode: Image.PreserveAspectFit  // ensure it fits
                 }
             }
@@ -283,7 +284,7 @@ Item{
             onClicked: {
                 console.log("onClicked .")
                         timer.stop()
-                multivm.multivm_delete_page()
+               page_delete_view.visible=true
             }
         }
 
@@ -496,40 +497,96 @@ Item{
     }
 
     Rectangle{
-    id: page_input_view
-    x:100
-    y:100
-    width: 500
-    height: 200
-    color: "lightgray"
-    visible: false
+        id: page_delete_view
+        x:base.width/2-100
+        y:base.height/2-20
+        width: 200
+        height: 40
+        color: "lightgray"
+        visible: false
+        Row{
+            anchors.fill: parent
 
-    Row{
-        anchors.fill: parent
-    TextInput {
-        id: pageName_input
-        width: 400
-        height: 100
-        text: "Text"
-        cursorVisible: false
+            Button{
+                style: ButtonStyle {
+                    label: Text {
+                        text:"Удалить"
+                    }
+                }
+                width: 100
+                height: 40
+                onClicked: {
+                    multivm.multivm_delete_page()
+                    page_delete_view.visible=false
+                }
+            }
+            Button{
+                width: 100
+                height: 40
+                style: ButtonStyle {
+                    label: Text {
+                        text:"Отмена"
+                    }
+                }
+                onClicked: {
+                    page_delete_view.visible=false
+                }
+            }
+        }
     }
 
-    Button{
-    width: 100
-    height: 100
+    Rectangle{
+        id: page_input_view
+        x:base.width/2-250
+        y:base.height/2-20
+        width: 500
+        height: 40
+        color: "lightgray"
+        visible: false
+        Row{
+            anchors.fill: parent
+            TextInput {
+                id: pageName_input
+                width: 300
+                height: 40
+                text: "Text"
+                cursorVisible: false
+            }
+            Button{
+                width: 100
+                height: 40
+                style: ButtonStyle {
+                    label: Text {
+                        text:"Добавить"
+                    }
+                }
+                onClicked: {
 
-    onClicked: {
+                    if(pageName_input.text=="Архив")
+                        return
 
-        multivm.multivm_add_page(pageName_input.text)
-        page_input_view.visible=false
+                    if(pageName_input.text=="Тревоги")
+                        return
+
+                    multivm.multivm_add_page(pageName_input.text)
+                    page_input_view.visible=false
+                }
+            }
+            Button{
+                width: 100
+                height: 40
+                style: ButtonStyle {
+                    label: Text {
+                        text:"Отмена"
+                    }
+                }
+                onClicked: {
+                    page_input_view.visible=false
+                }
+            }
+        }
     }
 
-    }
-
-    }
-
-
-    }
     function give_him_a_camera(){
         console.log("give_him_a_camera()")
         camera_storage.visible=true
@@ -602,6 +659,7 @@ Item{
     }
 
     function f_selected_sid(id){
+        console.log("f_selected_sid: ",id)
         if(id!==-1){
 
             cameraName.text=Axxon.camera(id).name

@@ -194,7 +194,7 @@ Runner::Mode VideoPlayer::getMode()
 
 int VideoPlayer::getCid() const
 {
-    qDebug()<<"VideoPlayer::getCid()";
+ //   qDebug()<<"VideoPlayer::getCid()";
     return cid;
 }
 

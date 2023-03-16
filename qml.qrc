@@ -325,7 +325,6 @@
         <file>qml/video/VideoWall.qml</file>
         <file>qml/video/MultiVMold.qml</file>
         <file>qml/video/StorageAlarm.qml</file>
-        <file>qml/video/add.png</file>
         <file>qml/video/delete.png</file>
         <file>qml/video/down.png</file>
         <file>qml/video/pause.png</file>

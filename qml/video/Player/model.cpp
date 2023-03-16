@@ -97,10 +97,12 @@ bool Model::add_page(QString pageName)
     mdl.value(vid)->setCurrent_page(wall->list.count()-1);
     }
 
-//show();
+
+
+show();
     return true;
     }
-//show();
+show();
     return false;
 }
 
@@ -346,11 +348,15 @@ void Model::save_to_settings()
     //   qDebug()<<"save_to_settings: ";
 
     QSettings settings("MySoft", "Star Runner");
+    settings.clear();
     settings.beginGroup("Videowalls");
 //    //   qDebug()<<"count: "<<mdl.count();
     settings.setValue("count",mdl.count());
     int i=0;
     for(auto vid : mdl.keys()){
+        if(vid=="")
+            continue;
+
         settings.beginGroup(QString("Videowall %1").arg(i));
         i++;
         settings.setValue("vid",vid);
@@ -415,6 +421,9 @@ void Model::load_from_settings()
     for(int i=0;i<count;i++){
         settings.beginGroup(QString("Videowall %1").arg(i));
         auto vid = settings.value("vid").toString();
+
+        if(vid=="")
+            continue;
    //     //   qDebug()<<"vid: "<<vid;
 
         setVid(vid);
@@ -441,35 +450,51 @@ void Model::load_from_settings()
 
 
             set_scale(scale);
-            if(name!="Архив")
-            for(int ii=0;ii<count;ii++){
+            if(name!="Архив"){
+                for(int ii=0;ii<count;ii++){
 
-                settings.beginGroup(QString("Camera %1").arg(ii));
-
-
-                auto uid = settings.value("uid").toInt();
-                auto cid =  settings.value("cid").toInt();
-                auto url = settings.value("url").toString();
+                    settings.beginGroup(QString("Camera %1").arg(ii));
 
 
-                mdl.value(vid)->list.at(mdl.value(vid)->list.count()-1)->map.insert(uid,QSharedPointer<Camera>::create());
-
-                  mdl.value(vid)->set_cid_for_uid(cid,uid);
-                  mdl.value(vid)->set_url_for_uid(url,uid);
-
+                    auto uid = settings.value("uid").toInt();
+                    auto cid =  settings.value("cid").toInt();
+                    auto url = settings.value("url").toString();
 
 
+                    mdl.value(vid)->list.at(mdl.value(vid)->list.count()-1)->map.insert(uid,QSharedPointer<Camera>::create());
+
+                    mdl.value(vid)->set_cid_for_uid(cid,uid);
+                    mdl.value(vid)->set_url_for_uid(url,uid);
+
+                    //         //   qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
+                    settings.endGroup();
+                }
+            }else{
+                int index=0;
+                for(int ii=0;ii<36;ii++){
+
+                    settings.beginGroup(QString("Camera %1").arg(ii));
+
+
+                    auto uid = index++;
+                    auto cid =  -1;
+                    auto url = "";
+
+
+                    mdl.value(vid)->list.at(mdl.value(vid)->list.count()-1)->map.insert(uid,QSharedPointer<Camera>::create());
+
+                    mdl.value(vid)->set_cid_for_uid(cid,uid);
+                    mdl.value(vid)->set_url_for_uid(url,uid);
+
+                    //         //   qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
+                    settings.endGroup();
+                }
 
 
 
-       //         //   qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
-
-
-
-
-
-                settings.endGroup();
             }
+
+
             if(mdl.value(vid)->list.count()==0){
             mdl.value(vid)->list.at(mdl.value(vid)->list.count()-1)->add_camera();
             }
@@ -483,6 +508,7 @@ void Model::load_from_settings()
         //   qDebug()<<"<------ ";
         //   qDebug()<<" ";
     }
+    show();
 }
 
 bool Model::add_vid()
@@ -514,6 +540,8 @@ bool Wall::add_page(QSharedPointer<Page> page)
  for(int i=0;i<36;i++){
      page->add_camera();
 }
+
+
 
  return true;
 }
