@@ -507,7 +507,9 @@ Axxon.prototype.ExecCommand_handler = function (data) {
     var id=data.id
     //console.log("id: ",id)
     root.event_on_camera(id)
+    if(userSettings.videomode==1){
 root.activePane=root.videoPane
+    }
 /*
 
     root.log("id",data[0].id)
