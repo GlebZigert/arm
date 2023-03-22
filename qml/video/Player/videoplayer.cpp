@@ -24,7 +24,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
 VideoPlayer::~VideoPlayer()
 {
- //   //qDebug()<<"--> ~VideoPlayer::VideoPlayer";
+ qDebug()<<"--> ~VideoPlayer::VideoPlayer";
 
     if(current){
         //если мы уже принимаем поток - нужно от него отписаться
@@ -36,7 +36,7 @@ VideoPlayer::~VideoPlayer()
         data=NULL;
 
     }
-//    //qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
+qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
 }
 
 

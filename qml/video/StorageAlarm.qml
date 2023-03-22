@@ -165,7 +165,7 @@ Item{
         color: "gray"
 
         border.width: 1
-        border.color: black
+        border.color: "black"
 
         Rectangle {
             id: telemetry_menu
@@ -338,8 +338,9 @@ Item{
         timeline.show_or_hide_calendar.connect(f_show_or_hide_calendar)
         timeline.livestream_button_clicked.connect(f_set_live_play)
         timeline.play_signal.connect(f_play)
-      //  timeline.pause_signal.connect(f_paused)
+        timeline.pause_signal.connect(f_paused)
           timeline.pause_signal.connect(f_paused_and_moved_at_dt)
+timeline.pause_signal.connect(f_paused)
 
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 

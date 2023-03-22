@@ -1,5 +1,5 @@
 #include "StreamerContainer.h"
-
+static std::mutex mutex;
 StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
 
@@ -7,9 +7,10 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
 {
-    qDebug()<<"StreamerContainer::start "<<url;
-    qDebug()<<"mode "<<mode;
 
+    qDebug()<<"--> StreamerContainer::start "<<url;
+    qDebug()<<"mode "<<mode;
+mutex.lock();
 
 
     QSharedPointer<Streamer> streamer=nullptr;
@@ -25,9 +26,11 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
     if(!streamer){
 
         streamer=QSharedPointer<Streamer>::create(url,mode);
-        connect(streamer.data(),SIGNAL(signal_thread_is_over()),this,SLOT(thread_is_over()));
+     //   connect(streamer.data(),SIGNAL(signal_thread_is_over()),this,SLOT(thread_is_over()));
         if(streamer){
+
             map.append(streamer);
+
             qDebug()<<"добавляем в контейер "<<url;
 
         streamer->start();
@@ -43,31 +46,30 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
 
 
-    for(auto one : map){
-
-
-
-
-
-
-
-
-
+      int i=0;
+      int map_count=map.count();
+    for(int i=0;i<map_count;i++){
+    auto one = map.at(i);
+       qDebug()<<".";
        if(
-
+                one&&
                one.data()->mode == Runner::Mode::TurnOff &&
                one.data()->mm->thread->isFinished()&&
                !one.data()->mm->thread->isRunning()
-
                )
 
-
                {
-           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL();
+
+           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL()<<" "<<one->get_m_index();
            map.removeOne(one);
+            map_count=map.count();
+qDebug()<<"<--map.removeOne ";
+       }else{
+           qDebug()<<"?";
        }
 
     }
+
 
     qDebug()<<" ";
     qDebug()<<"Потоки: "<<map.count();
@@ -91,17 +93,12 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
                 one->stop();
             }
         }
+              mutex.unlock();
 
-
-
-
-
-
-
-
-
+ qDebug()<<"<-- StreamerContainer::start "<<url;
     if(streamer)
         return streamer;
+
 
     return nullptr;
 
@@ -111,34 +108,41 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
 QSharedPointer<Streamer> StreamerContainer::find(QString url)
 {
+    qDebug()<<"--> StreamerContainer::find "<<url;
+
     for(auto one : map){
         if(one.data()->getURL()==url){
             one->setSave(false);
+
+
+            mutex.unlock();
+            qDebug()<<"<-- StreamerContainer::find [0] "<<url;
             return one;
         }
     }
+
+
+    qDebug()<<"<-- StreamerContainer::find [1]"<<url;
     return nullptr;
 }
 
 void StreamerContainer::thread_is_over()
 {
+        qDebug()<<"--> StreamerContainer::thread_is_over ";
+      mutex.lock();
     for(auto one : map){
-
+//qDebug()<<"..";
        if(
-
                one.data()->mode == Runner::Mode::TurnOff &&
                one.data()->mm->thread->isFinished()&&
                !one.data()->mm->thread->isRunning()
-
                )
 
                {
-           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL();
+           qDebug()<<"-->map.removeOne1 "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL()<<" "<<one->get_m_index();
            map.removeOne(one);
+            qDebug()<<"<--map.removeOne1 ";
        }
-
-
-
     }
 
     qDebug()<<" ";
@@ -161,10 +165,11 @@ void StreamerContainer::thread_is_over()
 
             if(one.data()->getURL()==""){
                 one->stop();
-
             }
         }
 
+   mutex.unlock();
+        qDebug()<<"<-- StreamerContainer::thread_is_over ";
 }
 
 
