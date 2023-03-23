@@ -1,0 +1,50 @@
+diff --git a/js/rif-plus.js b/js/rif-plus.js
+index a8752f6..ee892b2 100644
+--- a/js/rif-plus.js
++++ b/js/rif-plus.js
+@@ -14,7 +14,7 @@ var commands = {
+     44: [136, 137], // СД ССОИ-IP
+     45: [100, 101], // ИУ ССОИ-IP
+     10: [136, 137], // Точка/Гарда
+-    11: [100, 101, 136, 137], // СД БЛ-IP
++    11: [136, 137], // СД БЛ-IP
+     12: [100, 101], // ИУ БЛ-IP
+     26: [136, 137], // БОД Точка-М / Гарда-М
+     27: [136, 137], // Участок Точка-М / Гарда-М
+@@ -302,9 +302,6 @@ Rif.prototype.contextMenu = function (id) {
+             trans.push(137)
+         }
+ 
+-        if (11 === device.type && 100 !== sid)
+-            trans.push(101)
+-
+         if (1 === device.dk && noDK.indexOf(device.type) < 0)
+             trans.push('dk')
+ 
+diff --git a/qml/mymap/Panel.qml b/qml/mymap/Panel.qml
+index 8bb02f4..fdf0df1 100755
+--- a/qml/mymap/Panel.qml
++++ b/qml/mymap/Panel.qml
+@@ -361,9 +361,10 @@ Rectangle {
+             return
+         //console.log(">> SelDev >>", pane, serviceId, deviceId)
+         tree.findItem({serviceId: serviceId, id: deviceId})
++        if (adminMode)
++            currentDevice = serviceId && deviceId && Utils.findDevice(root.devices, serviceId, deviceId) || null
+     }
+ 
+-
+     function selectDevice(model) {
+         var m, i, shapes = currentMap && currentMap.shapes || {count: -1};
+ 
+@@ -387,9 +388,7 @@ Rectangle {
+         }
+ 
+         //console.log("Seeking dev:", JSON.stringify(root.devices.children))
+-        currentDevice = model.serviceId && model.id && Utils.findItem(
+-           root.devices, {serviceId: model.serviceId, id: model.id}
+-        ) || null
++        currentDevice = model.serviceId && model.id && Utils.findDevice(root.devices, model.serviceId, model.id) || null
+         //console.log("Selected dev:", JSON.stringify(currentDevice))
+     }
+ 

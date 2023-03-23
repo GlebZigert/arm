@@ -361,8 +361,9 @@ Rectangle {
             return
         //console.log(">> SelDev >>", pane, serviceId, deviceId)
         tree.findItem({serviceId: serviceId, id: deviceId})
+        if (adminMode)
+            currentDevice = serviceId && deviceId && Utils.findDevice(root.devices, serviceId, deviceId) || null
     }
-
 
     function selectDevice(model) {
         var m, i, shapes = currentMap && currentMap.shapes || {count: -1};
@@ -387,9 +388,7 @@ Rectangle {
         }
 
         //console.log("Seeking dev:", JSON.stringify(root.devices.children))
-        currentDevice = model.serviceId && model.id && Utils.findItem(
-           root.devices, {serviceId: model.serviceId, id: model.id}
-        ) || null
+        currentDevice = model.serviceId && model.id && Utils.findDevice(root.devices, model.serviceId, model.id) || null
         //console.log("Selected dev:", JSON.stringify(currentDevice))
     }
 
