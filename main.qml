@@ -26,6 +26,8 @@ ApplicationWindow {
     width: 1366
     height: 1024
 
+    visibility: "FullScreen"
+
     visible: true
   //  visibility: "FullScreen"
     screen: Qt.application.screens[0]
