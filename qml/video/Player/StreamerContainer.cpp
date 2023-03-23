@@ -26,7 +26,7 @@ mutex.lock();
     if(!streamer){
 
         streamer=QSharedPointer<Streamer>::create(url,mode);
-     //   connect(streamer.data(),SIGNAL(signal_thread_is_over()),this,SLOT(thread_is_over()));
+        connect(streamer.data(),SIGNAL(signal_thread_is_over()),this,SLOT(thread_is_over()));
         if(streamer){
 
             map.append(streamer);
@@ -130,19 +130,30 @@ void StreamerContainer::thread_is_over()
 {
         qDebug()<<"--> StreamerContainer::thread_is_over ";
       mutex.lock();
-    for(auto one : map){
-//qDebug()<<"..";
+
+
+      int i=0;
+      int map_count=map.count();
+    for(int i=0;i<map_count;i++){
+    auto one = map.at(i);
+       qDebug()<<".";
        if(
+                one&&
                one.data()->mode == Runner::Mode::TurnOff &&
                one.data()->mm->thread->isFinished()&&
                !one.data()->mm->thread->isRunning()
                )
 
                {
-           qDebug()<<"-->map.removeOne1 "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL()<<" "<<one->get_m_index();
+
+           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL()<<" "<<one->get_m_index();
            map.removeOne(one);
-            qDebug()<<"<--map.removeOne1 ";
+            map_count=map.count();
+qDebug()<<"<--map.removeOne ";
+       }else{
+           qDebug()<<"?";
        }
+
     }
 
     qDebug()<<" ";

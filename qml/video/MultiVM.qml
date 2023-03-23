@@ -49,7 +49,7 @@ Item{
         onTriggered:
         {
             console.log("rescale timer")
-            multivm.rescale()
+            multivm.rescale(good.scale,true)
 
         }
     }
@@ -594,7 +594,7 @@ Rectangle{
             for(var i=0;i<cids.count;i++){
                 console.log(cids.get(i).cid)
             }
-            rescale(good.scale)
+            rescale(good.scale,true)
 
 
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
@@ -725,14 +725,20 @@ Rectangle{
 
 
 
-    function rescale(scale){
+    function rescale(scale,save){
 
        console.log("rescale-->")
 
 
         scale= md.current_scale()
  console.log("and look at scale here: ",scale)
+
+        if(save){
         saving_on()
+        console.log("с сохранением")
+        }else{
+        console.log("без сохранения")
+        }
 
         var ww = width/scale
         var hh = height/scale
@@ -894,7 +900,7 @@ Rectangle{
             }
             */
 
-            rescale(good.scale)
+            rescale(good.scale,true)
 
 
             var serviceId=Axxon.camera(id).serviceId
@@ -913,14 +919,14 @@ Rectangle{
         console.log("...1")
         md.add_page(name)
         console.log("md.get_current_page_name() ",md.get_current_page_name())
-        rescale(good.scale)
+        rescale(good.scale,true)
         console.log("...2")
         good.currentPage(md.get_current_page_name())
     }
 
     function to_page(name){
     md.to_page(name)
-        rescale()
+        rescale(good.scale,false)
         good.currentPage(md.get_current_page_name())
         good.selected_cid(-1)
     }
@@ -935,7 +941,7 @@ Rectangle{
     function to_next_page(){
 
         md.to_next_page()
-        rescale()
+        rescale(good.scale,false)
         good.currentPage(md.get_current_page_name())
         good.selected_cid(-1)
 
@@ -990,7 +996,7 @@ Rectangle{
 
         }
 
-        rescale(good.scale)
+        rescale(good.scale,true)
 
 
     }
@@ -1003,7 +1009,7 @@ Rectangle{
         full=false
         fullscreen_uid=-1
     md.next_scale()
-        rescale()
+        rescale(good.scale,true)
     }
 
     function rescale_timer_start(){
