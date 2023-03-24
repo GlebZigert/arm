@@ -733,12 +733,12 @@ Rectangle{
         scale= md.current_scale()
  console.log("and look at scale here: ",scale)
 
-    //    if(save){
+        if(save){
         saving_on()
-     //   console.log("с сохранением")
-    //    }else{
-    //    console.log("без сохранения")
-    //    }
+        console.log("с сохранением")
+        }else{
+        console.log("без сохранения")
+        }
 
         var ww = width/scale
         var hh = height/scale
