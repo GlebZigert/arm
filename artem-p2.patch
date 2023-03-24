@@ -1,0 +1,237 @@
+diff --git a/DevicesTree.qml b/DevicesTree.qml
+index 9798e4d..6bba7b6 100644
+--- a/DevicesTree.qml
++++ b/DevicesTree.qml
+@@ -29,6 +29,7 @@ Item {
+             id: tree
+             model: treeModel
+             anchors.margins: 10
++            labelPadding: 1
+             //anchors.fill: parent
+             Layout.fillHeight: true
+             Layout.fillWidth: true
+diff --git a/FontAwesome.qml b/FontAwesome.qml
+index 6afd83b..a5c9fb3 100644
+--- a/FontAwesome.qml
++++ b/FontAwesome.qml
+@@ -30,6 +30,8 @@ FontLoader {
+     readonly property string fa_user_tie                            : "\uf508"
+     readonly property string fa_user_secret                         : "\uf21b"
+     readonly property string fa_circle                              : "\uf111"
++    readonly property string fa_circle_plus                         : "\uf055"
++    readonly property string fa_circle_minus                        : "\uf056"
+     readonly property string fa_angle_right                         : "\uf105"
+     readonly property string fa_cog                                 : "\uf013"
+     readonly property string fa_list_ol                             : "\uf0cb"
+diff --git a/MyToolBar.qml b/MyToolBar.qml
+index 0d11757..4b32e6d 100644
+--- a/MyToolBar.qml
++++ b/MyToolBar.qml
+@@ -4,6 +4,7 @@ import QtQuick.Controls 2.4
+ import QtMultimedia 5.11
+ import "qml/forms" as Forms
+ import "js/utils.js" as Utils
++import "js/constants.js" as Const
+ 
+ ToolBar {
+    id: toolbar
+@@ -21,7 +22,7 @@ ToolBar {
+ 
+    background: Rectangle {
+        implicitHeight: buttonSize
+-       color: "#225"
++       color: Const.ARM_ADMIN === armRole ? '#600' : '#225'
+     }
+ 
+     RowLayout {
+@@ -125,7 +126,8 @@ ToolBar {
+             width: buttonSize
+             height: width
+             font.family: faFont.name
+-            text: faFont.fa_bullhorn
++            //text: faFont.fa_bullhorn
++            icon.source: "qrc:/images/bell-on.svg"
+             font.pixelSize: 24
+             onClicked: messageBox.ask("Включить тревогу?", function(){Qt.callLater(root.alarma)})
+             hoverEnabled: true
+diff --git a/images/bell-on.svg b/images/bell-on.svg
+new file mode 100644
+index 0000000..a3f5f6a
+--- /dev/null
++++ b/images/bell-on.svg
+@@ -0,0 +1,7 @@
++<svg width="512" height="512" version="1.1" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:osb="http://www.openswatchbook.org/uri/2009/osb" xmlns:xlink="http://www.w3.org/1999/xlink">
++ <path d="m256 512c35.32 0 63.97-28.65 63.97-64h-127.94c0 35.35 28.65 64 63.97 64zm215.39-149.71c-19.32-20.76-55.47-51.99-55.47-154.29 0-77.7-54.48-139.9-127.94-155.16v-20.84c0-17.67-14.32-32-31.98-32s-31.98 14.33-31.98 32v20.84c-73.46 15.26-127.94 77.46-127.94 155.16 0 102.3-36.15 133.53-55.47 154.29-6 6.45-8.66 14.16-8.61 21.71 0.11 16.4 12.98 32 32.1 32h383.8c19.12 0 32-15.6 32.1-32 0.05-7.55-2.61-15.27-8.61-21.71z"/>
++<rect x="5e-7" y="163.56" width="73.143" height="25.905" ry="12.952"/>
++<rect transform="rotate(26.895)" x="62.567" y="43.267" width="73.143" height="25.905" ry="12.952"/>
++<rect transform="scale(-1,1)" x="-512" y="163.56" width="73.143" height="25.905" ry="12.952"/>
++<rect transform="matrix(-.89184 .45235 .45235 .89184 0 0)" x="-394.06" y="274.87" width="73.143" height="25.905" ry="12.952"/>
++</svg>
+diff --git a/js/constants.js b/js/constants.js
+index 118dd9f..530c913 100644
+--- a/js/constants.js
++++ b/js/constants.js
+@@ -43,6 +43,16 @@ const   ARM_ADMIN       = 1, // админ
+         ARM_SECRET      = 6, // гостайна
+         ARM_BUREAU      = 7 // бюро пропусков
+ 
++const armNames = {
++    [ARM_ADMIN]: "Администратор",
++    [ARM_UNIT]: "Дежурный по ВЧ",
++    [ARM_CHECKPOINT]: "Дежурный по КПП и КТП",
++    [ARM_GUARD]: "Начальник Караула",
++    [ARM_OPERATOR]: "Оператор ТСО",
++    [ARM_SECRET]: "Защита ГосТайны",
++    [ARM_BUREAU]: "Бюро Пропусков"
++}
++
+ const   EC_NA = 0,  //iota
+         // INFO
+         EC_INFO                 = 100,
+diff --git a/js/rif-plus.js b/js/rif-plus.js
+index ee892b2..4f35acf 100644
+--- a/js/rif-plus.js
++++ b/js/rif-plus.js
+@@ -8,6 +8,12 @@
+     10011: {110: 'Закрыть', 111: 'Открыть'}, // lock
+     10044: {110: 'Закрыть', 111: 'Открыть'}, // ССОИ-IP lock
+ }*/
++
++var customIcons = {
++    45: {100: 'fa_circle_minus', 101: 'fa_circle_plus'},
++    12: {100: 'fa_circle_minus', 101: 'fa_circle_plus'},
++}
++
+ var commands = {
+     1: [100, 101, 136, 137], // РИФ-РЛМ, Трасса
+     2: [100, 101, 136, 137], // СД КЛ1
+@@ -640,4 +646,5 @@ function setState(dev, event, priority) {
+     dev.state = sid
+     dev.color = color
+     dev.tooltip = text
++    dev.icon = dev.type in customIcons && customIcons[dev.type][sid] || 'fa_circle'
+ }
+diff --git a/main.qml b/main.qml
+index dd15db5..f711fd2 100644
+--- a/main.qml
++++ b/main.qml
+@@ -20,7 +20,11 @@ import "qml/forms" as Forms
+ ApplicationWindow {
+     id: root
+     property string version: "1.28"
+-    title: qsTr("Риф-7 (АРМ версии " + version + ")")
++    property string userString: !currentUser ? '' : ' > '
++            + Const.armNames[armRole] + ' > '
++            + (currentUser.name || '') + ' ' + (currentUser.surename || '').trim()
++
++    title: "Риф-7 (АРМ версии " + version + ")" + userString
+     y: 50
+     x: 400
+     width: 1366
+@@ -33,10 +37,6 @@ ApplicationWindow {
+ 
+     onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)
+ 
+-
+-    //https://stackoverflow.com/questions/47175409/qml-asking-confirmation-before-closing-application
+-    onClosing: checkClosing(close)
+-
+     property string authSalt: "iATdT7R4JKGg1h1YeDPp:Zl6fyUw10sgh1EGxnyKQ"
+     property string serverHost: ""
+     property int serverPort: 2973
+@@ -46,7 +46,12 @@ ApplicationWindow {
+     property var armConfig
+     property string userLogin: ""
+     property string userToken: ""
++    property int prevUserId: 0
+     property var currentUser
++    onCurrentUserChanged: {
++        saveSplitViews()
++        prevUserId = currentUser && currentUser.id || 0
++    }
+     property var userSettings: JSON.parse(currentUser && currentUser.settings || '{}')
+ 
+     property alias activePane: menu.activePane
+@@ -89,6 +94,12 @@ ApplicationWindow {
+ 
+     property var settings: ({})
+ 
++    Connections {
++        id: ccConn
++        target: root
++        onClosing: checkClosing(close)
++    }
++
+     property ListModel devices: ListModel {
+         signal updated(int serviceId, int deviceId)
+         ListElement{label: "Подсистемы"; form: "service"; expanded: true; isGroup: true; children: []}
+@@ -396,6 +407,7 @@ ApplicationWindow {
+     }
+ 
+     function saveSplitViews() {
++        if (!prevUserId) return
+         var saves = {},
+             i, j, k, l,
+             pane, vPanes, hPanes
+@@ -413,7 +425,7 @@ ApplicationWindow {
+         //console.log("Split saves:", JSON.stringify(saves))
+ 
+         for (i in saves) {
+-            k = "user" + currentUser.id + "/" + i
++            k = "user" + prevUserId + "/" + i
+             if (saves[i] > 100) // don't save zero (tiny) sizes
+                 settings.setValue(k, saves[i])
+         }
+@@ -422,12 +434,16 @@ ApplicationWindow {
+     function checkClosing(close) {
+         if (currentUser && Utils.useAlarms()) {
+             close.accepted = false
+-            messageBox.error("Смена не завершена")
++            if ('offline' === menu.linkStatus)
++                messageBox.ask("Нет связи с сервером, смена не может быть завершена. Всё равно выйти?", () => {
++                    ccConn.enabled = false
++                    root.close()
++                })
++            else
++                messageBox.error("Смена не завершена")
+         }
+ 
+-        if (currentUser)
+-            saveSplitViews()
+-
++        saveSplitViews()
+     }
+ 
+     function updateLinkStatus() {
+diff --git a/qml.qrc b/qml.qrc
+index af891d5..0c9813f 100644
+--- a/qml.qrc
++++ b/qml.qrc
+@@ -344,5 +344,6 @@
+         <file>qml/video/eye-slash.png</file>
+         <file>qml/video/empty.png</file>
+         <file>qml/video/device-tree.png</file>
++        <file>images/bell-on.svg</file>
+     </qresource>
+ </RCC>
+diff --git a/qml/forms/MyTree.qml b/qml/forms/MyTree.qml
+index bdaf7ca..f34d797 100755
+--- a/qml/forms/MyTree.qml
++++ b/qml/forms/MyTree.qml
+@@ -14,6 +14,7 @@ Item {
+     id: treeRoot
+ 
+     //property var itemValues
++    property int labelPadding: 3
+     property var iconProvider
+     //    property alias lastNodeId: model.lastNodeId
+     property var scopeFilter
+@@ -207,7 +208,7 @@ Item {
+                 }
+                 Label {
+                     id: lbl
+-                    padding: 3
++                    padding: labelPadding
+                     text: label
+                     background: Rectangle {
+                        color: /*isHighlighted(model)*/ tnid === selectedTNID ? "#ddd" : "transparent"

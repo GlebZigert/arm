@@ -40,7 +40,7 @@ void Preview::replyFinished(QNetworkReply *reply)
 {
 
     if((reply->bytesAvailable())&&(reply->size()>0)){
-    qDebug()<<" reply->bytesAvailable() : "<<reply->bytesAvailable()<<"; size "<<reply->size();
+//    qDebug()<<" reply->bytesAvailable() : "<<reply->bytesAvailable()<<"; size "<<reply->size();
     this->current.loadFromData(reply->readAll());
     if((this->current.isNull())){
         manager->get(QNetworkRequest(QUrl(m_URL)));

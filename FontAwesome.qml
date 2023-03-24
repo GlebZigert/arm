@@ -30,6 +30,8 @@ FontLoader {
     readonly property string fa_user_tie                            : "\uf508"
     readonly property string fa_user_secret                         : "\uf21b"
     readonly property string fa_circle                              : "\uf111"
+    readonly property string fa_circle_plus                         : "\uf055"
+    readonly property string fa_circle_minus                        : "\uf056"
     readonly property string fa_angle_right                         : "\uf105"
     readonly property string fa_cog                                 : "\uf013"
     readonly property string fa_list_ol                             : "\uf0cb"

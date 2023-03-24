@@ -26,14 +26,16 @@ ApplicationWindow {
     width: 1366
     height: 1024
 
-    visibility: "FullScreen"
-
     visible: true
 //    visibility: "FullScreen"
     screen: Qt.application.screens[0]
 
 
     onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)
+
+
+    //https://stackoverflow.com/questions/47175409/qml-asking-confirmation-before-closing-application
+    onClosing: checkClosing(close)
 
     property string authSalt: "iATdT7R4JKGg1h1YeDPp:Zl6fyUw10sgh1EGxnyKQ"
     property string serverHost: ""
@@ -44,12 +46,7 @@ ApplicationWindow {
     property var armConfig
     property string userLogin: ""
     property string userToken: ""
-    property int prevUserId: 0
     property var currentUser
-    onCurrentUserChanged: {
-        saveSplitViews()
-        prevUserId = currentUser && currentUser.id || 0
-    }
     property var userSettings: JSON.parse(currentUser && currentUser.settings || '{}')
 
     property alias activePane: menu.activePane
@@ -91,12 +88,6 @@ ApplicationWindow {
     }*/
 
     property var settings: ({})
-
-    Connections {
-        id: ccConn
-        target: root
-        onClosing: checkClosing(close)
-    }
 
     property ListModel devices: ListModel {
         signal updated(int serviceId, int deviceId)
@@ -405,7 +396,6 @@ ApplicationWindow {
     }
 
     function saveSplitViews() {
-        if (!prevUserId) return
         var saves = {},
             i, j, k, l,
             pane, vPanes, hPanes
@@ -423,7 +413,7 @@ ApplicationWindow {
         //console.log("Split saves:", JSON.stringify(saves))
 
         for (i in saves) {
-            k = "user" + prevUserId + "/" + i
+            k = "user" + currentUser.id + "/" + i
             if (saves[i] > 100) // don't save zero (tiny) sizes
                 settings.setValue(k, saves[i])
         }
@@ -432,16 +422,12 @@ ApplicationWindow {
     function checkClosing(close) {
         if (currentUser && Utils.useAlarms()) {
             close.accepted = false
-            if ('offline' === menu.linkStatus)
-                messageBox.ask("Нет связи с сервером, смена не может быть завершена. Всё равно выйти?", () => {
-                    ccConn.enabled = false
-                    root.close()
-                })
-            else
-                messageBox.error("Смена не завершена")
+            messageBox.error("Смена не завершена")
         }
 
-        saveSplitViews()
+        if (currentUser)
+            saveSplitViews()
+
     }
 
     function updateLinkStatus() {

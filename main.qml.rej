@@ -1,0 +1,15 @@
+--- main.qml
++++ main.qml
+@@ -20,7 +20,11 @@ import "qml/forms" as Forms
+ ApplicationWindow {
+     id: root
+     property string version: "1.28"
+-    title: qsTr("Риф-7 (АРМ версии " + version + ")")
++    property string userString: !currentUser ? '' : ' > '
++            + Const.armNames[armRole] + ' > '
++            + (currentUser.name || '') + ' ' + (currentUser.surename || '').trim()
++
++    title: "Риф-7 (АРМ версии " + version + ")" + userString
+     y: 50
+     x: 400
+     width: 1366

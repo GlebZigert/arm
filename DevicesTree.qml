@@ -29,6 +29,7 @@ Item {
             id: tree
             model: treeModel
             anchors.margins: 10
+            labelPadding: 1
             //anchors.fill: parent
             Layout.fillHeight: true
             Layout.fillWidth: true

@@ -8,6 +8,12 @@
     10011: {110: 'Закрыть', 111: 'Открыть'}, // lock
     10044: {110: 'Закрыть', 111: 'Открыть'}, // ССОИ-IP lock
 }*/
+
+var customIcons = {
+    45: {100: 'fa_circle_minus', 101: 'fa_circle_plus'},
+    12: {100: 'fa_circle_minus', 101: 'fa_circle_plus'},
+}
+
 var commands = {
     1: [100, 101, 136, 137], // РИФ-РЛМ, Трасса
     2: [100, 101, 136, 137], // СД КЛ1
@@ -640,4 +646,5 @@ function setState(dev, event, priority) {
     dev.state = sid
     dev.color = color
     dev.tooltip = text
+    dev.icon = dev.type in customIcons && customIcons[dev.type][sid] || 'fa_circle'
 }
