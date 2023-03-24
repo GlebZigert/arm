@@ -303,9 +303,9 @@ Rectangle{
 
                     onClicked: {
 
-                        console.log("onClicked .,.")
+                   //     console.log("onClicked .,.")
 
-                        console.log("set cid for uid: ",-1," ",vm.uid)
+                   //     console.log("set cid for uid: ",-1," ",vm.uid)
                         md.set_cid_for_uid(-1,vm.uid)
                         md.set_url_for_uid("",vm.uid)
 
@@ -351,7 +351,7 @@ Rectangle{
                  //на текущем видеоэкране найти uid и выставить ему cid
                  findAndSet(cids,vm.uid,"cid",cid)
 
-                    console.log("set cid for uid: ",cid," ",vm.uid)
+                //    console.log("set cid for uid: ",cid," ",vm.uid)
                     md.set_cid_for_uid(cid,vm.uid)
 
 
@@ -591,9 +591,9 @@ Rectangle{
                 }
             }
 
-            for(var i=0;i<cids.count;i++){
-                console.log(cids.get(i).cid)
-            }
+         //   for(var i=0;i<cids.count;i++){
+         //       console.log(cids.get(i).cid)
+        //    }
             rescale(good.scale,true)
 
 
@@ -614,7 +614,7 @@ Rectangle{
         {
 
             var lcl = md.get_cid_at(i)
-            console.log(i," ",lcl)
+        //    console.log(i," ",lcl)
             if(lcl!=-1){
                 var frash=true
                 for(var j in res){
@@ -733,12 +733,12 @@ Rectangle{
         scale= md.current_scale()
  console.log("and look at scale here: ",scale)
 
-        if(save){
+    //    if(save){
         saving_on()
-        console.log("с сохранением")
-        }else{
-        console.log("без сохранения")
-        }
+     //   console.log("с сохранением")
+    //    }else{
+    //    console.log("без сохранения")
+    //    }
 
         var ww = width/scale
         var hh = height/scale

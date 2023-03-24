@@ -78,21 +78,22 @@ qDebug()<<"<--map.removeOne ";
         for(auto one : map){
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString();
-            qDebug()<<"индекс потока    : "<<one.data()->get_m_index();
+            qDebug()<<"индекс: "<<one.data()->get_m_index()
+            <<"Подписчики: "<<one.data()->getFollowers()
+            <<"Хранится: "<<one.data()->getSave()
+            <<"runner завершен:" <<one.data()->mm->runner->thread()->isFinished()
+            <<"mode: " <<one.data()->mode
+            <<"Finished: " <<one.data()->mm->thread->isFinished()
+            <<"Running : " <<one.data()->mm->thread->isRunning();
 
-
-            qDebug()<<"Подписчики       : "<<one.data()->getFollowers();
-            qDebug()<<"Хранится         : "<<one.data()->getSave();
-            qDebug()<<"runner завершен  :" <<one.data()->mm->runner->thread()->isFinished();
-            qDebug()<<"mode             :" <<one.data()->mode;
-            qDebug()<<"thread isFinished:" <<one.data()->mm->thread->isFinished();
-            qDebug()<<"thread isRunning :" <<one.data()->mm->thread->isRunning();
             qDebug()<<" ";
-
             if(one.data()->getURL()==""){
                 one->stop();
             }
         }
+
+
+             qDebug()<<" ";
               mutex.unlock();
 
  qDebug()<<"<-- StreamerContainer::start "<<url;
@@ -163,21 +164,19 @@ qDebug()<<"<--map.removeOne ";
         for(auto one : map){
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString();
-            qDebug()<<"индекс потока    : "<<one.data()->get_m_index();
-
-
-            qDebug()<<"Подписчики       : "<<one.data()->getFollowers();
-            qDebug()<<"Хранится         : "<<one.data()->getSave();
-            qDebug()<<"runner завершен  :" <<one.data()->mm->runner->thread()->isFinished();
-            qDebug()<<"mode             :" <<one.data()->mode;
-            qDebug()<<"thread isFinished:" <<one.data()->mm->thread->isFinished();
-            qDebug()<<"thread isRunning :" <<one.data()->mm->thread->isRunning();
-            qDebug()<<" ";
-
+            qDebug()<<"индекс: "<<one.data()->get_m_index()
+            <<"Подписчики: "<<one.data()->getFollowers()
+            <<"Хранится: "<<one.data()->getSave()
+            <<"runner завершен:" <<one.data()->mm->runner->thread()->isFinished()
+            <<"mode: " <<one.data()->mode
+            <<"Finished: " <<one.data()->mm->thread->isFinished()
+            <<"Running : " <<one.data()->mm->thread->isRunning();
+    qDebug()<<" ";
             if(one.data()->getURL()==""){
                 one->stop();
             }
         }
+            qDebug()<<" ";
 
    mutex.unlock();
         qDebug()<<"<-- StreamerContainer::thread_is_over ";

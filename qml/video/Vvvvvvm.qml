@@ -201,14 +201,14 @@ console.log("Key_Down")
 
             onSourceChanged: (subject)=> {
 
-            console.log("onSourceChanged ", subject)
+         //   console.log("onSourceChanged ", subject)
                                  supreme.source=subject
                         return_source(supreme.source)
             }
 
             onCidChanged: (subject)=> {
 
-            console.log("onSourceChanged ", subject)
+        //    console.log("onSourceChanged ", subject)
                                  supreme.cid=subject
                         return_cid(supreme.cid)
             }
