@@ -4,6 +4,7 @@ import QtQuick.Controls 2.4
 import QtMultimedia 5.11
 import "qml/forms" as Forms
 import "js/utils.js" as Utils
+import "js/constants.js" as Const
 
 ToolBar {
    id: toolbar
@@ -21,7 +22,7 @@ ToolBar {
 
    background: Rectangle {
        implicitHeight: buttonSize
-       color: "#225"
+       color: Const.ARM_ADMIN === armRole ? '#600' : '#225'
     }
 
     RowLayout {
@@ -125,7 +126,8 @@ ToolBar {
             width: buttonSize
             height: width
             font.family: faFont.name
-            text: faFont.fa_bullhorn
+            //text: faFont.fa_bullhorn
+            icon.source: "qrc:/images/bell-on.svg"
             font.pixelSize: 24
             onClicked: messageBox.ask("Включить тревогу?", function(){Qt.callLater(root.alarma)})
             hoverEnabled: true

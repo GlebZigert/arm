@@ -43,6 +43,16 @@ const   ARM_ADMIN       = 1, // админ
         ARM_SECRET      = 6, // гостайна
         ARM_BUREAU      = 7 // бюро пропусков
 
+const armNames = {
+    [ARM_ADMIN]: "Администратор",
+    [ARM_UNIT]: "Дежурный по ВЧ",
+    [ARM_CHECKPOINT]: "Дежурный по КПП и КТП",
+    [ARM_GUARD]: "Начальник Караула",
+    [ARM_OPERATOR]: "Оператор ТСО",
+    [ARM_SECRET]: "Защита ГосТайны",
+    [ARM_BUREAU]: "Бюро Пропусков"
+}
+
 const   EC_NA = 0,  //iota
         // INFO
         EC_INFO                 = 100,

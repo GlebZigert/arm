@@ -344,5 +344,6 @@
         <file>qml/video/eye-slash.png</file>
         <file>qml/video/empty.png</file>
         <file>qml/video/device-tree.png</file>
+        <file>images/bell-on.svg</file>
     </qresource>
 </RCC>

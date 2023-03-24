@@ -14,6 +14,7 @@ Item {
     id: treeRoot
 
     //property var itemValues
+    property int labelPadding: 3
     property var iconProvider
     //    property alias lastNodeId: model.lastNodeId
     property var scopeFilter
@@ -207,7 +208,7 @@ Item {
                 }
                 Label {
                     id: lbl
-                    padding: 3
+                    padding: labelPadding
                     text: label
                     background: Rectangle {
                        color: /*isHighlighted(model)*/ tnid === selectedTNID ? "#ddd" : "transparent"
