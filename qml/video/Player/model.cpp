@@ -3,6 +3,7 @@
  QMap<QString,QSharedPointer<Wall>>  Model::mdl;
  bool  Model::fl=false;
  int Page::uid = 0;
+ StreamerContainer Model::container;
 
 Model::Model()
 {
@@ -771,7 +772,7 @@ bool Page::add_camera()
 
 void Page::next_scale()
 {
-    if(scale<6){
+    if(scale<4){
     scale++;
     }else{
         scale=1;

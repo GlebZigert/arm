@@ -3,6 +3,7 @@
 
 #include <QQuickItem>
 #include <QSettings>
+#include "StreamerContainer.h"
 
 class Camera : public QObject
 {
@@ -193,7 +194,7 @@ private:
 
     QString vid;
 
-
+    static StreamerContainer container;
 
     bool add_vid();
 
