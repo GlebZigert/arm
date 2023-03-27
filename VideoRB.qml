@@ -12,9 +12,12 @@ Item{
 
         id: wnd1
 
-        x: settings.x1
-        y:settings.y1
-        visibility: settings.visibility1
+     //   x: settings.x1
+    //    y:settings.y1
+    //    visibility: settings.visibility1
+        x:1920
+        y:0
+        visibility: "FullScreen"
         title: "Видеостена"
 
 
@@ -43,11 +46,11 @@ Item{
         }
 
         Component.onCompleted: {
-        console.log("wnd1 onCompleted: ",wnd1.x," ",wnd1.y," ",settings.x1," ",settings.y1)
+         console.log("wnd onCompleted wnd1: ",wnd1.x," ",wnd1.y," ",wnd1.visibility)//settings.x1," ",settings.y1)
 
-            wnd1.x =   settings.x1
-            wnd1.y =   settings.y1
-            wnd1.visibility =   wnd1.visibility === 0 ? 2 :wnd1.visibility
+      //      wnd1.x =   settings.x1
+      //      wnd1.y =   settings.y1
+      //      wnd1.visibility =   wnd1.visibility === 0 ? 2 :wnd1.visibility
         }
     }
 
@@ -56,11 +59,15 @@ Item{
 
  id: wnd2
 
+ x:3840
+ y:0
+ visibility: "FullScreen"
 
+ /*
  x: settings.x2
  y:settings.y2
  visibility: settings.visibility2
-
+*/
  title: "Тревоги / архив"
 
 
@@ -86,11 +93,11 @@ Item{
           }
 
         Component.onCompleted: {
-        console.log("wnd2 onCompleted: ",wnd2.x," ",wnd2.y," ",settings.x2," ",settings.y2)
+        console.log("wnd onCompleted wnd2: ",wnd2.x," ",wnd2.y," ",wnd2.visibility)// settings.x2," ",settings.y2)
 
-         wnd2.x =   settings.x2
-         wnd2.y =   settings.y2
-         wnd2.visibility =   wnd2.visibility === 0 ? 2 :wnd2.visibility
+       //  wnd2.x =   settings.x2
+      //   wnd2.y =   settings.y2
+      //   wnd2.visibility =   wnd2.visibility === 0 ? 2 :wnd2.visibility
         }
     }
 
@@ -150,7 +157,7 @@ Item{
 
     Component.onDestruction: {
 
-
+    console.log(" VideoRB Component.onDestruction")
         settings.x1 = wnd1.x
         settings.y1 = wnd1.y
         settings.visibility1 = (wnd1.visibility === 0 ? 2 :wnd1.visibility)
