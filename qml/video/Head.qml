@@ -45,6 +45,7 @@ Rectangle{
                }
            }
            onClicked: {
+               console.log("combo.currentIndex ",combo.currentIndex)
            var index=combo.currentIndex
            if(index>0)
            {
@@ -103,10 +104,14 @@ Rectangle{
 
 
     function set_count(val)
-    {
+    {var cnt=combo.currentIndex;
+        console.log("set_count")
     model.clear()
         for(var i=0;i<val;i++)
          model.append({number:i+1})
+
+        if(cnt<combo.count)
+            combo.currentIndex=cnt
     }
 
     Component.onCompleted: {
