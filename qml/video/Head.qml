@@ -105,7 +105,7 @@ Rectangle{
 
     function set_count(val)
     {var cnt=combo.currentIndex;
-        console.log("set_count")
+     //   console.log("set_count")
     model.clear()
         for(var i=0;i<val;i++)
          model.append({number:i+1})
