@@ -8,6 +8,7 @@ import "js/utils.js" as Utils
 
 Menu {
     id: menu
+    property var extraMenu
       Instantiator {
           delegate: MenuItem {
               text: model.text
@@ -24,6 +25,8 @@ Menu {
                         let ids = Journal.pendingAlarms(model.serviceId)
                         if (ids.indexOf(model.deviceId) >= 0)
                             alarmsList.showDeviceAlarm(model.deviceId)
+                  } else if (extraMenu && model.action in extraMenu) {
+                      extraMenu[model.action].handler()
                   }
               }
           }
@@ -35,22 +38,24 @@ Menu {
           onObjectAdded: menu.insertItem(index, object)
           onObjectRemoved: menu.removeItem(object)
       }
-      function show(serviceId, deviceId) {
-          serviceId = serviceId || 0
+
+      function show(devModel, em) {
+          extraMenu = em || {}
           var list = [],
+              serviceId = devModel.serviceId || 0,
+              deviceId = devModel.id,
               service = root.services[serviceId]
           //console.log(serviceId, deviceId)
 
-          if (service && 'lost' === Utils.className(service.model.status.tcp))
+          if (0 === serviceId || service && 'lost' === Utils.className(service.model.status.tcp))
               return // no menu when connection with the underlaying service is lost
 
+          // menu from service
           if (service && ('contextMenu' in service)) {
-              list = service.contextMenu(serviceId ? deviceId : 0) // 0 for subsystem root
+              // don't forget override null (null means context commands are unavailable, possible no conn with server?)
+              list = service.contextMenu(serviceId ? deviceId : 0) || [] // 0 for subsystem root
               //console.log("ContextMenu:", JSON.stringify(list))
           }
-
-          if (null === list) // null means context commands are unavailable (no conn with server?)
-              return
 
           var pa = Journal.pendingAlarms(serviceId)
           //console.log(JSON.stringify(pa))
@@ -74,6 +79,16 @@ Menu {
                   })
               }
           }
+
+          for (let act in extraMenu)
+              list.unshift({
+                  action: act,
+                  text: extraMenu[act].text,
+                  serviceId: serviceId,
+                  deviceId: deviceId,
+                  command: 0
+              })
+
 
           if (list && list.length > 0) {
               menuItemsModel.clear()

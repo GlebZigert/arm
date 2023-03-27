@@ -345,5 +345,6 @@
         <file>qml/video/empty.png</file>
         <file>qml/video/device-tree.png</file>
         <file>images/bell-on.svg</file>
+        <file>qml/forms/CustomMenu.qml</file>
     </qresource>
 </RCC>

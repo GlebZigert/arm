@@ -75,8 +75,16 @@ Item {
 
     function showMenu(item) {
         //console.log('SHOW:', item.serviceId, item.id)
+        //console.log("EX:", tree.currentItemExpanded)
         // serviceId is undefined for subsystem node
-        contextMenu.show(item.serviceId, item.id)
+        var extraMenu = {}
+
+        if (item.children && item.children.count > 0)
+            extraMenu[tree.currentItemExpanded ? "CollapseAll" : "ExpandAll"] = {
+                text: tree.currentItemExpanded ? "Свернуть всё" : "Раскрыть всё",
+                handler: () => tree.toggleFold({serviceId: item.serviceId, id: item.id})
+            }
+        contextMenu.show(item, extraMenu)
     }
 
     function selected(item) {

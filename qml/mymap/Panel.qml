@@ -131,6 +131,7 @@ Rectangle {
             Layout.fillHeight: true
             Forms.MyTree{
                 id: tree
+                labelPadding: 1
                 model: root.devices
                 anchors.fill: parent
                 clip: true
@@ -204,6 +205,7 @@ Rectangle {
 
     Forms.ImageFileDialog {id: fileDialog}
     Forms.MessageBox {id: messageBox}
+    Forms.CustomMenu {id: cMenu}
 
     Component.onCompleted: {
         root.deviceSelected.connect(deviceSelected)
@@ -393,7 +395,14 @@ Rectangle {
     }
 
     function treeContextMenu(item, x, y) {
-        //console.log(x, y)
+        var extraMenu = {}
+        if (item.children && item.children.count > 0) {
+            extraMenu[tree.currentItemExpanded ? "CollapseAll" : "ExpandAll"] = {
+                text: tree.currentItemExpanded ? "Свернуть всё" : "Раскрыть всё",
+                handler: () => tree.toggleFold({serviceId: item.serviceId, id: item.id})
+            }
+            cMenu.show(extraMenu)
+        }
     }
 
     function deleteShape() {

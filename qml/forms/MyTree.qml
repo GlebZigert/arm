@@ -27,6 +27,7 @@ Item {
     property var selectedTNID: -1
     property var path: [0]
     property var expandedItems: []
+    property bool currentItemExpanded: isExpanded(selectedTNID)
     property alias model: columnRepeater.model
     //property colors: {'na', 'ok', 'lost', 'error'}
     signal contextMenu(var item, int x, int y)
@@ -34,10 +35,31 @@ Item {
     signal selected(var item)
     signal selectNode(var item, var tnid, bool rightButton) // select on mouse click
 
+    signal toggleFold(var keys)
     signal findItem(var keys)
     signal clearSelection()
 
     onClearSelection: selectedTNID = -1
+
+    onToggleFold: {
+        realExpand(Utils.findItem(model, keys))
+        isExpanded = isExpanded // trigger updates
+    }
+
+    function realExpand(model) {
+        if (!model || !model.children || 0 === model.children.count) return
+
+        var tnid = getTNID(model),
+            i = expandedItems.indexOf(tnid)
+
+        if (!currentItemExpanded && i < 0)
+            expandedItems.push(tnid)
+        if (currentItemExpanded && i >= 0)
+            expandedItems.splice(i, 1)
+
+        for (i = 0; i < model.children.count; i++)
+            realExpand(model.children.get(i), expand)
+    }
 
     onFindItem: {
         var i,
@@ -60,7 +82,6 @@ Item {
 
         isExpanded = isExpanded // trigger updates
     }
-
 
     onSelectNode: {
         var newSelection = selectedTNID !== tnid
