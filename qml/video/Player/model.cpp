@@ -170,9 +170,25 @@ bool Model::to_next_page()
         page=page+1;
 
     mdl.value(vid)->current_page=page;
+/*
+    int next;
+    if(count<2){
+        return true;
+    }
+    if(next+1>=count)
+        next=0;
+    else
+        next=page+1;
+
+   for(auto one : mdl.value(vid).data()->list.at(next)->map.values()){
+    if(one->url!=""){
+       qDebug()<<"заранее запускаю "<<one->url;
+ //  container.start(one->url,Runner::Mode::LiveStreaming);
+    }
+    }
 
     //show();
-
+*/
     return true;
 
 
