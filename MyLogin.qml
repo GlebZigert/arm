@@ -72,7 +72,7 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-            text: "Администратор"
+        //    text: "Администратор"
             //text: "unit"
         }
         ///////////////////////////////////////////
@@ -85,7 +85,7 @@ Item {
             echoMode: TextInput.Password
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
-            text: "Start7"
+       //     text: "Start7"
         }
         ///////////////////////////////////////////
         Text { text: ""; Layout.alignment: Qt.AlignLeft }
