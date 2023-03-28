@@ -1,0 +1,30 @@
+diff --git a/DevContextMenu.qml b/DevContextMenu.qml
+index 2558140..fb86df4 100644
+--- a/DevContextMenu.qml
++++ b/DevContextMenu.qml
+@@ -39,11 +39,9 @@ Menu {
+           onObjectRemoved: menu.removeItem(object)
+       }
+ 
+-      function show(devModel, em) {
++      function show(serviceId, deviceId, em) {
+           extraMenu = em || {}
+           var list = [],
+-              serviceId = devModel.serviceId || 0,
+-              deviceId = devModel.id,
+               service = root.services[serviceId]
+           //console.log(serviceId, deviceId)
+ 
+diff --git a/DevicesTree.qml b/DevicesTree.qml
+index ec6d0dd..ec84e19 100644
+--- a/DevicesTree.qml
++++ b/DevicesTree.qml
+@@ -84,7 +84,7 @@ Item {
+                 text: tree.currentItemExpanded ? "Свернуть всё" : "Раскрыть всё",
+                 handler: () => tree.toggleFold({serviceId: item.serviceId, id: item.id})
+             }
+-        contextMenu.show(item, extraMenu)
++        contextMenu.show(item.serviceId, item.id, extraMenu)
+     }
+ 
+     function selected(item) {

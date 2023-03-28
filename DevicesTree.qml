@@ -84,7 +84,7 @@ Item {
                 text: tree.currentItemExpanded ? "Свернуть всё" : "Раскрыть всё",
                 handler: () => tree.toggleFold({serviceId: item.serviceId, id: item.id})
             }
-        contextMenu.show(item, extraMenu)
+        contextMenu.show(item.serviceId, item.id, extraMenu)
     }
 
     function selected(item) {

@@ -39,11 +39,9 @@ Menu {
           onObjectRemoved: menu.removeItem(object)
       }
 
-      function show(devModel, em) {
+      function show(serviceId, deviceId, em) {
           extraMenu = em || {}
           var list = [],
-              serviceId = devModel.serviceId || 0,
-              deviceId = devModel.id,
               service = root.services[serviceId]
           //console.log(serviceId, deviceId)
 
