@@ -43,7 +43,7 @@ Item{
 
     Timer {
         id: timer
-        interval: 5000; running: false; repeat: true
+        interval: 10000; running: false; repeat: true
         property int msec:0
         property var prev_date : 0
         property int sec : 0
