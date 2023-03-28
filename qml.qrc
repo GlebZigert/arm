@@ -346,5 +346,6 @@
         <file>qml/video/device-tree.png</file>
         <file>images/bell-on.svg</file>
         <file>qml/forms/CustomMenu.qml</file>
+        <file>OnlyStorageAlarm.qml</file>
     </qresource>
 </RCC>

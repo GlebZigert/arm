@@ -73,7 +73,7 @@ Item {
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
         //    text: "Администратор"
-           text:"ИвановИИ"
+        //   text:"ИвановИИ"
             //text: "unit"
         }
         ///////////////////////////////////////////
@@ -87,7 +87,7 @@ Item {
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
        //     text: "Start7"
-                       text:"q1w2e3"
+        //               text:"q1w2e3"
         }
         ///////////////////////////////////////////
         Text { text: ""; Layout.alignment: Qt.AlignLeft }
