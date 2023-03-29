@@ -524,6 +524,9 @@ timeline.pause_signal.connect(f_paused)
 
         }else{
          timeline.set_camera_zone("","")
+         //чистим интервалы
+            timeline.clear_intervals()
+
         }
 
     }

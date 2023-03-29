@@ -373,7 +373,7 @@ Rectangle{
                     findAndSet(cids,vm.uid,"alarm",false)
                     findAndSet(w_model,vm.uid,"alarm",false)
 
-                  console.log("выбран cid: ",vm.cid)
+                  console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
 
                     }else{
                      rrow.visible=false
@@ -452,7 +452,7 @@ Rectangle{
                     vvm.uid=model.uid
 
                     set_vm_source(model.cid,model.url)
-                    console.log("Rect ",index," создан uid ",uid," ",vm.cid," ",vm.url)
+                    console.log("Rect ",index," создан; uid: ",uid,"; cid:",vm.cid,"; url:",vm.url)
                     vvm.vm_start(1)
 
                 }
@@ -565,6 +565,8 @@ Rectangle{
 
             }
             */
+
+
 
 
 
@@ -749,7 +751,7 @@ Rectangle{
         w_model.clear()
 
 
-
+        var flag=false
 
         var id = -1
         for(var i = 0;i < md.get_cids().length;i++){
@@ -768,11 +770,21 @@ Rectangle{
                 console.log(".. ",md.get_cid_at(i)," ",id)
                 if(md.get_cid_at(i)===id){
 
+                    var url = md.get_url_at(i)
+                    var cid = md.get_cid_at(i)
+
+                    if(url=="" && cid>-1){
+                        console.log("пустой cid ",cid)
+                    flag=true
+                    }
+
                     console.log("append ")
                     console.log("uid  ",md.get_uid_at(i))
                     console.log("cid  ",md.get_cid_at(i))
                     console.log("url  ",md.get_url_at(i))
                     console.log("alarm  ",md.get_alarm_at(i))
+
+
 
 
                     w_model.append({h:height,
@@ -795,6 +807,15 @@ Rectangle{
 
 
             for(var i=0;i<scale*scale;i++){
+
+                var url = md.get_url_at(i)
+                var cid = md.get_cid_at(i)
+
+                if(url=="" && cid>-1){
+                    console.log("пустой cid ",cid)
+                flag=true
+                }
+
 
                 console.log("append ")
                 console.log("uid  ",md.get_uid_at(i))
@@ -822,6 +843,12 @@ Rectangle{
 
         good.ready()
         md.save_to_settings()
+
+        if(flag){
+            console.log("flag")
+              var serviceId=Axxon.camera(get_cids()[0]).serviceId
+                    Axxon.request_URL(vid,get_cids(), serviceId, "","utc")
+        }
          console.log("<--rescale")
     }
 
@@ -857,6 +884,31 @@ Rectangle{
             }
         }
         */
+
+        for(var i = 0;i < md.get_cids().length;i++){
+          //   console.log("смотрю ",md.get_cid_at(i)," ",id)
+            if(md.get_cid_at(i) === id){
+          //     console.log("такая камера уже есть ",id)
+                return
+            }
+        }
+
+        /*
+        var cids = get_cids()
+        console.log("cids", cids," ",cids.length)
+        for(var i=0;i<cids.count;i++){
+            console.log("смотрю ",cids.get(i).cid," ",id)
+            if(cids.get(i).cid===id){
+                console.log("такая камера уже есть ",id)
+        //       cids.setProperty(i,"alarm",alarm)
+         //       return
+
+            }
+        }
+        */
+
+
+
 
        // if(fl){
 

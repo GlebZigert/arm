@@ -1074,6 +1074,10 @@ function check_dt(){
 
 }
 
+function clear_intervals(){
+m_intervals.clear()
+}
+
 function update_slider_intervals(intervals)
 {
 //    console.log("update_slider_intervals: ",intervals)

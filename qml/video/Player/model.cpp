@@ -692,15 +692,20 @@ int Wall::get_cid_at(int i)
 
 QString Wall::get_url_at(int i)
 {
-    if(current_page==-1)
+    if(current_page==-1){
         return "";
+        qDebug()<<"Wall::get_url_at ERR 1";
+    }
 
-    if(list.count()<=current_page)
+    if(list.count()<=current_page){
+                qDebug()<<"Wall::get_url_at ERR 2";
         return "";
+    }
 
     if(list.at(current_page))
     return list.at(current_page)->get_url_at(i);
 
+            qDebug()<<"Wall::get_url_at ERR 3";
     return "";
 }
 
@@ -853,7 +858,7 @@ void Page::set_cid_for_uid(int cid, int uid)
 
 void Page::set_url_for_uid(QString url, int uid)
 {
-  //  //   qDebug()<<"set url "<<url<<" for uid "<<uid;
+   //  qDebug()<<"set_url_for_uid "<<url<<" for uid "<<uid;
     if(map.value(uid))
         map.value(uid)->url=url;
 }
@@ -878,9 +883,11 @@ int Page::get_cid_at(int i)
 
 QString Page::get_url_at(int i)
 {
-    if(map.count()<=i)
+    if(map.count()<=i){
+                qDebug()<<"Page::get_url_at ERR 1";
         return "";
-
+    }
+    qDebug()<<"url = "<<map.values().at(i)->url;
     return map.values().at(i)->url;
 }
 
