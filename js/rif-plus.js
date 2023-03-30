@@ -381,13 +381,15 @@ Rif.prototype.rebuildTree = function (data0) {
         for (const i in links)
             for (const j of links[i]) {
                 let children = this.cache[i].children
-                children.append(cache[j])
-                let item = children.get(children.count-1)
-                if (j in this.duplicates)
-                    this.duplicates[j].push(item)
-                else
-                    this.duplicates[j] = [item]
+                if (appendNested(children, cache[j])) {
+                    let item = children.get(children.count-1)
+                    if (j in this.duplicates)
+                        this.duplicates[j].push(item)
+                    else
+                        this.duplicates[j] = [item]
+                }
             }
+        //console.log("Rif links:", JSON.stringify(links))
         //console.log("Rif dbl:", JSON.stringify(this.duplicates))
 
         // colorize sites
@@ -400,6 +402,19 @@ Rif.prototype.rebuildTree = function (data0) {
             this.unitLogic(this.cache[i])
         }
     }
+}
+
+function appendNested(children, child) {
+    var i, node
+    for (i = 0; i < children.count; i++) {
+        if (children.get(i).id === child.id)
+            break
+    }
+    if (0 === children.count || i >= children.count) {
+        children.append(child)
+        return true
+    } else
+        return false
 }
 
 function customType(dev) {

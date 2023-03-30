@@ -6,6 +6,12 @@ Column {
 
     Row {
         spacing: 5
+        Text { text: "ID:"; horizontalAlignment: Text.AlignRight }
+        Text { text: model.id }
+    }
+
+    Row {
+        spacing: 5
         Text { text: "Name:"; horizontalAlignment: Text.AlignRight }
         Text { text: model.label }
     }
