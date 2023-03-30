@@ -9,6 +9,7 @@ import "js/utils.js" as Utils
 Menu {
     id: menu
     property var extraMenu
+    property bool lazyAlarmProcessing: root.settings && root.settings.lazyAlarmProcessing || false
       Instantiator {
           delegate: MenuItem {
               text: model.text
@@ -17,6 +18,8 @@ Menu {
                       var payload = {deviceId: model.deviceId, command: model.command, argument: model.argument || 0}
                       //console.log('ContextMenu: Sending', JSON.stringify(payload), 'to #', model.serviceId)
                       root.send(model.serviceId, 'ExecCommand', payload);
+                  } else if ('ResetAlarm' === model.action) {
+                          root.send(model.serviceId, 'ResetAlarm', [model.deviceId])
                   } else if ('ResetAlarms' === model.action) {
                         let ids = Journal.pendingAlarms(model.serviceId)
                         if (ids.length > 0)
@@ -58,7 +61,7 @@ Menu {
           var pa = Journal.pendingAlarms(serviceId)
           //console.log(JSON.stringify(pa))
           if (Utils.useAlarms() && pa.length > 0) {
-              if (0 === deviceId || 0 === serviceId) { // TODO: check core service (id = 0)
+              if (lazyAlarmProcessing && (0 === deviceId || 0 === serviceId)) { // TODO: check core service (id = 0)
                   list.push({
                       action: "ResetAlarms",
                       text: "Сброс тревог",
@@ -75,6 +78,15 @@ Menu {
                       deviceId: deviceId,
                       command: 0
                   })
+                  if (lazyAlarmProcessing) {
+                      list.push({
+                          action: "ResetAlarm",
+                          text: "Сброс тревоги",
+                          serviceId: serviceId,
+                          deviceId: deviceId,
+                          command: 0
+                      })
+                  }
               }
           }
 

@@ -143,83 +143,60 @@ var extraTr = {
 var actuators = [4, 43, 12] // ИУшки;
 var noDK = [3, 4, 12, 43, 27, 28, 30, 31]
 
-/*
-var sClasses = { // state classes
-    0: 'na',
-    1: 'ok',
-    2: 'na', // lock-na
-    10: 'lost',
-    11: 'error',
-    12: 'error',
-    13: 'error',
-    14: 'error',
-    17: 'lost', // lock-lost
-    18: 'error',
-    20: 'alarm',
-    21: 'alarm',
-    22: 'alarm',
-    23: 'alarm',
-    25: 'alarm',
-    100: 'ok',      // Выключено
-    101: 'alarm',   // Включено
-    110: 'ok',      // Закрыто
-    111: 'alarm',   // Открыто
-    112: 'ok',      // Закрыто ключом
-    113: 'alarm',   // Открыто ключом
-    136: 'na',      // Контроль выкл
-    1136: 'na',     // Удал.Ком. Контроль выкл
-    143: 'alarm',   // Исходящий вызов
-    1143: 'alarm',   // Удал. ком. Исходящий вызов
-    144: 'ok',     // Вызов завершен по кан. связи
-    145: 'alarm',   // Входящий вызов
-    //1145: 'alarm',   // Удал. ком. Входящий вызов
-    146: 'ok',       // Вызов завершён операторам
-    1146: 'ok'       // Удал. ком. Вызов завершён операторам
-    //130: //Послана ком. Вкл
-    //131: //Послана ком. Выкл
-    //137: 'na', // Контроль вкл
-    //1137: 'na', // Удал.Ком. Контроль вкл
-    //150: 'na', // Послана команда «Открыть» УЗ
-    //151: 'na', // Послана команда «Закрыть»
+const optionNames = {'null': '', '0': '', '1': 'lock', '2': 'com'}, // keys - strings!
+    devLocations = {
+        1: 'РИФ-РЛМ(КРЛ), Трасса:%1 IP:%IP',
+        3: 'СД ССОИ БЛ:%2 СД:%3 IP:%IP',
+        'lock3': 'УЗ Монолит ССОИ Кан:%1 БЛ:%2 СД:%3+ИУ:%3', // !!! only numeric keys allowed
+        'com3': 'Блок связи ССОИ Кан:%1 БЛ:%2 СД:%3+ИУ:%3C', // !!! only numeric keys allowed
+        4: 'ИУ ССОИ БЛ:%2 ИУ:%3 IP:%IP',
+        10: 'Точка/Гарда:%1 ЧЭ:%2 IP:%IP',
+        11: 'СД БЛ-IP СД:%2 IP:%IP',
+        10011: 'УЗ Монолит БЛ-IP СД:%2+ИУ:%2, IP:%IP',
+        12: 'ИУ БЛ-IP ИУ:%2 IP:%IP',
+        26: 'Точка-М/Гарда-М БОД:%1 IP:%IP',
+        27: 'Точка-М/Гарда-М БОД:%1 Участок:%2H IP:%IP',
+        28: 'Точка-М/Гарда-М БОД:%1 Участок:%2H ДД:%2L IP:%IP',
+        29: 'Сота/Сота-М БОД:%1 IP:%IP',
+        30: 'Сота/Сота-М БОД:%1 Участок:%2H IP:%IP',
+        31: 'Сота/Сота-М БОД:%1 Участок:%2H ДД:%2L IP:%IP',
+        33: 'СД ССОИ-М БЛ:%2 СД:%3 IP:%IP',
+        10033: 'УЗ Монолит ССОИ-М БЛ:%2 СД:%3+ИУ:%3 IP:%IP',
+        44: 'СД ССОИ-IP БЛ:%1 СД:%2 IP:%IP', // ???
+        10044: 'УЗ Монолит ССОИ-IP БЛ:%2 СД:%3+ИУ:%3 IP:%IP',
+        'com33': 'Блок связи ССОИ-М БЛ:%2 СД:%3+ИУ:%3C IP:%IP', // !!! only numeric keys allowed
+        42: 'Камера Растр-М',
+        43: 'ИУ ССОИ-М БЛ:%2 ИУ:%3 IP:%IP',
+        45: 'ИУ ССОИ-IP БЛ:%1 ИУ:%2 IP:%IP', // ???
+        99: 'РИФ-РЛМ-С:%1 IP:%IP'
+    }
+
+function decodeLocation(dev) {
+    var re = /%(IP|\d[a-z]?)/gi,
+        subst = {
+            '%IP': dev.ip,
+            '%3C': dev.num3 - 3, // used for Communication Unit
+            '%2H': dev.num2 / 100 >> 0,
+            '%2L': dev.num2 % 100 + 1,
+            '%1':  dev.num1,
+            '%2':  dev.num2,
+            '%3':  dev.num3
+        };
+
+    if (dev.type in devLocations) {
+        return devLocations[dev.type].replace(re, function (m) {
+            return subst[m];
+        }).replace('СД:9', 'Вскрытие'); // SSOI fix
+    } else if (dev.ip) {
+        return dev.ip + (dev.ip2 ? ('/' + dev.ip2) : '');
+    } else
+        return '';
 }
-
-var sClassesOverride = {
-    1: {100: 'na', 101: 'na'},
-    11: {100: 'na', 101: 'na'},
-    99: {100: 'na', 101: 'na'}
-}
-
-var statesColors = Utils.statesColors
-
-// event class name (type)
-function getClassName(devType, sid) {
-    var name;
-    if (devType in sClassesOverride)
-        name = sClassesOverride[devType][sid]
-    if (!name)
-        name = sClasses[sid]
-
-    return name || sClasses[0]; // [0] - "na" if not found
-}
-
-
-// cache (plain table) for quick access to the tree by id
-// [id] => item{id, ...}
-
-/*function stateColor(states) {
-    let id = (states instanceof Array) ? states[0].id : states.id,
-        sc = sClasses[id]
-    return statesColors[sc] || statesColors.na
-}*/
-
-/*function stateType(states) {
-    let id = (states instanceof Array) ? states[0].id : states.id
-    return sClasses[id]
-}*/
 
 function Rif(model) {
     this.model = model
     this.cache = {}
+    this.duplicates = {} // IU duplicates
     this.parents = {}
     this.serviceId = this.model.serviceId
 
@@ -241,7 +218,6 @@ Rif.prototype.statusUpdate = function (sid) {
     //console.log("==============2 RIF-STATUS", "=>", this.model.color, JSON.stringify(this.model.status))
 }
 
-
 Rif.prototype.listStates = function (deviceId) {
     var i,
         item,
@@ -261,7 +237,6 @@ Rif.prototype.listStates = function (deviceId) {
 
     return list
 }
-
 
 Rif.prototype.listCommands = function (deviceId) {
     var i,
@@ -319,14 +294,7 @@ Rif.prototype.contextMenu = function (id) {
                   deviceId: device.id,
                   command: transitions[trans[i]][0]
               })
-    } /*else {
-        menu.push({
-              text: "Сброс тревог",
-              serviceId: this.model.serviceId,
-              deviceId: 0,
-              command: 903
-          })
-    }*/
+    }
 
     return menu
     //return [{text: "1. item one"}, {text: "2. item two"}]
@@ -363,30 +331,37 @@ Rif.prototype.rebuildTree = function (data0) {
         })
         //console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         //console.log("Rif Tree:", JSON.stringify(data))
+        var cache = {},
+            links = {}
         for (i = 0; i < data.length; i++) {
-            //sType = getClassName(data[i].type, data[i].states[0].id)
-            //console.log(data[i].id, ":", typeof data[i].id)
             item = {
                 id: data[i].id, // || this.nextGroupId--,
                 accessMode: data[i].accessMode,
                 serviceId: this.serviceId,
                 name: data[i].name,
                 dk: data[i].dk,
-                option: data[i].option === 1 ? 'lock' : '',
+                option: optionNames[data[i].option],
                 label: data[i].name,
                 icon: 'fa_circle',
                 stickyState: false,
 
                 children: [],
-                num: data[i].num,
+                num1: data[i].num[0],
+                num2: data[i].num[1],
+                num3: data[i].num[2],
+                ip: data[i].ip || '',
                 type: customType(data[i]),
                 isGroup: data[i].type === 0,
                 form: 'rif'
             }
+            cache[item.id] = item
+            if (data[i].links)
+                links[data[i].id] = data[i].links
+
             if (0 !== item.type) {
                 state = data[i].states[0]
                 //states[data[i].id] = state
-                setState(item, {class: state['class'], event: state.id, text: state.name}, 0)
+                this.setState(item, {class: state['class'], event: state.id, text: state.name}, 0)
             }
             while (data[i].level > path.length - 1)
                 path.push(list[list.length-1].children)
@@ -398,16 +373,29 @@ Rif.prototype.rebuildTree = function (data0) {
 
         model.clear()
         model.append(root)
-        this.cache = Utils.makeCache(model, {})
+
         this.parents = Utils.mapParents(0, model, {})
-        //console.log("Rif parents map:", JSON.stringify(this.parents))
+        this.cache = Utils.makeCache(model, {})
+
+        this.duplicates = {}
+        for (const i in links)
+            for (const j of links[i]) {
+                let children = this.cache[i].children
+                children.append(cache[j])
+                let item = children.get(children.count-1)
+                if (j in this.duplicates)
+                    this.duplicates[j].push(item)
+                else
+                    this.duplicates[j] = [item]
+            }
+        //console.log("Rif dbl:", JSON.stringify(this.duplicates))
 
         // colorize sites
         for (i in this.cache) {
             this.siteLogic(this.cache[i])
         }
 
-        // colorize units
+        // colorize units (don't combine with sites loop)
         for (i in this.cache) {
             this.unitLogic(this.cache[i])
         }
@@ -415,10 +403,10 @@ Rif.prototype.rebuildTree = function (data0) {
 }
 
 function customType(dev) {
-    var custom = 1 === dev.option
-             || 44 === dev.type && 9 === dev.num[1]
-
-    return (custom ? 1e4 : 0) + dev.type
+    return 1e4 * dev.option + dev.type
+    /*var custom = 1 === dev.option
+             || 44 === dev.type && 9 === dev.num2
+    return (custom ? 1e4 : 0) + dev.type*/
 }
 
 Rif.prototype.checkSticky = function (event) {
@@ -437,7 +425,7 @@ Rif.prototype.processEvents = function (events) {
                 resetAlarm(dev)
                 this.resetUnit(dev)
             } else {
-                setState(dev, events[i], 1)
+                this.setState(dev, events[i], 1)
             }
             // extra logic
             this.sensorLogic(dev)
@@ -514,7 +502,7 @@ Rif.prototype.unitLogic = function (dev) {
     //console.log("CHLD:", JSON.stringify(children))
 
     for (i in children)
-        setState(children[i], event, 1)
+        this.setState(children[i], event, 1)
 }
 
 Rif.prototype.resetUnit = function (dev) {
@@ -608,7 +596,7 @@ function resetAlarm(dev) {
 //////////////////////////////////////////////////////////////////////////
 
 // priority: -1 (reset sticky), 0 (state), 1 (event)
-function setState(dev, event, priority) {
+Rif.prototype.setState = function (dev, event, priority) {
     var classCode = event['class'],
         sid = event.event,
         text = event.text
@@ -642,9 +630,23 @@ function setState(dev, event, priority) {
         dev.display = animation
         Utils.updateMaps(dev)
     }
+
+    let location = decodeLocation(dev)
+    dev.tooltip = text + (location ? ' (' + location + ')' : '')
     dev.stateClass = classCode
     dev.state = sid
     dev.color = color
-    dev.tooltip = text
     dev.icon = dev.type in customIcons && customIcons[dev.type][sid] || 'fa_circle'
+    this.updateDuplicates(dev)
+}
+
+Rif.prototype.updateDuplicates = function(dev) {
+    if (!this.duplicates || !(dev.id in this.duplicates))
+        return
+
+    var attr = ['stateClass', 'state', 'color', 'tooltip', 'icon']
+    for (let i = 0; i < this.duplicates[dev.id].length; i++) {
+        for (let a of attr)
+            this.duplicates[dev.id][i][a] = dev[a]
+    }
 }

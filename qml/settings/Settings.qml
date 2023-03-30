@@ -21,6 +21,7 @@ ColumnLayout {
     }*/
 
     CheckBox {property string name: 'useAlarmShortcuts'; text: "Обработка тревог клавишами F9..F12"; checked: !!root.settings[name]; onCheckedChanged: settings[name] = checked}
+    CheckBox {property string name: 'lazyAlarmProcessing'; text: "Упрощённая обработка тревог"; checked: !!root.settings[name]; onCheckedChanged: settings[name] = checked}
 
     Item {Layout.fillHeight: true}
 

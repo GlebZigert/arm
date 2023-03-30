@@ -9,20 +9,21 @@ Column {
         Text { text: "Name:"; horizontalAlignment: Text.AlignRight }
         Text { text: model.label }
     }
-    Row {
-        spacing: 5
-        Text { text: "Color:"; horizontalAlignment: Text.AlignRight }
-        Text { text: color }
-    }
+
     Row {
         spacing: 5
         Text { text: "Num:"; horizontalAlignment: Text.AlignRight }
-        Text { text: model.num.count}
+        Text { text: [model.num1, model.num2, model.num3].join(':') }
     }
     Row {
         spacing: 5
         Text { text: "Тип:"; horizontalAlignment: Text.AlignRight }
         Text { text: model.type || '?'}
+    }
+    Row {
+        spacing: 5
+        Text { text: "IP:"; horizontalAlignment: Text.AlignRight }
+        Text { text: model.ip || '?'}
     }
     /*Row {
         spacing: 5
