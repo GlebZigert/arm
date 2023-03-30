@@ -447,7 +447,7 @@ timeline.pause_signal.connect(f_paused)
 
         }
         timeline.set_to_storage_cameras_text("К тревогам")
-        multivm.add_storage_camera(cids)
+        multivm.add_storage_cameras(cids)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
         storage_live=storage
@@ -624,12 +624,27 @@ timeline.pause_signal.connect(f_paused)
         console.log("storage wall: add_camera: ",id)
 
         if(!Axxon.check_id(id)){
+            console.log("return")
             return
         }
 
         multivm.add_camera(id,false)
         multivm.save()
         cid = id
+    }
+
+   function add_storage_camera(id){
+ console.log("storage wall: add_storage_camera: ",id)
+        if(!Axxon.check_id(id)){
+             console.log("return")
+            return
+        }
+console.log("++++")
+         timeline.set_to_storage_cameras_text("К тревогам")
+    multivm.add_storage_camera(id)
+    multivm.save()
+    cid = id
+
     }
 
     function hide_timelines(){

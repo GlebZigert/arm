@@ -129,7 +129,7 @@ Item{
 
     console.log("Экраны: ",wnd1.screen," ",wnd2.screen)
 
-        videowall.open_in_alarm_window.connect(alarmWindow.add_camera)
+        videowall.open_in_alarm_window.connect(alarmWindow.add_storage_camera)
 
         videowall.switch_tlmtr.connect(f_switch_tlmtr)
         alarmWindow.switch_tlmtr.connect(f_switch_tlmtr)

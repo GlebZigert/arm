@@ -85,6 +85,34 @@ int Runner::interrupt_cb(void *ctx)
 
 void Runner::load()
 {
+
+    AVHWDeviceType hwtype = AV_HWDEVICE_TYPE_NONE;
+    qDebug()<<"av_hwdevice_iterate_types--> ";
+    while((hwtype = av_hwdevice_iterate_types(hwtype)) != AV_HWDEVICE_TYPE_NONE){
+        qDebug()<<".";
+        auto name = av_hwdevice_get_type_name(hwtype);
+        qDebug()<<"av_hwdevice: "<<name;
+
+
+        /*
+        const AVCodec* decoder = avcodec_find_decoder_by_name(name);
+        for(int i=0;;++i){
+            const AVCodecHWConfig* config = avcodec_get_hw_config(decoder,i);
+
+            if(config){
+
+                if(config->methods & AV_CODEC_HW_CONFIG_METHOD_HW_DEVICE_CTX) {
+
+                   qDebug()<<av_hwdevice_get_type_name(config->device_type);
+                }
+
+
+
+            }
+        }
+        */
+    }
+     qDebug()<<"<--av_hwdevice_iterate_types";
     avformat_network_init();
     pAVFrame = av_frame_alloc();
     pAVPicture = new AVPicture();
@@ -148,6 +176,24 @@ bool Runner::load_settings()
     pAVCodecContext = avcodec_alloc_context3(NULL);
     pAVCodec = avcodec_find_decoder(pFormatCtx->streams[0]->codec->codec_id);
 
+
+/*
+    qDebug()<<"AVCodec* codec = avcodec_find_decoder(AV_CODEC_ID_H264);";
+    AVCodec* codec = avcodec_find_decoder(AV_CODEC_ID_H264);
+        qDebug()<<"profit 1";
+    AVCodecContext* av_context = avcodec_alloc_context3(codec);
+        qDebug()<<"profit 2";
+    av_context->pix_fmt = AV_PIX_FMT_YUV420P;
+        qDebug()<<"profit 3";
+    AVBufferRef *hw_device_ctx = NULL;
+        qDebug()<<"profit 4";
+
+    av_hwdevice_ctx_create(&hw_device_ctx, AV_HWDEVICE_TYPE_NONE,NULL,NULL,0);
+        qDebug()<<"profit 5";
+    av_context->hw_device_ctx = av_buffer_ref(hw_device_ctx);
+    qDebug()<<"profit";
+*/
+
     avcodec_parameters_from_context(param, pFormatCtx->streams[0]->codec);
     avcodec_parameters_to_context(pAVCodecContext, param);
 
@@ -168,12 +214,15 @@ bool Runner::load_settings()
 
     pAVCodecContext->thread_count=10;
 
+    qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
+  //  int result=avcodec_open2(av_context,codec,NULL);
+    qDebug()<<"profit";
     int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
     if (result<0){
 
         emit finished();
         close();
-        //   qDebug()<<"FAIL with: avcodec_open2t";
+           qDebug()<<"FAIL with: avcodec_open2t";
         return false;
     }
 

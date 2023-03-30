@@ -544,9 +544,14 @@ Rectangle{
  md.save_to_settings()
     }
 
-    function add_storage_camera(arr){
+        function add_storage_camera(id){
+             md.to_page("Архив")
+             add_camera(id)
+        }
 
+    function add_storage_cameras(arr){
 
+console.log("Multivm add_storage_camera")
  md.to_page("Архив")
           //  cids.clear()
 
