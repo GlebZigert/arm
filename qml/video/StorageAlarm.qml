@@ -360,6 +360,7 @@ timeline.pause_signal.connect(f_paused)
 
         multivm.ready.connect(update_vm)
 
+
         calendar.enabled=false
         calendar_rect.visible=false
         calendar_rect_area.enabled=false

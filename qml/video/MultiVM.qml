@@ -37,6 +37,8 @@ Item{
 
     signal clicked
 
+    signal clear
+
 
 
 
@@ -336,7 +338,8 @@ Rectangle{
                     //    findAndSet(cids,vm.uid,"url","")
                         vvm.vm_stop()
                         vvm.vm_clear()
-  rrow.visible=false
+                        txt.text=""
+                    rrow.visible=false
 
 
                     }
@@ -988,8 +991,9 @@ console.log("Multivm add_storage_camera")
             Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc")
         }
 
-    function setVid(vid){
-        md.vid=vid
+    function setVid(vvid){
+        md.vid=vvid
+        vid=vvid
 
     }
 
@@ -1016,6 +1020,10 @@ console.log("Multivm add_storage_camera")
         md.delete_page(md.current_page())
 
         good.currentPage(md.get_current_page_name())
+
+        w_model.clear()
+
+        good.clear()
     }
 
     function to_next_page(){

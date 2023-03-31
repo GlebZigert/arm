@@ -39,7 +39,20 @@ Item{
     }
     }
 
+    Timer {
+        id: shoot
+        interval: 500; running: false; repeat: false
+        property int msec:0
+        property var prev_date : 0
+        property int sec : 0
+        onTriggered:
+        {
+            interval: 500
+            multivm.to_next_page()
 
+
+    }
+    }
 
     Timer {
         id: timer
@@ -177,7 +190,9 @@ Item{
                         timer.stop()
                 console.log("onClicked .")
                 timer.stop()
-                multivm.to_next_page()
+                shoot.stop()
+             //   multivm.to_next_page()
+                shoot.start()
             }
         }
 
@@ -303,6 +318,8 @@ Item{
                 console.log("onClicked .")
                         timer.stop()
                 page_input_view.visible=true
+                page_name_input.forceActiveFocus()
+
             }
 
         }
@@ -540,7 +557,9 @@ Item{
         y:base.height/2-20
         width: 500
         height: 40
-        color: "lightgray"
+        color: "lightblue"
+        border.color: "lightgray"
+        border.width: 1
         visible: false
         Row{
             anchors.fill: parent
@@ -556,7 +575,11 @@ Item{
                 height: 40
                 style: ButtonStyle {
                     label: Text {
+                        id: page_name_input
                         text:"Добавить"
+
+
+
                     }
                 }
                 onClicked: {
@@ -648,9 +671,17 @@ Item{
 
         multivm.clicked.connect(f_multivm_clicked)
 
+        multivm.clear.connect(f_clear)
+
    //     timeline.fullscreen_signal.connect(fullscreen)
 
    //     timeline.signal_scale.connect(scale)
+    }
+
+    function f_clear(){
+        cameraName.text=""
+        cameraIpAddr.text=""
+        pageName.text=""
     }
 
     function f_multivm_clicked(){

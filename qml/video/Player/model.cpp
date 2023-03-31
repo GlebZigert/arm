@@ -437,8 +437,9 @@ void Model::load_from_settings()
 
     for(int i=0;i<count;i++){
         settings.beginGroup(QString("Videowall %1").arg(i));
-        auto vid = settings.value("vid").toString();
 
+        auto vid = settings.value("vid").toString();
+        qDebug()<<"vid: "<<vid;
         if(vid=="")
             continue;
    //     //   qDebug()<<"vid: "<<vid;
