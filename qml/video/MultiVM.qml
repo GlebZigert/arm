@@ -165,6 +165,29 @@ Rectangle{
                         property int cid: -1
                         property string url: ""
 
+                        TextField {
+                            id: txt
+                        x: 10
+                        y: 0
+                        width: text.length*10
+                        height: 20
+                        text: Axxon.camera(vm.cid).name
+
+                        style: TextFieldStyle{
+                            textColor: "black"
+                            background: Rectangle{
+                            radius: 2
+                            opacity: 0.5
+                            implicitWidth: txt.width
+                            implicitHeight: 20
+                            border.color: "white"
+                            border.width: 1
+                            }
+
+                        }
+
+                        }
+
                     }
 
                     Row{
