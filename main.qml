@@ -430,6 +430,7 @@ ApplicationWindow {
     }
 
     function checkClosing(close) {
+        console.lo
         if (currentUser && Utils.useAlarms()) {
             close.accepted = false
             if ('offline' === menu.linkStatus)

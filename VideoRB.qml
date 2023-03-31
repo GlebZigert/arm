@@ -52,6 +52,15 @@ Item{
       //      wnd1.y =   settings.y1
       //      wnd1.visibility =   wnd1.visibility === 0 ? 2 :wnd1.visibility
         }
+
+        Connections {
+            id: ccConn_wnd1
+            target: wnd1
+            onClosing: checkClosing(close)
+        }
+
+
+
     }
 
 
@@ -98,6 +107,12 @@ Item{
        //  wnd2.x =   settings.x2
       //   wnd2.y =   settings.y2
       //   wnd2.visibility =   wnd2.visibility === 0 ? 2 :wnd2.visibility
+        }
+
+        Connections {
+            id: ccConn_wnd2
+            target: wnd2
+            onClosing: checkClosing(close)
         }
     }
 

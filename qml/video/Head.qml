@@ -18,6 +18,18 @@ Rectangle{
     id: model
     }
 
+    Timer{
+    id: timer
+    running: false
+    repeat: false
+    interval: 300
+    onTriggered: {
+        console.log("current_page(combo.currentIndex+1)")
+        var dt=new Date();
+        current_page(combo.currentIndex+1)
+    }
+    }
+
 
     Grid {
         columns: 4
@@ -121,8 +133,10 @@ Rectangle{
 
     function current_page_changed()
     {
-        var dt=new Date();
-        current_page(combo.currentIndex+1)
+        timer.stop()
+        timer.start()
+      //  var dt=new Date();
+      //  current_page(combo.currentIndex+1)
     }
 
 
