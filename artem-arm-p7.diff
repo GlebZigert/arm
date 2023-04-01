@@ -1,0 +1,137 @@
+diff --git a/Tasks.qml b/Tasks.qml
+index 87bad50..77a519c 100644
+--- a/Tasks.qml
++++ b/Tasks.qml
+@@ -9,10 +9,23 @@ Timer {
+ 
+     property int nextId: 1
+     property var tasks: ({})
++    property int total: 0
+ 
++    signal finished(int taskId)
+     signal result(var reply, bool isErr)
+     signal newTask(int service, string action, var data, var done, var fail)
+ 
++    onFinished: {
++        var task = tasks[taskId]
++        if (!task)
++            return
++
++        task.waiting = false
++        let dur = Date.now() - task.time
++        total += dur
++        //console.log("<-> " + task.service, task.action, 'roundtrip time', dur / 1000, 'sec / of', total / 1000)
++    }
++
+     onResult: {
+         var task = tasks[reply.task]
+         if (!task)
+@@ -31,9 +44,9 @@ Timer {
+         var payload = JSON.stringify({service: service, action: action, task: nextId, data: data}),
+             len = encodeURI(payload).split(/%..|./).length - 1 // UTF-8 string length in bytes
+ 
+-        if (socket.active && socket.sendTextMessage(payload) === len)
+-            tasks[nextId] = {done: done, fail: fail, time: Date.now()}
+-        else if (fail)
++        if (socket.active && socket.sendTextMessage(payload) === len) {
++            tasks[nextId] = {done: done, fail: fail, time: Date.now(), service: service, action: action, waiting: true}
++        } else if (fail)
+             fail("Связь с сервером отсутствует") // fail - no connection
+ 
+         nextId++
+@@ -44,9 +57,9 @@ Timer {
+             now = Date.now()
+ 
+         for (i in tasks)
+-            if (now - tasks[i].time > timeout) {
++            if (tasks[i].waiting && now - tasks[i].time > timeout) {
+                 if (tasks[i].fail)
+-                    Qt.callLater(tasks[i].fail, "Сервер не отвечает") // call async
++                    Qt.callLater(tasks[i].fail, "Истекло время ожидания ответа") // call async
+                 delete tasks[i]
+             }
+     }
+diff --git a/js/services.js b/js/services.js
+index d8d99fb..2b01662 100644
+--- a/js/services.js
++++ b/js/services.js
+@@ -15,6 +15,8 @@
+ .import "z5rweb.js" as Z5RWeb
+ .import "parus.js" as Parus
+ 
++var PROFILE_ACTIONS = false
++
+ var factory = {
+     rif: RifPlus.Rif,
+     axxon: Axxon.Axxon,
+@@ -24,6 +26,7 @@ var factory = {
+ 
+ 
+ var qml,
++    totalTime = 0,
+     services = {}
+ 
+ function init() {
+@@ -43,8 +46,9 @@ function getService(id) {
+ function message(msg) {
+     if (!qml) init()
+ 
++    var start = Date.now()
+     if (0 === msg.service && msg.action in handlers) {
+-        console.log('Running CORE action:', msg.action)
++        if (PROFILE_ACTIONS) console.log('Running CORE action:', msg.action)
+         if ("function" === typeof handlers[msg.action])
+             handlers[msg.action](msg)
+         else if (msg.action in handlers[msg.action].handlers)
+@@ -53,7 +57,7 @@ function message(msg) {
+             console.log('Handler not found:', msg.action)
+      //   console.log('Done action:', msg.action)
+     } else if (msg.service in services && msg.action in services[msg.service].handlers) {
+-  //      console.log('Running action', msg.action, 'on', msg.service)
++        if (PROFILE_ACTIONS) console.log('Running action', msg.action, 'on', msg.service)
+         services[msg.service].handlers[msg.action](msg.data, !msg.task)
+       //  console.log('Done action', msg.action)
+      } else if (0 !== msg.service && !(msg.service in services)) {
+@@ -63,6 +67,9 @@ function message(msg) {
+         console.log('Unknown action:', msg.action, 'on', msg.service)
+     if ("Events" === msg.action)
+         scanEvents(msg.data)
++    let dur = (Date.now() - start)
++    totalTime += dur
++    if (PROFILE_ACTIONS) console.log('[*] ' + msg.service, msg.action, 'action completed in', dur / 1000, 'sec /', totalTime / 1000)
+ }
+ 
+ // handlers for "configuration" adaper on server, singletones
+@@ -191,9 +198,9 @@ function runCommands(commands) {
+             if (i < commands.length)
+                 root.newTask(0, commands[i++], null, next, restart)
+         },
+-        restart = function () {
++        restart = function (msg) {
+             socket.stopped = true
+-            messageBox.error('Ошибка получения исходных данных,\nтребуется переподключение к серверу.', function() {socket.stopped = false})
++            messageBox.error('Ошибка получения исходных данных:\n' + msg + '\nТребуется переподключение к серверу.', function() {socket.stopped = false})
+         }
+     next()
+ }
+diff --git a/main.qml b/main.qml
+index f711fd2..b68d562 100644
+--- a/main.qml
++++ b/main.qml
+@@ -40,7 +40,7 @@ ApplicationWindow {
+     property string authSalt: "iATdT7R4JKGg1h1YeDPp:Zl6fyUw10sgh1EGxnyKQ"
+     property string serverHost: ""
+     property int serverPort: 2973
+-    property int keepAliveInterval: 10 // seconds
++    property int keepAliveInterval: 10-2 // seconds
+ 
+     property int armRole
+     property var armConfig
+@@ -256,6 +256,7 @@ ApplicationWindow {
+              //console.log("[RECV]", message)
+              var msg = JSON.parse(message),
+                 isErr = null !== msg.data && 'object' === typeof msg.data && 'errCode' in msg.data && 'errText' in msg.data && Object.keys(msg.data).length === 2
++             tasks.finished(msg.task)
+              if (!isErr)
+                 Services.message(msg) // regular action first...
+              if (msg.task) {

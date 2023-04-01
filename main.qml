@@ -38,7 +38,7 @@ ApplicationWindow {
     property string authSalt: "iATdT7R4JKGg1h1YeDPp:Zl6fyUw10sgh1EGxnyKQ"
     property string serverHost: ""
     property int serverPort: 2973
-    property int keepAliveInterval: 10 // seconds
+    property int keepAliveInterval: 10-2 // seconds
 
     property int armRole
     property var armConfig
@@ -254,6 +254,7 @@ ApplicationWindow {
              //console.log("[RECV]", message)
              var msg = JSON.parse(message),
                 isErr = null !== msg.data && 'object' === typeof msg.data && 'errCode' in msg.data && 'errText' in msg.data && Object.keys(msg.data).length === 2
+             tasks.finished(msg.task)
              if (!isErr)
                 Services.message(msg) // regular action first...
              if (msg.task) {

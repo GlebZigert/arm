@@ -9,9 +9,22 @@ Timer {
 
     property int nextId: 1
     property var tasks: ({})
+    property int total: 0
 
+    signal finished(int taskId)
     signal result(var reply, bool isErr)
     signal newTask(int service, string action, var data, var done, var fail)
+
+    onFinished: {
+        var task = tasks[taskId]
+        if (!task)
+            return
+
+        task.waiting = false
+        let dur = Date.now() - task.time
+        total += dur
+        //console.log("<-> " + task.service, task.action, 'roundtrip time', dur / 1000, 'sec / of', total / 1000)
+    }
 
     onResult: {
         var task = tasks[reply.task]
@@ -31,9 +44,9 @@ Timer {
         var payload = JSON.stringify({service: service, action: action, task: nextId, data: data}),
             len = encodeURI(payload).split(/%..|./).length - 1 // UTF-8 string length in bytes
 
-        if (socket.active && socket.sendTextMessage(payload) === len)
-            tasks[nextId] = {done: done, fail: fail, time: Date.now()}
-        else if (fail)
+        if (socket.active && socket.sendTextMessage(payload) === len) {
+            tasks[nextId] = {done: done, fail: fail, time: Date.now(), service: service, action: action, waiting: true}
+        } else if (fail)
             fail("Связь с сервером отсутствует") // fail - no connection
 
         nextId++
@@ -44,9 +57,9 @@ Timer {
             now = Date.now()
 
         for (i in tasks)
-            if (now - tasks[i].time > timeout) {
+            if (tasks[i].waiting && now - tasks[i].time > timeout) {
                 if (tasks[i].fail)
-                    Qt.callLater(tasks[i].fail, "Сервер не отвечает") // call async
+                    Qt.callLater(tasks[i].fail, "Истекло время ожидания ответа") // call async
                 delete tasks[i]
             }
     }

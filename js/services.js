@@ -15,6 +15,8 @@
 .import "z5rweb.js" as Z5RWeb
 .import "parus.js" as Parus
 
+var PROFILE_ACTIONS = false
+
 var factory = {
     rif: RifPlus.Rif,
     axxon: Axxon.Axxon,
@@ -24,6 +26,7 @@ var factory = {
 
 
 var qml,
+    totalTime = 0,
     services = {}
 
 function init() {
@@ -43,8 +46,9 @@ function getService(id) {
 function message(msg) {
     if (!qml) init()
 
+    var start = Date.now()
     if (0 === msg.service && msg.action in handlers) {
-        console.log('Running CORE action:', msg.action)
+        if (PROFILE_ACTIONS) console.log('Running CORE action:', msg.action)
         if ("function" === typeof handlers[msg.action])
             handlers[msg.action](msg)
         else if (msg.action in handlers[msg.action].handlers)
@@ -53,7 +57,7 @@ function message(msg) {
             console.log('Handler not found:', msg.action)
      //   console.log('Done action:', msg.action)
     } else if (msg.service in services && msg.action in services[msg.service].handlers) {
-  //      console.log('Running action', msg.action, 'on', msg.service)
+        if (PROFILE_ACTIONS) console.log('Running action', msg.action, 'on', msg.service)
         services[msg.service].handlers[msg.action](msg.data, !msg.task)
       //  console.log('Done action', msg.action)
      } else if (0 !== msg.service && !(msg.service in services)) {
@@ -63,6 +67,9 @@ function message(msg) {
         console.log('Unknown action:', msg.action, 'on', msg.service)
     if ("Events" === msg.action)
         scanEvents(msg.data)
+    let dur = (Date.now() - start)
+    totalTime += dur
+    if (PROFILE_ACTIONS) console.log('[*] ' + msg.service, msg.action, 'action completed in', dur / 1000, 'sec /', totalTime / 1000)
 }
 
 // handlers for "configuration" adaper on server, singletones
@@ -191,9 +198,9 @@ function runCommands(commands) {
             if (i < commands.length)
                 root.newTask(0, commands[i++], null, next, restart)
         },
-        restart = function () {
+        restart = function (msg) {
             socket.stopped = true
-            messageBox.error('Ошибка получения исходных данных,\nтребуется переподключение к серверу.', function() {socket.stopped = false})
+            messageBox.error('Ошибка получения исходных данных:\n' + msg + '\nТребуется переподключение к серверу.', function() {socket.stopped = false})
         }
     next()
 }
