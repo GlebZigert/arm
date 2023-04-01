@@ -55,6 +55,7 @@ public:
 
     void set_cid_for_uid(int cid, int uid);
     void set_url_for_uid(QString url, int uid);
+    void set_alarm_for_uid(bool alarm, int uid);
 
     int get_uid_at(int i);
 
@@ -109,7 +110,7 @@ public:
 
     void set_cid_for_uid(int cid, int uid);
     void set_url_for_uid(QString url, int uid);
-
+    void set_alarm_for_uid(bool alarm, int uid);
      int current_page;
 
      void clear_if_not_alarm();
@@ -177,6 +178,8 @@ public:
     Q_INVOKABLE void set_cid_for_uid(int cid, int uid);
 
     Q_INVOKABLE void set_url_for_uid(QString url, int uid);
+
+    Q_INVOKABLE void set_alarm_for_uid(bool alarm, int uid);
 
     Q_INVOKABLE QString get_current_page_name();
 

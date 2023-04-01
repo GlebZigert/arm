@@ -95,8 +95,8 @@ void VideoPlayer::start(Runner::Mode mode)
 
 
     if(m_source==""){
-        img=QImage(":/qml/video/no_in_storage.jpeg");
-   this->update();
+    //    img=QImage(":/qml/video/.jpeg");
+  // this->update();
         return;
     }
 

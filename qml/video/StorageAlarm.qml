@@ -280,7 +280,7 @@ Item{
         console.log("f_change_camera ",id)
         cid=id
 
-        if(id!==-1 && multivm.get_current_page_name()==="Архив"){
+        if(id!==-1 ){
             var lcl
             lcl=Axxon.camera(id)
             root.axxon_service_id=lcl.sid
@@ -310,9 +310,9 @@ Item{
 
 
         }else{
-            if(id===-1 && multivm.get_current_page_name()!=="Архив"){
+
         timeline.set_camera_zone("","")
-            }
+
         }
     }
 
@@ -388,14 +388,16 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function f_to_storage_cameras(){
+ /*
         if(multivm.get_current_page_name()==="Тревоги"){
         multivm.to_page("Архив")
             timeline.set_to_storage_cameras_text("К тревогам")
         }else{
+
         multivm.to_page("Тревоги")
                         timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
         }
-
+*/
 
     }
 
@@ -403,9 +405,9 @@ timeline.pause_signal.connect(f_paused)
         console.log("set_the_multivm_settings")
         multivm.setVid("storageAlarm")
         multivm.multivm_add_page("Тревоги")
-        multivm.multivm_add_page("Архив")
+   //     multivm.multivm_add_page("Архив")
 
-        multivm.to_page("Архив")
+  //      multivm.to_page("Архив")
 
         multivm.rescale(1)
 
@@ -447,7 +449,7 @@ timeline.pause_signal.connect(f_paused)
 
 
         }
-        timeline.set_to_storage_cameras_text("К тревогам")
+
         multivm.add_storage_cameras(cids)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
@@ -497,7 +499,7 @@ timeline.pause_signal.connect(f_paused)
             pause_play=play
             timeline.to_live()
 
-            timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
+
 
             multivm.add_alarm_camera(id)
             //Для мультвм выставляем флаг тревожного режима
@@ -641,7 +643,7 @@ timeline.pause_signal.connect(f_paused)
             return
         }
 console.log("++++")
-         timeline.set_to_storage_cameras_text("К тревогам")
+
     multivm.add_storage_camera(id)
     multivm.save()
     cid = id

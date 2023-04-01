@@ -330,6 +330,11 @@ void Model::set_url_for_uid(QString url, int uid)
      //show();
 }
 
+void Model::set_alarm_for_uid(bool alarm, int uid)
+{
+      mdl.value(vid)->set_alarm_for_uid(alarm,uid);
+}
+
 QString Model::get_current_page_name()
 {
 
@@ -765,6 +770,19 @@ void Wall::set_url_for_uid(QString url, int uid)
         list.at(current_page)->set_url_for_uid(url, uid);
 }
 
+void Wall::set_alarm_for_uid(bool alarm, int uid)
+{
+    if(current_page==-1)
+        return;
+
+    if(list.count()<=current_page)
+        return ;
+
+    if(list.at(current_page))
+        list.at(current_page)->set_alarm_for_uid(alarm, uid);
+}
+
+
 void Wall::clear_if_not_alarm()
 {
     auto page = list.at(current_page);
@@ -794,11 +812,19 @@ bool Page::add_camera()
 
 void Page::next_scale()
 {
-    if(scale<4){
+    qDebug()<<"page name "<<name;
+
+    int limit=4;
+    if(name=="Тревоги"){
+        limit = 2;
+    }
+    if((scale<limit)){
     scale++;
     }else{
         scale=1;
     }
+
+
 
     //   qDebug()<<"scale: "<<scale;
 
@@ -863,6 +889,14 @@ void Page::set_url_for_uid(QString url, int uid)
     if(map.value(uid))
         map.value(uid)->url=url;
 }
+
+void Page::set_alarm_for_uid(bool alarm, int uid)
+{
+    if(map.value(uid))
+        map.value(uid)->alarm=alarm;
+}
+
+
 
 int Page::get_uid_at(int i)
 {

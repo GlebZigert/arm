@@ -14,6 +14,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
 
      pAVCodecContext = NULL;
      pAVFrame = NULL;
+     svFrame = NULL;
       pSwsContext = NULL;
      pAVPicture = NULL;
      pAVCodec = NULL;
@@ -29,6 +30,7 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
       //   qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
     pAVFrame = NULL;
+         svFrame = NULL;
      pSwsContext = NULL;
     pAVPicture = NULL;
     pAVCodec = NULL;
@@ -115,6 +117,7 @@ void Runner::load()
      qDebug()<<"<--av_hwdevice_iterate_types";
     avformat_network_init();
     pAVFrame = av_frame_alloc();
+  //  svFrame = av_frame_alloc();
     pAVPicture = new AVPicture();
     packet = (AVPacket *) malloc(sizeof(AVPacket));
 //    pFormatCtx = avformat_alloc_context();
@@ -211,6 +214,13 @@ bool Runner::load_settings()
      }
 
     pSwsContext = sws_getContext(videoWidth,videoHeight,pAVCodecContext->pix_fmt,videoWidth,videoHeight,AV_PIX_FMT_RGB32,SWS_BICUBIC,0,0,0);
+
+//    AVBufferRef *hw_device_ctx = NULL;
+//   qDebug()<<"vdpau: "<< av_hwdevice_ctx_create(&hw_device_ctx,  AV_HWDEVICE_TYPE_VDPAU, NULL, NULL, 0);
+ //  qDebug()<<"vaapi: "<<  av_hwdevice_ctx_create(&hw_device_ctx,  AV_HWDEVICE_TYPE_VAAPI, NULL, NULL, 0);
+ //  qDebug()<<"drm  : "<<  av_hwdevice_ctx_create(&hw_device_ctx,  AV_HWDEVICE_TYPE_DRM, NULL, NULL, 0);
+
+ //  pAVCodecContext->hw_device_ctx = av_buffer_ref(hw_device_ctx);
 
     pAVCodecContext->thread_count=10;
 
@@ -334,6 +344,13 @@ bool Runner::capture()
           }
 
    if (got_frame==1){
+
+    //    qDebug()<<"fmt "<<pAVFrame->format;
+   //    if(pAVFrame->format == AV_PIX_FMT_VDPAU){
+   //     qDebug()<<"AV_PIX_FMT_VDPAU";
+  //     }else{
+
+     //  av_hwfame_transfer_data(svFrame, pAVFrame, 0);
            sws_scale(pSwsContext,
                     (const uint8_t* const *)pAVFrame->data,
                     pAVFrame->linesize,
@@ -342,6 +359,9 @@ bool Runner::capture()
                     pAVPicture->data,
                     pAVPicture->linesize
                     );
+
+
+   //    }
 
 
 

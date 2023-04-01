@@ -399,6 +399,8 @@ Rectangle{
                     findAndSet(cids,vm.uid,"alarm",false)
                     findAndSet(w_model,vm.uid,"alarm",false)
 
+                       md.set_alarm_for_uid(false,vm.uid)
+
                   console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
 
                     }else{
@@ -552,15 +554,18 @@ Rectangle{
 
         md.clear_if_not_alarm()
 
-        /*
+/*
             for(var i = 0;i<cids.count; i++){
 
                 if(cids.get(i).alarm==false){
-                  cids.setProperty(i,"cid",-1)
-                  cids.setProperty(i,"url","")
+                    console.log("сид  ",id, "не тревога")
+               //   cids.setProperty(i,"cid",-1)
+               //   cids.setProperty(i,"url","")
+                }else{
+                  console.log("сид  ",id, "тревога")
                 }
             }
-          */
+            */
 
 
 
@@ -571,14 +576,14 @@ Rectangle{
     }
 
         function add_storage_camera(id){
-             md.to_page("Архив")
+
              add_camera(id)
         }
 
     function add_storage_cameras(arr){
 
 console.log("Multivm add_storage_camera")
- md.to_page("Архив")
+ //md.to_page("Архив")
           //  cids.clear()
 
 

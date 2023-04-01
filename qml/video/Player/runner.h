@@ -85,7 +85,7 @@ int m_running;
 private:
     int m_index;
     AVCodecContext *pAVCodecContext;
-    AVFrame *pAVFrame;
+    AVFrame *pAVFrame, *svFrame;
     SwsContext * pSwsContext;
     AVPicture  *pAVPicture;
     AVCodec *pAVCodec;

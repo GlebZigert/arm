@@ -645,6 +645,7 @@ Row {
     }
     }
 
+    /*
     Rectangle{
         id: to_storage_cameras
         width: 400;
@@ -674,6 +675,7 @@ Row {
             }
 
     }
+    */
 
     QQC1.Button{
 
@@ -1211,7 +1213,7 @@ camera_name_zone.text=name
 }
 
 function set_to_storage_cameras_text(str){
-to_storage_cameras_text.text=str
+
 }
 
 function singlewall_edition(){
