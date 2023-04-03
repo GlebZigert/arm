@@ -458,7 +458,7 @@ Rectangle{
                 Component.onCompleted: {
 
                     if(md.get_current_page_name()=="Тревоги"){
-                    btn_select_camera.visible=false
+                    btn_select_camera.visible=true
                         btn_select_camera.width=0
 
                         btn_flip_camera.visible=false
