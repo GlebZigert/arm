@@ -18,7 +18,7 @@ layouts[Const.ARM_ADMIN] = [
     {symbol: '5', views: [['MyVideo']]},
   //  {symbol: '6', views: [['VideoRB']]},
 ]
-commands[Const.ARM_ADMIN] = ["ListServices", "ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups", "ListSettings"]
+commands[Const.ARM_ADMIN] = ["ListMaps", "ListUsers", "ListRules", "ListZones", "ListAlgorithms", "LoadJournal", "ListBackups", "ListSettings", "ListServices"]
 config[Const.ARM_ADMIN] = {
     DevicesTree: 1,
     UserTree: 7, // GOD mode
@@ -39,7 +39,7 @@ layouts[Const.ARM_UNIT] = [
     {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
     {symbol: '4', views: [['EventLog']]},
 ]
-commands[Const.ARM_UNIT] = ["ListServices", "ListMaps", "ListZones", "LoadJournal", "ListSettings"]
+commands[Const.ARM_UNIT] = ["ListMaps", "ListZones", "LoadJournal", "ListSettings", "ListServices"]
 config[Const.ARM_UNIT] = {}
 
 /////////////////////////////////////////
@@ -50,7 +50,7 @@ layouts[Const.ARM_CHECKPOINT] = [
     {symbol: '2', views: [['MyVideo']]},
     {symbol: '3', views: [['DevicesTree', 'PassageView'], ['MyJournal']]},
 ]
-commands[Const.ARM_CHECKPOINT] = ["ListServices", "ListMaps", "LoadJournal", "ListSettings"]
+commands[Const.ARM_CHECKPOINT] = ["ListMaps", "LoadJournal", "ListSettings", "ListServices"]
 config[Const.ARM_CHECKPOINT] = {}
 
 /////////////////////////////////////
@@ -61,7 +61,7 @@ layouts[Const.ARM_GUARD] = [
     {symbol: '3', views: [['MyVideo']]},
     {symbol: '2', views: [['ZonesTree'], ['MyJournal']]},
 ]
-commands[Const.ARM_GUARD] = ["ListServices", "ListMaps", "ListZones", "LoadJournal", "ListSettings"]
+commands[Const.ARM_GUARD] = ["ListMaps", "ListZones", "LoadJournal", "ListSettings", "ListServices"]
 config[Const.ARM_GUARD] = {}
 
 //////////////////////////////////// read-only?
@@ -70,7 +70,7 @@ layouts[Const.ARM_OPERATOR] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
     {symbol: '2', views: [['MyVideo']]},
 ]
-commands[Const.ARM_OPERATOR] = ["ListServices", "ListMaps", "LoadJournal", "ListSettings"]
+commands[Const.ARM_OPERATOR] = ["ListMaps", "LoadJournal", "ListSettings", "ListServices"]
 config[Const.ARM_OPERATOR] = {}
 
 ///////////////////////////////////
@@ -81,7 +81,7 @@ layouts[Const.ARM_SECRET] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal']]},
     {symbol: '2', views: [['EventLog']]}
 ]
-commands[Const.ARM_SECRET] = ["ListServices", "ListUsers", "ListRules", "ListZones", "LoadJournal", "ListSettings"]
+commands[Const.ARM_SECRET] = ["ListUsers", "ListRules", "ListZones", "LoadJournal", "ListSettings", "ListServices"]
 config[Const.ARM_SECRET] = {
     UserTree: 2, // bit mask for tab's #
     RulesTree: 1,
