@@ -200,6 +200,7 @@ function runCommands(commands) {
         },
         restart = function (msg) {
             socket.stopped = true
+            socket.stopped = false
             messageBox.error('Ошибка получения исходных данных:\n' + msg + '\nТребуется переподключение к серверу.', function() {socket.stopped = false})
         }
     next()
