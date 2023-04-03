@@ -1,0 +1,112 @@
+diff --git a/js/journal.js b/js/journal.js
+index 3ec5979..f72e194 100644
+--- a/js/journal.js
++++ b/js/journal.js
+@@ -4,6 +4,7 @@
+ 
+ var oddOrEven = 0, // fluctuations for ListView(s) update
+     maxJournalSize = 3e3, // max events count
++    minEventsToRebuild = 100, // rebuild the whole journal in this case
+     alarmNames = ["alarm", "error", "lost"]
+ 
+ // returns unique devices list with active alarms [device_id, device_id, ...] for service
+@@ -91,41 +92,79 @@ function loadJournal(msg) {
+         item,
+         event,
+         events,
+-        known = {}
++        known = {},
++        start = Date.now()
+ 
+-    console.log("LoadJournal:", msg.data.length, "events")
++    //console.log("LoadJournal:", msg.data.length, "events")
+     if (msg.data.length > maxJournalSize) {
+         msg.data = msg.data.slice(-maxJournalSize)
+-        console.log("... truncate to last", msg.data.length, "events")
++        //console.log("... truncate to last", msg.data.length, "events in", (Date.now() - start) / 1000)
+     }
+ 
+     for (i = 0; i < root.events.count; i++)
+         known[root.events.get(i).id] = true
+-
+     events = msg.data.filter(function (v) {return !(v.id in known)})
+     complementEvents(events)
+ 
+-    if (root.events.count) {
+-        for (i = root.events.count - 1; i >= 0 ; i--) {
+-            item = root.events.get(i)
+-            // TODO: preserve ID order for the same time
+-            while (events.length > 0) {
+-                if (events[events.length - 1].time < item.time)
+-                    break
+-                else if (events[events.length - 1].time === item.time && events[events.length - 1].id < item.id)
+-                    root.events.insert(i, events.pop())
+-                else
+-                    root.events.insert(i+1, events.pop())
+-            }
+-        }
+-        while (events.length > 0)
+-            root.events.insert(0, events.pop())
+-    } else
++    //console.log("Merge", events.length, "events with", root.events.count)
++    if (0 === root.events.count)
+         root.events.append(events)
++    else if (minEventsToRebuild < events.length)
++        rebuildJournal(events)
++    else
++        updateJournal(events)
++
++    //console.log("LJ finished in", (Date.now() - start) / 1000)
+     shrinkOldEvents()
+     root.events.updated(null)
+ }
+ 
++function rebuildJournal(events) {
++    var i, key,
++        item, ev
++    for (i = 0; i < root.events.count; i++) {
++        item = root.events.get(i)
++        ev = {}
++        for (key in item)
++            ev[key] = item[key]
++        events.push(ev)
++    }
++
++    events.sort(function(a, b) {
++        if (a.time < b.time)
++            return -1
++        else if (a.time > b.time)
++            return 1
++        else
++            return a.id - b.id
++    })
++    root.events.clear()
++    root.events.append(events)
++    //console.log('REBULD EVENTS', events.length, " ->", root.events.count)
++}
++
++
++function updateJournal(events) {
++    //console.log('UPDATE EVENTS', events.length, " ->", root.events.count)
++    var i,
++        item
++    for (i = root.events.count - 1; i >= 0 ; i--) {
++        item = root.events.get(i)
++        // TODO: preserve ID order for the same time
++        while (events.length > 0) {
++            if (events[events.length - 1].time < item.time)
++                break
++            if (events[events.length - 1].time === item.time && events[events.length - 1].id < item.id) {
++                root.events.insert(i, events.pop())
++            } else {
++                root.events.insert(i+1, events.pop())
++            }
++        }
++    }
++    while (events.length > 0)
++        root.events.insert(0, events.pop())
++}
++
+ // `silent` arg is unused?
+ function logEvents(events, silent) {
+     //if (!silent)
