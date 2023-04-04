@@ -69,6 +69,8 @@ config[Const.ARM_GUARD] = {}
 layouts[Const.ARM_OPERATOR] = [
     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
     {symbol: '2', views: [['MyVideo']]},
+
+
 ]
 commands[Const.ARM_OPERATOR] = ["ListMaps", "LoadJournal", "ListSettings", "ListServices"]
 config[Const.ARM_OPERATOR] = {}

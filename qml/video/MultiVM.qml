@@ -690,18 +690,7 @@ console.log("Multivm add_storage_camera")
 
         good.onCompleted()
 
-/*
 
-
-        md.add_page()
-
-
-
-        md.show()
-        //
-         good.scale=5
-          rescale(good.scale)
-        */
 
     }
 
@@ -1002,11 +991,11 @@ console.log("Multivm add_storage_camera")
 
     }
 
-    function multivm_add_page(name){
+    function multivm_add_page(name,maxScale){
         console.log("multivm ad_page: ",name)
 
         console.log("...1")
-        md.add_page(name)
+        md.add_page(name,maxScale)
         console.log("md.get_current_page_name() ",md.get_current_page_name())
         rescale(good.scale,true)
         console.log("...2")

@@ -23,6 +23,8 @@ Item{
     property string storage_live: ""
     property string pause_play: ""
 
+    property int maxScale
+
     signal switch_tlmtr
 
 
@@ -320,7 +322,7 @@ Item{
 
     Component.onCompleted: {
 
-            timeline.storageAlarm_edition()
+        timeline.storageAlarm_edition()
 
 
         timeline.to_live()
@@ -404,10 +406,10 @@ timeline.pause_signal.connect(f_paused)
     function set_the_multivm_settings(){
         console.log("set_the_multivm_settings")
         multivm.setVid("storageAlarm")
-        multivm.multivm_add_page("Тревоги")
-   //     multivm.multivm_add_page("Архив")
+        multivm.multivm_add_page("Тревоги",maxScale)
 
-  //      multivm.to_page("Архив")
+
+
 
         multivm.rescale(1)
 

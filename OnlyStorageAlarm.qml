@@ -10,13 +10,13 @@ Item{
         Video.StorageAlarm{
             id: alarmWindow
             anchors.fill: parent
-            wnd: wnd2
+            maxScale: 4
+
           }
 
 
 
     Component.onCompleted:{
-
 
 
 

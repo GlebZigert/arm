@@ -590,7 +590,7 @@ Item{
                     if(pageName_input.text=="Тревоги")
                         return
 
-                    multivm.multivm_add_page(pageName_input.text)
+                    multivm.multivm_add_page(pageName_input.text,4)
                     page_input_view.visible=false
                 }
             }
@@ -712,16 +712,6 @@ Item{
         console.log("set_the_multivm_settings")
         multivm.setVid("VideoWall")
 
-        /*
-        multivm.multivm_add_page("Вкладка 1")
-        multivm.multivm_add_page("Вкладка 2")
-        multivm.multivm_add_page("Вкладка 3")
-        multivm.multivm_add_page("Вкладка 4")
-        multivm.multivm_add_page("Вкладка 5")
-        multivm.multivm_add_page("Вкладка 5")
-        multivm.multivm_add_page("Вкладка 5")
-        multivm.multivm_add_page("Вкладка 5")
-        */
     }
 
     function f_switch_tlmtr(){

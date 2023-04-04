@@ -99,6 +99,7 @@ Item{
             id: alarmWindow
             anchors.fill: parent
             wnd: wnd2
+            maxScale: 2
           }
 
         Component.onCompleted: {

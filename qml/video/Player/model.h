@@ -34,13 +34,13 @@ private:
 
 public:
 
-
+    int maxScale;
     int scale;
     QString name;
 
     QMap<int ,QSharedPointer<Camera>> map;
-    explicit Page(QString nm="default name");
-    explicit Page( QObject *parent = nullptr, QString nm="default name");
+    explicit Page(QString nm="default name",int maxScale=3);
+    explicit Page( QObject *parent = nullptr, QString nm="default name",int maxScale=3);
 
 
     int count(){return map.count();};
@@ -85,6 +85,8 @@ public:
     bool add_page(QSharedPointer<Page>);
 
     bool contain_page(QString name);
+
+    void set_maxScale_to_page(QString pageName,int maxScale);
 
     bool delete_page(int page);
 
@@ -141,7 +143,7 @@ public:
 
     Q_INVOKABLE int get_pages_count();
 
-    Q_INVOKABLE bool add_page(QString pageName);
+    Q_INVOKABLE bool add_page(QString pageName, int maxScale);
 
     Q_INVOKABLE   bool delete_page(int page);
 
