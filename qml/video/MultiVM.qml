@@ -173,7 +173,7 @@ Rectangle{
                         y: 0
                         width: text.length*10
                         height: 20
-                        text: Axxon.camera(vm.cid).name
+                        text: Axxon.camera(vm.cid)==-1 ? "" : Axxon.camera(vm.cid).name
 
                         style: TextFieldStyle{
                             textColor: "black"

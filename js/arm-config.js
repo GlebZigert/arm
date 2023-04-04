@@ -67,8 +67,9 @@ config[Const.ARM_GUARD] = {}
 //////////////////////////////////// read-only?
 //{id: 5, text: "Оператор ТСО"},
 layouts[Const.ARM_OPERATOR] = [
-    {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
-    {symbol: '2', views: [['MyVideo']]},
+     {symbol: '1', views: [['DevicesTree'], ['MyJournal', 'MyMap']]},
+     {symbol: '2', views: [['OnlyVideoWall']]},
+         {symbol: '3', views: [['OnlyStorageAlarm']]},
 
 
 ]

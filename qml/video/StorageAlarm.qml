@@ -31,7 +31,7 @@ Item{
     onVisibleChanged: {
 
         if(visible==true){
-        rescale(1)
+       multivm.rescale(1)
         }
 
     }
