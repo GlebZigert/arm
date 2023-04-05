@@ -27,7 +27,8 @@ var factory = {
 
 var qml,
     totalTime = 0,
-    services = {}
+    services = {},
+    servicesLoaded = false // hack for Axxon cyclic pushes
 
 function init() {
     qml = {
@@ -61,8 +62,9 @@ function message(msg) {
         services[msg.service].handlers[msg.action](msg.data, !msg.task)
       //  console.log('Done action', msg.action)
      } else if (0 !== msg.service && !(msg.service in services)) {
-        console.log('Unknown service:', msg.service, " => reload services list")
-        root.send(0, "ListServices", "")
+        console.log('!!! === Unknown service:', msg.service + '.' + msg.action, "=>", servicesLoaded ? "reload services list" : "ignore")
+        if (servicesLoaded)
+            root.send(0, "ListServices", "")
      } else
         console.log('Unknown action:', msg.action, 'on', msg.service)
     if ("Events" === msg.action)
@@ -227,6 +229,7 @@ function newService(service) {
 
         item = qml.devices.get(qml.devices.count - 1)
         services[service.serviceId] = new factory[service.type](item)
+        //console.log('+++ ADD SERVICE:', service.id, service.title)
 /*
         if(service.type=="axxon"){
             console.log("[service.type==Axxon.Axxon]")
@@ -293,19 +296,20 @@ function listServices(msg) {
         service,
         all = Object.keys(services).map(function (v){return parseInt(v)})
 
-        for (i = 0; i < msg.data.length; i++) {
-            id = msg.data[i].id
-            if (id in services) {
-                updateService(services[id], msg.data[i])
-                all.splice(all.indexOf(id), 1)
-            } else
-                newService(msg.data[i])
-        }
-
-        // delete unlisted services
-        for (i = 0; i < all.length; i++)
-            deleteService(all[i])
+    for (i = 0; i < msg.data.length; i++) {
+        id = msg.data[i].id
+        if (id in services) {
+            updateService(services[id], msg.data[i])
+            all.splice(all.indexOf(id), 1)
+        } else
+            newService(msg.data[i])
     }
+
+    // delete unlisted services
+    for (i = 0; i < all.length; i++)
+        deleteService(all[i])
+    servicesLoaded = true
+}
 
 function scanEvents(events) {
     var eventList = []
