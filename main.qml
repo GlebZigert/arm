@@ -153,7 +153,7 @@ ApplicationWindow {
     property string pause_play
     property string storage_live
 
-    property int videoPane
+    property int videoPane: -1
     property int  axxon_service_id
 
     signal frash_URL(var videowall)

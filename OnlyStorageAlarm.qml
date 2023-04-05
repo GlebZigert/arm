@@ -10,7 +10,7 @@ Item{
         Video.StorageAlarm{
             id: alarmWindow
             anchors.fill: parent
-            maxScale: 4
+            maxScale: 2
 
           }
 
@@ -19,7 +19,7 @@ Item{
 
 
 
-
+root.eventSelected.connect(eventSelected_handler)
 
 
         alarmWindow.switch_tlmtr.connect(f_switch_tlmtr)
@@ -45,6 +45,15 @@ Item{
     console.log("f_switch_tlmtr")
     }
 
-
+    function eventSelected_handler(){
+        console.log("OnlyStorageAlarm eventSelected_handler ")
+        console.log("userSettings.videoMode: ",userSettings.videoMode)
+        console.log("root.videopane: ",root.videoPane)
+        if(userSettings.videoMode==1){
+            if(root.videoPane>-1){
+                root.activePane=root.videoPane
+            }
+        }
+    }
 
 }

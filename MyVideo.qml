@@ -8,5 +8,9 @@ Loader {
            case 2: return "VideoRB.qml"
             default: return "OnlyStorageAlarm.qml"// "Video.qml"
     }
-    onPanePositionChanged: root.videoPane=panePosition
+    onPanePositionChanged: {
+        if(root.videopane>-1){
+            root.videoPane=panePosition
+        }
+    }
 }

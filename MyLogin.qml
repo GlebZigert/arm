@@ -136,6 +136,7 @@ Item {
 
     function doLogout() {
         root.newTask(0, "CompleteShift", "", function(){loginBtn.enabled = false}, failed)
+
     }
 
     function done(msg) {

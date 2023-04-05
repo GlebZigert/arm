@@ -421,7 +421,7 @@ timeline.pause_signal.connect(f_paused)
 
 
 
-
+        console.log("event.commands: ",event.commands);
         var commands =  JSON.parse(event.commands)
 
         console.log("StorageAlarm eventSelected_handler")
