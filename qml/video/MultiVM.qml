@@ -23,6 +23,8 @@ Item{
     signal request_URL
     signal switch_tlmtr
 
+    property string quality
+
     signal playing
 
     signal ready
@@ -38,6 +40,12 @@ Item{
     signal clicked
 
     signal clear
+
+
+    onQualityChanged: {
+
+    console.log("onQualityChanged: ",quality)
+    }
 
 
 
@@ -638,7 +646,7 @@ console.log("Multivm add_storage_camera")
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
 
 
-            Axxon.request_URL(vid,get_cids(), serviceId, "","")
+            Axxon.request_URL(vid,get_cids(), serviceId, "",quality)
 
         }
     }
@@ -680,6 +688,7 @@ console.log("Multivm add_storage_camera")
     }
 
     Component.onCompleted: {
+        console.log("storagealarm_ multivm quality: ",quality)
         console.log(md.get_info())
         full=false
    //     vid = generateUUID()
@@ -872,7 +881,7 @@ console.log("Multivm add_storage_camera")
         if(flag){
             console.log("flag")
               var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                    Axxon.request_URL(vid,get_cids(), serviceId, "","utc","")
+                    Axxon.request_URL(vid,get_cids(), serviceId, "","utc",quality)
         }
          console.log("<--rescale")
     }
@@ -982,7 +991,7 @@ console.log("Multivm add_storage_camera")
 
             var serviceId=Axxon.camera(id).serviceId
 
-            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc","")
+            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc",quality)
         }
 
     function setVid(vvid){

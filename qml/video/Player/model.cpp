@@ -395,7 +395,7 @@ void Model::save_to_settings()
             settings.setValue("name",page->name);
             settings.setValue("count",page->map.count());
             settings.setValue("scale",page->scale);
-
+            settings.setValue("maxScale",page->maxScale);
             int ii=0;
             for(auto uid : mdl.value(vid)->list.at(j)->map.keys()){
                 settings.beginGroup(QString("Camera %1").arg(ii));
@@ -466,11 +466,11 @@ void Model::load_from_settings()
             auto scale = settings.value("scale").toInt();
      //       //   qDebug()<<"масштаб: "<<scale;
 
-
+            auto maxScale = settings.value("maxScale").toInt();
          //   auto wall = mdl.value(vid);
 
 
-            mdl.value(vid)->list.append(QSharedPointer<Page>::create(name));
+            mdl.value(vid)->list.append(QSharedPointer<Page>::create(name,maxScale));
             mdl.value(vid)->setCurrent_page( mdl.value(vid)->list.count()-1);
 
 
