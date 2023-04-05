@@ -590,7 +590,7 @@ Item{
                     if(pageName_input.text=="Тревоги")
                         return
 
-                    multivm.multivm_add_page(pageName_input.text,4)
+                    multivm.multivm_add_page(pageName_input.text,7)
                     page_input_view.visible=false
                 }
             }
@@ -728,8 +728,8 @@ Item{
 
 
 
-    function request_URL(cameraId, serviceId, dt){
-        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc")
+    function request_URL(cameraId, serviceId, dt,quality){
+        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc","")
     }
 
 

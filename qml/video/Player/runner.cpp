@@ -447,7 +447,7 @@ if(!is_over){
 ////   qDebug()<<"1235";
  //  //   qDebug()<<"count "<<frame_cnt++;
 
-QThread::usleep(100);
+QThread::usleep(10);
 }
 //   qDebug()<<"finished";
 emit finished();

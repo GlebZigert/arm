@@ -496,7 +496,7 @@ void Model::load_from_settings()
                 }
             }else{
                 int index=0;
-                for(int ii=0;ii<36;ii++){
+                for(int ii=0;ii<50;ii++){
 
                     settings.beginGroup(QString("Camera %1").arg(ii));
 
@@ -562,7 +562,7 @@ bool Wall::add_page(QSharedPointer<Page> page)
 
  list.append(page);
 
- for(int i=0;i<36;i++){
+ for(int i=0;i<50;i++){
      page->add_camera();
 }
 
@@ -850,7 +850,7 @@ void Page::next_scale()
 void Page::check_the_scale(int id,bool alarm)
 {
     if(map.count()==0){
-     for(int i=0;i<36;i++)
+     for(int i=0;i<50;i++)
         add_camera();
     }
     auto list = map.keys();

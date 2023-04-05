@@ -860,7 +860,7 @@ Axxon.prototype.handler_for_Telemetry_capture_session = function (data) {
 
 }
 
-function request_URL(videowall, cameraId, serviceId, dt, format_dt)
+function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
 {
 
 
@@ -869,7 +869,8 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
     cameraId: cameraId,
     serviceId:serviceId ,
         dt:dt,
-        format_dt:format_dt
+        format_dt:format_dt,
+        quality:quality
 
 
         }
@@ -883,6 +884,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt)
     console.log("data.serviceId : ",data.serviceId)
     console.log("data.dt       : ",data.dt)
     console.log("data.format_dt: ",data.format_dt)
+        console.log("data.quality: ",data.quality)
  console.log(" ")
 
       root.send(serviceId, 'request_URL', data)

@@ -638,7 +638,7 @@ console.log("Multivm add_storage_camera")
             var serviceId=Axxon.camera(cids.get(0).cid).serviceId
 
 
-            Axxon.request_URL(vid,get_cids(), serviceId, "","utc")
+            Axxon.request_URL(vid,get_cids(), serviceId, "","")
 
         }
     }
@@ -872,7 +872,7 @@ console.log("Multivm add_storage_camera")
         if(flag){
             console.log("flag")
               var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                    Axxon.request_URL(vid,get_cids(), serviceId, "","utc")
+                    Axxon.request_URL(vid,get_cids(), serviceId, "","utc","")
         }
          console.log("<--rescale")
     }
@@ -982,7 +982,7 @@ console.log("Multivm add_storage_camera")
 
             var serviceId=Axxon.camera(id).serviceId
 
-            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc")
+            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc","")
         }
 
     function setVid(vvid){
