@@ -1060,6 +1060,9 @@ console.log("Multivm add_storage_camera")
                 full=true
                 fullscreen_uid = id
 
+
+
+
                 /*
                 for(var i=0;i<w_model.count;i++){
                     console.log(".. ",w_model.get(i).cid," ",id)
@@ -1079,12 +1082,18 @@ console.log("Multivm add_storage_camera")
 
                 }
                 */
+            //              var res =[]
+           //     res.push(id)
+           //      var serviceId=Axxon.camera(id).serviceId
+           //               Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","higth")
             }
         }else{
          full=false
             fullscreen_uid=-1
-
-
+         //   var res =[]
+        //    res.push(id)
+        //     var serviceId=Axxon.camera(id).serviceId
+        //    Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","")
         }
 
         rescale(good.scale,true)
