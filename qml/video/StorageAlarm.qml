@@ -43,7 +43,7 @@ Item{
         onTriggered:
         {
              multivm.to_page(0)
-        //    multivm.rescale()
+            multivm.rescale()
             if(multivm.get_cids().length){
             request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
             }

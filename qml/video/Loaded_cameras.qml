@@ -6,7 +6,7 @@ Item {
     id: container
      width:300
      height: 700
-    property int page_size: 4
+    property int page_size: 50
     property int current: -1
 
      property int current_page:1
