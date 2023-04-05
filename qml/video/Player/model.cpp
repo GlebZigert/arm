@@ -75,7 +75,7 @@ int Model::get_pages_count()
     return count;
 }
 
-bool Model::add_page(QString pageName)
+bool Model::add_page(QString pageName,int maxScale)
 {
 //   qDebug()<<"на видеостене "<<vid<<" добавляем страницу :"<<pageName;
 
@@ -90,10 +90,12 @@ bool Model::add_page(QString pageName)
 
    if(wall->contain_page(pageName)){
        //   qDebug()<<"уже есть такая страница "<<pageName;
+       wall->set_maxScale_to_page( pageName, maxScale);
+
    return true;
    }
 
-    wall->add_page(QSharedPointer<Page>::create(pageName));
+    wall->add_page(QSharedPointer<Page>::create(pageName,maxScale));
     if(wall->list.count()>0){
     mdl.value(vid)->setCurrent_page(wall->list.count()-1);
     }
@@ -579,6 +581,16 @@ bool Wall::contain_page(QString nm)
     return false;
 }
 
+void Wall::set_maxScale_to_page(QString pageName, int val)
+{
+    for(auto one : list){
+        if(one->name==pageName){
+            one->maxScale=val;
+            return;
+        }
+    }
+}
+
 bool Wall::delete_page(int page)
 {
       //   qDebug()<<"удаляем страницу "<<page;
@@ -790,18 +802,20 @@ void Wall::clear_if_not_alarm()
     page->clear_if_not_alarm();
 }
 
-Page::Page(QString nm)
+Page::Page(QString nm,int val)
 {
     //   qDebug()<<"Страница создана ";
     scale=1;
     name=nm;
+    maxScale=val;
 }
 
-Page::Page(QObject *parent, QString nm)
+Page::Page(QObject *parent, QString nm,int val)
 {
     //   qDebug()<<"Страница создана ";
     scale=1;
     name=nm;
+    maxScale=val;
 }
 
 bool Page::add_camera()
@@ -812,13 +826,10 @@ bool Page::add_camera()
 
 void Page::next_scale()
 {
-    qDebug()<<"page name "<<name;
+    qDebug()<<"page name "<<name<<" maxScale "<<maxScale;
 
-    int limit=4;
-    if(name=="Тревоги"){
-        limit = 2;
-    }
-    if((scale<limit)){
+
+    if((scale<maxScale)){
     scale++;
     }else{
         scale=1;

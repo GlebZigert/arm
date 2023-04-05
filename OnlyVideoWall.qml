@@ -4,25 +4,25 @@ import "qml/video" as Video
 import Qt.labs.settings 1.0
 Item{
     anchors.fill: parent
+
     property int panePosition
 
-
-        Video.StorageAlarm{
-            id: alarmWindow
+        Video.VideoWall{
+            id: videowall
             anchors.fill: parent
-            maxScale: 4
+
 
           }
 
- onPanePositionChanged: root.videoPane=panePosition
+
+
     Component.onCompleted:{
 
 
 
 
 
-
-        alarmWindow.switch_tlmtr.connect(f_switch_tlmtr)
+        videowall.switch_tlmtr.connect(f_switch_tlmtr)
 
         /*
         console.log("Экраны: ",

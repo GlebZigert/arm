@@ -347,5 +347,6 @@
         <file>images/bell-on.svg</file>
         <file>qml/forms/CustomMenu.qml</file>
         <file>OnlyStorageAlarm.qml</file>
+        <file>OnlyVideoWall.qml</file>
     </qresource>
 </RCC>
