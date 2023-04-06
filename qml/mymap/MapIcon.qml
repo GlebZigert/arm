@@ -26,7 +26,7 @@ Rectangle {
 
     Image {
         property var list: extraIcons[model.data]
-        property string fn: list && list.indexOf(model.state) >= 0 ? model.state : model.state.replace(/\d+/, '')
+        property string fn: !model.state ? 'na' : list && list.indexOf(model.state) >= 0 ? model.state : model.state.replace(/\d+/, '')
         anchors.centerIn: parent
         source: "qrc:/images/devices/" + model.data + "/" + fn + ".svg"
         width: iconSize// * scaleFactor

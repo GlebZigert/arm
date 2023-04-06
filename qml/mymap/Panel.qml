@@ -10,7 +10,17 @@ import "../../js/utils.js" as Utils
 Rectangle {
     property int iconSize: 48
     property int buttonSize: 50
-    property var currentDevice
+    property int currentServiceId
+    property int currentDeviceId
+
+    function currentDevice() {
+        return Utils.findDevice(root.devices, currentServiceId, currentDeviceId) || null
+    }
+
+    function setCurrentDevice(sid, did) {
+        currentServiceId = sid
+        currentDeviceId = did
+    }
 
     id: panel
     visible: true
@@ -364,7 +374,7 @@ Rectangle {
         //console.log(">> SelDev >>", pane, serviceId, deviceId)
         tree.findItem({serviceId: serviceId, id: deviceId})
         if (adminMode)
-            currentDevice = serviceId && deviceId && Utils.findDevice(root.devices, serviceId, deviceId) || null
+            setCurrentDevice(serviceId, deviceId)
     }
 
     function selectDevice(model) {
@@ -390,7 +400,7 @@ Rectangle {
         }
 
         //console.log("Seeking dev:", JSON.stringify(root.devices.children))
-        currentDevice = model.serviceId && model.id && Utils.findDevice(root.devices, model.serviceId, model.id) || null
+        setCurrentDevice(model.serviceId, model.id)
         //console.log("Selected dev:", JSON.stringify(currentDevice))
     }
 
@@ -429,7 +439,7 @@ Rectangle {
             y = 'map' === currentMap.type ? map.center.latitude : (plan.height / 2 + plan.contentY) / currentScale,
             size = ('map' === currentMap.type ? map.width : plan.width) / currentScale / 5
 
-        if (!force && !currentDevice) {
+        if (!force && !currentDevice()) {
             messageBox.ask('Добавить элемент без привязки к устройству?', createShape.bind(this, type, true))
             return
         }
@@ -463,10 +473,11 @@ Rectangle {
         if ('map' === currentMap.type)
             x = y = 0
         // TODO: what if currentDevice was deleted after selection?
-        if (currentDevice) {
-            data.sid = currentDevice.serviceId || 0
-            data.did = currentDevice.id || 0
-            Utils.updateShape(data, currentDevice)
+        let curDev = currentDevice()
+        if (curDev) {
+            data.sid = curDev.serviceId || 0
+            data.did = curDev.id || 0
+            Utils.updateShape(data, curDev)
             /*data.color = currentDevice.color
             data.state = currentDevice.mapState
             data.display = currentDevice.display || ''*/
@@ -482,10 +493,12 @@ Rectangle {
             return {type: 'icon', data: 't1'}
         },
         'map.text': function () {
-            return {type: 'text', data: currentDevice && currentDevice.name || 'текст'}
+            let dev = currentDevice()
+            return {type: 'text', data: dev && dev.name || 'текст'}
         },
         'plan.text': function () {
-            return {type: 'text', data: currentDevice && currentDevice.name || 'текст'}
+            let dev = currentDevice()
+            return {type: 'text', data: dev && dev.name || 'текст'}
         },
         'map.circle': function () {
             return {type: 'ellipse', data: ''}

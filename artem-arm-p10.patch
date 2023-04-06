@@ -1,0 +1,128 @@
+diff --git a/js/rif-plus.js b/js/rif-plus.js
+index fccfcdd..be7efc2 100644
+--- a/js/rif-plus.js
++++ b/js/rif-plus.js
+@@ -371,6 +371,8 @@ Rif.prototype.rebuildTree = function (data0) {
+             list.push(item)
+         }
+ 
++        cleanEmptyGroups(root)
++
+         model.clear()
+         model.append(root)
+ 
+@@ -404,6 +406,20 @@ Rif.prototype.rebuildTree = function (data0) {
+     }
+ }
+ 
++function cleanEmptyGroups(children) {
++    var i,
++        item
++
++    for (i = children.length - 1; i >= 0; i--) {
++        item = children[i]
++        if (item.isGroup && 0 === item.children.length)
++            children.splice(i, 1)
++        else
++            cleanEmptyGroups(item.children)
++    }
++}
++
++
+ function appendNested(children, child) {
+     var i, node
+     for (i = 0; i < children.count; i++) {
+diff --git a/qml/mymap/MapIcon.qml b/qml/mymap/MapIcon.qml
+index 299989f..b46ae15 100755
+--- a/qml/mymap/MapIcon.qml
++++ b/qml/mymap/MapIcon.qml
+@@ -26,7 +26,7 @@ Rectangle {
+ 
+     Image {
+         property var list: extraIcons[model.data]
+-        property string fn: list && list.indexOf(model.state) >= 0 ? model.state : model.state.replace(/\d+/, '')
++        property string fn: !model.state ? 'na' : list && list.indexOf(model.state) >= 0 ? model.state : model.state.replace(/\d+/, '')
+         anchors.centerIn: parent
+         source: "qrc:/images/devices/" + model.data + "/" + fn + ".svg"
+         width: iconSize// * scaleFactor
+diff --git a/qml/mymap/Panel.qml b/qml/mymap/Panel.qml
+index 425888c..0fd9d58 100755
+--- a/qml/mymap/Panel.qml
++++ b/qml/mymap/Panel.qml
+@@ -10,7 +10,17 @@ import "../../js/utils.js" as Utils
+ Rectangle {
+     property int iconSize: 48
+     property int buttonSize: 50
+-    property var currentDevice
++    property int currentServiceId
++    property int currentDeviceId
++
++    function currentDevice() {
++        return Utils.findDevice(root.devices, currentServiceId, currentDeviceId) || null
++    }
++
++    function setCurrentDevice(sid, did) {
++        currentServiceId = sid
++        currentDeviceId = did
++    }
+ 
+     id: panel
+     visible: true
+@@ -364,7 +374,7 @@ Rectangle {
+         //console.log(">> SelDev >>", pane, serviceId, deviceId)
+         tree.findItem({serviceId: serviceId, id: deviceId})
+         if (adminMode)
+-            currentDevice = serviceId && deviceId && Utils.findDevice(root.devices, serviceId, deviceId) || null
++            setCurrentDevice(serviceId, deviceId)
+     }
+ 
+     function selectDevice(model) {
+@@ -390,7 +400,7 @@ Rectangle {
+         }
+ 
+         //console.log("Seeking dev:", JSON.stringify(root.devices.children))
+-        currentDevice = model.serviceId && model.id && Utils.findDevice(root.devices, model.serviceId, model.id) || null
++        setCurrentDevice(model.serviceId, model.id)
+         //console.log("Selected dev:", JSON.stringify(currentDevice))
+     }
+ 
+@@ -429,7 +439,7 @@ Rectangle {
+             y = 'map' === currentMap.type ? map.center.latitude : (plan.height / 2 + plan.contentY) / currentScale,
+             size = ('map' === currentMap.type ? map.width : plan.width) / currentScale / 5
+ 
+-        if (!force && !currentDevice) {
++        if (!force && !currentDevice()) {
+             messageBox.ask('Добавить элемент без привязки к устройству?', createShape.bind(this, type, true))
+             return
+         }
+@@ -463,10 +473,11 @@ Rectangle {
+         if ('map' === currentMap.type)
+             x = y = 0
+         // TODO: what if currentDevice was deleted after selection?
+-        if (currentDevice) {
+-            data.sid = currentDevice.serviceId || 0
+-            data.did = currentDevice.id || 0
+-            Utils.updateShape(data, currentDevice)
++        let curDev = currentDevice()
++        if (curDev) {
++            data.sid = curDev.serviceId || 0
++            data.did = curDev.id || 0
++            Utils.updateShape(data, curDev)
+             /*data.color = currentDevice.color
+             data.state = currentDevice.mapState
+             data.display = currentDevice.display || ''*/
+@@ -482,10 +493,12 @@ Rectangle {
+             return {type: 'icon', data: 't1'}
+         },
+         'map.text': function () {
+-            return {type: 'text', data: currentDevice && currentDevice.name || 'текст'}
++            let dev = currentDevice()
++            return {type: 'text', data: dev && dev.name || 'текст'}
+         },
+         'plan.text': function () {
+-            return {type: 'text', data: currentDevice && currentDevice.name || 'текст'}
++            let dev = currentDevice()
++            return {type: 'text', data: dev && dev.name || 'текст'}
+         },
+         'map.circle': function () {
+             return {type: 'ellipse', data: ''}

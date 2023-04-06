@@ -18,6 +18,7 @@ Item{
     property int fullscreen_uid: -1
 
     signal selected_cid(int cid)
+    signal stream_request(int id,string quality)
     signal open_in_alarm_window(int id)
     signal give_me_a_camera
     signal request_URL
@@ -1041,13 +1042,13 @@ console.log("Multivm add_storage_camera")
 
     function fullscreen(id){
 
-
-
+    var quality="low"
+ var current_cid = -1
         if(!full){
             console.log("fullscreen ")
 
             //найти cid этого uid
-            var current_cid = -1
+
             for(var i = 0;i < w_model.count;i++){
                    if(w_model.get(i).uid === id){
                     current_cid = w_model.get(i).cid
@@ -1082,20 +1083,29 @@ console.log("Multivm add_storage_camera")
 
                 }
                 */
+
             //              var res =[]
            //     res.push(id)
            //      var serviceId=Axxon.camera(id).serviceId
            //               Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","higth")
             }
+            quality="higth"
         }else{
          full=false
+            for(var i = 0;i < w_model.count;i++){
+                   if(w_model.get(i).uid === id){
+                    current_cid = w_model.get(i).cid
+                   }
+            }
             fullscreen_uid=-1
          //   var res =[]
         //    res.push(id)
         //     var serviceId=Axxon.camera(id).serviceId
         //    Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","")
+             quality="low"
         }
-
+        console.log("emit stream_request ", current_cid, " quality ",quality)
+        good.stream_request(current_cid,quality)
         rescale(good.scale,true)
 
 

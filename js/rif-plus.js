@@ -371,6 +371,8 @@ Rif.prototype.rebuildTree = function (data0) {
             list.push(item)
         }
 
+        cleanEmptyGroups(root)
+
         model.clear()
         model.append(root)
 
@@ -403,6 +405,20 @@ Rif.prototype.rebuildTree = function (data0) {
         }
     }
 }
+
+function cleanEmptyGroups(children) {
+    var i,
+        item
+
+    for (i = children.length - 1; i >= 0; i--) {
+        item = children[i]
+        if (item.isGroup && 0 === item.children.length)
+            children.splice(i, 1)
+        else
+            cleanEmptyGroups(item.children)
+    }
+}
+
 
 function appendNested(children, child) {
     var i, node

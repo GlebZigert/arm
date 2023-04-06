@@ -635,7 +635,7 @@ Item{
 
             //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
             multivm.set_current_cid(cid)
-            request_URL(multivm.get_cids(),lcl.serviceId,dt)
+            request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
             cameraName.text=lcl.name
             cameraIpAddr.text=lcl.ipadress
 
@@ -667,15 +667,26 @@ Item{
 
         multivm.currentPage.connect(f_currentPage)
 
-                multivm.selected_cid.connect(f_selected_sid)
+        multivm.selected_cid.connect(f_selected_sid)
+
+        multivm.stream_request.connect(stream_request)
 
         multivm.clicked.connect(f_multivm_clicked)
 
         multivm.clear.connect(f_clear)
 
-   //     timeline.fullscreen_signal.connect(fullscreen)
+        //     timeline.fullscreen_signal.connect(fullscreen)
 
-   //     timeline.signal_scale.connect(scale)
+        //     timeline.signal_scale.connect(scale)
+    }
+
+
+    function stream_request(id,quality){
+        console.log("stream_request ",id," ",quality)
+           var res =[]
+           res.push(id)
+            var serviceId=Axxon.camera(id).serviceId
+           Axxon.request_URL(multivm.vid,res, serviceId, "","utc",quality)
     }
 
     function f_clear(){
