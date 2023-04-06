@@ -494,9 +494,9 @@ Axxon.prototype.request_intervals_handler = function (data) {
 
 Axxon.prototype.ExecCommand_handler = function (data) {
 
-     //console.log("")
-     //console.log("[ExecCommand_handler]")
-     //console.log("")
+     console.log("")
+     console.log("[ExecCommand_handler]")
+     console.log("")
 
 
 
@@ -506,6 +506,10 @@ Axxon.prototype.ExecCommand_handler = function (data) {
     //console.log(JSON.stringify(data))
     var id=data.id
     //console.log("id: ",id)
+   if( !check_id(id)){
+       console.log("не наша камера")
+    return
+   }
     root.event_on_camera(id)
     console.log("userSettings.videomode: ",userSettings.videoMode)
     if(userSettings.videoMode==1){
