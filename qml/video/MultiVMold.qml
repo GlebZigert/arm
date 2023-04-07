@@ -227,6 +227,9 @@ Item {
             function set_selected(val){
             selected=val
             vm.selected=val
+                if(selected==true){
+                rrow.visible=true
+                }
            //     console.log("selected ",val)
             }
 

@@ -205,7 +205,7 @@ Rectangle{
                         id: rrow
 
 
-
+ visible: selected ? true : false
                         x:2
                         y:2
                         width: parent.width
@@ -222,7 +222,7 @@ Rectangle{
 
                     width: 40
                     height: 40
-                    visible: selected ? true : false
+
 
                     style: ButtonStyle {
 
@@ -246,7 +246,7 @@ Rectangle{
 
                     Button{
 
-                             id: btn_flip_camera
+
 
 
                         width: 40
@@ -277,7 +277,7 @@ Rectangle{
                         height: 40
                     visible: selected ? true : false
 
-
+   id: btn_fullscreen
                     style: ButtonStyle {
 
                         label: Image {
@@ -300,8 +300,8 @@ Rectangle{
 
                         width: 40
                         height: 40
-                        visible: selected ? true : false
 
+   id: btn_switch_tlmtr
                         style: ButtonStyle {
 
                             label: Image {
@@ -321,10 +321,10 @@ Rectangle{
 
                     Button{
 
-
+id: btn_clear_camera
                         width: 40
                         height: 40
-                    visible: selected ? true : false
+
 
                     style: ButtonStyle {
 
@@ -411,7 +411,7 @@ Rectangle{
                        md.set_alarm_for_uid(false,vm.uid)
 
                   console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
-
+                    rrow.visible=true
                     }else{
                      rrow.visible=false
                     }
