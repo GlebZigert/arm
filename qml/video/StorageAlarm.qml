@@ -38,7 +38,7 @@ Item{
 
     Timer {
         id: start_timer
-        interval: 7000; running: false; repeat: false
+        interval: 700; running: false; repeat: false
 
         onTriggered:
         {

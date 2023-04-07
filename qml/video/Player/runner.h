@@ -51,7 +51,8 @@ public:
         LiveStreaming,
         StorageStreaming,
         Snapshot,
-        NoSignal
+        NoSignal,
+        Saving
 
            };
            Q_ENUMS(Mode)

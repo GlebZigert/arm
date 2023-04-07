@@ -87,8 +87,9 @@ int Runner::interrupt_cb(void *ctx)
 
 void Runner::load()
 {
-
+    /*
     AVHWDeviceType hwtype = AV_HWDEVICE_TYPE_NONE;
+
     qDebug()<<"av_hwdevice_iterate_types--> ";
     while((hwtype = av_hwdevice_iterate_types(hwtype)) != AV_HWDEVICE_TYPE_NONE){
         qDebug()<<".";
@@ -96,7 +97,7 @@ void Runner::load()
         qDebug()<<"av_hwdevice: "<<name;
 
 
-        /*
+
         const AVCodec* decoder = avcodec_find_decoder_by_name(name);
         for(int i=0;;++i){
             const AVCodecHWConfig* config = avcodec_get_hw_config(decoder,i);
@@ -112,9 +113,13 @@ void Runner::load()
 
             }
         }
-        */
+
     }
+
      qDebug()<<"<--av_hwdevice_iterate_types";
+*/
+
+
     avformat_network_init();
     pAVFrame = av_frame_alloc();
   //  svFrame = av_frame_alloc();
@@ -447,7 +452,7 @@ if(!is_over){
 ////   qDebug()<<"1235";
  //  //   qDebug()<<"count "<<frame_cnt++;
 
-QThread::usleep(10);
+QThread::usleep(1);
 }
 //   qDebug()<<"finished";
 emit finished();

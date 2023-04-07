@@ -12,6 +12,8 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
     data=NULL;
 
+    connect(&cleaner, SIGNAL(timeout()), this, SLOT(f_clear()));
+
 
 
   //  list1=new Streamer(&data,&h,&w);
@@ -176,8 +178,7 @@ void VideoPlayer::saving_off()
 
 void VideoPlayer::clear()
 {
-    img=QImage();
-    this->update();
+cleaner.start(1000);
 }
 
 Runner::Mode VideoPlayer::getMode()
@@ -225,6 +226,7 @@ void VideoPlayer::frame(QString source){
 
     if(source==this->m_source&&data!=NULL){
 
+        cleaner.stop();
          img=QImage(data->data[0],
                     w,
                     h,
@@ -241,10 +243,16 @@ void VideoPlayer::lost(QString source)
         connection = false;
         //qDebug()<<"lost";
     if(source==this->m_source){
-         img=QImage(":/qml/video/no_signal.jpeg");
-    this->update();
+     //    img=QImage(":/qml/video/no_signal.jpeg");
+  //  this->update();
     }
 
+}
+
+void VideoPlayer::f_clear()
+{
+    img=QImage();
+    this->update();
 }
 
 

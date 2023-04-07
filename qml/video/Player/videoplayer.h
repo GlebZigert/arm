@@ -25,6 +25,8 @@ public:
     void setSource(const QString source);
 
 
+    QTimer cleaner;
+
     Q_INVOKABLE void start(Runner::Mode mode);
     Q_INVOKABLE void  stop();
     Q_INVOKABLE void  shot();
@@ -72,6 +74,7 @@ public slots:
     void onheightChanged();
     void frame(QString src);
     void lost(QString src);
+    void f_clear();
 
 };
 

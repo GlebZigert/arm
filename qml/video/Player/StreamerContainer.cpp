@@ -46,28 +46,16 @@ mutex.lock();
 
 
 
-      int i=0;
-      int map_count=map.count();
-    for(int i=0;i<map_count;i++){
-    auto one = map.at(i);
-       qDebug()<<".";
-       if(
-                one&&
-               one.data()->mode == Runner::Mode::TurnOff &&
-               one.data()->mm->thread->isFinished()&&
-               !one.data()->mm->thread->isRunning()
-               )
-
-               {
-
-           qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL()<<" "<<one->get_m_index();
-           map.removeOne(one);
-            map_count=map.count();
-qDebug()<<"<--map.removeOne ";
-       }else{
-           qDebug()<<"?";
-       }
-
+    QList<QSharedPointer<Streamer>>::iterator it = map.begin();
+    while(it != map.end()){
+        if(it->data()->mode == Runner::Mode::TurnOff &&
+                it->data()->mm->thread->isFinished()&&
+                !it->data()->mm->thread->isRunning()
+                ){
+                it = map.erase(it);
+    }else{
+            ++it;
+        }
     }
 
 
@@ -76,6 +64,7 @@ qDebug()<<"<--map.removeOne ";
      qDebug()<<" ";
 
         for(auto one : map){
+    /*
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString();
             qDebug()<<"индекс: "<<one.data()->get_m_index()
@@ -85,7 +74,7 @@ qDebug()<<"<--map.removeOne ";
             <<"mode: " <<one.data()->mode
             <<"Finished: " <<one.data()->mm->thread->isFinished()
             <<"Running : " <<one.data()->mm->thread->isRunning();
-
+*/
             qDebug()<<" ";
             if(one.data()->getURL()==""){
                 one->stop();
@@ -133,11 +122,27 @@ void StreamerContainer::thread_is_over()
       mutex.lock();
 
 
-      int i=0;
-      int map_count=map.count();
+
+
+  //------------------------------
+      QList<QSharedPointer<Streamer>>::iterator it = map.begin();
+      while(it != map.end()){
+          if(it->data()->mode == Runner::Mode::TurnOff &&
+                  it->data()->mm->thread->isFinished()&&
+                  !it->data()->mm->thread->isRunning()
+                  ){
+                  it = map.erase(it);
+      }else{
+              ++it;
+          }
+      }
+
+
+
+      /*
     for(int i=0;i<map_count;i++){
     auto one = map.at(i);
-       qDebug()<<".";
+    //   qDebug()<<".";
        if(
                 one&&
                one.data()->mode == Runner::Mode::TurnOff &&
@@ -146,22 +151,24 @@ void StreamerContainer::thread_is_over()
                )
 
                {
-
            qDebug()<<"map.removeOne "<<one.data()->mm->thread->isFinished()<<" "<<one.data()->mm->thread->isRunning()<<" "<<one->getURL()<<" "<<one->get_m_index();
            map.removeOne(one);
             map_count=map.count();
 qDebug()<<"<--map.removeOne ";
        }else{
-           qDebug()<<"?";
+       //    qDebug()<<"?";
        }
-
     }
+    */
+
+    //---------------------------
 
     qDebug()<<" ";
     qDebug()<<"Потоки: "<<map.count();
      qDebug()<<" ";
 
         for(auto one : map){
+            /*
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString();
             qDebug()<<"индекс: "<<one.data()->get_m_index()
@@ -172,6 +179,7 @@ qDebug()<<"<--map.removeOne ";
             <<"Finished: " <<one.data()->mm->thread->isFinished()
             <<"Running : " <<one.data()->mm->thread->isRunning();
     qDebug()<<" ";
+    */
             if(one.data()->getURL()==""){
                 one->stop();
             }
