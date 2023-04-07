@@ -66,7 +66,7 @@ mutex.lock();
      qDebug()<<" ";
 
         for(auto one : map){
-    /*
+
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString();
             qDebug()<<"индекс: "<<one.data()->get_m_index()
@@ -76,7 +76,7 @@ mutex.lock();
             <<"mode: " <<one.data()->mode
             <<"Finished: " <<one.data()->mm->thread->isFinished()
             <<"Running : " <<one.data()->mm->thread->isRunning();
-*/
+
             qDebug()<<" ";
             if(one.data()->getURL()==""){
                 one->stop();
@@ -170,7 +170,7 @@ qDebug()<<"<--map.removeOne ";
      qDebug()<<" ";
 
         for(auto one : map){
-            /*
+
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString();
             qDebug()<<"индекс: "<<one.data()->get_m_index()
@@ -181,7 +181,7 @@ qDebug()<<"<--map.removeOne ";
             <<"Finished: " <<one.data()->mm->thread->isFinished()
             <<"Running : " <<one.data()->mm->thread->isRunning();
     qDebug()<<" ";
-    */
+
             if(one.data()->getURL()==""){
                 one->stop();
             }
