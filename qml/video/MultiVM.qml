@@ -837,8 +837,11 @@ console.log("Multivm add_storage_camera")
             }
 
         }else{
-            console.log("rescale multi")
-
+            console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
+            if(fullscreen_uid!==-1){
+            good.stream_request(fullscreen_uid,"low")
+        fullscreen_uid=-1
+            }
 
 
             for(var i=0;i<scale*scale;i++){
@@ -1097,6 +1100,7 @@ console.log("Multivm add_storage_camera")
                     current_cid = w_model.get(i).cid
                    }
             }
+
             fullscreen_uid=-1
          //   var res =[]
         //    res.push(id)
@@ -1116,8 +1120,13 @@ console.log("Multivm add_storage_camera")
     }
 
     function next_scale(){
+        if(fullscreen_uid!=-1){
+        return
+        }
+
         full=false
-        fullscreen_uid=-1
+          good.stream_request(fullscreen_uid,"low")
+    //   fullscreen_uid=-1
     md.next_scale()
         rescale(good.scale,true)
     }
