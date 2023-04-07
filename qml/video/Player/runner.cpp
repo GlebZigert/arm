@@ -1,6 +1,7 @@
 #include "runner.h"
 #include "QDebug"
 #include <mutex>
+
 #define AVIO_FLAG_NONBLOCK   8
 AVDictionary* options;
 static std::mutex local_mutex;
@@ -208,6 +209,13 @@ bool Runner::load_settings()
     videoWidth=pAVCodecContext->width;
     videoHeight=pAVCodecContext->height;
 
+    qDebug()<<"URL: "<<URL<<"; width: "<<videoWidth<<"; height: "<<videoHeight;
+
+    if(videoWidth<=640 && videoHeight<=480){
+
+        qDebug()<<"Этот видеопоток нужно попробовать сохранить";
+
+    }
     avpicture_alloc(pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
 
     pAVCodec = avcodec_find_decoder(pAVCodecContext->codec_id);
