@@ -13,6 +13,8 @@ Item{
 
     property string live: "live"
 
+    visible: false
+
     property int dy
     property int dx
 
@@ -24,11 +26,13 @@ Item{
 
     Timer {
         id: start_timer
-        interval: 500; running: true; repeat: false
+        interval: 5000; running: false; repeat: false
 
         onTriggered:
         {
-            multivm.to_page(0)
+            console.log("videowall_start_timer")
+             base.visible=true
+            multivm.to_next_page()
             multivm.rescale()
             if(multivm.get_cids().length){
             request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
@@ -674,6 +678,8 @@ Item{
         multivm.clicked.connect(f_multivm_clicked)
 
         multivm.clear.connect(f_clear)
+
+        root.cameraList.updated.connect(start_timer.start())
 
         //     timeline.fullscreen_signal.connect(fullscreen)
 

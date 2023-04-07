@@ -26,7 +26,7 @@ Item{
     property int maxScale
 
     signal switch_tlmtr
-
+   // visible: false
 
     onVisibleChanged: {
 
@@ -38,14 +38,16 @@ Item{
 
     Timer {
         id: start_timer
-        interval: 500; running: true; repeat: false
+        interval: 7000; running: false; repeat: false
 
         onTriggered:
         {
+                 console.log("storagealarm_start_timer")
+            base.visible=true
              multivm.to_page(0)
             multivm.rescale()
             if(multivm.get_cids().length){
-            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"","higth")
+            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"","")
             }
 
 
@@ -307,7 +309,7 @@ Item{
             //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
-            request_URL(multivm.get_cids(),lcl.serviceId,dt,"higth")
+            request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
             timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
 
@@ -346,7 +348,7 @@ timeline.pause_signal.connect(f_paused)
 
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
-
+        multivm.stream_request.connect(stream_request)
         root.update_intervals.connect(update_slider_intervals)
 
         multivm.selected_cid.connect(send_signal_selected_sid)
@@ -361,6 +363,7 @@ timeline.pause_signal.connect(f_paused)
         root.eventSelected.connect(eventSelected_handler)
 
         multivm.ready.connect(update_vm)
+
 
 
         calendar.enabled=false
@@ -383,6 +386,16 @@ timeline.pause_signal.connect(f_paused)
         timeline.signal_scale.connect(scale)
 
         timeline.hide_timelines.connect(hide_timelines)
+
+        root.cameraList.updated.connect(start_timer.start())
+    }
+
+    function stream_request(id,quality){
+        console.log("stream_request ",id," ",quality)
+           var res =[]
+           res.push(id)
+            var serviceId=Axxon.camera(id).serviceId
+           Axxon.request_URL(multivm.vid,res, serviceId, "","utc",quality)
     }
 
     function scale(){
@@ -456,7 +469,7 @@ timeline.pause_signal.connect(f_paused)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
         storage_live=storage
-        request_URL(multivm.get_cids(),Axxon.camera(commands[0][1]).serviceId,dt,"higth")
+        request_URL(multivm.get_cids(),Axxon.camera(commands[0][1]).serviceId,dt,"")
       /*
         var str=event.commands
 
@@ -543,7 +556,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_play(){
         pause_play=play
-        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt(),"higth")
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt(),"")
     }
 
     function f_paused(){
@@ -564,7 +577,7 @@ timeline.pause_signal.connect(f_paused)
         storage_live=storage
         timeline.to_storage()
         var lcl=Axxon.camera(cid)
-        request_URL(multivm.get_cids(),lcl.serviceId,dt,"higth")
+        request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
 
     }
 
@@ -578,7 +591,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_moved_at_dt(dt){
         storage_live=storage
-        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"higth")
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"")
     }
 
     function  f_show_or_hide_calendar()
@@ -605,7 +618,7 @@ timeline.pause_signal.connect(f_paused)
         if(dt==""){
             storage_live=live
         }
-        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc","higth")
+        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc","")
     }
 
 

@@ -42,6 +42,31 @@ Item{
 
     signal clear
 
+    onWidthChanged: {
+
+            rescale_timer.stop()
+          rescale_timer.start()
+    }
+
+    onHeightChanged: {
+
+            rescale_timer.stop()
+          rescale_timer.start()
+    }
+
+    onXChanged: {
+
+            rescale_timer.stop()
+          rescale_timer.start()
+    }
+
+    onYChanged: {
+        rescale_timer.stop()
+      rescale_timer.start()
+    }
+
+
+
 
     onQualityChanged: {
 
@@ -51,9 +76,10 @@ Item{
 
 
 
+
     Timer {
         id: rescale_timer
-        interval: 10; running: false; repeat: false
+        interval: 100; running: false; repeat: false
         property int msec:0
         property var prev_date : 0
         property int sec : 0
@@ -253,7 +279,7 @@ Rectangle{
                         height: 40
                     visible: selected ? true : false
 
-
+id: btn_flip_camera
                     style: ButtonStyle {
 
                         label: Image {
@@ -842,8 +868,8 @@ console.log("Multivm add_storage_camera")
             good.stream_request(fullscreen_uid,"low")
         fullscreen_uid=-1
             }
-
-
+            console.log("get_current_page_name ",md.get_current_page_name())
+            console.log("scale ",scale)
             for(var i=0;i<scale*scale;i++){
 
                 var url = md.get_url_at(i)
@@ -1016,7 +1042,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function to_page(name){
-    md.to_page(name)
+    md.to_page("Тревоги")
         rescale(good.scale,false)
         good.currentPage(md.get_current_page_name())
         good.selected_cid(-1)
