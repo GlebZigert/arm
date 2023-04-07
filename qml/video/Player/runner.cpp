@@ -86,6 +86,16 @@ int Runner::interrupt_cb(void *ctx)
 
 }
 
+int Runner::getVideoWidth() const
+{
+    return videoWidth;
+}
+
+int Runner::getVideoHeight() const
+{
+    return videoHeight;
+}
+
 void Runner::load()
 {
     /*

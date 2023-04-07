@@ -63,6 +63,13 @@ void Streamer::followers_inc()
 
 void Streamer::followers_dec()
 {
+    if(mm->runner->getVideoHeight()<=480&&
+      mm->runner->getVideoWidth()<=640){
+        qDebug()<<"save low quality: "<<URL;
+        return;
+    }
+
+
     if(followers>0){
         followers--;
     }

@@ -85,6 +85,12 @@ int m_running;
     AVPicture **data;
     int *h;
     int *w;
+
+
+    int getVideoWidth() const;
+
+    int getVideoHeight() const;
+
 private:
     int m_index;
     AVCodecContext *pAVCodecContext;
