@@ -96,7 +96,7 @@ Item{
                 id: multivm
 
                 anchors.fill: parent
-
+                quality:"low"
 
             }
 

@@ -865,7 +865,7 @@ console.log("Multivm add_storage_camera")
         }else{
             console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
             if(fullscreen_uid!==-1){
-            good.stream_request(fullscreen_uid,"low")
+            good.stream_request(fullscreen_uid,good.quality)
         fullscreen_uid=-1
             }
             console.log("get_current_page_name ",md.get_current_page_name())
@@ -1118,7 +1118,7 @@ console.log("Multivm add_storage_camera")
            //      var serviceId=Axxon.camera(id).serviceId
            //               Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","higth")
             }
-            quality=""
+            quality="higth"
         }else{
          full=false
             for(var i = 0;i < w_model.count;i++){
@@ -1126,7 +1126,7 @@ console.log("Multivm add_storage_camera")
                     current_cid = w_model.get(i).cid
                    }
             }
-
+            good.stream_request(fullscreen_uid,good.quality)
             fullscreen_uid=-1
          //   var res =[]
         //    res.push(id)
@@ -1151,8 +1151,8 @@ console.log("Multivm add_storage_camera")
         }
 
         full=false
-          good.stream_request(fullscreen_uid,"low")
-    //   fullscreen_uid=-1
+          good.stream_request(fullscreen_uid,good.quality)
+       fullscreen_uid=-1
     md.next_scale()
         rescale(good.scale,true)
     }
