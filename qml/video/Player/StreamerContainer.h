@@ -12,12 +12,12 @@ class StreamerContainer : public QObject
 public:
     explicit StreamerContainer(QObject *parent = nullptr);
 
-    QList<QSharedPointer<Streamer>> map;
+    static QList<QSharedPointer<Streamer>> map;
 
-    QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
+    static QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
 
 
-    QSharedPointer<Streamer> find(QString url);
+    static QSharedPointer<Streamer> find(QString url);
 
 public slots:
     void thread_is_over();

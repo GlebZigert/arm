@@ -1,5 +1,7 @@
 #include "StreamerContainer.h"
 static std::mutex mutex;
+
+QList<QSharedPointer<Streamer>> StreamerContainer::map;
 StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
 
@@ -26,7 +28,7 @@ mutex.lock();
     if(!streamer){
 
         streamer=QSharedPointer<Streamer>::create(url,mode);
-        connect(streamer.data(),SIGNAL(signal_thread_is_over()),this,SLOT(thread_is_over()));
+    //    connect(streamer.data(),SIGNAL(signal_thread_is_over()),&StreamerContainer::thread_is_over));
         if(streamer){
 
             map.append(streamer);

@@ -6,6 +6,8 @@
 #include <QSharedPointer>
 #include "mythread.h"
 
+
+
 class Streamer : public QObject
 {
     Q_OBJECT

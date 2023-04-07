@@ -1,7 +1,7 @@
 #include "videoplayer.h"
 #include <QPainter>
 
-StreamerContainer VideoPlayer::container;
+
 
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
@@ -105,7 +105,7 @@ void VideoPlayer::start(Runner::Mode mode)
 
 
 
-  current = container.start(m_source,mode);
+  current = StreamerContainer::start(m_source,mode);
 
   if(current){
         current->followers_inc();

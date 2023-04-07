@@ -59,7 +59,7 @@ private:
 
     QImage img;
 
-    static StreamerContainer container;
+  //  static StreamerContainer container;
 
     QSharedPointer<Streamer> current = nullptr;
 
