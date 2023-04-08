@@ -395,7 +395,7 @@ timeline.pause_signal.connect(f_paused)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
-           Axxon.request_URL(multivm.vid,res, serviceId, "","utc",quality)
+           Axxon.request_URL(multivm.vid,res, serviceId, "","utc","higth")
     }
 
     function scale(){
@@ -469,7 +469,7 @@ timeline.pause_signal.connect(f_paused)
 
     timeline.set_sliders_and_calendar_from_current_datetime_value(dt)
         storage_live=storage
-        request_URL(multivm.get_cids(),Axxon.camera(commands[0][1]).serviceId,dt,"")
+        request_URL(multivm.get_cids(),Axxon.camera(commands[0][1]).serviceId,dt,"higth")
       /*
         var str=event.commands
 
@@ -556,7 +556,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_play(){
         pause_play=play
-        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt(),"")
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt(),"higth")
     }
 
     function f_paused(){
@@ -577,7 +577,7 @@ timeline.pause_signal.connect(f_paused)
         storage_live=storage
         timeline.to_storage()
         var lcl=Axxon.camera(cid)
-        request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
+        request_URL(multivm.get_cids(),lcl.serviceId,dt,"higth")
 
     }
 
@@ -591,7 +591,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_moved_at_dt(dt){
         storage_live=storage
-        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"")
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"higth")
     }
 
     function  f_show_or_hide_calendar()
@@ -614,11 +614,11 @@ timeline.pause_signal.connect(f_paused)
 
 
 
-    function request_URL(cameraId, serviceId, dt){
+    function request_URL(cameraId, serviceId, dt,quality){
         if(dt==""){
             storage_live=live
         }
-        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc","")
+        Axxon.request_URL(multivm.vid,cameraId, serviceId, dt,"utc",quality)
     }
 
 
