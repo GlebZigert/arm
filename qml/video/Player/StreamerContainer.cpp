@@ -2,9 +2,62 @@
 static std::mutex mutex;
 
 QList<QSharedPointer<Streamer>> StreamerContainer::map;
+
+void StreamerContainer::func(){
+    qDebug()<<" ";
+    qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
+     qDebug()<<" ";
+
+        for(auto one : map){
+
+            qDebug()<<one.data()->getURL();
+            qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
+            qDebug()<<"индекс: "<<one.data()->get_m_index();
+            qDebug()<<"Подписчики: "<<one.data()->getFollowers();
+
+            if(one.data()->getFollowers()==0){
+                qDebug()<<"без подписчиков уже "<<one->no_followers.secsTo(QDateTime::currentDateTime())<<" сек";
+            }else{
+            qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
+
+            }
+
+            qDebug()<<"Хранится: "<<one.data()->getSave()
+            <<"runner завершен:" <<one.data()->mm->runner->thread()->isFinished()
+            <<"mode: " <<one.data()->mode
+            <<"Finished: " <<one.data()->mm->thread->isFinished()
+            <<"Running : " <<one.data()->mm->thread->isRunning();
+
+            qDebug()<<" ";
+            if(one.data()->getURL()==""){
+                one->stop();
+            }
+
+
+        if(
+                one.data()->mm->runner->getVideoHeight()>480&&
+                  one.data()->mm->runner->getVideoWidth()>640&&
+        //        one->mode==2 &&
+            one->getFollowers()==0 &&
+           one->save==true ){
+
+            auto now = QDateTime::currentDateTime();
+                auto diff = one->no_followers.secsTo(now);
+            qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+            if(diff>5){
+                qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже больше 5 сек - сбрасываем save";
+                one->setSave(false);
+                one->followers_dec();
+            }
+        }
+      }
+
+}
+
+
 StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
-
+ //   connect(timer, &QTimer::timeout, this, &StreamerContainer::onTimer);
 }
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
@@ -12,7 +65,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
     qDebug()<<"--> StreamerContainer::start "<<url;
     qDebug()<<"mode "<<mode;
-mutex.lock();
+    mutex.lock();
 
 
     QSharedPointer<Streamer> streamer=nullptr;
@@ -61,28 +114,7 @@ mutex.lock();
     }
 
 
-    qDebug()<<" ";
-    qDebug()<<"Потоки: "<<map.count();
-     qDebug()<<" ";
-
-        for(auto one : map){
-
-            qDebug()<<one.data()->getURL();
-            qDebug()<<one.data()->start_time.toString();
-            qDebug()<<"индекс: "<<one.data()->get_m_index()
-            <<"Подписчики: "<<one.data()->getFollowers()
-            <<"Хранится: "<<one.data()->getSave()
-            <<"runner завершен:" <<one.data()->mm->runner->thread()->isFinished()
-            <<"mode: " <<one.data()->mode
-            <<"Finished: " <<one.data()->mm->thread->isFinished()
-            <<"Running : " <<one.data()->mm->thread->isRunning();
-
-            qDebug()<<" ";
-            if(one.data()->getURL()==""){
-                one->stop();
-            }
-        }
-
+func();
 
              qDebug()<<" ";
               mutex.unlock();
@@ -165,31 +197,16 @@ qDebug()<<"<--map.removeOne ";
 
     //---------------------------
 
-    qDebug()<<" ";
-    qDebug()<<"Потоки: "<<map.count();
-     qDebug()<<" ";
-
-        for(auto one : map){
-
-            qDebug()<<one.data()->getURL();
-            qDebug()<<one.data()->start_time.toString();
-            qDebug()<<"индекс: "<<one.data()->get_m_index()
-            <<"Подписчики: "<<one.data()->getFollowers()
-            <<"Хранится: "<<one.data()->getSave()
-            <<"runner завершен:" <<one.data()->mm->runner->thread()->isFinished()
-            <<"mode: " <<one.data()->mode
-            <<"Finished: " <<one.data()->mm->thread->isFinished()
-            <<"Running : " <<one.data()->mm->thread->isRunning();
-    qDebug()<<" ";
-
-            if(one.data()->getURL()==""){
-                one->stop();
-            }
-        }
+func();
             qDebug()<<" ";
 
    mutex.unlock();
-        qDebug()<<"<-- StreamerContainer::thread_is_over ";
+   qDebug()<<"<-- StreamerContainer::thread_is_over ";
+}
+
+void StreamerContainer::on_timer()
+{
+
 }
 
 

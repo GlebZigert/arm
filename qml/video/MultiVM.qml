@@ -316,7 +316,9 @@ id: btn_flip_camera
 
                         console.log("onClicked .")
                         var uuid = vvm.uid
+                        md.set_cid_for_uid(-1,vm.uid)
                         good.fullscreen(vvm.uid)
+
   rrow.visible=false
                     }
 
@@ -367,7 +369,7 @@ id: btn_clear_camera
 
                    //     console.log("set cid for uid: ",-1," ",vm.uid)
                         md.set_cid_for_uid(-1,vm.uid)
-                        md.set_url_for_uid("",vm.uid)
+                        md.set_cid_for_uid(-1,vm.uid)
 
                     //    findAndSet(cids,vm.uid,"cid",-1)
                     //    findAndSet(cids,vm.uid,"url","")
@@ -1126,6 +1128,7 @@ console.log("Multivm add_storage_camera")
                     current_cid = w_model.get(i).cid
                    }
             }
+
             good.stream_request(fullscreen_uid,good.quality)
             fullscreen_uid=-1
          //   var res =[]

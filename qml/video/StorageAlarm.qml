@@ -309,7 +309,7 @@ Item{
             //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
-            request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
+            request_URL(multivm.get_cids(),lcl.serviceId,dt,"higth")
             timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
 
@@ -348,7 +348,7 @@ timeline.pause_signal.connect(f_paused)
 
         calendar.pressed.connect(to_update_intervals_handler_and_go_to_this_dt)
 
-     //   multivm.stream_request.connect(stream_request)
+        multivm.stream_request.connect(stream_request)
         root.update_intervals.connect(update_slider_intervals)
 
         multivm.selected_cid.connect(send_signal_selected_sid)

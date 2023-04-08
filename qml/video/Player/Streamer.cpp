@@ -59,10 +59,15 @@ void Streamer::followers_inc()
 {
     followers++;
     //qDebug()<<"followers "<<followers<<" "<<URL;
+    frash_follower_time = QDateTime::currentDateTime();
 }
 
 void Streamer::followers_dec()
 {
+    if(followers>0){
+        followers--;
+    }
+
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
         qDebug()<<"save low quality: "<<URL;
@@ -70,10 +75,13 @@ void Streamer::followers_dec()
     }
 
 
-    if(followers>0){
-        followers--;
-    }
+
     qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
+
+    if(followers==0){
+
+        no_followers=QDateTime::currentDateTime();
+    }
 
     if(followers==0 && /*mode !=Runner::Mode::LiveStreaming && */save==false ){
        URL.clear();

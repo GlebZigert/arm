@@ -49,7 +49,9 @@ public:
 
     QTimer *tmrStart;
 
-    QDateTime start_time;
+    QDateTime start_time;//время старта
+    QDateTime frash_follower_time;//когда последний раз подписывались
+    QDateTime no_followers;//как давно нет подписчиков
 
    bool got_frame=false;
 
