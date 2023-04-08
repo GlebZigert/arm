@@ -317,9 +317,9 @@ id: btn_flip_camera
                         console.log("onClicked .")
                         var uuid = vvm.uid
                         md.set_cid_for_uid(-1,vm.uid)
-                        good.fullscreen(vvm.uid)
+                    //    good.fullscreen(vvm.uid)
 
-  rrow.visible=false
+  //rrow.visible=false
                     }
 
                     }
@@ -689,7 +689,7 @@ console.log("Multivm add_storage_camera")
         {
 
             var lcl = md.get_cid_at(i)
-        //    console.log(i," ",lcl)
+            console.log(i," ",lcl)
             if(lcl!=-1){
                 var frash=true
                 for(var j in res){
@@ -817,16 +817,21 @@ console.log("Multivm add_storage_camera")
         var flag=false
 
         var id = -1
+                console.log("fullscreen_uid ",fullscreen_uid)
         for(var i = 0;i < md.get_cids().length;i++){
             //найти на текущей странице камеру с uid и взять ее cid
+            console.log("md.get_uid_at(i) ",md.get_uid_at(i))
             if(md.get_uid_at(i) === fullscreen_uid){
                 id = md.get_cid_at(i)
+                full = true
+                console.log("profit, id: ",id)
             }
         }
 
 
-
-
+        console.log("full ",full)
+        console.log("id ",id)
+      //  console.log("full ",full)
         if(full && Axxon.check_id(id)){
             console.log("rescale full")
             for(var i=0;i<md.get_cids().length;i++){
@@ -1076,7 +1081,7 @@ console.log("Multivm add_storage_camera")
     var quality="low"
  var current_cid = -1
         if(!full){
-            console.log("fullscreen ")
+            console.log("function fullscreen(id) ")
 
             //найти cid этого uid
 
@@ -1088,7 +1093,7 @@ console.log("Multivm add_storage_camera")
 
 
             if(Axxon.check_id(current_cid)){
-                console.log("check_id")
+                console.log("check_id ",current_cid )
                 full=true
                 fullscreen_uid = id
 
@@ -1139,6 +1144,8 @@ console.log("Multivm add_storage_camera")
         }
         console.log("emit stream_request ", current_cid, " quality ",quality)
         good.stream_request(current_cid,quality)
+
+        console.log("fullscreen_uid: ",fullscreen_uid)
         rescale(good.scale,true)
 
 

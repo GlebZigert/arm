@@ -1,13 +1,15 @@
 #include "Streamer.h"
 
 int Streamer::index = 0;
-
+int Streamer::created=0;
+int Streamer::deleted=0;
 Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
 {
+    created++;
     m_index=index++;
     start_time=QDateTime::currentDateTime();
     qDebug()<<"Streamer::Streamer "<<m_index<<" "<<URL;
-
+    qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
     count = 0;
 
     this->URL=URL;
@@ -33,6 +35,9 @@ Streamer::~Streamer()
     qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 
     qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+
+    deleted++;
+    qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
 }
 
 int Streamer::getFollowers() const
@@ -96,7 +101,7 @@ bool Streamer::getSave() const
 
 void Streamer::setSave(bool newSave)
 {
-    qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
+   // qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
     save = newSave;
 }
 

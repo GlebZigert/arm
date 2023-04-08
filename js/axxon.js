@@ -934,10 +934,12 @@ root.log("event.event: ",event.event)
 
 function check_id(id){
 
+    console.log("root.cameraList.count ",root.cameraList.count)
     for(var i=0;i<root.cameraList.count;i++){
 
 
         if(root.cameraList.get(i).id===id){
+             console.log("root.cameraList.get(i).id ",root.cameraList.get(i).id," id: ",id)
         return true
         }
 

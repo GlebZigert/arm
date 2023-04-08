@@ -266,7 +266,7 @@ int Model::get_uid_at(int i)
 
 QList<int> Model::get_cids()
 {
- //      //   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
+   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
 
    //    show();
     QList<int> lst;
@@ -290,11 +290,18 @@ QList<int> Model::get_cids()
 
 //  //   qDebug()<<"v2->map.count ; "<<v2->map.count();
 // //   qDebug()<<"v2->map.keys ; "<<v2->map.keys();
+    QList<int > v5;
+    for(auto val : v4.values()){
+
+        qDebug()<<"cid "<<val->cid;
+        if(val->cid!=-1){
+            v5.append(v4.key(val));
+        }
+    }
 
 
-            auto v5=v4.keys();
 
-     //    //   qDebug()<<"return v5; ";
+        qDebug()<<"return v5; "<<v5;
             return v5;
 
 //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
@@ -476,7 +483,7 @@ void Model::load_from_settings()
 
             set_scale(scale);
             if(name!="Архив"){
-                for(int ii=0;ii<count;ii++){
+                for(int ii=0;ii<maxScale*maxScale;ii++){
 
                     settings.beginGroup(QString("Camera %1").arg(ii));
 
@@ -496,7 +503,7 @@ void Model::load_from_settings()
                 }
             }else{
                 int index=0;
-                for(int ii=0;ii<50;ii++){
+                for(int ii=0;ii<maxScale*maxScale;ii++){
 
                     settings.beginGroup(QString("Camera %1").arg(ii));
 
@@ -820,8 +827,14 @@ Page::Page(QObject *parent, QString nm,int val)
 
 bool Page::add_camera()
 {
+    if(map.size()<maxScale*maxScale){
     map.insert(uid++,QSharedPointer<Camera>::create());
     return true;
+    }else{
+        "Страница уже заполнена полностью";
+        return false;
+
+    }
 }
 
 void Page::next_scale()

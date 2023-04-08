@@ -7,8 +7,23 @@ void StreamerContainer::func(){
     qDebug()<<" ";
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
      qDebug()<<" ";
-
+bool flag=true;
         for(auto one : map){
+            if(flag){
+                flag=false;
+              qDebug()<<"стримеров создано: "<<one.data()->created<<" удалено: "
+                     <<one.data()->deleted<<" живут: "
+                    <<one.data()->created-one.data()->deleted;
+
+              qDebug()<<"треов     создано: "<<one.data()->mm->created<<" удалено: "
+                     <<one.data()->mm->deleted<<" живут: "
+                    <<one.data()->mm->created-one.data()->mm->deleted;
+
+              qDebug()<<"раннеров  создано: "<<one.data()->mm->runner->created<<" удалено: "
+                     <<one.data()->mm->runner->deleted<<" живут: "
+                    <<one.data()->mm->runner->created-one.data()->mm->runner->deleted;
+
+            }
 
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";

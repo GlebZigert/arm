@@ -14,6 +14,8 @@ public:
 
     ~MyThread();
 
+    static int created;
+    static int deleted;
 
     QThread* thread;
     Runner* runner;

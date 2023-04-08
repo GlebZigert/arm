@@ -43,7 +43,8 @@ class Runner : public QObject
     Q_PROPERTY(int running READ running WRITE setRunning NOTIFY runningChanged)
 
 public:
-
+    static int created;
+    static int deleted;
 
     enum Mode
            {

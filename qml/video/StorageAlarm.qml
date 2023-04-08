@@ -674,7 +674,7 @@ console.log("++++")
     }
 
     function  update_vm()    {
-
+    console.log("videowall update_vm")
         var cids =  multivm.get_cids()
         for(var one in cids)
         {

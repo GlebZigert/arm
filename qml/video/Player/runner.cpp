@@ -1,7 +1,8 @@
 #include "runner.h"
 #include "QDebug"
 #include <mutex>
-
+int Runner::created=0;
+int Runner::deleted=0;
 #define AVIO_FLAG_NONBLOCK   8
 AVDictionary* options;
 static std::mutex local_mutex;
@@ -11,7 +12,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
   //  //   qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     av_log_set_level(AV_LOG_QUIET);
 
-
+created++;
 
      pAVCodecContext = NULL;
      pAVFrame = NULL;
@@ -27,6 +28,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
 
 Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)
 {
+    created++;
     m_index=index;
       //   qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
@@ -51,12 +53,15 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
 
 Runner::~Runner()
 {
+
      local_mutex.lock();
     qDebug()<<"DELETE Runner "<<m_index;
     close();
     qDebug()<<"runner destroyed "<<m_index<<" ";
     local_mutex.unlock();
+    deleted++;
 }
+
 
 int Runner::get_m_index() const
 {

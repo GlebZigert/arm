@@ -1,8 +1,10 @@
 #include "mythread.h"
 #include "QDebug"
-
+int MyThread::created=0;
+int MyThread::deleted=0;
 MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, int index, QObject *parent) : QObject(parent)
 {
+    created++;
     m_index=index;
 
     isOver=false;
@@ -29,6 +31,7 @@ MyThread::~MyThread()
 {
      //qDebug()<<"-->MyThread::~MyThread() "<<m_index;
     //qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<m_index;
+    deleted++;
     delete runner;
     delete thread;
      //qDebug()<<"<--MyThread::~MyThread() "<<m_index;

@@ -16,6 +16,8 @@ public:
     ~Streamer();
     QSharedPointer<MyThread> mm;
 
+    static int created;
+    static int deleted;
 
     int followers=0;
 
