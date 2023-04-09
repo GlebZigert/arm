@@ -5,7 +5,7 @@
 
 function capture_session(sid,point)
 {
-console.log("capture ",sid," ",point)
+//console.log("capture ",sid," ",point)
 
 
 root.send(Axxon.get_serviceId(), 'Telemetry_capture_session', point)
@@ -13,7 +13,7 @@ root.send(Axxon.get_serviceId(), 'Telemetry_capture_session', point)
 
 function hold_session()
 {
-   console.log("[hold_session]")
+ //  console.log("[hold_session]")
 //      root.log("root.telemetryId: ",root.telemetryId)
 //      root.log("root.telemetryPoint: ",root.telemetryPoint)
     var data=root.telemetryId+" "+root.telemetryPoint

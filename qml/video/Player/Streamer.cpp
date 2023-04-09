@@ -8,8 +8,8 @@ Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObjec
     created++;
     m_index=index++;
     start_time=QDateTime::currentDateTime();
-    qDebug()<<"Streamer::Streamer "<<m_index<<" "<<URL;
-    qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
+ //   qDebug()<<"Streamer::Streamer "<<m_index<<" "<<URL;
+ //   qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
     count = 0;
 
     this->URL=URL;
@@ -32,9 +32,9 @@ Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObjec
 Streamer::~Streamer()
 {
 
-    qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+//    qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 
-    qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+  //  qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 
     deleted++;
     qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
@@ -75,13 +75,13 @@ void Streamer::followers_dec()
 
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
-        qDebug()<<"save low quality: "<<URL;
+      //  qDebug()<<"save low quality: "<<URL;
         return;
     }
 
 
 
-    qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
+  //  qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
 
     if(followers==0){
 
@@ -172,7 +172,7 @@ void Streamer::startRunner()
 
 void Streamer::thread_is_over()
 {
-    qDebug()<<"thread_is_over for "<<m_index<<" "<<URL;
+ //   qDebug()<<"thread_is_over for "<<m_index<<" "<<URL;
     emit signal_thread_is_over();
 
 }

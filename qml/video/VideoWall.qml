@@ -752,12 +752,12 @@ Item{
 
     function f_current_camera_update(videowall){
 
-        console.log("f_current_camera_update")
-        console.log("videowall: ",videowall)
-        console.log("multivm.vid: ",multivm.vid)
+    //    console.log("f_current_camera_update")
+    //    console.log("videowall: ",videowall)
+    //    console.log("multivm.vid: ",multivm.vid)
 
         if(videowall!==multivm.vid){
-            console.log("это не та стена")
+       //     console.log("это не та стена")
             return
         }
 

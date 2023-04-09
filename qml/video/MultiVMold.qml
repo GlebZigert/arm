@@ -154,7 +154,7 @@ Item {
 
                                              }
 
-                                             console.log("PROFIT")
+                                         //    console.log("PROFIT")
                                          }
 
                                          }
@@ -173,16 +173,16 @@ Item {
                                                 w_model.setProperty(i,"cid",subject)
                                                   vm.cid = subject
 
-                                             console.log("изменил cid  для ",uid," на cid ",w_model.get(i).cid)
+                                           //  console.log("изменил cid  для ",uid," на cid ",w_model.get(i).cid)
 
 
                                              for(i=0;i<w_model.count-1;i++){
 
-                                               console.log(i," ",w_model.get(i).cid)
+                                             //  console.log(i," ",w_model.get(i).cid)
 
                                              }
 
-                                             console.log("PROFIT")
+                                          //   console.log("PROFIT")
                                          }
 
                                          }

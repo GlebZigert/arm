@@ -438,7 +438,7 @@ id: btn_clear_camera
 
                        md.set_alarm_for_uid(false,vm.uid)
 
-                  console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
+             //     console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
                     rrow.visible=true
                     }else{
                      rrow.visible=false
@@ -530,8 +530,8 @@ id: btn_clear_camera
 
 
         onClicked: {
-            console.log("+++++++++++++++++++++++++++++")
-            console.log("select by click")
+          //  console.log("+++++++++++++++++++++++++++++")
+         //   console.log("select by click")
             for(var i = 0; i<grid.children.length-1; i++)
             {
                 if(grid.children[i].contain_mouse){
@@ -689,7 +689,7 @@ console.log("Multivm add_storage_camera")
         {
 
             var lcl = md.get_cid_at(i)
-            console.log(i," ",lcl)
+          //  console.log(i," ",lcl)
             if(lcl!=-1){
                 var frash=true
                 for(var j in res){
@@ -702,7 +702,7 @@ console.log("Multivm add_storage_camera")
                 }
             }
         }
-        console.log("cids: ",res)
+     //   console.log("cids: ",res)
         return res
     }
 
@@ -733,14 +733,14 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_start(cid,src,mode){
-        console.log("vm_start ",cid," ",src," ",mode)
+       // console.log("vm_start ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
             var lcl = grid.children[i].cid
             if(lcl==cid){
 
-                console.log("mode ",mode)
+               // console.log("mode ",mode)
                 grid.children[i].set_vm_source(cid,src)
                 grid.children[i].vm_start(mode)
 
@@ -792,17 +792,17 @@ console.log("Multivm add_storage_camera")
 
     function rescale(scale,save){
 
-       console.log("rescale-->")
+     //  console.log("rescale-->")
 
 
         scale= md.current_scale()
- console.log("and look at scale here: ",scale)
+ //console.log("and look at scale here: ",scale)
 
         if(save){
         saving_on()
-        console.log("с сохранением")
+       // console.log("с сохранением")
         }else{
-        console.log("без сохранения")
+       // console.log("без сохранения")
         }
 
         var ww = width/scale
@@ -817,14 +817,14 @@ console.log("Multivm add_storage_camera")
         var flag=false
 
         var id = -1
-                console.log("fullscreen_uid ",fullscreen_uid)
+           //     console.log("fullscreen_uid ",fullscreen_uid)
         for(var i = 0;i < md.get_cids().length;i++){
             //найти на текущей странице камеру с uid и взять ее cid
-            console.log("md.get_uid_at(i) ",md.get_uid_at(i))
+            //console.log("md.get_uid_at(i) ",md.get_uid_at(i))
             if(md.get_uid_at(i) === fullscreen_uid){
                 id = md.get_cid_at(i)
                 full = true
-                console.log("profit, id: ",id)
+            //    console.log("profit, id: ",id)
             }
         }
 
@@ -833,25 +833,25 @@ console.log("Multivm add_storage_camera")
         console.log("id ",id)
       //  console.log("full ",full)
         if(full && Axxon.check_id(id)){
-            console.log("rescale full")
+          //  console.log("rescale full")
             for(var i=0;i<md.get_cids().length;i++){
-                console.log(".. ",md.get_cid_at(i)," ",id)
+               // console.log(".. ",md.get_cid_at(i)," ",id)
                 if(md.get_cid_at(i)===id){
 
                     var url = md.get_url_at(i)
                     var cid = md.get_cid_at(i)
 
                     if(url=="" && cid>-1){
-                        console.log("пустой cid ",cid)
+                      //  console.log("пустой cid ",cid)
                     flag=true
                     }
-
+/*
                     console.log("append ")
                     console.log("uid  ",md.get_uid_at(i))
                     console.log("cid  ",md.get_cid_at(i))
                     console.log("url  ",md.get_url_at(i))
                     console.log("alarm  ",md.get_alarm_at(i))
-
+*/
 
 
 
@@ -870,30 +870,30 @@ console.log("Multivm add_storage_camera")
             }
 
         }else{
-            console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
+         //   console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
             if(fullscreen_uid!==-1){
             good.stream_request(fullscreen_uid,good.quality)
         fullscreen_uid=-1
             }
-            console.log("get_current_page_name ",md.get_current_page_name())
-            console.log("scale ",scale)
+           // console.log("get_current_page_name ",md.get_current_page_name())
+           // console.log("scale ",scale)
             for(var i=0;i<scale*scale;i++){
 
                 var url = md.get_url_at(i)
                 var cid = md.get_cid_at(i)
 
                 if(url=="" && cid>-1){
-                    console.log("пустой cid ",cid)
+               //     console.log("пустой cid ",cid)
                 flag=true
                 }
 
-
+/*
                 console.log("append ")
                 console.log("uid  ",md.get_uid_at(i))
                 console.log("cid  ",md.get_cid_at(i))
                 console.log("url  ",md.get_url_at(i))
                 console.log("alarm  ",md.get_alarm_at(i))
-
+*/
                 w_model.append({h:hh,
                                    w:ww,
                                    x: ww*(i%scale),
@@ -916,11 +916,11 @@ console.log("Multivm add_storage_camera")
         md.save_to_settings()
 
         if(flag){
-            console.log("flag")
+         //   console.log("flag")
               var serviceId=Axxon.camera(get_cids()[0]).serviceId
                     Axxon.request_URL(vid,get_cids(), serviceId, "","utc",quality)
         }
-         console.log("<--rescale")
+     //    console.log("<--rescale")
     }
 
 

@@ -33,7 +33,7 @@ ApplicationWindow {
     screen: Qt.application.screens[0]
 
 
-    onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)
+//    onActiveFocusItemChanged: console.log("activeFocusItem:", activeFocusItem)
 
     property string authSalt: "iATdT7R4JKGg1h1YeDPp:Zl6fyUw10sgh1EGxnyKQ"
     property string serverHost: ""

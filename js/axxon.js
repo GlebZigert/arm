@@ -563,20 +563,20 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     console.log("")
-         console.log("[receive_URL]")
-     console.log("",Date())
+  //   console.log("")
+  //       console.log("[receive_URL]")
+  //   console.log("",Date())
 
-         console.log(data)
-         console.log(JSON.stringify(data))
-          console.log(JSON.stringify(data))
-      console.log("")
+   //      console.log(data)
+    //     console.log(JSON.stringify(data))
+   //       console.log(JSON.stringify(data))
+   //   console.log("")
 
      var i
      for (i in data.data) {
-      console.log("id: ", data.data[i].id)
-      console.log("liveStream: ", data.data[i].liveStream)
-      console.log("storageStream: ", data.data[i].storageStream)
+   //   console.log("id: ", data.data[i].id)
+   //   console.log("liveStream: ", data.data[i].liveStream)
+   //   console.log("storageStream: ", data.data[i].storageStream)
     //  root.log("snapshot: ", data.data[i].snapshot)
    //   root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
@@ -588,7 +588,7 @@ var lcl = root.cameraList.get(j)
  var lcld = data.data[i]
          if( data.data[i].id===root.cameraList.get(j).id){
 
-             console.log("добавляю к ",data.data[i].id)
+         //    console.log("добавляю к ",data.data[i].id)
 
 
 
@@ -897,11 +897,11 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
 
 function tlmtr_cmd(data)
 {
-   console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
+ //  console.log("tlmtr_cmd: [",root.axxon_service_id,"] ",data)
 
-     root.log("...this.serviceId ",root.axxon_service_id)
+   //  root.log("...this.serviceId ",root.axxon_service_id)
     root.send(root.axxon_service_id, 'Telemetry_command', data)
-      root.log("...send")
+    //  root.log("...send")
 
 
 
@@ -934,12 +934,12 @@ root.log("event.event: ",event.event)
 
 function check_id(id){
 
-    console.log("root.cameraList.count ",root.cameraList.count)
+ //   console.log("root.cameraList.count ",root.cameraList.count)
     for(var i=0;i<root.cameraList.count;i++){
 
 
         if(root.cameraList.get(i).id===id){
-             console.log("root.cameraList.get(i).id ",root.cameraList.get(i).id," id: ",id)
+          //   console.log("root.cameraList.get(i).id ",root.cameraList.get(i).id," id: ",id)
         return true
         }
 
@@ -986,7 +986,7 @@ function get_intervals(id){
     for(var i=0;i<root.cameraList.count;i++){
  //    root.log(root.cameraList.get(i).id)
     if(root.cameraList.get(i).id===id){
-      root.log("PROFIT")
+    //  root.log("PROFIT")
         var lcl = root.cameraList.get(i)
     return root.cameraList.get(i).intervals
     }

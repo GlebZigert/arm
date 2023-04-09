@@ -55,9 +55,9 @@ Runner::~Runner()
 {
 
      local_mutex.lock();
-    qDebug()<<"DELETE Runner "<<m_index;
+  //  qDebug()<<"DELETE Runner "<<m_index;
     close();
-    qDebug()<<"runner destroyed "<<m_index<<" ";
+  //  qDebug()<<"runner destroyed "<<m_index<<" ";
     local_mutex.unlock();
     deleted++;
 }
@@ -224,11 +224,11 @@ bool Runner::load_settings()
     videoWidth=pAVCodecContext->width;
     videoHeight=pAVCodecContext->height;
 
-    qDebug()<<"URL: "<<URL<<"; width: "<<videoWidth<<"; height: "<<videoHeight;
+  //  qDebug()<<"URL: "<<URL<<"; width: "<<videoWidth<<"; height: "<<videoHeight;
 
     if(videoWidth<=640 && videoHeight<=480){
 
-        qDebug()<<"Этот видеопоток нужно попробовать сохранить";
+       // qDebug()<<"Этот видеопоток нужно попробовать сохранить";
 
     }
     avpicture_alloc(pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
@@ -252,9 +252,9 @@ bool Runner::load_settings()
 
     pAVCodecContext->thread_count=10;
 
-    qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
+//    qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
   //  int result=avcodec_open2(av_context,codec,NULL);
-    qDebug()<<"profit";
+ //   qDebug()<<"profit";
     int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
     if (result<0){
 

@@ -642,12 +642,12 @@ timeline.hide_timelines.connect(f_hide_timelines)
 
     function f_current_camera_update(videowall){
 
-        console.log("f_current_camera_update")
-        console.log("videowall: ",videowall)
-        console.log("multivm.vid: ",vid)
+     //   console.log("f_current_camera_update")
+      //  console.log("videowall: ",videowall)
+     //   console.log("multivm.vid: ",vid)
 
         if(videowall!==vid){
-            console.log("это не та стена")
+        //    console.log("это не та стена")
             return
         }
 

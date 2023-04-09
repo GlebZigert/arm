@@ -360,7 +360,7 @@ console.log("Key_Down")
 
                 function move(mx,my,val)
                 {
-                      console.log("move ",mx," ",my)
+                    //  console.log("move ",mx," ",my)
 
                     if(val===-1){
                      var value=Math.sqrt(mx*mx+my*my)
@@ -497,7 +497,7 @@ console.log("Key_Down")
 
                     if((x_prev!=x)||(y_prev!=y)||(val_prev!=val))
                     {
-                        console.log("++")
+                   //     console.log("++")
                         var str=""
                         str=String(x)
                         str=str+" "
@@ -506,7 +506,7 @@ console.log("Key_Down")
                         str=str+String(val)
                         str=str+" "
 
-                        console.log("move.. ",x," ",y,"    ",value," ",x_prev," ",y_prev,"     ",str)
+                      //  console.log("move.. ",x," ",y,"    ",value," ",x_prev," ",y_prev,"     ",str)
                         Tlmtr.move(str)
 
 
@@ -541,7 +541,7 @@ console.log("Key_Down")
                         {
                             if (zoom==1)
                             {
-                                console.log("+++")
+                             //   console.log("+++")
                                 Tlmtr.zoom_in()
                             }
                             if (zoom==-1)
@@ -740,7 +740,7 @@ console.log("Key_Down")
     }
 
     function set_vm_source(cid,src){
-        console.log("set_vm_source ",cid," ",src)
+     //   console.log("set_vm_source ",cid," ",src)
     //    vm.cid=cid
         vm.source=src
     }
@@ -749,23 +749,23 @@ console.log("Key_Down")
 
     function vm_start(mmode){
         mode = mmode
-        console.log("vm_start ",mode)
+      //  console.log("vm_start ",mode)
         vm.start(mmode)
 
     }
 
     function vm_stop(){
-                console.log("vm_stop ")
+           //     console.log("vm_stop ")
               vm.stop()
     }
 
     function vm_clear(){
-                console.log("m_clear ")
+           //     console.log("m_clear ")
               vm.clear()
     }
 
     function vm_shot(){
-                console.log("vm_shot ")
+            //    console.log("vm_shot ")
               vm.shot()
     }
 
@@ -775,7 +775,7 @@ console.log("Key_Down")
     Component.onCompleted: {
 
        // supreme.forceActiveFocus()
-        console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
+      //  console.log("vvvvvvm activeFocus: ", supreme.activeFocus)
             selected=false;
 
 

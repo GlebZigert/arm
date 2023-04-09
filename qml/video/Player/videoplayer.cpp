@@ -26,7 +26,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
 VideoPlayer::~VideoPlayer()
 {
- qDebug()<<"--> ~VideoPlayer::VideoPlayer";
+ //qDebug()<<"--> ~VideoPlayer::VideoPlayer";
 
     if(current){
         //если мы уже принимаем поток - нужно от него отписаться
@@ -38,7 +38,7 @@ VideoPlayer::~VideoPlayer()
         data=NULL;
 
     }
-qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
+//qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
 }
 
 
@@ -76,13 +76,13 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::Mode mode)
 {
-    qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
+  //  qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
 
     if(current){
 
         if(current.data()->getURL()==m_source && mode != Runner::Mode::Snapshot){
 
-            qDebug()<<"это он и  есть";
+         //   qDebug()<<"это он и  есть";
             return;
         }
 

@@ -266,7 +266,7 @@ int Model::get_uid_at(int i)
 
 QList<int> Model::get_cids()
 {
-   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
+//   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
 
    //    show();
     QList<int> lst;
@@ -293,7 +293,7 @@ QList<int> Model::get_cids()
     QList<int > v5;
     for(auto val : v4.values()){
 
-        qDebug()<<"cid "<<val->cid;
+    //    qDebug()<<"cid "<<val->cid;
         if(val->cid!=-1){
             v5.append(v4.key(val));
         }
@@ -301,7 +301,7 @@ QList<int> Model::get_cids()
 
 
 
-        qDebug()<<"return v5; "<<v5;
+    //    qDebug()<<"return v5; "<<v5;
             return v5;
 
 //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
@@ -946,7 +946,7 @@ QString Page::get_url_at(int i)
                 qDebug()<<"Page::get_url_at ERR 1";
         return "";
     }
-    qDebug()<<"url = "<<map.values().at(i)->url;
+   // qDebug()<<"url = "<<map.values().at(i)->url;
     return map.values().at(i)->url;
 }
 

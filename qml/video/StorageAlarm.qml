@@ -550,7 +550,7 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function update_slider_intervals(){
-        console.log("update_slider_intervals for cid: ",cid)
+    //    console.log("update_slider_intervals for cid: ",cid)
         timeline.update_slider_intervals(Axxon.get_intervals(cid))
     }
 
@@ -624,12 +624,12 @@ timeline.pause_signal.connect(f_paused)
 
     function f_current_camera_update(videowall){
 
-        console.log("f_current_camera_update")
-        console.log("videowall: ",videowall)
-        console.log("multivm.vid: ",multivm.vid)
+    //    console.log("f_current_camera_update")
+    //    console.log("videowall: ",videowall)
+    //    console.log("multivm.vid: ",multivm.vid)
 
         if(videowall!==multivm.vid){
-            console.log("это не та стена")
+        //    console.log("это не та стена")
             return
         }
 
@@ -657,7 +657,7 @@ timeline.pause_signal.connect(f_paused)
              console.log("return")
             return
         }
-console.log("++++")
+//console.log("++++")
 
     multivm.add_storage_camera(id)
     multivm.save()
@@ -674,19 +674,20 @@ console.log("++++")
     }
 
     function  update_vm()    {
-    console.log("videowall update_vm")
+   // console.log("videowall update_vm")
         var cids =  multivm.get_cids()
         for(var one in cids)
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
-
+/*
             console.log("lcl: ",lcl.id
                         ," "<<lcl.name
                         ," "<<lcl.liveStream
                         ," "<<lcl.storageStream
                         ," "<<lcl.snapshot
                        )
+            */
 
             if(pause_play==pause)
             {

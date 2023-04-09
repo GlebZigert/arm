@@ -24,7 +24,7 @@ bool flag=true;
                     <<one.data()->mm->runner->created-one.data()->mm->runner->deleted;
 
             }
-
+/*
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
             qDebug()<<"индекс: "<<one.data()->get_m_index();
@@ -44,6 +44,7 @@ bool flag=true;
             <<"Running : " <<one.data()->mm->thread->isRunning();
 
             qDebug()<<" ";
+            */
             if(one.data()->getURL()==""){
                 one->stop();
             }
@@ -78,8 +79,8 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
 {
 
-    qDebug()<<"--> StreamerContainer::start "<<url;
-    qDebug()<<"mode "<<mode;
+ //   qDebug()<<"--> StreamerContainer::start "<<url;
+ //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
 
@@ -89,7 +90,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
     streamer = find(url);
 
     if(streamer){
-        qDebug()<<"берем из контейера "<<url;
+     //   qDebug()<<"берем из контейера "<<url;
     }
   //  }
 
@@ -101,14 +102,14 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
             map.append(streamer);
 
-            qDebug()<<"добавляем в контейер "<<url;
+       //     qDebug()<<"добавляем в контейер "<<url;
 
         streamer->start();
 
 
         }
         else{
-            qDebug()<<"ffFai;l";
+         //   qDebug()<<"ffFai;l";
 
         }
 
@@ -134,7 +135,7 @@ func();
              qDebug()<<" ";
               mutex.unlock();
 
- qDebug()<<"<-- StreamerContainer::start "<<url;
+// qDebug()<<"<-- StreamerContainer::start "<<url;
     if(streamer)
         return streamer;
 
@@ -147,7 +148,7 @@ func();
 
 QSharedPointer<Streamer> StreamerContainer::find(QString url)
 {
-    qDebug()<<"--> StreamerContainer::find "<<url;
+  //  qDebug()<<"--> StreamerContainer::find "<<url;
 
     for(auto one : map){
         if(one.data()->getURL()==url){
@@ -155,19 +156,19 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
 
 
             mutex.unlock();
-            qDebug()<<"<-- StreamerContainer::find [0] "<<url;
+        //    qDebug()<<"<-- StreamerContainer::find [0] "<<url;
             return one;
         }
     }
 
 
-    qDebug()<<"<-- StreamerContainer::find [1]"<<url;
+ //   qDebug()<<"<-- StreamerContainer::find [1]"<<url;
     return nullptr;
 }
 
 void StreamerContainer::thread_is_over()
 {
-        qDebug()<<"--> StreamerContainer::thread_is_over ";
+    //    qDebug()<<"--> StreamerContainer::thread_is_over ";
       mutex.lock();
 
 
@@ -216,7 +217,7 @@ func();
             qDebug()<<" ";
 
    mutex.unlock();
-   qDebug()<<"<-- StreamerContainer::thread_is_over ";
+//   qDebug()<<"<-- StreamerContainer::thread_is_over ";
 }
 
 void StreamerContainer::on_timer()
