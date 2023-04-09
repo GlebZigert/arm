@@ -295,6 +295,7 @@ void Runner::free_settings()
 
       if(pFormatCtx){
           //   qDebug()<<"vformat_close_input(&pFormatCtx);";
+     avcodec_close(pFormatCtx->streams[videoindex]->codec);
       avformat_close_input(&pFormatCtx);
       avformat_free_context(pFormatCtx);
       }
