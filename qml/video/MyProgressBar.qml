@@ -122,16 +122,31 @@ Item {
     Timer {
         id: shoot
         property int x:0
-        interval: 2000; running: false; repeat: false
+        interval: 500; running: false; repeat: false
         onTriggered:
         {
-            if(x==0){
-                x=1
-               moved_at_dt("20230410T142208.000000")
-            }else{
-                moved_at_dt("20230410T143728.000000")
-            x=0
+
+            switch(x){
+            case 0:
+              moved_at_dt("20230411T043208.000000")
+                    x++
+                break;
+            case 1:
+              moved_at_dt("20230411T042208.000000")
+                 x++
+                break;
+            case 2:
+              moved_at_dt("20230411T041208.000000")
+                 x++
+                break;
+            case 3:
+              moved_at_dt("20230411T040208.000000")
+                x=0
+                break;
+
             }
+
+
         }
     }
 

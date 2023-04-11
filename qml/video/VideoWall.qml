@@ -673,7 +673,7 @@ Item{
 
         multivm.selected_cid.connect(f_selected_sid)
 
-      //  multivm.stream_request.connect(stream_request)
+        multivm.stream_request.connect(stream_request)
 
         multivm.clicked.connect(f_multivm_clicked)
 

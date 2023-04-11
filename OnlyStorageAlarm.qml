@@ -10,7 +10,7 @@ Item{
         Video.StorageAlarm{
             id: alarmWindow
             anchors.fill: parent
-            maxScale: 2
+            maxScale: 3
 
           }
 

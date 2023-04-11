@@ -29,12 +29,12 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mod
 
 MyThread::~MyThread()
 {
-     //qDebug()<<"-->MyThread::~MyThread() "<<m_index;
+     qDebug()<<"-->MyThread::~MyThread() "<<m_index;
     //qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<m_index;
     deleted++;
   //  delete runner;
 
-     //qDebug()<<"<--MyThread::~MyThread() "<<m_index;
+     qDebug()<<"<--MyThread::~MyThread() "<<m_index;
 }
 
 void MyThread::stop()

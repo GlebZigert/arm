@@ -73,13 +73,13 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-/*
+
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
       //  qDebug()<<"save low quality: "<<URL;
         return;
     }
-*/
+
 
 
   //  qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
@@ -150,14 +150,23 @@ void Streamer::startRunner()
      disconnect(mm->runner.data(),SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
 
 
+     if(mm->thread){
      if(mm->thread->isFinished()){
+         qDebug()<<"mm->thread->isFinished() "<<mm->thread->isFinished();
+         qDebug()<<"mm->thread->isRunning() "<<mm->thread->isRunning();
+         qDebug()<<"mm.clear()-->";
      mm.clear();
+         qDebug()<<"mm.clear()<--";
      }else{
-         //qDebug()<<"thread not finished !!";
+         qDebug()<<"thread not finished !!";
           mm->stop();
          return;
 
      }
+     }else{
+         qDebug()<<"!mm->thread";
+     }
+
      }
 
 

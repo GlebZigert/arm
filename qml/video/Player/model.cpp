@@ -266,7 +266,7 @@ int Model::get_uid_at(int i)
 
 QList<int> Model::get_cids()
 {
-//   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
+   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
 
    //    show();
     QList<int> lst;
@@ -293,15 +293,16 @@ QList<int> Model::get_cids()
     QList<int > v5;
     for(auto val : v4.values()){
 
-    //    qDebug()<<"cid "<<val->cid;
+    //
         if(val->cid!=-1){
+            qDebug()<<"cid "<<val->cid<<" "<<val->url;
             v5.append(v4.key(val));
         }
     }
 
 
 
-    //    qDebug()<<"return v5; "<<v5;
+        qDebug()<<"return v5; "<<v5;
             return v5;
 
 //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
@@ -437,8 +438,8 @@ void Model::save_to_settings()
 
 void Model::load_from_settings()
 {
-    //   qDebug()<<" ";
-    //   qDebug()<<"Читаем настройки --->: ";
+       qDebug()<<" ";
+       qDebug()<<"Читаем настройки --->: ";
 
     QSettings settings("MySoft", "Star Runner");
 
@@ -456,22 +457,22 @@ void Model::load_from_settings()
         qDebug()<<"vid: "<<vid;
         if(vid=="")
             continue;
-   //     //   qDebug()<<"vid: "<<vid;
+      qDebug()<<"vid: "<<vid;
 
         setVid(vid);
 
         auto count = settings.value("count").toInt();
-     //   qDebug()<<"количество страниц: "<<count;
+        qDebug()<<"количество страниц: "<<count;
 
         for(int j=0;j<count;j++){
             settings.beginGroup(QString("Page %1").arg(j));
 
             auto name = settings.value("name").toString();
-      //      //   qDebug()<<"страница: "<<name;
+               qDebug()<<"страница: "<<name;
             auto count = settings.value("count").toInt();
-     //       //   qDebug()<<"количество камер: "<<count;
+               qDebug()<<"количество камер: "<<count;
             auto scale = settings.value("scale").toInt();
-     //       //   qDebug()<<"масштаб: "<<scale;
+               qDebug()<<"масштаб: "<<scale;
 
             auto maxScale = settings.value("maxScale").toInt();
          //   auto wall = mdl.value(vid);
@@ -498,7 +499,7 @@ void Model::load_from_settings()
                     mdl.value(vid)->set_cid_for_uid(cid,uid);
                     mdl.value(vid)->set_url_for_uid(url,uid);
 
-                    //         //   qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
+                       qDebug()<<"camera "<<ii<<": "<<uid<<" "<<cid<<" "<<url;
                     settings.endGroup();
                 }
             }else{
@@ -765,12 +766,14 @@ void Wall::check_the_scale(int id,bool alarm)
 
 void Wall::set_cid_for_uid(int cid, int uid)
 {
-    if(current_page==-1)
+    if(current_page==-1){
+        qDebug()<<" if(current_page==-1){";
         return;
-
-    if(list.count()<=current_page)
+}
+    if(list.count()<=current_page){
+            qDebug()<<"if(list.count()<=current_page){";
         return;
-
+}
     if(list.at(current_page))
     list.at(current_page)->set_cid_for_uid( cid, uid);
 

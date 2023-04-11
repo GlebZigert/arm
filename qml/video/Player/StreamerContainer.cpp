@@ -23,6 +23,11 @@ bool flag=true;
                      <<one.data()->mm->runner->deleted<<" живут: "
                     <<one.data()->mm->runner->created-one.data()->mm->runner->deleted;
 
+              qDebug()<<"кодеки: открыто "<<one.data()->mm->runner->av_codec_open<<" yне открылись: "
+                     <<one.data()->mm->runner->av_codec_not_open<<" закрыто: "
+                    <<one.data()->mm->runner->av_codec_close<<" не закрытых: "
+<<one.data()->mm->runner->av_codec_open+one.data()->mm->runner->av_codec_not_open-one.data()->mm->runner->av_codec_close;
+
             }
 /*
             qDebug()<<one.data()->getURL();

@@ -3,6 +3,9 @@
 #include <mutex>
 int Runner::created=0;
 int Runner::deleted=0;
+int Runner::av_codec_open=0;
+int Runner::av_codec_not_open=0;
+int Runner::av_codec_close=0;
 #define AVIO_FLAG_NONBLOCK   8
 
 static std::mutex local_mutex;
@@ -19,7 +22,7 @@ created++;
      pAVFrame = NULL;
      svFrame = NULL;
       pSwsContext = NULL;
-   //  pAVPicture = NULL;
+     pAVPicture = NULL;
      pAVCodec = NULL;
         options = NULL;
      pFormatCtx = NULL;
@@ -38,7 +41,7 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
     pAVFrame = NULL;
          svFrame = NULL;
      pSwsContext = NULL;
-   // pAVPicture = NULL;
+    pAVPicture = NULL;
     pAVCodec = NULL;
       options = NULL;
     pFormatCtx = NULL;
@@ -56,13 +59,14 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
 
 Runner::~Runner()
 {
-
+qDebug()<<"Runner::~Runner()-->";
      local_mutex.lock();
   //  qDebug()<<"DELETE Runner "<<m_index;
     close();
   //  qDebug()<<"runner destroyed "<<m_index<<" ";
     local_mutex.unlock();
     deleted++;
+    qDebug()<<"Runner::~Runner()<--";
 }
 
 
@@ -142,7 +146,7 @@ void Runner::load()
  //   avformat_network_init();
     pAVFrame = av_frame_alloc();
   //  svFrame = av_frame_alloc();
-  //  pAVPicture = new AVPicture();
+    pAVPicture = new AVPicture();
 
 //    pFormatCtx = avformat_alloc_context();
 }
@@ -256,7 +260,7 @@ bool Runner::load_settings()
        // qDebug()<<"Этот видеопоток нужно попробовать сохранить";
 
     }
-    avpicture_alloc(&pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
+    avpicture_alloc(pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
 
     pAVCodec = avcodec_find_decoder(pAVCodecContext->codec_id);
 
@@ -275,20 +279,21 @@ bool Runner::load_settings()
 
  //  pAVCodecContext->hw_device_ctx = av_buffer_ref(hw_device_ctx);
 
-    pAVCodecContext->thread_count=10;
+    pAVCodecContext->thread_count=1;
 
 //    qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
   //  int result=avcodec_open2(av_context,codec,NULL);
  //   qDebug()<<"profit";
     int result=avcodec_open2(pAVCodecContext,pAVCodec,&options);
     if (result<0){
-    close();
+        av_codec_not_open++;
+ //   close();
         emit finished();
 
            qDebug()<<"FAIL with: avcodec_open2t";
         return false;
     }
-
+av_codec_open++;
     int y_size = pAVCodecContext->width * pAVCodecContext->height;
     //   qDebug()<<"y_size "<<y_size;
 //    av_new_packet(packet, y_size);
@@ -313,10 +318,15 @@ void Runner::free_settings()
    //   if(packet->buf){
 
 
-
-      if(&pAVPicture){
-          //   qDebug()<<"avpicture_free(pAVPicture);";
-      avpicture_free(&pAVPicture);
+   qDebug()<<"? "<<(pAVPicture==NULL);
+      if(pAVPicture){
+             qDebug()<<"avpicture_free(pAVPicture)-->";
+             qDebug()<<"? "<<(pAVPicture==NULL);
+      avpicture_free(pAVPicture);
+         qDebug()<<"? "<<(pAVPicture==NULL);
+  //    delete pAVPicture;
+            qDebug()<<"? "<<(pAVPicture==NULL);
+      qDebug()<<"avpicture_free(pAVPicture)<--";
 
       }
 
@@ -330,6 +340,7 @@ void Runner::free_settings()
           if(pFormatCtx->streams[videoindex]->codec){
               qDebug()<<"avcodec_close(pFormatCtx->streams[videoindex]->codec);";
              avcodec_close(pFormatCtx->streams[videoindex]->codec);
+             av_codec_close++;
           }
                  }
       }
@@ -373,10 +384,7 @@ void Runner::free()
     av_frame_free(&pAVFrame);
     }
 
-//    if(pAVPicture){
-//        //   qDebug()<<"av_free(pAVPicture); ";
- //   av_free(pAVPicture);
-  //  }
+
 
     if(pSwsContext){
         //   qDebug()<<"sws_freeContext(pSwsContext); ";
@@ -427,8 +435,8 @@ bool Runner::capture()
                     pAVFrame->linesize,
                     0,
                     videoHeight,
-                    pAVPicture.data,
-                    pAVPicture.linesize
+                    pAVPicture->data,
+                    pAVPicture->linesize
                     );
 
 
@@ -441,7 +449,7 @@ bool Runner::capture()
            *h=videoHeight;
            *w=videoWidth;
 
-           *data=&pAVPicture;
+           *data=pAVPicture;
 
            emit new_frame(URL);
 

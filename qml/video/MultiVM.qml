@@ -316,8 +316,8 @@ id: btn_flip_camera
 
                         console.log("onClicked .")
                         var uuid = vvm.uid
-                        md.set_cid_for_uid(-1,vm.uid)
-                    //    good.fullscreen(vvm.uid)
+                      //  md.set_cid_for_uid(-1,vm.uid)
+                        good.fullscreen(vvm.uid)
 
   //rrow.visible=false
                     }
@@ -439,7 +439,7 @@ id: btn_clear_camera
                        md.set_alarm_for_uid(false,vm.uid)
 
              //     console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
-                    rrow.visible=true
+                //    rrow.visible=true
                     }else{
                      rrow.visible=false
                     }
@@ -791,7 +791,7 @@ console.log("Multivm add_storage_camera")
 
 
     function rescale(scale,save){
-
+var qquality=good.quality
      //  console.log("rescale-->")
 
 
@@ -816,42 +816,32 @@ console.log("Multivm add_storage_camera")
 
         var flag=false
 
-        var id = -1
-           //     console.log("fullscreen_uid ",fullscreen_uid)
-        for(var i = 0;i < md.get_cids().length;i++){
-            //найти на текущей странице камеру с uid и взять ее cid
-            //console.log("md.get_uid_at(i) ",md.get_uid_at(i))
-            if(md.get_uid_at(i) === fullscreen_uid){
-                id = md.get_cid_at(i)
-                full = true
-            //    console.log("profit, id: ",id)
-            }
-        }
 
 
-        console.log("full ",full)
-        console.log("id ",id)
+
+
       //  console.log("full ",full)
-        if(full && Axxon.check_id(id)){
-          //  console.log("rescale full")
+        if(fullscreen_uid!=-1){
+            console.log("rescale full")
             for(var i=0;i<md.get_cids().length;i++){
-               // console.log(".. ",md.get_cid_at(i)," ",id)
-                if(md.get_cid_at(i)===id){
-
+                console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+                if(md.get_uid_at(i)===fullscreen_uid){
+                    qquality="higth"
                     var url = md.get_url_at(i)
                     var cid = md.get_cid_at(i)
 
                     if(url=="" && cid>-1){
                       //  console.log("пустой cid ",cid)
-                    flag=true
+                        var serviceId=Axxon.camera(get_cids()[0]).serviceId
+                              Axxon.request_URL(vid,get_cids(), serviceId, "","utc",qquality)
                     }
-/*
+
                     console.log("append ")
                     console.log("uid  ",md.get_uid_at(i))
                     console.log("cid  ",md.get_cid_at(i))
                     console.log("url  ",md.get_url_at(i))
                     console.log("alarm  ",md.get_alarm_at(i))
-*/
+
 
 
 
@@ -870,11 +860,8 @@ console.log("Multivm add_storage_camera")
             }
 
         }else{
-         //   console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
-            if(fullscreen_uid!==-1){
-            good.stream_request(fullscreen_uid,good.quality)
-        fullscreen_uid=-1
-            }
+            console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
+
            // console.log("get_current_page_name ",md.get_current_page_name())
            // console.log("scale ",scale)
             for(var i=0;i<scale*scale;i++){
@@ -884,16 +871,18 @@ console.log("Multivm add_storage_camera")
 
                 if(url=="" && cid>-1){
                //     console.log("пустой cid ",cid)
-                flag=true
+                    var serviceId=Axxon.camera(get_cids()[0]).serviceId
+                         Axxon.request_URL(vid,get_cids(), serviceId, "","utc",qquality)
                 }
 
-/*
+
+
                 console.log("append ")
                 console.log("uid  ",md.get_uid_at(i))
                 console.log("cid  ",md.get_cid_at(i))
                 console.log("url  ",md.get_url_at(i))
                 console.log("alarm  ",md.get_alarm_at(i))
-*/
+
                 w_model.append({h:hh,
                                    w:ww,
                                    x: ww*(i%scale),
@@ -915,11 +904,12 @@ console.log("Multivm add_storage_camera")
         good.ready()
         md.save_to_settings()
 
-        if(flag){
+
+
          //   console.log("flag")
-              var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                    Axxon.request_URL(vid,get_cids(), serviceId, "","utc",quality)
-        }
+
+
+
      //    console.log("<--rescale")
     }
 
@@ -1068,6 +1058,11 @@ console.log("Multivm add_storage_camera")
 
     function to_next_page(){
 
+
+        if(fullscreen_uid!=-1){
+          good.fullscreen(fullscreen_uid)
+        }
+
         md.to_next_page()
         rescale(good.scale,false)
         good.currentPage(md.get_current_page_name())
@@ -1077,104 +1072,63 @@ console.log("Multivm add_storage_camera")
     }
 
     function fullscreen(id){
+        console.log("function fullscreen(id) ",id, "full ",fullscreen_uid)
 
-    var quality="low"
- var current_cid = -1
-        if(!full){
-            console.log("function fullscreen(id) ")
-
-            //найти cid этого uid
-
+        var qquality=good.quality
+        if(fullscreen_uid==-1){
             for(var i = 0;i < w_model.count;i++){
                    if(w_model.get(i).uid === id){
-                    current_cid = w_model.get(i).cid
+                       if(Axxon.check_id(w_model.get(i).cid)){
+
+                            md.set_url_for_uid("",id)
+                           fullscreen_uid = id
+                           qquality="higth"
+                       }
                    }
             }
-
-
-            if(Axxon.check_id(current_cid)){
-                console.log("check_id ",current_cid )
-                full=true
-                fullscreen_uid = id
-
-
-
-
-                /*
-                for(var i=0;i<w_model.count;i++){
-                    console.log(".. ",w_model.get(i).cid," ",id)
-                    if(w_model.get(i).cid===id){
-                        console.log("++ ",w_model.get(i).cid," ",id)
-                        w_model.setProperty(i,"h",height)
-                        w_model.setProperty(i,"w",width)
-                        w_model.setProperty(i,"x",0)
-                        w_model.setProperty(i,"y",0)
-                    }else{
-                        console.log("-- ",w_model.get(i).cid," ",id)
-                        w_model.setProperty(i,"h",0)
-                        w_model.setProperty(i,"w",0)
-                        w_model.setProperty(i,"x",0)
-                        w_model.setProperty(i,"y",0)
-                    }
-
-                }
-                */
-
-            //              var res =[]
-           //     res.push(id)
-           //      var serviceId=Axxon.camera(id).serviceId
-           //               Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","higth")
-            }
-            quality="higth"
         }else{
-         full=false
-            for(var i = 0;i < w_model.count;i++){
-                   if(w_model.get(i).uid === id){
-                    current_cid = w_model.get(i).cid
-                   }
-            }
-
-            good.stream_request(fullscreen_uid,good.quality)
-            fullscreen_uid=-1
-         //   var res =[]
-        //    res.push(id)
-        //     var serviceId=Axxon.camera(id).serviceId
-        //    Axxon.request_URL(vid,res, serviceId, timeline.get_dt(),"utc","")
-             quality="low"
+             md.set_url_for_uid("",id)
+        fullscreen_uid=-1
         }
-        console.log("emit stream_request ", current_cid, " quality ",quality)
-        good.stream_request(current_cid,quality)
-
-        console.log("fullscreen_uid: ",fullscreen_uid)
-        rescale(good.scale,true)
 
 
+        /*
+        var current_cid=-1
+        for(var i = 0;i < w_model.count;i++){
+               if(w_model.get(i).uid === id){
+
+
+                     good.stream_request(w_model.get(i).cid, qquality)
+
+               }
+        }
+*/
+
+    rescale(good.scale,true)
     }
 
     function save(){
-    md.save_to_settings()
+        md.save_to_settings()
     }
 
     function next_scale(){
         if(fullscreen_uid!=-1){
-        return
+            return
         }
 
         full=false
-          good.stream_request(fullscreen_uid,good.quality)
-       fullscreen_uid=-1
-    md.next_scale()
+        good.stream_request(fullscreen_uid,good.quality)
+        fullscreen_uid=-1
+        md.next_scale()
         rescale(good.scale,true)
     }
 
     function rescale_timer_start(){
-    rescale_timer.start()
+        rescale_timer.start()
     }
 
     function get_current_page_name(){
-    return md.get_current_page_name()
+        return md.get_current_page_name()
     }
-
-
 
 }

@@ -46,6 +46,10 @@ public:
     static int created;
     static int deleted;
 
+    static int av_codec_open;
+    static int av_codec_not_open;
+    static int av_codec_close;
+
     enum Mode
            {
         TurnOff,
@@ -97,7 +101,7 @@ private:
     AVCodecContext *pAVCodecContext;
     AVFrame *pAVFrame, *svFrame;
     SwsContext * pSwsContext;
-    AVPicture  pAVPicture;
+    AVPicture*  pAVPicture;
     AVCodec *pAVCodec;
     AVPacket packet;
     AVFormatContext *pFormatCtx;
