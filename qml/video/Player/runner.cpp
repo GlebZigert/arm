@@ -4,13 +4,13 @@
 int Runner::created=0;
 int Runner::deleted=0;
 #define AVIO_FLAG_NONBLOCK   8
-AVDictionary* options;
+
 static std::mutex local_mutex;
 Runner::Runner( QObject *parent) : QObject(parent)
 {
 
   //  //   qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
-    av_log_set_level(AV_LOG_QUIET);
+    av_log_set_level(AV_LOG_DEBUG);
 
 created++;
      videoHeight=0;
@@ -19,9 +19,9 @@ created++;
      pAVFrame = NULL;
      svFrame = NULL;
       pSwsContext = NULL;
-     pAVPicture = NULL;
+   //  pAVPicture = NULL;
      pAVCodec = NULL;
-     packet = NULL;
+        options = NULL;
      pFormatCtx = NULL;
 
      param  = NULL;
@@ -38,9 +38,9 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
     pAVFrame = NULL;
          svFrame = NULL;
      pSwsContext = NULL;
-    pAVPicture = NULL;
+   // pAVPicture = NULL;
     pAVCodec = NULL;
-    packet = NULL;
+      options = NULL;
     pFormatCtx = NULL;
 
     param  = NULL;
@@ -142,8 +142,8 @@ void Runner::load()
  //   avformat_network_init();
     pAVFrame = av_frame_alloc();
   //  svFrame = av_frame_alloc();
-    pAVPicture = new AVPicture();
-    packet = (AVPacket *) malloc(sizeof(AVPacket));
+  //  pAVPicture = new AVPicture();
+
 //    pFormatCtx = avformat_alloc_context();
 }
 
@@ -204,7 +204,7 @@ bool Runner::load_settings()
 
 
 
-        //   qDebug()<<"FAIL with: avformat_open_input "<<error;
+           qDebug()<<"FAIL with: avformat_open_input "<<error;
 
         return false;
     }
@@ -256,7 +256,7 @@ bool Runner::load_settings()
        // qDebug()<<"Этот видеопоток нужно попробовать сохранить";
 
     }
-    avpicture_alloc(pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
+    avpicture_alloc(&pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
 
     pAVCodec = avcodec_find_decoder(pAVCodecContext->codec_id);
 
@@ -293,7 +293,7 @@ bool Runner::load_settings()
     //   qDebug()<<"y_size "<<y_size;
 //    av_new_packet(packet, y_size);
 
-    av_init_packet(packet);
+    av_init_packet(&packet);
 
     return true;
 
@@ -314,10 +314,10 @@ void Runner::free_settings()
 
 
 
-      if(pAVPicture){
+      if(&pAVPicture){
           //   qDebug()<<"avpicture_free(pAVPicture);";
-      avpicture_free(pAVPicture);
-      delete pAVPicture;
+      avpicture_free(&pAVPicture);
+
       }
 
 
@@ -359,11 +359,13 @@ void Runner::free_settings()
 //  //   qDebug()<<" ";
 void Runner::free()
 {
+    /*
     if(packet){
      //   qDebug()<<" av_free(packet); ";
      //   av_packet_unref(packet);
     av_free(packet);
     }
+    */
 
     if(pAVFrame){
         //   qDebug()<<"av_frame_free(&pAVFrame); ";
@@ -388,7 +390,7 @@ void Runner::free()
 bool Runner::capture()
 {
 
-    int res=(av_read_frame(pFormatCtx, packet));
+    int res=(av_read_frame(pFormatCtx, &packet));
    if(res<0){
        //   qDebug()<<"interrupt lostConnection";
 
@@ -399,11 +401,11 @@ bool Runner::capture()
    int got_frame=0;
    if (pAVCodecContext->codec_type == AVMEDIA_TYPE_VIDEO ||
               pAVCodecContext->codec_type == AVMEDIA_TYPE_AUDIO) {
-              used = avcodec_send_packet(pAVCodecContext, packet);
+              used = avcodec_send_packet(pAVCodecContext, &packet);
               if (used < 0 && used != AVERROR(EAGAIN) && used != AVERROR_EOF) {
              } else {
               if (used >= 0)
-                  packet->size = 0;
+                  packet.size = 0;
               used = avcodec_receive_frame(pAVCodecContext, pAVFrame);
               if (used >= 0)
                   got_frame = 1;
@@ -425,8 +427,8 @@ bool Runner::capture()
                     pAVFrame->linesize,
                     0,
                     videoHeight,
-                    pAVPicture->data,
-                    pAVPicture->linesize
+                    pAVPicture.data,
+                    pAVPicture.linesize
                     );
 
 
@@ -439,7 +441,7 @@ bool Runner::capture()
            *h=videoHeight;
            *w=videoWidth;
 
-           *data=pAVPicture;
+           *data=&pAVPicture;
 
            emit new_frame(URL);
 
@@ -463,7 +465,7 @@ bool Runner::capture()
    }
 
 //   av_packet_free(&packet);
-   av_packet_unref(packet);
+   av_packet_unref(&packet);
    return true;
 }
 

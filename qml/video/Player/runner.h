@@ -87,7 +87,7 @@ int m_running;
     int *h;
     int *w;
 
-
+    AVDictionary* options;
     int getVideoWidth() const;
 
     int getVideoHeight() const;
@@ -97,9 +97,9 @@ private:
     AVCodecContext *pAVCodecContext;
     AVFrame *pAVFrame, *svFrame;
     SwsContext * pSwsContext;
-    AVPicture  *pAVPicture;
+    AVPicture  pAVPicture;
     AVCodec *pAVCodec;
-    AVPacket *packet;
+    AVPacket packet;
     AVFormatContext *pFormatCtx;
 
     AVCodecParameters* param ;

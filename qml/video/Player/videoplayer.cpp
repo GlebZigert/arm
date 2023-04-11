@@ -76,7 +76,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::Mode mode)
 {
-  //  qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
+    qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
 
     if(current){
 
