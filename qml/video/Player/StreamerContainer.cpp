@@ -44,22 +44,24 @@ bool flag=true;
             <<"Running : " <<one.data()->mm->thread->isRunning();
 
             qDebug()<<" ";
-            */
+*/
             if(one.data()->getURL()==""){
                 one->stop();
             }
 
-
+    if(one.data())
+        if(one.data()->mm)
+            if(one.data()->mm->runner)
         if(
                 one.data()->mm->runner->getVideoHeight()>480&&
                   one.data()->mm->runner->getVideoWidth()>640&&
         //        one->mode==2 &&
-            one->getFollowers()==0 &&
-           one->save==true ){
+            one->getFollowers()==0
+            ){
 
             auto now = QDateTime::currentDateTime();
                 auto diff = one->no_followers.secsTo(now);
-            qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>5){
                 qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже больше 5 сек - сбрасываем save";
                 one->setSave(false);

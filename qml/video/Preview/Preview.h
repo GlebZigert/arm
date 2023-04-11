@@ -9,6 +9,7 @@
 #include <QTime>
 #include <QTimer>
 #include <QNetworkReply>
+#include <QSharedPointer>
 
 class Preview : public QQuickPaintedItem
 {
@@ -28,7 +29,7 @@ class Preview : public QQuickPaintedItem
 public:
 
     QImage current;
-    QNetworkAccessManager *manager;
+    QSharedPointer<QNetworkAccessManager> manager;
     explicit Preview(QQuickItem *parent = 0);
 
     QString m_URL;

@@ -494,9 +494,9 @@ Axxon.prototype.request_intervals_handler = function (data) {
 
 Axxon.prototype.ExecCommand_handler = function (data) {
 
-     console.log("")
-     console.log("[ExecCommand_handler]")
-     console.log("")
+    // console.log("")
+    // console.log("[ExecCommand_handler]")
+    // console.log("")
 
 
 
@@ -563,14 +563,14 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-  //   console.log("")
+   //  console.log("")
   //       console.log("[receive_URL]")
   //   console.log("",Date())
 
-   //      console.log(data)
-    //     console.log(JSON.stringify(data))
-   //       console.log(JSON.stringify(data))
-   //   console.log("")
+    //     console.log(data)
+   //      console.log(JSON.stringify(data))
+  //        console.log(JSON.stringify(data))
+  //    console.log("")
 
      var i
      for (i in data.data) {

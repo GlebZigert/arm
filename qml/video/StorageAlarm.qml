@@ -590,6 +590,7 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function f_moved_at_dt(dt){
+        console.log("dt: ",dt)
         storage_live=storage
         request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"higth")
     }

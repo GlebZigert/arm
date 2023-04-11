@@ -104,7 +104,7 @@ private:
 
     AVCodecParameters* param ;
 
-    int videoindex;
+    unsigned int videoindex;
 
     int videoWidth;
     int videoHeight;

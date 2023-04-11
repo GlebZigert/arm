@@ -8,18 +8,18 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mod
     m_index=index;
 
     isOver=false;
-    runner = new Runner(m_index,data,h,w,URL,mode);
-    thread = new QThread();
+    runner = QSharedPointer<Runner>::create(m_index,data,h,w,URL,mode);
+    thread = QSharedPointer<QThread>::create();
 
 
     this->URL=URL;
     if(mode!=Runner::Mode::TurnOff){
         runner->URL=URL;
-        connect(thread,&QThread::started,runner,&Runner::run);
-        connect(runner, &Runner::finished,  this, &MyThread::m_quit);
+        connect(thread.data(),&QThread::started,runner.data(),&Runner::run);
+        connect(runner.data(), &Runner::finished,  this, &MyThread::m_quit);
 
 
-        runner->moveToThread(thread);
+        runner->moveToThread(thread.data());
         //qDebug()<<"  runner->moveToThread(thread);";
     }else{
          //qDebug()<<"  FUCK SHIT =mode::turnOff";
@@ -32,8 +32,8 @@ MyThread::~MyThread()
      //qDebug()<<"-->MyThread::~MyThread() "<<m_index;
     //qDebug()<<"DELETE "<<thread->isFinished()<<thread->isRunning()<<m_index;
     deleted++;
-    delete runner;
-    delete thread;
+  //  delete runner;
+
      //qDebug()<<"<--MyThread::~MyThread() "<<m_index;
 }
 

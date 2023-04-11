@@ -13,7 +13,8 @@ Runner::Runner( QObject *parent) : QObject(parent)
     av_log_set_level(AV_LOG_QUIET);
 
 created++;
-
+     videoHeight=0;
+     videoWidth=0;
      pAVCodecContext = NULL;
      pAVFrame = NULL;
      svFrame = NULL;
@@ -29,6 +30,8 @@ created++;
 Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)
 {
     created++;
+    videoHeight=0;
+    videoWidth=0;
     m_index=index;
       //   qDebug()<<"Runner::Runner( QObject *parent) : QObject(parent)";
     pAVCodecContext = NULL;
@@ -136,7 +139,7 @@ void Runner::load()
 */
 
 
-    avformat_network_init();
+ //   avformat_network_init();
     pAVFrame = av_frame_alloc();
   //  svFrame = av_frame_alloc();
     pAVPicture = new AVPicture();
@@ -146,6 +149,43 @@ void Runner::load()
 
 bool Runner::load_settings()
 {
+/*
+    //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
+        //   qDebug()<<"URL: "<<URL;
+        QByteArray ba = URL.toLatin1();
+        char *c_str2 = ba.data();
+        char *filepath = ba.data();
+
+
+        av_dict_set(&options, "buffer_size", "1024000", 0); //Set the cache size, 1080p can increase the value
+        av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
+        av_dict_set(&options, "stimeout", "400000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
+        av_dict_set(&options, "max_delay", "100", 0); //Set the maximum delay
+        //   qDebug()<<"avformat_open_input -->";
+      int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
+        //   qDebug()<<"<-- avformat_open_input";
+        if (error != 0){
+
+
+
+            //   qDebug()<<"FAIL with: avformat_open_input "<<error;
+
+            return false;
+        }
+
+        pFormatCtx->probesize = 1000;
+        pFormatCtx->max_analyze_duration = AV_TIME_BASE;
+
+        if (avformat_find_stream_info(pFormatCtx, NULL)<0){
+
+
+            //   qDebug()<<"FAIL with: avformat_find_stream_info ";
+            return false;
+        }
+
+    return false;
+   */
+
 //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
     //   qDebug()<<"URL: "<<URL;
     QByteArray ba = URL.toLatin1();
@@ -198,27 +238,12 @@ bool Runner::load_settings()
 
     param = avcodec_parameters_alloc();
     pAVCodecContext = avcodec_alloc_context3(NULL);
-    pAVCodec = avcodec_find_decoder(pFormatCtx->streams[0]->codec->codec_id);
+    pAVCodec = avcodec_find_decoder(pFormatCtx->streams[videoindex]->codec->codec_id);
 
 
-/*
-    qDebug()<<"AVCodec* codec = avcodec_find_decoder(AV_CODEC_ID_H264);";
-    AVCodec* codec = avcodec_find_decoder(AV_CODEC_ID_H264);
-        qDebug()<<"profit 1";
-    AVCodecContext* av_context = avcodec_alloc_context3(codec);
-        qDebug()<<"profit 2";
-    av_context->pix_fmt = AV_PIX_FMT_YUV420P;
-        qDebug()<<"profit 3";
-    AVBufferRef *hw_device_ctx = NULL;
-        qDebug()<<"profit 4";
 
-    av_hwdevice_ctx_create(&hw_device_ctx, AV_HWDEVICE_TYPE_NONE,NULL,NULL,0);
-        qDebug()<<"profit 5";
-    av_context->hw_device_ctx = av_buffer_ref(hw_device_ctx);
-    qDebug()<<"profit";
-*/
 
-    avcodec_parameters_from_context(param, pFormatCtx->streams[0]->codec);
+    avcodec_parameters_from_context(param, pFormatCtx->streams[videoindex]->codec);
     avcodec_parameters_to_context(pAVCodecContext, param);
 
     videoWidth=pAVCodecContext->width;
@@ -255,11 +280,11 @@ bool Runner::load_settings()
 //    qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
   //  int result=avcodec_open2(av_context,codec,NULL);
  //   qDebug()<<"profit";
-    int result=avcodec_open2(pAVCodecContext,pAVCodec,NULL);
+    int result=avcodec_open2(pAVCodecContext,pAVCodec,&options);
     if (result<0){
-
+    close();
         emit finished();
-        close();
+
            qDebug()<<"FAIL with: avcodec_open2t";
         return false;
     }
@@ -269,8 +294,9 @@ bool Runner::load_settings()
 //    av_new_packet(packet, y_size);
 
     av_init_packet(packet);
-/* */
+
     return true;
+
 }
 
 void Runner::free_settings()
@@ -291,11 +317,23 @@ void Runner::free_settings()
       if(pAVPicture){
           //   qDebug()<<"avpicture_free(pAVPicture);";
       avpicture_free(pAVPicture);
+      delete pAVPicture;
       }
 
+
+
       if(pFormatCtx){
-          //   qDebug()<<"vformat_close_input(&pFormatCtx);";
-     avcodec_close(pFormatCtx->streams[videoindex]->codec);
+             qDebug()<<"vformat_close_input(&pFormatCtx); "<<videoindex<<" pFormatCtx->nb_streams "<<pFormatCtx->nb_streams;
+             if(pFormatCtx->streams) {
+                 qDebug()<<"+";
+                 if(videoindex<pFormatCtx->nb_streams&&videoindex>=0){
+          if(pFormatCtx->streams[videoindex]->codec){
+              qDebug()<<"avcodec_close(pFormatCtx->streams[videoindex]->codec);";
+             avcodec_close(pFormatCtx->streams[videoindex]->codec);
+          }
+                 }
+      }
+    //  avcodec_close(pFormatCtx->streams[videoindex]->codec);
       avformat_close_input(&pFormatCtx);
       avformat_free_context(pFormatCtx);
       }
@@ -323,18 +361,20 @@ void Runner::free()
 {
     if(packet){
      //   qDebug()<<" av_free(packet); ";
+     //   av_packet_unref(packet);
     av_free(packet);
     }
 
     if(pAVFrame){
         //   qDebug()<<"av_frame_free(&pAVFrame); ";
+        av_frame_unref(pAVFrame);
     av_frame_free(&pAVFrame);
     }
 
-    if(pAVPicture){
-        //   qDebug()<<"av_free(pAVPicture); ";
-    av_free(pAVPicture);
-    }
+//    if(pAVPicture){
+//        //   qDebug()<<"av_free(pAVPicture); ";
+ //   av_free(pAVPicture);
+  //  }
 
     if(pSwsContext){
         //   qDebug()<<"sws_freeContext(pSwsContext); ";
@@ -430,6 +470,24 @@ bool Runner::capture()
 
 void Runner::run()
 {
+    /*
+    av_log_set_level(AV_LOG_QUIET);
+    prev=clock();
+
+     local_mutex.lock();
+    load();
+    if (!load_settings()){
+        //   qDebug()<<"001";
+        emit  finished();
+        local_mutex.unlock();
+    //    emit lost_connection(URL);
+        return;
+    }
+    emit finished();
+
+    return;
+    */
+
     //   qDebug()<<QDateTime::currentDateTime()<<"Runner::run()";
 av_log_set_level(AV_LOG_QUIET);
 prev=clock();

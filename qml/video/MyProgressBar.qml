@@ -118,6 +118,24 @@ Item {
 
     }
 
+
+    Timer {
+        id: shoot
+        property int x:0
+        interval: 2000; running: false; repeat: false
+        onTriggered:
+        {
+            if(x==0){
+                x=1
+               moved_at_dt("20230410T142208.000000")
+            }else{
+                moved_at_dt("20230410T143728.000000")
+            x=0
+            }
+        }
+    }
+
+
     Timer {
         id: delay
         interval: 250; running: false; repeat: false

@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QSharedPointer>
 #include "runner.h"
 
 class MyThread : public QObject
@@ -17,8 +18,8 @@ public:
     static int created;
     static int deleted;
 
-    QThread* thread;
-    Runner* runner;
+    QSharedPointer<QThread> thread;
+    QSharedPointer<Runner> runner;
 
     void stop();
 

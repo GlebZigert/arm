@@ -19,7 +19,7 @@ Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObjec
   //  this->w=w;
 
     followers=0;
-
+ no_followers=QDateTime::currentDateTime();
     //lost=QImage(":/qml/video/no_signal.jpeg");
   tmrStart = new QTimer(this);
 
@@ -42,6 +42,7 @@ Streamer::~Streamer()
 
 int Streamer::getFollowers() const
 {
+
     return followers;
 }
 
@@ -72,13 +73,13 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-
+/*
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
       //  qDebug()<<"save low quality: "<<URL;
         return;
     }
-
+*/
 
 
   //  qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
@@ -145,8 +146,8 @@ void Streamer::startRunner()
 
 
      if(mm!=nullptr){
-     disconnect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
-     disconnect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
+     disconnect(mm->runner.data(),SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
+     disconnect(mm->runner.data(),SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
 
 
      if(mm->thread->isFinished()){
@@ -162,8 +163,8 @@ void Streamer::startRunner()
 
     mm = QSharedPointer<MyThread>::create(&data,&h,&w,URL,mode,m_index);
 
-    connect(mm->runner,SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
-    connect(mm->runner,SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
+    connect(mm->runner.data(),SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
+    connect(mm->runner.data(),SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
     connect(mm.data(),SIGNAL(signal_isOver()),this,SLOT(thread_is_over()));
 
     mm->thread->start();

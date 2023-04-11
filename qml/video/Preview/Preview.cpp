@@ -9,8 +9,8 @@ Preview::Preview(QQuickItem *parent) :
     timer->start(30000);
     connect(this, &Preview::widthChanged, this, &Preview::onWidthChanged);
     connect(this, &Preview::heightChanged, this, &Preview::onWidthChanged);
-    manager = new QNetworkAccessManager();
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
+    manager = QSharedPointer<QNetworkAccessManager>::create();
+    connect(manager.data(), SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     manager->get(QNetworkRequest(QUrl(m_URL)));
 }
 

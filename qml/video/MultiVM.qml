@@ -369,7 +369,7 @@ id: btn_clear_camera
 
                    //     console.log("set cid for uid: ",-1," ",vm.uid)
                         md.set_cid_for_uid(-1,vm.uid)
-                        md.set_cid_for_uid(-1,vm.uid)
+                        md.set_url_for_uid("",vm.uid)
 
                     //    findAndSet(cids,vm.uid,"cid",-1)
                     //    findAndSet(cids,vm.uid,"url","")
