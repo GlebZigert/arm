@@ -171,6 +171,8 @@ public:
 
     Q_INVOKABLE QList<int> get_cids();
 
+    Q_INVOKABLE QList<int> get_all_cids();
+
     Q_INVOKABLE int get_cid_at(int i);
 
     Q_INVOKABLE QString get_url_at(int i);

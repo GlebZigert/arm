@@ -305,7 +305,52 @@ QList<int> Model::get_cids()
         qDebug()<<"return v5; "<<v5;
             return v5;
 
-//    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
+            //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
+}
+
+QList<int> Model::get_all_cids()
+{
+    //  qDebug()<<"Model::get_cids() from "<<get_current_page_name();
+
+      //    show();
+       QList<int> lst;
+       auto v1 =mdl.value(vid);
+
+       if(!mdl.value(vid)){
+           return lst;
+       }
+
+       auto v3=mdl.value(vid)->current_page;
+       if(v3=-1)
+           v3=0;
+     //   qDebug()<<"v3 "<<v3;
+       if(v3>=v1->list.count()){
+           return lst;
+      //      //   qDebug()<<"return lst; ";
+       }
+
+       auto v2=v1->list.at(v3);
+       auto v4=v2->map;
+
+   //  //   qDebug()<<"v2->map.count ; "<<v2->map.count();
+   // //   qDebug()<<"v2->map.keys ; "<<v2->map.keys();
+       QList<int > v5;
+       for(auto val : v4.values()){
+
+       //
+
+          //     qDebug()<<"cid "<<val->cid<<" "<<val->url;
+               v5.append(v4.key(val));
+
+       }
+
+
+
+           qDebug()<<"return v5; "<<v5;
+               return v5;
+
+               //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
+
 }
 
 int Model::get_cid_at(int i)

@@ -67,6 +67,10 @@ qDebug()<<"Runner::~Runner()-->";
     local_mutex.unlock();
     deleted++;
     qDebug()<<"Runner::~Runner()<--";
+    qDebug()<<"раннеров  создано: "<<created<<" удалено: "
+           <<deleted<<" живут: "
+          <<created-deleted;
+
 }
 
 
@@ -324,10 +328,9 @@ void Runner::free_settings()
              qDebug()<<"? "<<(pAVPicture==NULL);
       avpicture_free(pAVPicture);
          qDebug()<<"? "<<(pAVPicture==NULL);
-  //    delete pAVPicture;
+      delete pAVPicture;
             qDebug()<<"? "<<(pAVPicture==NULL);
       qDebug()<<"avpicture_free(pAVPicture)<--";
-
       }
 
 

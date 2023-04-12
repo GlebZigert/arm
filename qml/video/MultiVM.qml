@@ -791,7 +791,7 @@ console.log("Multivm add_storage_camera")
 
 
     function rescale(scale,save){
-var qquality=good.quality
+
      //  console.log("rescale-->")
 
 
@@ -823,18 +823,20 @@ var qquality=good.quality
       //  console.log("full ",full)
         if(fullscreen_uid!=-1){
             console.log("rescale full")
-            for(var i=0;i<md.get_cids().length;i++){
+            for(var i=0;i<md.get_all_cids().length;i++){
                 console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
                 if(md.get_uid_at(i)===fullscreen_uid){
-                    qquality="higth"
+
                     var url = md.get_url_at(i)
                     var cid = md.get_cid_at(i)
 
-                    if(url=="" && cid>-1){
+                  //  if(url=="" && cid>-1){
                       //  console.log("пустой cid ",cid)
                         var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                              Axxon.request_URL(vid,get_cids(), serviceId, "","utc",qquality)
-                    }
+
+                    good.stream_request(md.get_cid_at(0), "higth")
+                      //        Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
+                 //   }
 /*
                     console.log("append ")
                     console.log("uid  ",md.get_uid_at(i))
@@ -872,7 +874,7 @@ var qquality=good.quality
                 if(url=="" && cid>-1){
                //     console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                         Axxon.request_URL(vid,get_cids(), serviceId, "","utc",qquality)
+                         Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
                 }
 
 
@@ -1080,7 +1082,7 @@ var qquality=good.quality
                    if(w_model.get(i).uid === id){
                        if(Axxon.check_id(w_model.get(i).cid)){
 
-                            md.set_url_for_uid("",id)
+                         //   md.set_url_for_uid("",id)
                            fullscreen_uid = id
                            qquality="higth"
                        }
