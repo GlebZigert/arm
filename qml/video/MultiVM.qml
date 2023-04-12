@@ -835,13 +835,13 @@ var qquality=good.quality
                         var serviceId=Axxon.camera(get_cids()[0]).serviceId
                               Axxon.request_URL(vid,get_cids(), serviceId, "","utc",qquality)
                     }
-
+/*
                     console.log("append ")
                     console.log("uid  ",md.get_uid_at(i))
                     console.log("cid  ",md.get_cid_at(i))
                     console.log("url  ",md.get_url_at(i))
                     console.log("alarm  ",md.get_alarm_at(i))
-
+*/
 
 
 
@@ -876,13 +876,13 @@ var qquality=good.quality
                 }
 
 
-
+/*
                 console.log("append ")
                 console.log("uid  ",md.get_uid_at(i))
                 console.log("cid  ",md.get_cid_at(i))
                 console.log("url  ",md.get_url_at(i))
                 console.log("alarm  ",md.get_alarm_at(i))
-
+*/
                 w_model.append({h:hh,
                                    w:ww,
                                    x: ww*(i%scale),

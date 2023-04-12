@@ -74,7 +74,9 @@ bool flag=true;
             }
         }
       }
-
+        qDebug()<<" ";
+        qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
+        qDebug()<<" ";
 }
 
 

@@ -266,7 +266,7 @@ int Model::get_uid_at(int i)
 
 QList<int> Model::get_cids()
 {
-   qDebug()<<"Model::get_cids() from "<<get_current_page_name();
+ //  qDebug()<<"Model::get_cids() from "<<get_current_page_name();
 
    //    show();
     QList<int> lst;
@@ -295,7 +295,7 @@ QList<int> Model::get_cids()
 
     //
         if(val->cid!=-1){
-            qDebug()<<"cid "<<val->cid<<" "<<val->url;
+       //     qDebug()<<"cid "<<val->cid<<" "<<val->url;
             v5.append(v4.key(val));
         }
     }

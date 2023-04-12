@@ -72,8 +72,8 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-        //    text: "Администратор"
-            text:"33333"
+            text: "Начкар"
+        //  text:"33333"
         //   text:"ИвановИИ"
             //text: "unit"
         }
