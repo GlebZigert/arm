@@ -387,9 +387,12 @@ timeline.pause_signal.connect(f_paused)
 
         timeline.hide_timelines.connect(hide_timelines)
 
-        root.cameraList.updated.connect(start_timer.start())
+        root.cameraList.updated.connect(f_start_timer_start())
     }
 
+    function f_start_timer_start(){
+    start_timer.start()
+    }
     function stream_request(id,quality){
         console.log("stream_request ",id," ",quality)
            var res =[]
