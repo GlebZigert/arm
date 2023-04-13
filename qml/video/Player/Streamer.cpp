@@ -73,12 +73,13 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-
+/*
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
       //  qDebug()<<"save low quality: "<<URL;
         return;
     }
+    */
 
 
 
@@ -194,11 +195,13 @@ void Streamer::stop()
         return;
     }
 
-    mode = Runner::Mode::TurnOff;
+  //  mode = Runner::Mode::TurnOff;
   //  //qDebug()<<"1";
     if(mm){
     mm->stop();
     }
+
+
 
 /*
     //qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
@@ -235,25 +238,33 @@ void Streamer::receiveFrame(QString URL)
 void Streamer::lostConnection(QString URL)
 {
 
-    qDebug()<<"lostConnection";
+    qDebug()<<"lostConnection !! "<<URL;
+    mm->runner->URL="";
+    URL="";
+    mm->runner->go_to_free_state=true;
     emit lost(URL);
     tmrStart->stop();
     isValid=false;
+
+    /*
     if(mode == Runner::Mode::TurnOff){
         return;
     }
+*/
 
 
-
-
+/*
         if(mm){
         mm->stop();
         }
 
-        if(URL!=""){
+        if((URL!="")&&(getFollowers()>0 )
+
+                ){
 
         tmrStart->singleShot(delay,this,SLOT(start()));
         }
+        */
         return;
 
 

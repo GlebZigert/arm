@@ -36,7 +36,7 @@ public:
 
     Q_INVOKABLE void  clear();
 
-
+    Q_INVOKABLE void  delete_free_streamers();
 
 
     AVPicture *data;

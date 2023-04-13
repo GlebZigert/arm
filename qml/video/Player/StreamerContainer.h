@@ -12,10 +12,13 @@ class StreamerContainer : public QObject
     Q_OBJECT
 
 private:
-    static void func();
+
 
 
 public:
+    static void func();
+
+    static void show();
 
     QTimer timer;
 
@@ -24,6 +27,8 @@ public:
     static QList<QSharedPointer<Streamer>> map;
 
     static QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
+
+    static void delete_free_streamers();
 
 
     static QSharedPointer<Streamer> find(QString url);

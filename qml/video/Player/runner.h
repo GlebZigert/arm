@@ -41,8 +41,13 @@ class Runner : public QObject
 
     // Свойство, управляющее работой потока
     Q_PROPERTY(int running READ running WRITE setRunning NOTIFY runningChanged)
+private:
 
 public:
+
+    bool frash_stream;
+    bool go_to_free_state;
+
     static int created;
     static int deleted;
 
@@ -53,22 +58,28 @@ public:
     enum Mode
            {
         TurnOff,
+        Started,
+        Free,
+        Prepare,
+        Play,
         LiveStreaming,
         StorageStreaming,
         Snapshot,
         NoSignal,
-        Saving
+        Saving,
+        Exit
 
            };
            Q_ENUMS(Mode)
 
     explicit Runner( QObject *parent = nullptr);
+        explicit Runner(int index, QObject *parent = nullptr);
         explicit Runner(int index,AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent = nullptr);
     ~Runner();
     void output();
 
     int get_m_index() const;
-
+    QString get_state();
     static void declareQML() {
        qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Mode");
        qRegisterMetaType<Runner::Mode>("const Runner::Mode");
@@ -97,7 +108,7 @@ int m_running;
     int getVideoHeight() const;
 
 private:
-    int m_index;
+    int m_index=-1;
     AVCodecContext *pAVCodecContext;
     AVFrame *pAVFrame, *svFrame;
     SwsContext * pSwsContext;

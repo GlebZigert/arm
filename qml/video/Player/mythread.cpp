@@ -20,6 +20,7 @@ MyThread::MyThread(AVPicture** data,int *h, int *w, QString URL,Runner::Mode mod
 
 
         runner->moveToThread(thread.data());
+
         //qDebug()<<"  runner->moveToThread(thread);";
     }else{
          //qDebug()<<"  FUCK SHIT =mode::turnOff";
@@ -39,7 +40,7 @@ MyThread::~MyThread()
 
 void MyThread::stop()
 {
-    runner->setRunning(Runner::Mode::TurnOff);
+    runner->go_to_free_state=true;
 }
 
 void MyThread::m_quit()

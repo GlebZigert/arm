@@ -147,7 +147,10 @@ void VideoPlayer::stop()
     current.data()->save=false;
     current.clear();
     data=NULL;
+
+
     }
+     StreamerContainer::func();
  // list1->stop();
 }
 
@@ -178,8 +181,13 @@ void VideoPlayer::saving_off()
 
 void VideoPlayer::clear()
 {
-cleaner.start(1000);
+    cleaner.start(1000);
 }
+
+void VideoPlayer::delete_free_streamers()
+{
+StreamerContainer::delete_free_streamers();
+    }
 
 Runner::Mode VideoPlayer::getMode()
 {

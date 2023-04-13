@@ -15,7 +15,7 @@ bool flag=true;
                      <<one.data()->deleted<<" живут: "
                     <<one.data()->created-one.data()->deleted;
 
-              qDebug()<<"треов     создано: "<<one.data()->mm->created<<" удалено: "
+              qDebug()<<"тредов     создано: "<<one.data()->mm->created<<" удалено: "
                      <<one.data()->mm->deleted<<" живут: "
                     <<one.data()->mm->created-one.data()->mm->deleted;
 
@@ -29,10 +29,10 @@ bool flag=true;
 <<one.data()->mm->runner->av_codec_open+one.data()->mm->runner->av_codec_not_open-one.data()->mm->runner->av_codec_close;
 
             }
-/*
+            qDebug()<<"индекс: "<<one.data()->get_m_index()<<" mode: "<<one.data()->mm->runner->get_state();
+
             qDebug()<<one.data()->getURL();
             qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
-            qDebug()<<"индекс: "<<one.data()->get_m_index();
             qDebug()<<"Подписчики: "<<one.data()->getFollowers();
 
             if(one.data()->getFollowers()==0){
@@ -49,7 +49,7 @@ bool flag=true;
             <<"Running : " <<one.data()->mm->thread->isRunning();
 
             qDebug()<<" ";
-*/
+
             if(one.data()->getURL()==""){
                 one->stop();
             }
@@ -58,10 +58,11 @@ bool flag=true;
         if(one.data()->mm)
             if(one.data()->mm->runner)
         if(
-                one.data()->mm->runner->getVideoHeight()>480&&
-                  one.data()->mm->runner->getVideoWidth()>640&&
+            //    one.data()->mm->runner->getVideoHeight()>480&&
+            //      one.data()->mm->runner->getVideoWidth()>640&&
         //        one->mode==2 &&
-            one->getFollowers()==0
+            one->getFollowers()==0 &&
+                one.data()->mm->runner->m_running==Runner::Mode::Play
             ){
 
             auto now = QDateTime::currentDateTime();
@@ -77,7 +78,7 @@ bool flag=true;
 
         QList<QSharedPointer<Streamer>>::iterator it = map.begin();
         while(it != map.end()){
-            if(it->data()->mode == Runner::Mode::TurnOff &&
+            if(it->data()->mm->runner->m_running == Runner::Mode::Exit &&
                     it->data()->mm->thread->isFinished()&&
                     !it->data()->mm->thread->isRunning()
                     ){
@@ -87,9 +88,64 @@ bool flag=true;
             }
         }
 
+
+
         qDebug()<<" ";
         qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
         qDebug()<<" ";
+}
+
+void StreamerContainer::show()
+{
+    qDebug()<<" ";
+    qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
+     qDebug()<<" ";
+bool flag=true;
+    for(auto one : map){
+        if(flag){
+            flag=false;
+          qDebug()<<"стримеров создано: "<<one.data()->created<<" удалено: "
+                 <<one.data()->deleted<<" живут: "
+                <<one.data()->created-one.data()->deleted;
+
+          qDebug()<<"тредов     создано: "<<one.data()->mm->created<<" удалено: "
+                 <<one.data()->mm->deleted<<" живут: "
+                <<one.data()->mm->created-one.data()->mm->deleted;
+
+          qDebug()<<"раннеров  создано: "<<one.data()->mm->runner->created<<" удалено: "
+                 <<one.data()->mm->runner->deleted<<" живут: "
+                <<one.data()->mm->runner->created-one.data()->mm->runner->deleted;
+
+          qDebug()<<"кодеки: открыто "<<one.data()->mm->runner->av_codec_open<<" yне открылись: "
+                 <<one.data()->mm->runner->av_codec_not_open<<" закрыто: "
+                <<one.data()->mm->runner->av_codec_close<<" не закрытых: "
+<<one.data()->mm->runner->av_codec_open+one.data()->mm->runner->av_codec_not_open-one.data()->mm->runner->av_codec_close;
+
+        }
+        qDebug()<<"индекс: "<<one.data()->get_m_index()<<" mode: "<<one.data()->mm->runner->get_state();
+
+        qDebug()<<one.data()->getURL();
+        qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
+        qDebug()<<"Подписчики: "<<one.data()->getFollowers();
+
+        if(one.data()->getFollowers()==0){
+            qDebug()<<"без подписчиков уже "<<one->no_followers.secsTo(QDateTime::currentDateTime())<<" сек";
+        }else{
+        qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
+
+        }
+
+        qDebug()<<"Хранится: "<<one.data()->getSave()
+        <<"runner завершен:" <<one.data()->mm->runner->thread()->isFinished()
+        <<"mode: " <<one.data()->mode
+        <<"Finished: " <<one.data()->mm->thread->isFinished()
+        <<"Running : " <<one.data()->mm->thread->isRunning();
+
+        qDebug()<<" ";
+
+
+
+  }
 }
 
 
@@ -100,7 +156,7 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
 {
-
+func();
  //   qDebug()<<"--> StreamerContainer::start "<<url;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
@@ -142,7 +198,6 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
 
 
-func();
 
              qDebug()<<" ";
               mutex.unlock();
@@ -154,6 +209,23 @@ func();
 
     return nullptr;
 
+show();
+
+}
+
+void StreamerContainer::delete_free_streamers()
+{
+    qDebug()<<"delete all free streamers";
+    QList<QSharedPointer<Streamer>>::iterator it = map.begin();
+    while(it != map.end()){
+        if(it->data()->mm->runner->m_running == Runner::Mode::Free ){
+
+                it->data()->mm->runner->m_running=Runner::Mode::Exit;
+
+            }
+
+           ++it;
+        }
 
 
 }
@@ -166,6 +238,19 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
         if(one.data()->getURL()==url){
             one->setSave(false);
 
+
+            mutex.unlock();
+        //    qDebug()<<"<-- StreamerContainer::find [0] "<<url;
+            return one;
+        }
+    }
+
+    for(auto one : map){
+        if(one.data()->mm->runner->get_state()=="Free"){
+            one->setSave(false);
+
+            one.data()->mm->runner->URL=url;
+            one.data()->mm->runner->frash_stream=true;
 
             mutex.unlock();
         //    qDebug()<<"<-- StreamerContainer::find [0] "<<url;
