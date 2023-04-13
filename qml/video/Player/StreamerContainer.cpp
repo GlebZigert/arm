@@ -74,6 +74,19 @@ bool flag=true;
             }
         }
       }
+
+        QList<QSharedPointer<Streamer>>::iterator it = map.begin();
+        while(it != map.end()){
+            if(it->data()->mode == Runner::Mode::TurnOff &&
+                    it->data()->mm->thread->isFinished()&&
+                    !it->data()->mm->thread->isRunning()
+                    ){
+                    it = map.erase(it);
+        }else{
+                ++it;
+            }
+        }
+
         qDebug()<<" ";
         qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
         qDebug()<<" ";
@@ -126,17 +139,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode
 
 
 
-    QList<QSharedPointer<Streamer>>::iterator it = map.begin();
-    while(it != map.end()){
-        if(it->data()->mode == Runner::Mode::TurnOff &&
-                it->data()->mm->thread->isFinished()&&
-                !it->data()->mm->thread->isRunning()
-                ){
-                it = map.erase(it);
-    }else{
-            ++it;
-        }
-    }
+
 
 
 func();

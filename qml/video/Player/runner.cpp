@@ -511,7 +511,7 @@ if (!load_settings()){
     //   qDebug()<<"001";
     emit  finished();
     local_mutex.unlock();
-    emit lost_connection(URL);
+   // emit lost_connection(URL);
     return;
 }
 local_mutex.unlock();
