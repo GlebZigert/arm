@@ -563,9 +563,9 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-   //  console.log("")
-  //       console.log("[receive_URL]")
-  //   console.log("",Date())
+     console.log("")
+         console.log("[receive_URL]")
+     console.log("",Date())
 
     //     console.log(data)
    //      console.log(JSON.stringify(data))

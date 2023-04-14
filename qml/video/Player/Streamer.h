@@ -3,8 +3,9 @@
 
 #include <QObject>
 #include <QMap>
+#include <QThread>
 #include <QSharedPointer>
-#include "mythread.h"
+#include "runner.h"
 
 
 
@@ -14,7 +15,10 @@ class Streamer : public QObject
 public:
     explicit Streamer(QString URL,Runner::Mode mode,QObject *parent = nullptr);
     ~Streamer();
-    QSharedPointer<MyThread> mm;
+
+
+    QSharedPointer<QThread> thread;
+    QSharedPointer<Runner> runner;
 
     static int created;
     static int deleted;
@@ -100,7 +104,7 @@ public slots:
 
     void start();
 
-    void startRunner();
+   void m_quit();
 
     void thread_is_over();
 

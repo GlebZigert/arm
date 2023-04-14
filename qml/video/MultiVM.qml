@@ -172,10 +172,15 @@ Rectangle{
                 */
 
 
+
+
                 property bool selected
                 property bool contain_mouse: area.containsMouse ? true : false
                 readonly property int uid: model.uid
                 property int cid: model.cid
+
+
+
 
 
                 Rectangle{
@@ -191,6 +196,10 @@ Rectangle{
                         id: vvm
 
                    //     readonly property int uid: model.uid
+
+                        onConnectionChanged: {
+                        console.log("Vvvvvvm onConnectionChanged")
+                        }
 
                         x:2
                         y:2
@@ -496,6 +505,13 @@ console.log(" vm_start(mode)")
                       }
                 }
 
+             function   f_return_connection(connection){
+                console.log("f_return_connection")
+                 if(connection==false){
+              //   good.stream_request(cid, "higth")
+                 }
+                }
+
                 Component.onCompleted: {
 
                     if(md.get_current_page_name()=="Тревоги"){
@@ -525,6 +541,8 @@ console.log(" vm_start(mode)")
                     if(model.url!=""){
                     vvm.vm_start(model.cid,model.url,1)
                     }
+
+                    vvm.return_connection.connect(f_return_connection)
 
                 }
 

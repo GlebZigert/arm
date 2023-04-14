@@ -7,26 +7,27 @@ Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObjec
 {
     created++;
     m_index=index++;
-    start_time=QDateTime::currentDateTime();
- //   qDebug()<<"Streamer::Streamer "<<m_index<<" "<<URL;
- //   qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
-    count = 0;
+
+    isOver=false;
+    runner = QSharedPointer<Runner>::create(m_index,&data,&h,&w,URL,mode);
+    thread = QSharedPointer<QThread>::create();
+
 
     this->URL=URL;
-    this->data=NULL;
-    this->mode=mode;
-  //  this->h=h;
-  //  this->w=w;
 
-    followers=0;
- no_followers=QDateTime::currentDateTime();
-    //lost=QImage(":/qml/video/no_signal.jpeg");
-  tmrStart = new QTimer(this);
+        runner->URL=URL;
+        connect(thread.data(),&QThread::started,runner.data(),&Runner::run);
+        connect(runner.data(), &Runner::finished,  this, &Streamer::m_quit);
+
+        connect(runner.data(),SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
+        connect(runner.data(),SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
 
 
 
+        runner->moveToThread(thread.data());
+        thread->start();
 
-  isValid=false;
+
 }
 
 Streamer::~Streamer()
@@ -122,66 +123,10 @@ int Streamer::getH() const
 
 void Streamer::start()
 {
- //   qDebug()<<QTime::currentTime()<<" start "<<URL;
-tmrStart->stop();
-count++;
-
-delay=10;
-if(count>5){
-    qDebug()<<"too long "<<URL;
-    delay=1000;
-}
-if(count>25){
-    qDebug()<<"too long "<<URL;
-    delay=30000;
-}
-if(!isValid){
-
-startRunner();
-// tmrStart->singleShot(delay,this,SLOT(start()));
-}
+qDebug()<<"Streamer::start()";
 }
 
-void Streamer::startRunner()
-{
-    qDebug()<<QTime::currentTime()<< "Streamer::startRunner() "<<URL<<" "<<delay<<" "<<count;
 
-
-     if(mm!=nullptr){
-     disconnect(mm->runner.data(),SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
-     disconnect(mm->runner.data(),SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
-
-
-     if(mm->thread){
-     if(mm->thread->isFinished()){
-         qDebug()<<"mm->thread->isFinished() "<<mm->thread->isFinished();
-         qDebug()<<"mm->thread->isRunning() "<<mm->thread->isRunning();
-         qDebug()<<"mm.clear()-->";
-
-     mm.clear();
-         qDebug()<<"mm.clear()<--";
-     }else{
-         qDebug()<<"thread not finished !!";
-          mm->stop();
-         return;
-
-     }
-     }else{
-         qDebug()<<"!mm->thread";
-     }
-
-     }
-
-
-    mm = QSharedPointer<MyThread>::create(&data,&h,&w,URL,mode,m_index);
-
-    connect(mm->runner.data(),SIGNAL(new_frame(QString)),this,SLOT(receiveFrame(QString)));
-    connect(mm->runner.data(),SIGNAL(lost_connection(QString)),this,SLOT(lostConnection(QString)));
-    connect(mm.data(),SIGNAL(signal_isOver()),this,SLOT(thread_is_over()));
-
-    mm->thread->start();
-    isValid=true;
-}
 
 void Streamer::thread_is_over()
 {
@@ -192,35 +137,8 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
-// qDebug()<<"Streamer::stop() "<<mm->runner->get_m_index();
-    if(!isValid){
-        return;
-    }
 
-  //  mode = Runner::Mode::TurnOff;
-  //  //qDebug()<<"1";
-    if(mm){
-    // qDebug()<<"mm->stop();"  ;
-    mm->stop();
-    }
-
-
-
-/*
-    //qDebug()<<mm->thread->isFinished()<<" "<<mm->thread->isRunning();
-    if(mm->thread->isFinished()){
-   // //qDebug()<<"2";
-
-        isValid=false;
-
-        isOver=true;
-
-    }
-    */
-
-
-
-
+    runner->go_to_free_state=true;
 }
 
 AVPicture *Streamer::getData() const
@@ -242,38 +160,14 @@ void Streamer::lostConnection(QString URL)
 {
 
     qDebug()<<"lostConnection !! "<<URL;
-    mm->runner->URL="";
-    URL="";
-    mm->runner->go_to_free_state=true;
+    runner->go_to_free_state=true;
     emit lost(URL);
-    tmrStart->stop();
-    isValid=false;
+}
 
-    /*
-    if(mode == Runner::Mode::TurnOff){
-        return;
-    }
-*/
-
-
-/*
-        if(mm){
-        mm->stop();
-        }
-
-        if((URL!="")&&(getFollowers()>0 )
-
-                ){
-
-        tmrStart->singleShot(delay,this,SLOT(start()));
-        }
-        */
-        return;
-
-
-
-
-
+void Streamer::m_quit()
+{
+    thread->quit();
+    isOver=true;
 
 }
 

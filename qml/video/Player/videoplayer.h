@@ -13,6 +13,7 @@ class VideoPlayer : public QQuickPaintedItem
 {
     Q_OBJECT
 
+    Q_PROPERTY(bool connection READ connection  NOTIFY connectionChanged)
     Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
     Q_PROPERTY(int cid READ getCid WRITE setCid NOTIFY cidChanged)
 public:
@@ -20,6 +21,9 @@ public:
     ~VideoPlayer();
     void paint(QPainter *painter) override;
 
+
+
+    bool connection() const;
 
     QString source() const;
     void setSource(const QString source);
@@ -45,7 +49,7 @@ public:
 
     int cid;
 
-    bool connection;
+    bool m_connection;
 
 
     Q_INVOKABLE Runner::Mode getMode();
@@ -67,6 +71,7 @@ private:
 signals:
     void playing();
     void sourceChanged(const QString &source);
+    void connectionChanged(const bool &connection);
     void cidChanged(const int &cid);
 public slots:
 

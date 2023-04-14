@@ -8,7 +8,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     //qDebug()<<"VideoPlayer::VideoPlayer";
 
 
-    connection = false;
+    m_connection = false;
 
     data=NULL;
 
@@ -56,6 +56,11 @@ void VideoPlayer::paint(QPainter *painter)
  //   //qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
 
+}
+
+bool VideoPlayer::connection() const
+{
+    return m_connection;
 }
 
 QString VideoPlayer::source() const
@@ -128,7 +133,7 @@ void VideoPlayer::start(Runner::Mode mode)
                   h,
                   QImage::Format_RGB32);
 
-          connection = true;
+          m_connection = true;
           this->update();
 
 
@@ -191,7 +196,7 @@ StreamerContainer::delete_free_streamers();
 
 Runner::Mode VideoPlayer::getMode()
 {
-    if(!connection)
+    if(!m_connection)
         return Runner::NoSignal;
 
     if(current){
@@ -240,7 +245,7 @@ void VideoPlayer::frame(QString source){
                     h,
                     QImage::Format_RGB32);
 
-    connection = true;
+    m_connection = true;
     this->update();
     }
 
@@ -248,8 +253,9 @@ void VideoPlayer::frame(QString source){
 
 void VideoPlayer::lost(QString source)
 {
-        connection = false;
-        //qDebug()<<"lost";
+        m_connection = false;
+        qDebug()<<"lost";
+        emit connectionChanged(m_connection);
     if(source==this->m_source){
      //    img=QImage(":/qml/video/no_signal.jpeg");
   //  this->update();

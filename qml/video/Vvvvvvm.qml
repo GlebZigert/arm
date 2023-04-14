@@ -20,10 +20,11 @@ Item {
 
     property string source
     property int cid
+        property bool connection
      property int uid: -1
     signal return_source(string src)
     signal return_cid(int cid)
-
+    signal return_connection(bool connection)
     property  int mode: -1
 
     property int mouse_x
@@ -197,13 +198,17 @@ console.log("Key_Down")
             height: parent.height
 
 
-
+        onConnectionChanged:  (subject)=>{
+        console.log("VideoPlayer onConnectionChanged ")
+                                  supreme.connection=subject
+                                  return_connection(subject)
+        }
 
             onSourceChanged: (subject)=> {
 
          //   console.log("onSourceChanged ", subject)
-                                 supreme.source=subject
-                        return_source(supreme.source)
+                                supreme.source=subject
+                        return_source(subject)
             }
 
             onCidChanged: (subject)=> {

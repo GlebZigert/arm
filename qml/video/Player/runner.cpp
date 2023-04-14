@@ -218,6 +218,7 @@ bool Runner::load_settings()
 
 //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
     //   //qDebug()<<"URL: "<<URL;
+
     QByteArray ba = URL.toLatin1();
     char *c_str2 = ba.data();
     char *filepath = ba.data();
@@ -553,6 +554,7 @@ bool Runner::capture()
 
 void Runner::run()
 {
+    qDebug()<<"RUN "<<m_index;
     m_running=Mode::Free;
     int previos=0;
     while(m_running!=Mode::Exit){
@@ -575,15 +577,19 @@ void Runner::run()
 
         //открыть новый поток
         if(frash_stream){
+            local_mutex.lock();
             m_running=Mode::Prepare;
             frash_stream=0;
        //     qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+
 
             if(pAVFrame==NULL){
                 //qDebug()<<"av_frame_alloc()-->";
                 pAVFrame = av_frame_alloc();
                 //qDebug()<<"av_frame_alloc()<--";
             }
+
+
      //qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
             if(pAVPicture==NULL){
                 //qDebug()<<"pAVPicture = new AVPicture()-->";
@@ -598,7 +604,7 @@ void Runner::run()
                 free();
                 m_running=Mode::Free;
                 qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
-
+                emit lost_connection(URL);
             }else{
 
                  m_running=Mode::Play;
@@ -607,15 +613,17 @@ void Runner::run()
 
 
             }
-
+  local_mutex.unlock();
 
         }
 
         if(go_to_free_state){
         go_to_free_state=false;
              //       qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освободить";
+        local_mutex.lock();
                     free_settings();
                     free();
+                    local_mutex.unlock();
                     m_running=Mode::Free;
         }
 
