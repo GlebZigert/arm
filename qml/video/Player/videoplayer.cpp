@@ -52,7 +52,7 @@ void VideoPlayer::paint(QPainter *painter)
             QImage::Format_RGB32);
 */
 
- //   painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
+    painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
  //   //qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
 
@@ -257,8 +257,8 @@ void VideoPlayer::lost(QString source)
         qDebug()<<"lost";
         emit connectionChanged(m_connection);
     if(source==this->m_source){
-        img=QImage(":/qml/video/no_signal.jpeg");
-    this->update();
+     //   img=QImage(":/qml/video/no_signal.jpeg");
+   // this->update();
     }
 
 }
