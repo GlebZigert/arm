@@ -565,7 +565,7 @@ void Runner::run()
 
            //qDebug()<<"runner "<<m_index<<" mode: "<<get_state();
            if(m_running==Runner::Mode::Play){
-             qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
+       //      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
             go_to_free_state=false;
            }
            if(m_running==Runner::Mode::Free){
