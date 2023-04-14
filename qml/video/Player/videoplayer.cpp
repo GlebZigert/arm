@@ -52,7 +52,7 @@ void VideoPlayer::paint(QPainter *painter)
             QImage::Format_RGB32);
 */
 
-    painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
+ //   painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
  //   //qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
     }
 
@@ -81,7 +81,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::Mode mode)
 {
-    qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
+   // qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
 
     if(current){
 

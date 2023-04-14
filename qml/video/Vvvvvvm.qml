@@ -110,7 +110,7 @@ Item {
      }
 
      Keys.onReleased:      {
-    console.log("Keys.onReleased")
+  //  console.log("Keys.onReleased")
 
          switch(event.key){
 
@@ -355,7 +355,7 @@ console.log("Key_Down")
 
                       mouse_pressed=false
 
-                     console.log("onReleased")
+                 //    console.log("onReleased")
                 if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
                         stop_moving_timer.start()

@@ -557,7 +557,7 @@ bool Runner::capture()
 void Runner::run()
 {
     //qDebug()<<"RUN "<<m_index;
-
+int count=0;
     int previos=0;
     while(m_running!=Mode::Exit){
 
@@ -565,11 +565,11 @@ void Runner::run()
 
            //qDebug()<<"runner "<<m_index<<" mode: "<<get_state();
            if(m_running==Runner::Mode::Play){
-       //      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
+            // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
             go_to_free_state=false;
            }
            if(m_running==Runner::Mode::Free){
-             //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+           //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
             go_to_free_state=false;
            }
            previos=m_running;
@@ -582,7 +582,7 @@ void Runner::run()
             local_mutex.lock();
             m_running=Mode::Prepare;
             frash_stream=0;
-       //     //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+      // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
 
 
             if(pAVFrame==NULL){
@@ -605,13 +605,13 @@ void Runner::run()
                 free_settings();
                 free();
                 m_running=Mode::Free;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+            //    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
                 emit lost_connection(URL);
             }else{
 
                  m_running=Mode::Play;
                  go_to_free_state=false;
-          //       //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+         // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }
@@ -621,7 +621,7 @@ void Runner::run()
 
         if(go_to_free_state){
         go_to_free_state=false;
-             //       //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освободить";
+                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
         local_mutex.lock();
                     free_settings();
                     free();
@@ -631,10 +631,16 @@ void Runner::run()
 
         if(m_running==Mode::Play){
            if (!capture()){
-              qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
+            //   count++;
+           //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
+           //   if(count>1){
                emit lost_connection(URL);
+            //      count=0;
+            //  }
            //    emit  finished();
 
+           }else{
+           //    count=0;
            }
 
         }

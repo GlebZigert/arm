@@ -394,11 +394,11 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-        console.log("stream_request ",id," ",quality)
+        console.log("storageAlarm stream_request ",id," ",quality)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
-           Axxon.request_URL(multivm.vid,res, serviceId, "","utc","higth")
+           Axxon.request_URL(multivm.vid,res, serviceId, timeline.current_dt(),"utc","higth")
     }
 
     function scale(){

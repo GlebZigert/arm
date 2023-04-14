@@ -463,7 +463,7 @@ id: btn_clear_camera
                 }
 
                 function vm_start(mode){
-console.log(" vm_start(mode)")
+//console.log(" vm_start(mode)")
                     vvm.vm_start(mode)
                 }
 
@@ -506,9 +506,9 @@ console.log(" vm_start(mode)")
                 }
 
              function   f_return_connection(connection){
-                console.log("f_return_connection")
+                console.log("f_return_connection ",cid)
                  if(connection==false){
-              //   good.stream_request(cid, "higth")
+                 good.stream_request(cid, quality)
                  }
                 }
 
@@ -757,7 +757,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_start(cid,src,mode){
-        console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+       // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 

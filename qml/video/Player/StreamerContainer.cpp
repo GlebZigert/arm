@@ -52,7 +52,7 @@ bool flag=true;
             }
             }
             }
-
+/*
             if(one.data()->runner){
             qDebug()<<"индекс: "<<one.data()->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
@@ -62,6 +62,7 @@ bool flag=true;
                 qDebug()<<"no runner";
 
             }
+            */
 
         //    qDebug()<<one.data()->getURL();
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
@@ -93,7 +94,9 @@ bool flag=true;
             //      one.data()->runner->getVideoWidth()>640&&
         //        one->mode==2 &&
             one->getFollowers()==0 &&
-                one.data()->runner->m_running==Runner::Mode::Play
+                one.data()->runner->m_running==Runner::Mode::Play&&
+                one->runner->getVideoHeight()>480&&
+                  one->runner->getVideoWidth()>640
             ){
 
             auto now = QDateTime::currentDateTime();
@@ -130,6 +133,7 @@ bool flag=true;
 
 void StreamerContainer::show()
 {
+    /*
     qDebug()<<" ";
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
      qDebug()<<" ";
@@ -183,6 +187,7 @@ if(one.data()->runner){
 
 
   }
+    */
 }
 
 
