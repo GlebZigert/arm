@@ -597,6 +597,7 @@ var lcl = root.cameraList.get(j)
             root.cameraList.get(j).snapshot=data.data[i].snapshot
             root.cameraList.get(j).intervals=data.data[i].intervals
 
+ root.update_intervals(data.data[i].intervals)
          }
 
  }
@@ -606,7 +607,8 @@ var lcl = root.cameraList.get(j)
      //console.log("videowall: ",data.videowall)
  root.frash_URL(data.videowall)
 
- root.update_intervals(data.data[i].intervals)
+
+
 
 }
 

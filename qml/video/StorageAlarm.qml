@@ -655,17 +655,17 @@ timeline.pause_signal.connect(f_paused)
         cid = id
     }
 
-   function add_storage_camera(id){
- console.log("storage wall: add_storage_camera: ",id)
+    function add_storage_camera(id){
+        console.log("storage wall: add_storage_camera: ",id)
         if(!Axxon.check_id(id)){
-             console.log("return")
+            console.log("return")
             return
         }
-//console.log("++++")
+        //console.log("++++")
 
-    multivm.add_storage_camera(id)
-    multivm.save()
-    cid = id
+        multivm.add_storage_camera(id)
+        multivm.save()
+        cid = id
 
     }
 
@@ -678,13 +678,13 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function  update_vm()    {
-   // console.log("videowall update_vm")
+        // console.log("videowall update_vm")
         var cids =  multivm.get_cids()
         for(var one in cids)
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
-/*
+            /*
             console.log("lcl: ",lcl.id
                         ," "<<lcl.name
                         ," "<<lcl.liveStream
@@ -693,6 +693,7 @@ timeline.pause_signal.connect(f_paused)
                        )
             */
 
+
             if(pause_play==pause)
             {
 
@@ -700,8 +701,9 @@ timeline.pause_signal.connect(f_paused)
                 {
                     //vm.source=lcl.snapshot
 
-                    multivm.vm_start(id,lcl.snapshot,Mode.Snapshot)
-
+                    if(lcl.snapshot){
+                        multivm.vm_start(id,lcl.snapshot,Mode.Snapshot)
+                    }
                 }
                 else
                     if(storage_live==live)
@@ -717,7 +719,9 @@ timeline.pause_signal.connect(f_paused)
                     if(storage_live==storage)
                     {
 
-                        multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                        if(lcl.storageStream){
+                            multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                        }
 
                     }
                     else
@@ -740,7 +744,9 @@ timeline.pause_signal.connect(f_paused)
                             //    vm.start()
 
 
-                            multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+                            if(lcl.livestream){
+                                multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+                            }
                         }
 
                 }

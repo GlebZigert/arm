@@ -371,6 +371,10 @@ id: btn_clear_camera
                         md.set_cid_for_uid(-1,vm.uid)
                         md.set_url_for_uid("",vm.uid)
 
+                        vm.cid=-1
+
+                        vvm.set_vm_cid(-1)
+                        vvm.set_vm_source(-1,"")
                     //    findAndSet(cids,vm.uid,"cid",-1)
                     //    findAndSet(cids,vm.uid,"url","")
                         vvm.vm_stop()
@@ -450,7 +454,7 @@ id: btn_clear_camera
                 }
 
                 function vm_start(mode){
-
+console.log(" vm_start(mode)")
                     vvm.vm_start(mode)
                 }
 
@@ -517,8 +521,10 @@ id: btn_clear_camera
                     vvm.uid=model.uid
 
                     set_vm_source(model.cid,model.url)
-                    console.log("Rect ",index," создан; uid: ",uid,"; cid:",vm.cid,"; url:",vm.url)
-                    vvm.vm_start(1)
+                    //console.log("Rect ",index," создан; uid: ",uid,"; cid:",vm.cid,"; url:",vm.url)
+                    if(model.url!=""){
+                    vvm.vm_start(model.cid,model.url,1)
+                    }
 
                 }
 
@@ -733,7 +739,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_start(cid,src,mode){
-       // console.log("vm_start ",cid," ",src," ",mode)
+        console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
@@ -741,6 +747,7 @@ console.log("Multivm add_storage_camera")
             if(lcl==cid){
 
                // console.log("mode ",mode)
+
                 grid.children[i].set_vm_source(cid,src)
                 grid.children[i].vm_start(mode)
 
@@ -834,7 +841,7 @@ console.log("Multivm add_storage_camera")
                       //  console.log("пустой cid ",cid)
                         var serviceId=Axxon.camera(get_cids()[0]).serviceId
 
-                    good.stream_request(md.get_cid_at(0), "higth")
+                    good.stream_request(cid, "higth")
                       //        Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
                  //   }
 /*

@@ -522,13 +522,13 @@ console.log("Key_Down")
                 property int zoom_prev: 0
                 onWheel:
                 {
-                    console.log("onWheel")
+               //     console.log("onWheel")
 
                     var x1=vvm_arrea.containsMouse
                     var x2=supreme.activeFocus
                     var x3=(vm.getMode()===Mode.LiveStreaming)
 
-                    console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",Mode.LiveStreaming)
+                   // console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",Mode.LiveStreaming)
                     if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
 
 
@@ -740,7 +740,7 @@ console.log("Key_Down")
     }
 
     function set_vm_source(cid,src){
-     //   console.log("set_vm_source ",cid," ",src)
+        console.log("set_vm_source ",cid," ",src)
     //    vm.cid=cid
         vm.source=src
     }

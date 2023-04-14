@@ -70,6 +70,7 @@ void Streamer::followers_inc()
 
 void Streamer::followers_dec()
 {
+    int prev=followers;
     if(followers>0){
         followers--;
     }
@@ -83,9 +84,9 @@ void Streamer::followers_dec()
 
 
 
-  //  qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
+   // qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
 
-    if(followers==0){
+    if(followers==0&&prev>0){
 
         no_followers=QDateTime::currentDateTime();
     }
@@ -137,7 +138,7 @@ if(count>25){
 if(!isValid){
 
 startRunner();
- tmrStart->singleShot(delay,this,SLOT(start()));
+// tmrStart->singleShot(delay,this,SLOT(start()));
 }
 }
 
@@ -156,6 +157,7 @@ void Streamer::startRunner()
          qDebug()<<"mm->thread->isFinished() "<<mm->thread->isFinished();
          qDebug()<<"mm->thread->isRunning() "<<mm->thread->isRunning();
          qDebug()<<"mm.clear()-->";
+
      mm.clear();
          qDebug()<<"mm.clear()<--";
      }else{
@@ -190,7 +192,7 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
- //   //qDebug()<<"stop";
+// qDebug()<<"Streamer::stop() "<<mm->runner->get_m_index();
     if(!isValid){
         return;
     }
@@ -198,6 +200,7 @@ void Streamer::stop()
   //  mode = Runner::Mode::TurnOff;
   //  //qDebug()<<"1";
     if(mm){
+    // qDebug()<<"mm->stop();"  ;
     mm->stop();
     }
 

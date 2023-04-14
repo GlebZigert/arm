@@ -40,6 +40,7 @@ MyThread::~MyThread()
 
 void MyThread::stop()
 {
+  //  qDebug()<<"MyThread::stop() "<<runner->m_running;
     runner->go_to_free_state=true;
 }
 

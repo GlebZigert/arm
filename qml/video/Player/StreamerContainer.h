@@ -20,7 +20,7 @@ public:
 
     static void show();
 
-    QTimer timer;
+    QSharedPointer<QTimer> timer;
 
     explicit StreamerContainer(QObject *parent = nullptr);
 
@@ -34,7 +34,7 @@ public:
     static QSharedPointer<Streamer> find(QString url);
 
 public slots:
-    void thread_is_over();
+    static void thread_is_over();
     void on_timer();
 
 signals:

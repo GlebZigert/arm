@@ -50,7 +50,7 @@ public:
 
     static int created;
     static int deleted;
-
+    static int index;
     static int av_codec_open;
     static int av_codec_not_open;
     static int av_codec_close;
