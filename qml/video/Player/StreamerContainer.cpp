@@ -87,8 +87,7 @@ bool flag=true;
             }
 
     if(one.data())
-        if(one.data()->runner)
-            if(one.data()->runner)
+             if(one.data()->runner)
         if(
             //    one.data()->runner->getVideoHeight()>480&&
             //      one.data()->runner->getVideoWidth()>640&&
@@ -212,7 +211,7 @@ connect(timer.data(),
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
 {
 func();
- //   qDebug()<<"--> StreamerContainer::start "<<url;
+    qDebug()<<"--> StreamerContainer::start "<<url;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
@@ -306,10 +305,12 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
 
         if(one.data()->runner)
         if(one.data()->runner->m_running==Runner::Mode::Free){
+            one.data()->runner->m_running=Runner::Mode::Prepare;
             qDebug()<<"нашел свободный "<<one.data()->get_m_index();
             one->setSave(false);
 
             one.data()->runner->URL=url;
+
             one.data()->runner->frash_stream=true;
 
             mutex.unlock();

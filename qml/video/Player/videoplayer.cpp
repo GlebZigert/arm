@@ -257,8 +257,8 @@ void VideoPlayer::lost(QString source)
         qDebug()<<"lost";
         emit connectionChanged(m_connection);
     if(source==this->m_source){
-     //    img=QImage(":/qml/video/no_signal.jpeg");
-  //  this->update();
+        img=QImage(":/qml/video/no_signal.jpeg");
+    this->update();
     }
 
 }

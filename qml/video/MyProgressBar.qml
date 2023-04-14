@@ -200,7 +200,7 @@ Slider {
             rightPadding: 0
 
             onMoved: {
-
+              //  take_a_pause()
                 scroll_timer.stop()
                 scroll_timer.start()
 

@@ -628,7 +628,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_current_camera_update(videowall){
 
-    //    console.log("f_current_camera_update")
+        console.log("f_current_camera_update")
     //    console.log("videowall: ",videowall)
     //    console.log("multivm.vid: ",multivm.vid)
 
@@ -701,9 +701,10 @@ timeline.pause_signal.connect(f_paused)
                 {
                     //vm.source=lcl.snapshot
 
-                    if(lcl.snapshot){
+
+                 //   if(lcl.snapshot){
                         multivm.vm_start(id,lcl.snapshot,Mode.Snapshot)
-                    }
+                 //   }
                 }
                 else
                     if(storage_live==live)
@@ -719,9 +720,9 @@ timeline.pause_signal.connect(f_paused)
                     if(storage_live==storage)
                     {
 
-                        if(lcl.storageStream){
+                    //    if(lcl.storageStream){
                             multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
-                        }
+                    //    }
 
                     }
                     else
@@ -744,9 +745,9 @@ timeline.pause_signal.connect(f_paused)
                             //    vm.start()
 
 
-                            if(lcl.livestream){
+                         //   if(lcl.livestream){
                                 multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
-                            }
+                        //    }
                         }
 
                 }
