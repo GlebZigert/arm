@@ -52,19 +52,20 @@ bool flag=true;
             }
             }
             }
-/*
+
             if(one.data()->runner){
             qDebug()<<"индекс: "<<one.data()->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
                      <<"Подписчики: "<<one.data()->getFollowers()
-                    <<sstr
+                    <<"Хранится: "<<one.data()->getSave()
+                    <<sstr<<" "<<one.data()->getURL()
                        ;}else{
                 qDebug()<<"no runner";
 
             }
-            */
 
-        //    qDebug()<<one.data()->getURL();
+
+
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
         //    qDebug()<<"подписчики: "<<one.data()->getFollowers();
 
@@ -86,6 +87,12 @@ bool flag=true;
             if(one.data()->getURL()==""){
                 one->stop();
             }
+            if(one.data())
+                     if(one.data()->runner)
+                         if(one.data()->runner->m_running==Runner::Mode::Free){
+                             free++;
+                         }
+
 
     if(one.data())
              if(one.data()->runner)
@@ -95,20 +102,23 @@ bool flag=true;
         //        one->mode==2 &&
             one->getFollowers()==0 &&
                 one.data()->runner->m_running==Runner::Mode::Play&&
-                one->runner->getVideoHeight()>480&&
-                  one->runner->getVideoWidth()>640
+                one->runner->getVideoHeight()>600&&
+                  one->runner->getVideoWidth()>800
             ){
 
             auto now = QDateTime::currentDateTime();
                 auto diff = one->no_followers.secsTo(now);
          //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
+                qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one->setSave(false);
                 one->followers_dec();
             }
         }
       }
+
+
 
         QList<QSharedPointer<Streamer>>::iterator it = map.begin();
         while(it != map.end()){
@@ -123,11 +133,11 @@ bool flag=true;
             }
             }
         }
- qDebug()<<"4";
+// qDebug()<<"4";
 
 
         qDebug()<<" ";
-        qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
+        qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных: "<<free;
         qDebug()<<" ";
 }
 
@@ -194,6 +204,7 @@ if(one.data()->runner){
 StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
 qDebug()<<"StreamerContainer::StreamerContainer";
+/*
 timer=QSharedPointer<QTimer>::create();
 
 
@@ -201,16 +212,17 @@ connect(timer.data(),
         &QTimer::timeout
         ,
         [=](){qDebug()<<".";});
-/*
+
     connect(timer.data(),
             SIGNAL(timeout()),
             this,
             SLOT(on_timer()));
 
-    */
+
 
     timer->start(1000);
     qDebug()<<"timer: "<<timer->isActive()<<" "<<timer->isSingleShot();
+    */
 }
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)

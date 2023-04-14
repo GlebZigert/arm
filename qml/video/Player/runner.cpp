@@ -565,7 +565,7 @@ int count=0;
 
            //qDebug()<<"runner "<<m_index<<" mode: "<<get_state();
            if(m_running==Runner::Mode::Play){
-            // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
+           //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
             go_to_free_state=false;
            }
            if(m_running==Runner::Mode::Free){
@@ -582,7 +582,7 @@ int count=0;
             local_mutex.lock();
             m_running=Mode::Prepare;
             frash_stream=0;
-      // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+    //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
 
 
             if(pAVFrame==NULL){
@@ -611,7 +611,7 @@ int count=0;
 
                  m_running=Mode::Play;
                  go_to_free_state=false;
-         // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+        //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }
@@ -632,7 +632,7 @@ int count=0;
         if(m_running==Mode::Play){
            if (!capture()){
             //   count++;
-           //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
+            //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
            //   if(count>1){
                emit lost_connection(URL);
             //      count=0;
