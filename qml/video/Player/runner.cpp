@@ -622,7 +622,7 @@ int count=0;
                 free_settings();
                 free();
                 m_running=Mode::Free;
-            //    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
                 emit lost_connection(URL);
             }else{
 
@@ -638,7 +638,7 @@ int count=0;
 
         if(go_to_free_state){
         go_to_free_state=false;
-                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
         local_mutex.lock();
                     free_settings();
                     free();

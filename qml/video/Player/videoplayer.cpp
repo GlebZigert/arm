@@ -85,7 +85,7 @@ void VideoPlayer::start(Runner::StreamType type)
     streamType=Runner::Nothing;
     if(current){
 
-        if(current.data()->getURL()==m_source && type != Runner::StreamType::Snapshot){
+        if(current.data()->runner->URL==m_source && type != Runner::StreamType::Snapshot){
 
          //   qDebug()<<"это он и  есть";
             return;
