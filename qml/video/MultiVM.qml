@@ -825,9 +825,9 @@ console.log("Multivm add_storage_camera")
 
         if(save){
         saving_on()
-       // console.log("с сохранением")
+        console.log("с сохранением")
         }else{
-       // console.log("без сохранения")
+        console.log("без сохранения")
         }
 
         var ww = width/scale
