@@ -31,10 +31,11 @@ VideoPlayer::~VideoPlayer()
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
-        current->followers_dec();
+
         //qDebug()<<"clear "<<current.data()->getURL();
         current.clear();
         data=NULL;
+        current->followers_dec();
 
     }
 //qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
@@ -94,10 +95,11 @@ void VideoPlayer::start(Runner::StreamType type)
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
-        current->followers_dec();
+
         //qDebug()<<"clear "<<current.data()->getURL();
         current.clear();
         data=NULL;
+        current->followers_dec();
     }
 
 
@@ -148,11 +150,12 @@ void VideoPlayer::stop()
     if(current){
     disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
     disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
-    current->followers_dec();
+
     //qDebug()<<"clear "<<current.data()->getURL();
     current.data()->save=false;
     current.clear();
     data=NULL;
+    current->followers_dec();
 
 
     }

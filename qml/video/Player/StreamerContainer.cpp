@@ -105,7 +105,7 @@ bool flag=true;
              //   qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
-                one.data()->followers_dec();
+                one.data()->stop();
             }
         }
       }
