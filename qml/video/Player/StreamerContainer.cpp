@@ -9,7 +9,7 @@ void StreamerContainer::on_timer()
 timer.stop();
 func();
 show();
-timer.start(1000);
+//timer.start(1000);
 }
 void StreamerContainer::func(){
     int free=0;
