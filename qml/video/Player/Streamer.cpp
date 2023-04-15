@@ -5,6 +5,7 @@ int Streamer::created=0;
 int Streamer::deleted=0;
 Streamer::Streamer(QString URL, enum Runner::StreamType type,QObject *parent) : QObject(parent)
 {
+    qDebug()<<"Streamer::Streamer "<<URL<<" "<<type;
     created++;
     m_index=index++;
 

@@ -33,8 +33,7 @@ class Runner : public QObject
 {
     Q_OBJECT
 
-    // Свойство, управляющее работой потока
-    Q_PROPERTY(int running READ running WRITE setRunning NOTIFY runningChanged)
+
 private:
 
 public:
@@ -53,10 +52,11 @@ public:
 
     enum StreamType
           {
+         Nothing  ,
           Storage,
              Streaming,
-             Snapshot,
-        Nothing
+             Snapshot
+
           };
      Q_ENUMS(StreamType)
 
@@ -67,6 +67,7 @@ public:
         Free,
         Prepare,
         Play,
+        Hold,
         Exit
 
            };
@@ -89,7 +90,7 @@ public:
         qRegisterMetaType<Runner::StreamType>("const Runner::StreamType");
     }
 
-int m_running;
+
     int running() const;
     int count;  // Счётчик, по которому будем ориентироваться на то,
 
@@ -111,7 +112,10 @@ int m_running;
 
     int getVideoHeight() const;
 
+    Runner::Mode get_m_running();
+    void set_m_running(Runner::Mode mode);
 private:
+    Runner::Mode m_running;
     int m_index=-1;
     AVCodecContext *pAVCodecContext;
     AVFrame *pAVFrame, *svFrame;
@@ -146,7 +150,6 @@ bool capture();
 
 signals:
     void finished();    // Сигнал, по которому будем завершать поток, после завершения метода run
-    void runningChanged(bool running);
     void lost_connection(QString URL);
     void new_frame(QString);
     void playing();
@@ -156,7 +159,7 @@ signals:
 
 public slots:
    void run(); // Метод с полезной нагрузкой, который может выполняться в цикле               // что потоки выполняются и работают
-   void setRunning(int running);
+
 
 
 };

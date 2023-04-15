@@ -80,7 +80,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::StreamType type)
 {
-   // qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
+   qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
 
     streamType=Runner::Nothing;
     if(current){
@@ -242,6 +242,11 @@ void VideoPlayer::frame(QString source){
 
     m_connection = true;
     this->update();
+/*
+    if(current->runner->get_m_running()==Runner::Hold){
+    //    stop();
+    }
+    */
     }
 
 }

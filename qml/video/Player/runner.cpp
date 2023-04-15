@@ -32,7 +32,6 @@ created++;
      pFormatCtx = NULL;
 
      param  = NULL;
-     m_index=index++;
 
 }
 
@@ -52,6 +51,11 @@ Runner::Runner(int index, QObject *parent ):Runner(parent)
     pFormatCtx = NULL;
     param  = NULL;
     m_running=Mode::Free;
+
+    frash_stream=false;
+    streamType=Runner::StreamType::Nothing;
+
+    m_index=index;
 }
 
 
@@ -73,6 +77,7 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
 
     frash_stream=true;
     m_running=Mode::Prepare;
+
 
 }
 
@@ -119,10 +124,10 @@ case 4:
      res="Play   ";
 break;
 case 5:
-    res="LiveStreaming";
+    res="Hold";
 break;
 case 6:
-        res="StorageStreaming";
+        res="Exit";
 break;
 case 7:
         res="Snapshot";
@@ -171,6 +176,17 @@ int Runner::getVideoWidth() const
 int Runner::getVideoHeight() const
 {
     return videoHeight;
+}
+
+Runner::Mode Runner::get_m_running()
+{
+    return m_running;
+}
+
+void Runner::set_m_running(Mode mode)
+{
+    qDebug()<<"Runner "<<m_index<<" ::set_m_running "<<mode;
+   m_running=mode;
 }
 
 void Runner::load()
@@ -531,7 +547,7 @@ bool Runner::capture()
            emit new_frame(URL);
 
            if(streamType==StreamType::Snapshot){
-               is_over=true;
+           //    is_over=true;
            }
 /*
            *img=QImage(pAVPicture->data[0],
@@ -564,9 +580,9 @@ int count=0;
 
         if(m_running!=previos){
 
-           //qDebug()<<"runner "<<m_index<<" mode: "<<get_state();
+           qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
            if(m_running==Runner::Mode::Play){
-           //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком: ";//<<URL;
+             qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
             go_to_free_state=false;
            }
            if(m_running==Runner::Mode::Free){
@@ -642,11 +658,29 @@ int count=0;
            //    emit  finished();
 
            }else{
+
                count=0;
+
+               if(streamType==StreamType::Snapshot){
+                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
+                    m_running=Mode::Hold;
+                    /*
+                   go_to_free_state=false;
+                               //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+                   local_mutex.lock();
+                               free_settings();
+                               free();
+                               local_mutex.unlock();
+                               m_running=Mode::Free;
+*/
+               }
+
            }
 
         }
-
+ if(m_running==Mode::Hold){
+     emit new_frame(URL);
+ }
 
 
             QThread::usleep(10);
@@ -719,15 +753,5 @@ free();
 
 
 
-void Runner::setRunning(int running)
-{
-    if (m_running == running){
-        return;
-    }
-    m_running = running;
 
-    //   ////qDebug()<<"Runner::setRunning "<<running;
-
-    emit runningChanged(running);
-}
 

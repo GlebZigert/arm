@@ -6,32 +6,57 @@ static std::mutex mutex;
 
 void StreamerContainer::on_timer()
 {
-  //  qDebug()<<"on_timer";
+    int free=0;
+ //  qDebug()<<"";
     for(auto one : map){
 
+/*
+
         if(one.data())
-                 if(one.data()->runner)
+                 if(one.data()->runner){
+                     if(one.data()->runner){
+                     qDebug()<<"runner: "<<one.data()->runner->get_m_index()
+                            <<" mode: "<<one.data()->runner->get_state()
+                              <<"Подписчики: "<<one.data()->getFollowers()
+                             <<"Хранится: "<<one.data()->getSave()
+                             <<" "<<one.data()->runner->URL
+                                ;}else{
+                         qDebug()<<"no runner";
+
+                     }
+                     */
+
+                     if(one.data())
+                              if(one.data()->runner)
+                                  if(one.data()->runner->get_m_running()==Runner::Mode::Free){
+                                      free++;
+                                  }
+
             if(
                 //    one.data()->runner->getVideoHeight()>480&&
                 //      one.data()->runner->getVideoWidth()>640&&
             //        one->mode==2 &&
                 one->getFollowers()==0 &&
-                    one.data()->runner->m_running==Runner::Mode::Play&&
+                    one.data()->runner->get_m_running()==Runner::Mode::Play&&
                     one->runner->getVideoHeight()>600&&
                       one->runner->getVideoWidth()>800
                 ){
 
                 auto now = QDateTime::currentDateTime();
                     auto diff = one->no_followers.secsTo(now);
-                qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+            //    qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
                 if(diff>2){
-                    qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
+              //      qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
                     qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                     one->setSave(false);
                     one->followers_dec();
                 }
-            }
-    }
+            }}
+   // }
+
+   // qDebug()<<" ";
+   // qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных: "<<free;
+   // qDebug()<<" ";
 }
 void StreamerContainer::func(){
     int free=0;
@@ -88,11 +113,11 @@ bool flag=true;
             */
 
             if(one.data()->runner){
-            qDebug()<<"индекс: "<<one.data()->get_m_index()
+            qDebug()<<"runner: "<<one.data()->runner->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
                      <<"Подписчики: "<<one.data()->getFollowers()
                     <<"Хранится: "<<one.data()->getSave()
-                    <<sstr<<" "<<one.data()->getURL()
+                    <<sstr<<" "<<one.data()->runner->URL
                        ;}else{
                 qDebug()<<"no runner";
 
@@ -123,7 +148,7 @@ bool flag=true;
             }
             if(one.data())
                      if(one.data()->runner)
-                         if(one.data()->runner->m_running==Runner::Mode::Free){
+                         if(one.data()->runner->get_m_running()==Runner::Mode::Free){
                              free++;
                          }
 
@@ -135,7 +160,7 @@ bool flag=true;
             //      one.data()->runner->getVideoWidth()>640&&
         //        one->mode==2 &&
             one->getFollowers()==0 &&
-                one.data()->runner->m_running==Runner::Mode::Play&&
+                one.data()->runner->get_m_running()==Runner::Mode::Play&&
                 one->runner->getVideoHeight()>600&&
                   one->runner->getVideoWidth()>800
             ){
@@ -157,7 +182,7 @@ bool flag=true;
         QList<QSharedPointer<Streamer>>::iterator it = map.begin();
         while(it != map.end()){
             if(it->data()->runner){
-            if(it->data()->runner->m_running == Runner::Mode::Exit &&
+            if(it->data()->runner->get_m_running() == Runner::Mode::Exit &&
                     it->data()->thread->isFinished()&&
                     !it->data()->thread->isRunning()
                     ){
@@ -262,7 +287,7 @@ connect(timer.data(),
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type)
 {
 func();
-  //  qDebug()<<"--> StreamerContainer::start "<<url;
+   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
@@ -272,16 +297,19 @@ func();
   //  if(mode==Runner::Mode::LiveStreaming){
     streamer = find(url);
 
-    if(streamer){
-        qDebug()<<"берем из контейера "<<url;
-    }
+
   //  }
 
-    if(streamer->runner->m_running==Runner::Mode::Free){
-        qDebug()<<"берем из контейера "<<url;
-        streamer->runner->m_running=Runner::Mode::Prepare;
+    if(streamer){
+    if(streamer->runner->get_m_running()==Runner::Mode::Free){
+        qDebug()<<"берем из контейера свободный"<<url;
+        streamer->runner->set_m_running(Runner::Mode::Prepare);
         streamer->runner->URL=url;
+        streamer->runner->streamType=type;
         streamer->runner->frash_stream=true;
+    }else{
+          qDebug()<<"берем из контейера готовый"<<streamer->runner->get_m_index();
+    }
     }
   //  }
 
@@ -333,9 +361,9 @@ void StreamerContainer::delete_free_streamers()
     QList<QSharedPointer<Streamer>>::iterator it = map.begin();
     while(it != map.end()){
         if(it->data()->runner)
-        if(it->data()->runner->m_running == Runner::Mode::Free ){
+        if(it->data()->runner->get_m_running()==Runner::Mode::Free){
 
-                it->data()->runner->m_running=Runner::Mode::Exit;
+                it->data()->runner->set_m_running(Runner::Mode::Exit);
 
             }
 
@@ -363,7 +391,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
     for(auto one : map){
 
         if(one.data()->runner)
-        if(one.data()->runner->m_running==Runner::Mode::Free){
+        if(one.data()->runner->get_m_running()==Runner::Mode::Free){
          //   one.data()->runner->m_running=Runner::Mode::Prepare;
          //   qDebug()<<"нашел свободный "<<one.data()->get_m_index();
          //   one->setSave(false);
