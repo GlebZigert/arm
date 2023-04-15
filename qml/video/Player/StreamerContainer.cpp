@@ -6,57 +6,7 @@ static std::mutex mutex;
 
 void StreamerContainer::on_timer()
 {
-    int free=0;
- //  qDebug()<<"";
-    for(auto one : map){
-
-/*
-
-        if(one.data())
-                 if(one.data()->runner){
-                     if(one.data()->runner){
-                     qDebug()<<"runner: "<<one.data()->runner->get_m_index()
-                            <<" mode: "<<one.data()->runner->get_state()
-                              <<"Подписчики: "<<one.data()->getFollowers()
-                             <<"Хранится: "<<one.data()->getSave()
-                             <<" "<<one.data()->runner->URL
-                                ;}else{
-                         qDebug()<<"no runner";
-
-                     }
-                     */
-
-                     if(one.data())
-                              if(one.data()->runner)
-                                  if(one.data()->runner->get_m_running()==Runner::Mode::Free){
-                                      free++;
-                                  }
-
-            if(
-                //    one.data()->runner->getVideoHeight()>480&&
-                //      one.data()->runner->getVideoWidth()>640&&
-            //        one->mode==2 &&
-                one->getFollowers()==0 &&
-                    one.data()->runner->get_m_running()==Runner::Mode::Play&&
-                    one->runner->getVideoHeight()>600&&
-                      one->runner->getVideoWidth()>800
-                ){
-
-                auto now = QDateTime::currentDateTime();
-                    auto diff = one->no_followers.secsTo(now);
-            //    qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
-                if(diff>2){
-              //      qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
-                    qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
-                    one->setSave(false);
-                    one->followers_dec();
-                }
-            }}
-   // }
-
-   // qDebug()<<" ";
-   // qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных: "<<free;
-   // qDebug()<<" ";
+func();
 }
 void StreamerContainer::func(){
     int free=0;
@@ -286,7 +236,8 @@ connect(timer.data(),
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type)
 {
-func();
+    timer.stop();
+//func();
    qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
@@ -345,13 +296,14 @@ func();
               mutex.unlock();
 
 // qDebug()<<"<-- StreamerContainer::start "<<url;
-    if(streamer)
+              timer.start(10);
+    if(streamer){
         return streamer;
-
+}
 
     return nullptr;
 
-show();
+
 
 }
 
