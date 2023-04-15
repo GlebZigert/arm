@@ -315,7 +315,12 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
   //  qDebug()<<"--> StreamerContainer::find "<<url;
 
     for(auto one : map){
-        if(one.data()->runner->URL==url){
+        if(one.data()->runner->URL==url
+                &&
+                (one.data()->runner->get_m_running()==Runner::Mode::Play||
+                 one.data()->runner->get_m_running()==Runner::Mode::Hold
+                 )
+                ){
             one->setSave(false);
 
 
