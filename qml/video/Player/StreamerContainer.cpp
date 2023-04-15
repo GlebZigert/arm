@@ -167,7 +167,7 @@ void StreamerContainer::show()
 
         if(one.data()->runner){
 
-            if(one.data()->runner->get_m_running()!=Runner::Mode::Free){
+            if(one.data()->runner->get_m_running()==Runner::Mode::Free){
                 free++;
             }
 
