@@ -49,7 +49,7 @@ bool flag=true;
                    <<" mode: "<<one.data()->runner->get_state()
                      <<"Подписчики: "<<one.data()->getFollowers()
                     <<"Хранится: "<<one.data()->getSave()
-                    <<sstr<<" "<<one.data()->runner->URL
+                    <<sstr<<" "//<<one.data()->runner->URL
                        ;}else{
                 qDebug()<<"no runner";
 
