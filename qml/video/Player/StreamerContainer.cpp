@@ -69,7 +69,7 @@ bool flag=true;
 
             qDebug()<<"Хранится: "<<one.data()->getSave()
             <<"runner завершен:" <<one.data()->runner->thread()->isFinished()
-            <<"mode: " <<one.data()->mode
+            <<"mode: " <<one.data()->runner->get_state()
             <<"Finished: " <<one.data()->thread->isFinished()
             <<"Running : " <<one.data()->thread->isRunning();
 
@@ -91,20 +91,20 @@ bool flag=true;
             //    one.data()->runner->getVideoHeight()>480&&
             //      one.data()->runner->getVideoWidth()>640&&
         //        one->mode==2 &&
-            one->getFollowers()==0 &&
+            one.data()->getFollowers()==0 &&
                 one.data()->runner->get_m_running()==Runner::Mode::Play&&
-                one->runner->getVideoHeight()>600&&
-                  one->runner->getVideoWidth()>800
+                one.data()->runner->getVideoHeight()>600&&
+                  one.data()->runner->getVideoWidth()>800
             ){
 
             auto now = QDateTime::currentDateTime();
-                auto diff = one->no_followers.secsTo(now);
+                auto diff = one.data()->no_followers.secsTo(now);
          //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
              //   qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
-              //  qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
-                one->setSave(false);
-                one->followers_dec();
+                qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
+                one.data()->setSave(false);
+                one.data()->followers_dec();
             }
         }
       }
