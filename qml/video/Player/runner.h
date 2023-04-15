@@ -74,7 +74,7 @@ public:
 
     explicit Runner( QObject *parent = nullptr);
         explicit Runner(int index, QObject *parent = nullptr);
-        explicit Runner(int index,AVPicture** data,int *h, int *w, QString URL,Runner::Mode mode, QObject *parent = nullptr);
+        explicit Runner(int index,AVPicture** data,int *h, int *w, QString URL,Runner::StreamType type, QObject *parent = nullptr);
     ~Runner();
     void output();
 

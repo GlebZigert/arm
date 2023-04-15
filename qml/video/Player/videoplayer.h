@@ -32,7 +32,7 @@ public:
     QTimer cleaner;
 
 
-    Q_INVOKABLE void start(Runner::Mode mode);
+    Q_INVOKABLE void start(Runner::StreamType type);
     Q_INVOKABLE void  stop();
     Q_INVOKABLE void  shot();
 

@@ -259,7 +259,7 @@ connect(timer.data(),
 
 }
 
-QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::Mode mode)
+QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type)
 {
 func();
   //  qDebug()<<"--> StreamerContainer::start "<<url;
@@ -273,13 +273,21 @@ func();
     streamer = find(url);
 
     if(streamer){
-    //    qDebug()<<"берем из контейера "<<url;
+        qDebug()<<"берем из контейера "<<url;
+    }
+  //  }
+
+    if(streamer->runner->m_running==Runner::Mode::Free){
+        qDebug()<<"берем из контейера "<<url;
+        streamer->runner->m_running=Runner::Mode::Prepare;
+        streamer->runner->URL=url;
+        streamer->runner->frash_stream=true;
     }
   //  }
 
     if(!streamer){
 
-        streamer=QSharedPointer<Streamer>::create(url,mode);
+        streamer=QSharedPointer<Streamer>::create(url,type);
     //    connect(streamer.data(),SIGNAL(signal_thread_is_over()),&StreamerContainer::thread_is_over));
         if(streamer){
 
@@ -356,13 +364,11 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
 
         if(one.data()->runner)
         if(one.data()->runner->m_running==Runner::Mode::Free){
-            one.data()->runner->m_running=Runner::Mode::Prepare;
+         //   one.data()->runner->m_running=Runner::Mode::Prepare;
          //   qDebug()<<"нашел свободный "<<one.data()->get_m_index();
-            one->setSave(false);
+         //   one->setSave(false);
 
-            one.data()->runner->URL=url;
 
-            one.data()->runner->frash_stream=true;
 
             mutex.unlock();
           //  qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();

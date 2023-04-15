@@ -55,7 +55,7 @@ Runner::Runner(int index, QObject *parent ):Runner(parent)
 }
 
 
-Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)
+Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::StreamType type, QObject *parent)
     :Runner(index)
 {
 ////qDebug()<<"Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)";
@@ -69,6 +69,7 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
     this->URL=URL;
     this->h=h;
     this->w=w;
+    streamType=type;
 
     frash_stream=true;
     m_running=Mode::Prepare;

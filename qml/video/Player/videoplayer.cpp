@@ -78,13 +78,14 @@ void VideoPlayer::setSource(const QString source)
 
 
 
-void VideoPlayer::start(Runner::Mode mode)
+void VideoPlayer::start(Runner::StreamType type)
 {
    // qDebug()<<"VideoPlayer::start "<<m_source<<" "<<mode;
 
+    streamType=Runner::Nothing;
     if(current){
 
-        if(current.data()->getURL()==m_source && mode != Runner::StreamType::Snapshot){
+        if(current.data()->getURL()==m_source && type != Runner::StreamType::Snapshot){
 
          //   qDebug()<<"это он и  есть";
             return;
@@ -109,7 +110,7 @@ void VideoPlayer::start(Runner::Mode mode)
 
 
 
-  current = container->start(m_source,mode);
+  current = container->start(m_source,type);
 
   if(current){
         current->followers_inc();
@@ -117,6 +118,7 @@ void VideoPlayer::start(Runner::Mode mode)
 
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+        streamType=current->runner->streamType;
   }
 
 

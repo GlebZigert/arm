@@ -26,7 +26,7 @@ public:
 
      QList<QSharedPointer<Streamer>> map;
 
-     QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
+     QSharedPointer<Streamer> start(QString url, Runner::StreamType type);
 
      void delete_free_streamers();
 

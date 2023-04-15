@@ -3,13 +3,13 @@
 int Streamer::index = 0;
 int Streamer::created=0;
 int Streamer::deleted=0;
-Streamer::Streamer(QString URL, enum Runner::Mode mode,QObject *parent) : QObject(parent)
+Streamer::Streamer(QString URL, enum Runner::StreamType type,QObject *parent) : QObject(parent)
 {
     created++;
     m_index=index++;
 
     isOver=false;
-    runner = QSharedPointer<Runner>::create(m_index,&data,&h,&w,URL,mode);
+    runner = QSharedPointer<Runner>::create(m_index,&data,&h,&w,URL,type);
     thread = QSharedPointer<QThread>::create();
 
 
@@ -124,6 +124,7 @@ int Streamer::getH() const
 void Streamer::start()
 {
 qDebug()<<"Streamer::start()";
+
 }
 
 

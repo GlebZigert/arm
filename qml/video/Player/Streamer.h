@@ -12,8 +12,10 @@
 class Streamer : public QObject
 {
     Q_OBJECT
+
+
 public:
-    explicit Streamer(QString URL,Runner::Mode mode,QObject *parent = nullptr);
+    explicit Streamer(QString URL,Runner::StreamType type,QObject *parent = nullptr);
     ~Streamer();
 
 
