@@ -15,7 +15,7 @@ void StreamerContainer::func(){
     int free=0;
     int play=0;
     qDebug()<<" ";
-    qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
+    qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
      qDebug()<<" ";
 bool flag=true;
         for(auto one : map){
@@ -126,7 +126,7 @@ bool flag=true;
         }
 // qDebug()<<"4";
         qDebug()<<" ";
-        qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных "<<free;
+        qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
          qDebug()<<" ";
 
 
@@ -241,22 +241,12 @@ func();
     QSharedPointer<Streamer> streamer=nullptr;
 
   //  if(mode==Runner::Mode::LiveStreaming){
-    streamer = find(url);
+    streamer = find(url,type);
 
 
   //  }
 
-    if(streamer){
-    if(streamer->runner->get_m_running()==Runner::Mode::Free){
-        qDebug()<<"берем из контейера свободный"<<url;
-        streamer->runner->set_m_running(Runner::Mode::Prepare);
-        streamer->runner->URL=url;
-        streamer->runner->streamType=type;
-        streamer->runner->frash_stream=true;
-    }else{
-          qDebug()<<"берем из контейера готовый"<<streamer->runner->get_m_index();
-    }
-    }
+
   //  }
 
     if(!streamer){
@@ -320,7 +310,7 @@ void StreamerContainer::delete_free_streamers()
 
 }
 
-QSharedPointer<Streamer> StreamerContainer::find(QString url)
+QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType type)
 {
   //  qDebug()<<"--> StreamerContainer::find "<<url;
 
@@ -330,7 +320,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
 
 
             mutex.unlock();
-       //     qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
+            qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
             return one;
         }
     }
@@ -342,17 +332,20 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url)
          //   one.data()->runner->m_running=Runner::Mode::Prepare;
          //   qDebug()<<"нашел свободный "<<one.data()->get_m_index();
          //   one->setSave(false);
-
+            one.data()->runner->set_m_running(Runner::Mode::Prepare);
+            one.data()->runner->URL=url;
+            one.data()->runner->streamType=type;
+            one.data()->runner->frash_stream=true;
 
 
             mutex.unlock();
-          //  qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
+            qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             return one;
         }
     }
 
 
-//   qDebug()<<"<-- StreamerContainer::find [2]";
+   qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

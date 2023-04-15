@@ -31,7 +31,7 @@ public:
      void delete_free_streamers();
 
 
-     QSharedPointer<Streamer> find(QString url);
+     QSharedPointer<Streamer> find(QString url,Runner::StreamType type);
 
 public slots:
      void thread_is_over();
