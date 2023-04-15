@@ -529,7 +529,7 @@ bool Runner::capture()
 
            emit new_frame(URL);
 
-           if(m_running==Mode::Snapshot){
+           if(streamType==StreamType::Snapshot){
                is_over=true;
            }
 /*

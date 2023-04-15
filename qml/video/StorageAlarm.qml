@@ -703,7 +703,7 @@ timeline.pause_signal.connect(f_paused)
 
 
                  //   if(lcl.snapshot){
-                        multivm.vm_start(id,lcl.snapshot,Mode.Snapshot)
+                        multivm.vm_start(id,lcl.snapshot,StreamType.Snapshot)
                  //   }
                 }
                 else
@@ -721,7 +721,7 @@ timeline.pause_signal.connect(f_paused)
                     {
 
                     //    if(lcl.storageStream){
-                            multivm.vm_start(id,lcl.storageStream,Mode.StorageStreaming)
+                            multivm.vm_start(id,lcl.storageStream,StreamType.Storage)
                     //    }
 
                     }
@@ -744,9 +744,8 @@ timeline.pause_signal.connect(f_paused)
                             //    vm.source=lcl.liveStream
                             //    vm.start()
 
-
                          //   if(lcl.livestream){
-                                multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+                                multivm.vm_start(id,lcl.liveStream,StreamType.Streaming)
                         //    }
                         }
 

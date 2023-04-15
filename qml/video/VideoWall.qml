@@ -785,7 +785,7 @@ Item{
 
             multivm.set_Scale(1);
 
-            multivm.vm_start(id,lcl.liveStream,Mode.LiveStreaming)
+            multivm.vm_start(id,lcl.liveStream, StreamType.Streaming)
 
 
 

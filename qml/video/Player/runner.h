@@ -26,15 +26,9 @@ extern "C"{
     #include <libavutil/hwcontext.h>
 }
 
-/*
-enum mode
-      {
-         turnOff,
-         Streaming,
-         Snapshot
-      };
- Q_ENUMS(mode)
-*/
+
+
+
 class Runner : public QObject
 {
     Q_OBJECT
@@ -55,6 +49,17 @@ public:
     static int av_codec_not_open;
     static int av_codec_close;
 
+    int streamType;
+
+    enum StreamType
+          {
+          Storage,
+             Streaming,
+             Snapshot,
+        Nothing
+          };
+     Q_ENUMS(StreamType)
+
     enum Mode
            {
         TurnOff,
@@ -62,11 +67,6 @@ public:
         Free,
         Prepare,
         Play,
-        LiveStreaming,
-        StorageStreaming,
-        Snapshot,
-        NoSignal,
-        Saving,
         Exit
 
            };
@@ -82,7 +82,11 @@ public:
     QString get_state();
     static void declareQML() {
        qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "Mode");
+         qmlRegisterType<Runner>("MyQMLEnums", 13, 37, "StreamType");
        qRegisterMetaType<Runner::Mode>("const Runner::Mode");
+
+
+        qRegisterMetaType<Runner::StreamType>("const Runner::StreamType");
     }
 
 int m_running;

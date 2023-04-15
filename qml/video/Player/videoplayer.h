@@ -43,6 +43,7 @@ public:
 
     Q_INVOKABLE void  delete_free_streamers();
 
+    int streamType;
 
     AVPicture *data;
     int h;
@@ -53,7 +54,7 @@ public:
     bool m_connection;
 
 
-    Q_INVOKABLE Runner::Mode getMode();
+    Q_INVOKABLE Runner::StreamType getMode();
 
     Q_INVOKABLE int getCid() const;
     void setCid(int newCid);

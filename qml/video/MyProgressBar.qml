@@ -84,7 +84,7 @@ Item {
 
     Timer {
         id: scroll_timer
-        interval: 100; running: false; repeat: false
+        interval: 300; running: false; repeat: false
         onTriggered:
         {
 

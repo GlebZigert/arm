@@ -84,7 +84,7 @@ void VideoPlayer::start(Runner::Mode mode)
 
     if(current){
 
-        if(current.data()->getURL()==m_source && mode != Runner::Mode::Snapshot){
+        if(current.data()->getURL()==m_source && mode != Runner::StreamType::Snapshot){
 
          //   qDebug()<<"это он и  есть";
             return;
@@ -120,7 +120,7 @@ void VideoPlayer::start(Runner::Mode mode)
   }
 
 
-  if(mode==Runner::Mode::Snapshot && current.data()->got_frame){
+  if(streamType==Runner::StreamType::Snapshot && current.data()->got_frame){
 
       data = current.data()->getData();
       w = current.data()->getW();
@@ -193,16 +193,10 @@ void VideoPlayer::delete_free_streamers()
 container->delete_free_streamers();
     }
 
-Runner::Mode VideoPlayer::getMode()
+Runner::StreamType VideoPlayer::getMode()
 {
-    if(!m_connection)
-        return Runner::NoSignal;
 
-    if(current){
-        auto mode = current.data()->mode;
-        return mode;
-    }
-    return Runner::NoSignal;
+    return Runner::StreamType::Nothing;
 }
 
 int VideoPlayer::getCid() const
