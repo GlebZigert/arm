@@ -25,7 +25,7 @@ bool flag=true;
 
             if(one.data()->runner){
             if(one.data()->runner->get_m_running()!=Runner::Mode::Free){
-                free++;
+
             if(one.data()->getFollowers()==0){
          sstr+=" без подписчиков уже ";
          qint64 sec =one->no_followers.secsTo(QDateTime::currentDateTime());
