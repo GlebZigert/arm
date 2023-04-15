@@ -186,7 +186,12 @@ Runner::Mode Runner::get_m_running()
 void Runner::set_m_running(Mode mode)
 {
     qDebug()<<"Runner "<<m_index<<" ::set_m_running "<<mode;
-   m_running=mode;
+    m_running=mode;
+}
+
+bool Runner::check_frame()
+{
+return first_frame_getted;
 }
 
 void Runner::load()
@@ -588,6 +593,7 @@ int count=0;
            if(m_running==Runner::Mode::Free){
              qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
             go_to_free_state=false;
+            first_frame_getted=false;
            }
            previos=m_running;
         }
@@ -658,7 +664,7 @@ int count=0;
            //    emit  finished();
 
            }else{
-
+                first_frame_getted=true;
                count=0;
 
                if(streamType==StreamType::Snapshot){

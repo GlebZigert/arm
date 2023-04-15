@@ -231,7 +231,7 @@ void VideoPlayer::frame(QString source){
     w = current.data()->getW();
     h = current.data()->getH();
 
-
+    if(current->runner->check_frame())
     if(source==this->m_source&&data!=NULL){
 
         cleaner.stop();

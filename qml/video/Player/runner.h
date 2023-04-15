@@ -114,7 +114,11 @@ public:
 
     Runner::Mode get_m_running();
     void set_m_running(Runner::Mode mode);
+    bool check_frame();
 private:
+
+    bool first_frame_getted=false;
+
     Runner::Mode m_running;
     int m_index=-1;
     AVCodecContext *pAVCodecContext;
