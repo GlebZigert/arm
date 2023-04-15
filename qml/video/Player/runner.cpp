@@ -569,7 +569,7 @@ int count=0;
             go_to_free_state=false;
            }
            if(m_running==Runner::Mode::Free){
-           //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+             qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
             go_to_free_state=false;
            }
            previos=m_running;
@@ -631,16 +631,17 @@ int count=0;
 
         if(m_running==Mode::Play){
            if (!capture()){
-            //   count++;
-            //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
-           //   if(count>1){
+               count++;
+                      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
+              if(count>10){
+                  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
                emit lost_connection(URL);
-            //      count=0;
-            //  }
+                  count=0;
+              }
            //    emit  finished();
 
            }else{
-           //    count=0;
+               count=0;
            }
 
         }

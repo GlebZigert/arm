@@ -6,7 +6,7 @@
 #include <QThread>
 #include <QTimer>
 #include "Streamer.h"
-#include "StreamerContainer.h"
+#include "streamercontaineraccesser.h"
 
 class VideoPlayer : public QQuickPaintedItem
 
@@ -30,6 +30,7 @@ public:
 
 
     QTimer cleaner;
+
 
     Q_INVOKABLE void start(Runner::Mode mode);
     Q_INVOKABLE void  stop();
@@ -63,7 +64,7 @@ private:
 
     QImage img;
 
-  //  static StreamerContainer container;
+    QSharedPointer<StreamerContainer> container;
 
     QSharedPointer<Streamer> current = nullptr;
 
@@ -80,6 +81,7 @@ public slots:
     void frame(QString src);
     void lost(QString src);
     void f_clear();
+
 
 };
 

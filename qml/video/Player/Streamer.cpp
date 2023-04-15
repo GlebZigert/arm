@@ -139,6 +139,7 @@ void Streamer::stop()
 {
 
     runner->go_to_free_state=true;
+    countlost=0;
 }
 
 AVPicture *Streamer::getData() const
@@ -160,8 +161,10 @@ void Streamer::lostConnection(QString URL)
 {
 
     qDebug()<<"lostConnection !! "<<URL;
+
     runner->go_to_free_state=true;
     emit lost(URL);
+
 }
 
 void Streamer::m_quit()

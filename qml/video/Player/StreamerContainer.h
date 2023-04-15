@@ -16,25 +16,25 @@ private:
 
 
 public:
-    static void func();
+     void func();
 
-    static void show();
+     void show();
 
-    QSharedPointer<QTimer> timer;
+    QTimer timer;
 
     explicit StreamerContainer(QObject *parent = nullptr);
 
-    static QList<QSharedPointer<Streamer>> map;
+     QList<QSharedPointer<Streamer>> map;
 
-    static QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
+     QSharedPointer<Streamer> start(QString url, Runner::Mode mode);
 
-    static void delete_free_streamers();
+     void delete_free_streamers();
 
 
-    static QSharedPointer<Streamer> find(QString url);
+     QSharedPointer<Streamer> find(QString url);
 
 public slots:
-    static void thread_is_over();
+     void thread_is_over();
     void on_timer();
 
 signals:

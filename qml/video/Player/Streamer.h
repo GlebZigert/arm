@@ -27,7 +27,7 @@ public:
 
     void followers_inc();
     void followers_dec();
-
+int countlost=0;
     int h;
     int w;
 
