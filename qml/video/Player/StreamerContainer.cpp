@@ -66,13 +66,13 @@ bool flag=true;
         //    qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
 
             }
-
+/*
             qDebug()<<"Хранится: "<<one.data()->getSave()
             <<"runner завершен:" <<one.data()->runner->thread()->isFinished()
             <<"mode: " <<one.data()->runner->get_state()
             <<"Finished: " <<one.data()->thread->isFinished()
             <<"Running : " <<one.data()->thread->isRunning();
-
+*/
 
 /*
             if(one.data()->runner->URL==""){
