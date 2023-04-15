@@ -96,6 +96,7 @@ void Streamer::followers_dec()
 
     if(followers==0 && /*mode !=Runner::Mode::LiveStreaming && */save==false ){
        URL.clear();
+
         stop();
     }
 }

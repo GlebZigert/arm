@@ -74,10 +74,11 @@ bool flag=true;
             <<"Running : " <<one.data()->thread->isRunning();
 
 
-
-            if(one.data()->getURL()==""){
+/*
+            if(one.data()->runner->URL==""){
                 one->stop();
             }
+            */
             if(one.data())
                      if(one.data()->runner)
                          if(one.data()->runner->get_m_running()==Runner::Mode::Free){
