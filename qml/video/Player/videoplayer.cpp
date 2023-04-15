@@ -13,7 +13,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     data=NULL;
 
     connect(&cleaner, SIGNAL(timeout()), this, SLOT(f_clear()));
-
+    connect(&timer, SIGNAL(timeout()), this, SLOT(on_timer()));
 
   //  list1=new Streamer(&data,&h,&w);
   //  list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
@@ -254,13 +254,12 @@ void VideoPlayer::frame(QString source){
 void VideoPlayer::lost(QString source)
 {
         stop();
-        m_connection = false;
-        qDebug()<<"lost";
-        emit connectionChanged(m_connection);
+
     if(source==this->m_source){
         img=QImage(":/qml/video/no_signal.jpeg");
     this->update();
     }
+    timer.start(1000);
 
 }
 
@@ -268,6 +267,14 @@ void VideoPlayer::f_clear()
 {
     img=QImage();
     this->update();
+}
+
+void VideoPlayer::on_timer()
+{
+    timer.stop();
+    m_connection = false;
+    qDebug()<<"lost";
+    emit connectionChanged(m_connection);
 }
 
 

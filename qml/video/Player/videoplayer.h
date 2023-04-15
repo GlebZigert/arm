@@ -31,6 +31,8 @@ public:
 
     QTimer cleaner;
 
+    QTimer timer;
+
 
     Q_INVOKABLE void start(Runner::StreamType type);
     Q_INVOKABLE void  stop();
@@ -82,6 +84,7 @@ public slots:
     void frame(QString src);
     void lost(QString src);
     void f_clear();
+    void on_timer();
 
 
 };
