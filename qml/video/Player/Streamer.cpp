@@ -109,6 +109,7 @@ void Streamer::setSave(bool newSave)
 {
    // qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
     save = newSave;
+    no_followers=QDateTime::currentDateTime();
 }
 
 int Streamer::getW() const
