@@ -33,10 +33,10 @@ VideoPlayer::~VideoPlayer()
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
 
         //qDebug()<<"clear "<<current.data()->getURL();
-        current.clear();
+
         data=NULL;
         current->followers_dec();
-
+        current.clear();
     }
 //qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
 }
@@ -97,9 +97,10 @@ void VideoPlayer::start(Runner::StreamType type)
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
 
         //qDebug()<<"clear "<<current.data()->getURL();
-        current.clear();
+
         data=NULL;
         current->followers_dec();
+        current.clear();
     }
 
 
@@ -153,10 +154,10 @@ void VideoPlayer::stop()
 
     //qDebug()<<"clear "<<current.data()->getURL();
     current.data()->save=false;
-    current.clear();
+
     data=NULL;
     current->followers_dec();
-
+    current.clear();
 
     }
      container->func();
