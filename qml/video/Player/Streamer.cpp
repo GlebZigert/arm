@@ -140,7 +140,7 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
-
+    qDebug()<<"Streamer::stop() "<<runner->get_m_index();
     runner->go_to_free_state=true;
     countlost=0;
 }
@@ -164,7 +164,6 @@ void Streamer::lostConnection(QString URL)
 {
 
     qDebug()<<"lostConnection !! "<<URL;
-
     runner->go_to_free_state=true;
     emit lost(URL);
 
