@@ -8,7 +8,7 @@ void StreamerContainer::on_timer()
 {
 timer.stop();
 func();
-show();
+
 //timer.start(1000);
 }
 void StreamerContainer::func(){
@@ -25,6 +25,7 @@ bool flag=true;
 
             if(one.data()->runner){
             if(one.data()->runner->get_m_running()!=Runner::Mode::Free){
+                free++;
             if(one.data()->getFollowers()==0){
          sstr+=" без подписчиков уже ";
          qint64 sec =one->no_followers.secsTo(QDateTime::currentDateTime());
@@ -54,7 +55,7 @@ bool flag=true;
 
             }
 
-/*
+
 
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
         //    qDebug()<<"подписчики: "<<one.data()->getFollowers();
@@ -65,13 +66,13 @@ bool flag=true;
         //    qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
 
             }
-/*
+
             qDebug()<<"Хранится: "<<one.data()->getSave()
             <<"runner завершен:" <<one.data()->runner->thread()->isFinished()
             <<"mode: " <<one.data()->mode
             <<"Finished: " <<one.data()->thread->isFinished()
             <<"Running : " <<one.data()->thread->isRunning();
-*/
+
 
 
             if(one.data()->getURL()==""){
@@ -124,7 +125,9 @@ bool flag=true;
             }
         }
 // qDebug()<<"4";
-
+        qDebug()<<" ";
+        qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных "<<free;
+         qDebug()<<" ";
 
 
 }
@@ -229,7 +232,7 @@ connect(timer.data(),
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type)
 {
     timer.stop();
-//func();
+func();
    qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
