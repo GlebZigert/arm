@@ -37,7 +37,7 @@ class Runner : public QObject
 private:
 
 public:
-
+    QDateTime time;
     bool frash_stream;
     bool go_to_free_state;
 

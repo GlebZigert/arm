@@ -582,7 +582,7 @@ void Runner::run()
 int count=0;
     int previos=0;
     while(m_running!=Mode::Exit){
-
+    time=QDateTime::currentDateTime();
         if(m_running!=previos){
 
            qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;

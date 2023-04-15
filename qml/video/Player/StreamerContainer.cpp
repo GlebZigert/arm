@@ -48,8 +48,9 @@ bool flag=true;
             qDebug()<<"runner: "<<one.data()->runner->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
                      <<"Подписчики: "<<one.data()->getFollowers()
-                    <<"Хранится: "<<one.data()->getSave()
-                    <<sstr<<" "//<<one.data()->runner->URL
+                    <<" time: "<<one.data()->runner->time.secsTo(QDateTime::currentDateTime())
+                  //  <<"Хранится: "<<one.data()->getSave()
+                  //  <<sstr<<" "//<<one.data()->runner->URL
                        ;}else{
                 qDebug()<<"no runner";
 
