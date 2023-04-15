@@ -633,6 +633,26 @@ Row {
         }
     }
 
+     QQC1.Button{
+
+        width: 40
+        height: 40
+        id: scale_rectangle
+
+        style: ButtonStyle {
+
+            label: Image {
+
+                source:"grid.png"
+                fillMode: Image.PreserveAspectFit  // ensure it fits
+            }
+        }
+
+        onClicked: {
+           signal_scale()
+
+    }
+    }
 
     Rectangle {
 
@@ -735,26 +755,6 @@ Row {
 
 
 
-    QQC1.Button{
-
-       width: 40
-       height: 40
-       id: scale_rectangle
-
-       style: ButtonStyle {
-
-           label: Image {
-
-               source:"grid.png"
-               fillMode: Image.PreserveAspectFit  // ensure it fits
-           }
-       }
-
-       onClicked: {
-          signal_scale()
-
-   }
-   }
 
 
 
@@ -1252,7 +1252,7 @@ function set_to_storage_cameras_text(str){
 function singlewall_edition(){
     to_storage_cameras.visible=false
     scale_rectangle.visible=false
-    scale_rectangle.anchors.right=m_item.right
+ //   scale_rectangle.anchors.right=m_item.right
     scale_rectangle.width=0
 
     fullscreen_signal_rectangle.visible=false
