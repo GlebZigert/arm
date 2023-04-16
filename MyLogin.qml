@@ -72,8 +72,8 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-        //    text: "Начкар"
-            text:"Администратор"
+            text: "Начкар"
+       //    text:"Администратор"
         //  text:"33333"
         //   text:"ИвановИИ"
             //text: "unit"
@@ -88,8 +88,8 @@ Item {
             echoMode: TextInput.Password
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
-           text: "Start7"
-        //      text:"33333"
+        //   text: "Start7"
+              text:"33333"
         //               text:"q1w2e3"
         }
         ///////////////////////////////////////////

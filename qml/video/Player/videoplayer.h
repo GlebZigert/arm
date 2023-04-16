@@ -34,6 +34,8 @@ public:
     QTimer timer;
 
 
+
+
     Q_INVOKABLE void start(Runner::StreamType type);
     Q_INVOKABLE void  stop();
     Q_INVOKABLE void  shot();

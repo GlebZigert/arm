@@ -563,9 +563,9 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     console.log("")
-         console.log("[receive_URL]")
-     console.log("",Date())
+  //   console.log("")
+ //        console.log("[receive_URL]")
+  //   console.log("",Date())
 
     //     console.log(data)
    //      console.log(JSON.stringify(data))
@@ -807,8 +807,8 @@ Axxon.prototype.rebuildTree = function (data) {
             }
         }
 
-        console.log(" ")
-        console.log("cameraList:")
+     //   console.log(" ")
+     //   console.log("cameraList:")
         for(j=0;j< cameraList.count;j++){
 
            root.log(j," ",root.cameraList.get(j).id," ",root.cameraList.get(j).name)
@@ -820,7 +820,7 @@ Axxon.prototype.rebuildTree = function (data) {
         model.clear()
         model.append(list)
         //      root.devices.updated()
-        console.log("cameraList.count: ",cameraList.count)
+   //     console.log("cameraList.count: ",cameraList.count)
         root.cameraList.updated()
     }
 }

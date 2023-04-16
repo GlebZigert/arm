@@ -86,7 +86,7 @@ void VideoPlayer::setSource(const QString source)
 void VideoPlayer::start(Runner::StreamType type)
 {
  //  qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
-
+    timer.stop();
     streamType=Runner::Nothing;
     if(current){
 
@@ -130,29 +130,13 @@ void VideoPlayer::start(Runner::StreamType type)
       //  m_connection=true;
   }
 
-/*
-  if(streamType==Runner::StreamType::Snapshot && current.data()->got_frame){
 
-      data = current.data()->getData();
-      w = current.data()->getW();
-      h = current.data()->getH();
-
-
-          img=QImage(data->data[0],
-                  w,
-                  h,
-                  QImage::Format_RGB32);
-
-          m_connection = true;
-          this->update();
-
-}
-  */
 
 }
 
 void VideoPlayer::stop()
 {
+        timer.stop();
     //qDebug()<<"VideoPlayer::stop()";
     if(current){
     disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
@@ -161,7 +145,7 @@ void VideoPlayer::stop()
     //qDebug()<<"clear "<<current.data()->getURL();
     current.data()->save=false;
 
-    data=NULL;
+ //   data=NULL;
     current->followers_dec();
     current.clear();
 
@@ -197,6 +181,7 @@ void VideoPlayer::saving_off()
 
 void VideoPlayer::clear()
 {
+        timer.stop();
     cleaner.start(1000);
 }
 
@@ -236,7 +221,7 @@ void VideoPlayer::onheightChanged(){
 
 void VideoPlayer::frame(QString source){
 
-    qDebug()<<"VideoPlayer::frame "<<streamType;
+//    qDebug()<<"VideoPlayer::frame "<<streamType;
 
 
     if(current.data()){
@@ -261,6 +246,12 @@ void VideoPlayer::frame(QString source){
 
 
 
+    }
+
+
+    timer.stop();
+    if(streamType!=Runner::StreamType::Snapshot) {
+    timer.start(500);
     }
 
 }
@@ -293,6 +284,7 @@ void VideoPlayer::on_timer()
     qDebug()<<"lost";
     emit connectionChanged(m_connection);
 }
+
 
 
 

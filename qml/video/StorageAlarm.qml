@@ -635,7 +635,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_current_camera_update(videowall){
 
-        console.log("f_current_camera_update")
+   //     console.log("f_current_camera_update")
     //    console.log("videowall: ",videowall)
     //    console.log("multivm.vid: ",multivm.vid)
 
