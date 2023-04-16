@@ -30,25 +30,17 @@ Item{
 
         onTriggered:
         {
-            if(multivm.get_cids().count===0){
-                console.log("videowall_start_timer multivm.get_cids().count===0")
-            return
-            }
+                 console.log("videowall_start_timer ",)
 
-            var serviceId = Axxon.camera(multivm.get_cids()[0]).serviceId
-                 console.log("videowall_start_timer ",serviceId)
-
-                        if(serviceId){
-             base.visible=true
-            multivm.to_next_page()
-            multivm.rescale()
             if(multivm.get_cids().length){
-            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"")
-            }
-            }else{
-          //  start_timer.start(1000);
-            }
 
+
+                if( Axxon.camera(multivm.get_cids()[0]).serviceId){
+            request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"","")
+            }else{
+            start_timer.start(1000)
+            }
+            }
 
 
     }
@@ -660,6 +652,9 @@ Item{
     }
 
     function f_start_timer_start(){
+        base.visible=true
+       multivm.to_next_page()
+       multivm.rescale()
     start_timer.start()
     }
 
