@@ -4,6 +4,7 @@
 Preview::Preview(QQuickItem *parent) :
     QQuickPaintedItem(parent)
 {
+    /*
     timer = new QTimer(this);
     connect(timer, &QTimer::timeout, this, &Preview::onTimer);
     timer->start(30000);
@@ -12,6 +13,7 @@ Preview::Preview(QQuickItem *parent) :
     manager = QSharedPointer<QNetworkAccessManager>::create();
     connect(manager.data(), SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
     manager->get(QNetworkRequest(QUrl(m_URL)));
+    */
 }
 
 QString Preview::readURL() const
@@ -21,24 +23,28 @@ QString Preview::readURL() const
 
 void Preview::setURL(const QString &URL)
 {
+    /*
     timer->stop();
     this->current = QImage();
     update();
     m_URL = URL;
     timer->start();
     manager->get(QNetworkRequest(QUrl(m_URL)));
+    */
 }
 
 void Preview::paint(QPainter *painter)
 {
+    /*
     if(!(this->current.isNull())){
     painter->drawImage(QRect(0, 0, width(), height()), this->current);
     }
+    */
 }
 
 void Preview::replyFinished(QNetworkReply *reply)
 {
-
+/*
     if((reply->bytesAvailable())&&(reply->size()>0)){
 //    qDebug()<<" reply->bytesAvailable() : "<<reply->bytesAvailable()<<"; size "<<reply->size();
     this->current.loadFromData(reply->readAll());
@@ -48,21 +54,21 @@ void Preview::replyFinished(QNetworkReply *reply)
        update();
     }
     }
-
+*/
 
 }
 
 void Preview::onWidthChanged(){
-    update();
+  //  update();
 }
 
 void Preview::onheightChanged(){
-    update();
+ //   update();
 }
 
 void Preview::onTimer()
 {
-    manager->get(QNetworkRequest(QUrl(this->m_URL)));
+  //  manager->get(QNetworkRequest(QUrl(this->m_URL)));
 }
 
 
