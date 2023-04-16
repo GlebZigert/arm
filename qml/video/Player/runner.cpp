@@ -254,7 +254,7 @@ bool Runner::load_settings()
     av_dict_set(&options, "buffer_size", "1024000", 0); //Set the cache size, 1080p can increase the value
     av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
     av_dict_set(&options, "stimeout", "400000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
-    av_dict_set(&options, "max_delay", "100", 0); //Set the maximum delay
+    av_dict_set(&options, "max_delay", "1000", 0); //Set the maximum delay
     //   ////qDebug()<<"avformat_open_input -->";
     ////qDebug()<<"av_dict_set<--";
 
@@ -605,7 +605,7 @@ int count=0;
             local_mutex.lock();
             m_running=Mode::Prepare;
             frash_stream=0;
-    //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+       qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
 
 
             if(pAVFrame==NULL){
@@ -634,7 +634,7 @@ int count=0;
 
                  m_running=Mode::Play;
                  go_to_free_state=false;
-        //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+          qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }

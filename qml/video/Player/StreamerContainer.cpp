@@ -43,19 +43,19 @@ bool flag=true;
             }
             }
 
-/*
+
             if(one.data()->runner){
             qDebug()<<"runner: "<<one.data()->runner->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
                      <<"Подписчики: "<<one.data()->getFollowers()
                     <<" time: "<<one.data()->runner->time.secsTo(QDateTime::currentDateTime())
-                  //  <<"Хранится: "<<one.data()->getSave()
-                  //  <<sstr<<" "//<<one.data()->runner->URL
+                    <<"Хранится: "<<one.data()->getSave()
+                    <<sstr<<" "<<one.data()->runner->URL
                        ;}else{
                 qDebug()<<"no runner";
 
             }
-*/
+
 
 
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
@@ -103,7 +103,7 @@ bool flag=true;
                 auto diff = one.data()->no_followers.secsTo(now);
          //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
-             //   qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
+                qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
                 one.data()->stop();

@@ -8,7 +8,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     //qDebug()<<"VideoPlayer::VideoPlayer";
     container = StreamerContainerAccesser::get();
 
-    m_connection = false;
+    m_connection = true;
 
     data=NULL;
 
@@ -81,7 +81,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::StreamType type)
 {
-   qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
+ //  qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
 
     streamType=Runner::Nothing;
     if(current){
