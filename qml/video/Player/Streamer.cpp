@@ -9,6 +9,8 @@ Streamer::Streamer(QString URL, enum Runner::StreamType type,QObject *parent) : 
     created++;
     m_index=index++;
 
+    data=NULL;
+
     isOver=false;
     runner = QSharedPointer<Runner>::create(m_index,&data,&h,&w,URL,type);
     thread = QSharedPointer<QThread>::create();

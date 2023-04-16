@@ -398,6 +398,7 @@ void Runner::free_settings()
    avpicture_free(pAVPicture);
    delete pAVPicture;
       pAVPicture=NULL;
+      *data=NULL;
    ////qDebug()<<"avpicture_free(pAVPicture)<--";
    }
    ////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
@@ -634,6 +635,7 @@ int count=0;
 
                  m_running=Mode::Play;
                  go_to_free_state=false;
+
           //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 

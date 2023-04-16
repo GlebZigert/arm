@@ -44,7 +44,10 @@ VideoPlayer::~VideoPlayer()
 
 void VideoPlayer::paint(QPainter *painter)
 {
-
+    if(current)
+    if(current.data())
+    {
+data = current.data()->getData();
     if(data!=NULL){
  /*   QImage img=QImage(data->data[0],
             w,
@@ -54,6 +57,7 @@ void VideoPlayer::paint(QPainter *painter)
 
     painter->drawImage(QRect(0, 0, this->width(), this->height()), img);
  //   //qDebug()<<"+ "<<this->width()<<" "<<this->height()<<" "<<img.size();
+    }
     }
 
 }
@@ -122,6 +126,7 @@ void VideoPlayer::start(Runner::StreamType type)
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
         streamType=current->runner->streamType;
+        m_connection=true;
   }
 
 
@@ -231,7 +236,9 @@ void VideoPlayer::onheightChanged(){
 void VideoPlayer::frame(QString source){
 
 //    qDebug()<<"VideoPlayer::frame "<<source;
+    if(current.data()){
     data = current.data()->getData();
+    if(data!=NULL){
     w = current.data()->getW();
     h = current.data()->getH();
 
@@ -246,6 +253,8 @@ void VideoPlayer::frame(QString source){
 
     m_connection = true;
     this->update();
+    }
+    }
 /*
     if(current->runner->get_m_running()==Runner::Hold){
     //    stop();
@@ -263,7 +272,9 @@ void VideoPlayer::lost(QString source)
         img=QImage(":/qml/video/no_signal.jpeg");
     this->update();
     }
+    if(!timer.isActive()){
     timer.start(500);
+    }
 
 }
 
@@ -275,6 +286,7 @@ void VideoPlayer::f_clear()
 
 void VideoPlayer::on_timer()
 {
+
     timer.stop();
     m_connection = false;
     qDebug()<<"lost";
