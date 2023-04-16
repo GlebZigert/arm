@@ -50,7 +50,7 @@ Runner::Runner(int index, QObject *parent ):Runner(parent)
     options = NULL;
     pFormatCtx = NULL;
     param  = NULL;
-    m_running=Mode::Free;
+    set_m_running(Mode::Free);
 
     frash_stream=false;
     streamType=Runner::StreamType::Nothing;
@@ -76,7 +76,7 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
     streamType=type;
 
     frash_stream=true;
-    m_running=Mode::Prepare;
+    set_m_running(Mode::Prepare);
 
 
 }
@@ -124,13 +124,13 @@ case 4:
      res="Play   ";
 break;
 case 5:
-    res="Hold";
+    res="Hold    ";
 break;
 case 6:
-        res="Exit";
+    res="Lost    ";
 break;
 case 7:
-        res="Snapshot";
+    res="Exit    ";
 break;
 case 8:
         res="NoSignal";
@@ -159,7 +159,7 @@ int Runner::interrupt_cb(void *ctx)
     if(pl->delay>300000){
            ////qDebug()<<"Interrupt";
         pl->prev=clock();
-        pl->m_running=Mode::TurnOff;
+        pl->set_m_running(Mode::TurnOff);
         emit pl->lost_connection(pl->URL);
 
         return 1;
@@ -185,7 +185,7 @@ Runner::Mode Runner::get_m_running()
 
 void Runner::set_m_running(Mode mode)
 {
-//    qDebug()<<"Runner "<<m_index<<" ::set_m_running "<<mode;
+    qDebug()<<"Runner "<<m_index<<" ::set_m_running "<<mode;
     m_running=mode;
 }
 
@@ -564,7 +564,7 @@ bool Runner::capture()
 
 
            if(m_running==mode::Snapshot){
-               m_running=mode::doNothing;
+               set_m_running(Mode::doNothing;
            }
 */
 
@@ -580,23 +580,23 @@ bool Runner::capture()
 void Runner::run()
 {
     ////qDebug()<<"RUN "<<m_index;
-int count=0;
+    int count=0;
     int previos=0;
     while(m_running!=Mode::Exit){
-    time=QDateTime::currentDateTime();
+        time=QDateTime::currentDateTime();
         if(m_running!=previos){
 
-           //qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
-           if(m_running==Runner::Mode::Play){
-             //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
-            go_to_free_state=false;
-           }
-           if(m_running==Runner::Mode::Free){
-             //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
-            go_to_free_state=false;
-            first_frame_getted=false;
-           }
-           previos=m_running;
+            qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
+            if(m_running==Runner::Mode::Play){
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
+                go_to_free_state=false;
+            }
+            if(m_running==Runner::Mode::Free){
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+                go_to_free_state=false;
+                first_frame_getted=false;
+            }
+            previos=m_running;
         }
         //   //////qDebug()<<"mode "<<m_running;
 
@@ -604,94 +604,93 @@ int count=0;
         //открыть новый поток
         if(frash_stream){
             local_mutex.lock();
-            m_running=Mode::Prepare;
+            set_m_running(Mode::Prepare);
             frash_stream=0;
-       //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+            qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
 
 
             if(pAVFrame==NULL){
-                //////qDebug()<<"av_frame_alloc()-->";
+                qDebug()<<"av_frame_alloc()-->";
                 pAVFrame = av_frame_alloc();
-                //////qDebug()<<"av_frame_alloc()<--";
+                qDebug()<<"av_frame_alloc()<--";
             }
 
 
-     //////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
+            qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
             if(pAVPicture==NULL){
-                //////qDebug()<<"pAVPicture = new AVPicture()-->";
+                qDebug()<<"pAVPicture = new AVPicture()-->";
                 pAVPicture = new AVPicture();
-                //////qDebug()<<"pAVPicture = new AVPicture()<--";
+                qDebug()<<"pAVPicture = new AVPicture()<--";
             }
-           //////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
+            qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
 
             if (!load_settings()){
 
-                free_settings();
-                free();
-                m_running=Mode::Free;
-                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
-                emit lost_connection(URL);
+                //   free_settings();
+                //   free();
+                //   go_to_free_state=true;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                //     emit lost_connection(URL);
+                set_m_running(Mode::Lost);
             }else{
 
-                 m_running=Mode::Play;
-                 go_to_free_state=false;
+                set_m_running(Mode::Play);
+                go_to_free_state=false;
 
-          //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }
-  local_mutex.unlock();
+            local_mutex.unlock();
 
         }
 
         if(go_to_free_state){
-        go_to_free_state=false;
-                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
-        local_mutex.lock();
-                    free_settings();
-                    free();
-                    local_mutex.unlock();
-                    m_running=Mode::Free;
+            go_to_free_state=false;
+            //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+            local_mutex.lock();
+            free_settings();
+            free();
+            local_mutex.unlock();
+            set_m_running(Mode::Free);
         }
 
         if(m_running==Mode::Play){
-           if (!capture()){
-               count++;
-                      //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
-              if(count>1){
-                  //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
-               emit lost_connection(URL);
-                  count=0;
-              }
-           //    emit  finished();
+            if (!capture()){
+                count++;
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
+                if(count>1){
+                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
+                    m_running==Mode::Lost;
+                    count=0;
+                }
+                //    emit  finished();
 
-           }else{
+            }else{
                 first_frame_getted=true;
-               count=0;
+                count=0;
 
-               if(streamType==StreamType::Snapshot){
-                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
-                    m_running=Mode::Hold;
-                    /*
-                   go_to_free_state=false;
-                               ////qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
-                   local_mutex.lock();
-                               free_settings();
-                               free();
-                               local_mutex.unlock();
-                               m_running=Mode::Free;
-*/
-               }
+                if(streamType==StreamType::Snapshot){
+                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
+                    set_m_running(Mode::Hold);
 
-           }
+                }
+
+            }
 
         }
- if(m_running==Mode::Hold){
-     emit new_frame(URL);
- }
+        if(m_running==Mode::Hold){
+            emit new_frame(URL);
+        }
+        if(m_running==Mode::Lost){
+
+            emit lost_connection(URL);
+        }
 
 
-            QThread::usleep(100);
+
+
+        QThread::usleep(100);
 
     }
 ////qDebug()<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!1";

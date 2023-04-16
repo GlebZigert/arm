@@ -685,20 +685,20 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function  update_vm()    {
-        // console.log("videowall update_vm")
+         console.log("storagealarm update_vm")
         var cids =  multivm.get_cids()
         for(var one in cids)
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
-            /*
+
             console.log("lcl: ",lcl.id
                         ," "<<lcl.name
                         ," "<<lcl.liveStream
                         ," "<<lcl.storageStream
                         ," "<<lcl.snapshot
                        )
-            */
+
 
 
             if(pause_play==pause)

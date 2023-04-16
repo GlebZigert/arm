@@ -126,10 +126,11 @@ void VideoPlayer::start(Runner::StreamType type)
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
         streamType=current->runner->streamType;
-        m_connection=true;
+        qDebug()<<"streamType = "<<streamType;
+      //  m_connection=true;
   }
 
-
+/*
   if(streamType==Runner::StreamType::Snapshot && current.data()->got_frame){
 
       data = current.data()->getData();
@@ -145,9 +146,9 @@ void VideoPlayer::start(Runner::StreamType type)
           m_connection = true;
           this->update();
 
-
-
 }
+  */
+
 }
 
 void VideoPlayer::stop()
@@ -235,7 +236,9 @@ void VideoPlayer::onheightChanged(){
 
 void VideoPlayer::frame(QString source){
 
-//    qDebug()<<"VideoPlayer::frame "<<source;
+    qDebug()<<"VideoPlayer::frame "<<streamType;
+
+
     if(current.data()){
     data = current.data()->getData();
     if(data!=NULL){
@@ -255,11 +258,9 @@ void VideoPlayer::frame(QString source){
     this->update();
     }
     }
-/*
-    if(current->runner->get_m_running()==Runner::Hold){
-    //    stop();
-    }
-    */
+
+
+
     }
 
 }
