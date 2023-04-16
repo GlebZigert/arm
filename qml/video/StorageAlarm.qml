@@ -38,16 +38,20 @@ Item{
 
     Timer {
         id: start_timer
-        interval: 700; running: false; repeat: false
+        interval: 1000; running: false; repeat: false
 
         onTriggered:
         {
-                 console.log("storagealarm_start_timer")
-            base.visible=true
-             multivm.to_page(0)
-            multivm.rescale()
+                 console.log("storagealarm_start_timer ",)
+
             if(multivm.get_cids().length){
+
+
+                if( Axxon.camera(multivm.get_cids()[0]).serviceId){
             request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"","")
+            }else{
+            start_timer.start(1000)
+            }
             }
 
 
@@ -391,6 +395,9 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function f_start_timer_start(){
+        base.visible=true
+         multivm.to_page(0)
+        multivm.rescale()
     start_timer.start()
     }
     function stream_request(id,quality){
@@ -628,7 +635,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_current_camera_update(videowall){
 
-        console.log("f_current_camera_update")
+   //     console.log("f_current_camera_update")
     //    console.log("videowall: ",videowall)
     //    console.log("multivm.vid: ",multivm.vid)
 
@@ -678,20 +685,20 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function  update_vm()    {
-        // console.log("videowall update_vm")
+         console.log("storagealarm update_vm")
         var cids =  multivm.get_cids()
         for(var one in cids)
         {
             var id=cids[one]
             var lcl=Axxon.camera(id)
-            /*
+
             console.log("lcl: ",lcl.id
                         ," "<<lcl.name
                         ," "<<lcl.liveStream
                         ," "<<lcl.storageStream
                         ," "<<lcl.snapshot
                        )
-            */
+
 
 
             if(pause_play==pause)

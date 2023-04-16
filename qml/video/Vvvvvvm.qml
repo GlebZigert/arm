@@ -734,6 +734,12 @@ console.log("Key_Down")
         }
     }
 
+    function get_connection(){
+    return vm.connection
+    }
+
+
+
     function set_vm_cid(cid){
      //   console.log("set_vm_source ",cid)
        vm.cid=cid

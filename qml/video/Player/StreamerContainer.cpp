@@ -49,13 +49,14 @@ bool flag=true;
                    <<" mode: "<<one.data()->runner->get_state()
                      <<"Подписчики: "<<one.data()->getFollowers()
                     <<" time: "<<one.data()->runner->time.secsTo(QDateTime::currentDateTime())
-                  //  <<"Хранится: "<<one.data()->getSave()
-                  //  <<sstr<<" "//<<one.data()->runner->URL
+                    <<"Хранится: "<<one.data()->getSave()
+                    <<sstr<<" "<<one.data()->runner->URL
                        ;}else{
                 qDebug()<<"no runner";
 
             }
-*/
+            */
+
 
 
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
@@ -103,7 +104,7 @@ bool flag=true;
                 auto diff = one.data()->no_followers.secsTo(now);
          //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
-             //   qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
+                qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
                 one.data()->stop();
@@ -235,7 +236,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 {
     timer.stop();
 func();
-   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
+//   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
@@ -327,7 +328,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
             mutex.unlock();
-            qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
+      //      qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
             return one;
         }
     }
@@ -346,13 +347,13 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
             mutex.unlock();
-            qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
+      //      qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             return one;
         }
     }
 
 
-   qDebug()<<"<-- StreamerContainer::find [2]";
+//   qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

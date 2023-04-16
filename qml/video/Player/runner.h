@@ -68,7 +68,9 @@ public:
         Prepare,
         Play,
         Hold,
-        Exit
+        Lost,
+        Exit,
+
 
            };
            Q_ENUMS(Mode)

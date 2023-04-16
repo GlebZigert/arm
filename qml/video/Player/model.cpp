@@ -302,7 +302,7 @@ QList<int> Model::get_cids()
 
 
 
-        qDebug()<<"return v5; "<<v5;
+      //  qDebug()<<"return v5; "<<v5;
             return v5;
 
             //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
@@ -346,7 +346,7 @@ QList<int> Model::get_all_cids()
 
 
 
-           qDebug()<<"return v5; "<<v5;
+       //    qDebug()<<"return v5; "<<v5;
                return v5;
 
                //    return mdl.value(vid)->list.at(mdl.value(vid)->current_page)->map.keys();
@@ -536,7 +536,7 @@ void Model::load_from_settings()
 
                     auto uid = settings.value("uid").toInt();
                     auto cid =  settings.value("cid").toInt();
-                    auto url = settings.value("url").toString();
+                    auto url = "";//settings.value("url").toString();
 
 
                     mdl.value(vid)->list.at(mdl.value(vid)->list.count()-1)->map.insert(uid,QSharedPointer<Camera>::create());

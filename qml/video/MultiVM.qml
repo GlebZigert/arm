@@ -542,6 +542,11 @@ id: btn_clear_camera
                     vvm.vm_start(model.cid,model.url,1)
                     }
 
+    if(vvm.get_connection()){
+        console.log("no connection")
+     good.stream_request(cid, quality)
+    }
+
                     vvm.return_connection.connect(f_return_connection)
 
                 }
@@ -897,7 +902,7 @@ console.log("Multivm add_storage_camera")
                 var cid = md.get_cid_at(i)
 
                 if(url=="" && cid>-1){
-               //     console.log("пустой cid ",cid)
+                    console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
                          Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
                 }
