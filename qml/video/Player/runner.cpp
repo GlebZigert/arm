@@ -185,7 +185,7 @@ Runner::Mode Runner::get_m_running()
 
 void Runner::set_m_running(Mode mode)
 {
-    qDebug()<<"Runner "<<m_index<<" ::set_m_running "<<mode;
+//    qDebug()<<"Runner "<<m_index<<" ::set_m_running "<<mode;
     m_running=mode;
 }
 
@@ -253,7 +253,7 @@ bool Runner::load_settings()
     ////qDebug()<<"av_dict_set-->";
     av_dict_set(&options, "buffer_size", "1024000", 0); //Set the cache size, 1080p can increase the value
     av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
-    av_dict_set(&options, "stimeout", "400000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
+    av_dict_set(&options, "stimeout", "20000000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
     av_dict_set(&options, "max_delay", "1000", 0); //Set the maximum delay
     //   ////qDebug()<<"avformat_open_input -->";
     ////qDebug()<<"av_dict_set<--";
@@ -578,26 +578,26 @@ bool Runner::capture()
 
 void Runner::run()
 {
-    //qDebug()<<"RUN "<<m_index;
+    ////qDebug()<<"RUN "<<m_index;
 int count=0;
     int previos=0;
     while(m_running!=Mode::Exit){
     time=QDateTime::currentDateTime();
         if(m_running!=previos){
 
-           qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
+           //qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
            if(m_running==Runner::Mode::Play){
-             qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
+             //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
             go_to_free_state=false;
            }
            if(m_running==Runner::Mode::Free){
-             qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+             //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
             go_to_free_state=false;
             first_frame_getted=false;
            }
            previos=m_running;
         }
-        //   ////qDebug()<<"mode "<<m_running;
+        //   //////qDebug()<<"mode "<<m_running;
 
 
         //открыть новый поток
@@ -605,36 +605,36 @@ int count=0;
             local_mutex.lock();
             m_running=Mode::Prepare;
             frash_stream=0;
-       qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+       //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
 
 
             if(pAVFrame==NULL){
-                ////qDebug()<<"av_frame_alloc()-->";
+                //////qDebug()<<"av_frame_alloc()-->";
                 pAVFrame = av_frame_alloc();
-                ////qDebug()<<"av_frame_alloc()<--";
+                //////qDebug()<<"av_frame_alloc()<--";
             }
 
 
-     ////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
+     //////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
             if(pAVPicture==NULL){
-                ////qDebug()<<"pAVPicture = new AVPicture()-->";
+                //////qDebug()<<"pAVPicture = new AVPicture()-->";
                 pAVPicture = new AVPicture();
-                ////qDebug()<<"pAVPicture = new AVPicture()<--";
+                //////qDebug()<<"pAVPicture = new AVPicture()<--";
             }
-           ////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
+           //////qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
 
             if (!load_settings()){
 
                 free_settings();
                 free();
                 m_running=Mode::Free;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
                 emit lost_connection(URL);
             }else{
 
                  m_running=Mode::Play;
                  go_to_free_state=false;
-          qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+          //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }
@@ -644,7 +644,7 @@ int count=0;
 
         if(go_to_free_state){
         go_to_free_state=false;
-                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
         local_mutex.lock();
                     free_settings();
                     free();
@@ -655,9 +655,9 @@ int count=0;
         if(m_running==Mode::Play){
            if (!capture()){
                count++;
-                      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
-              if(count>10){
-                  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
+                      //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
+              if(count>1){
+                  //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
                emit lost_connection(URL);
                   count=0;
               }
@@ -668,11 +668,11 @@ int count=0;
                count=0;
 
                if(streamType==StreamType::Snapshot){
-                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
+                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
                     m_running=Mode::Hold;
                     /*
                    go_to_free_state=false;
-                               //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+                               ////qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
                    local_mutex.lock();
                                free_settings();
                                free();
@@ -689,10 +689,10 @@ int count=0;
  }
 
 
-            QThread::usleep(10);
+            QThread::usleep(100);
 
     }
-//qDebug()<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!1";
+////qDebug()<<"!!!!!!!!!!!!!!!!!!!!!!!!!!!1";
 emit  finished();
     /*
     //   ////qDebug()<<QDateTime::currentDateTime()<<"Runner::run()";

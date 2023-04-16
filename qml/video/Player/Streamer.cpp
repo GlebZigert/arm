@@ -44,7 +44,7 @@ Streamer::~Streamer()
 
 int Streamer::getFollowers() const
 {
-
+ //    qDebug()<<"runner "<<runner->get_m_index()<<" get followers: "<<followers;
     return followers;
 }
 
@@ -66,17 +66,18 @@ int Streamer::get_m_index() const
 void Streamer::followers_inc()
 {
     followers++;
-    qDebug()<<"runner "<<runner->get_m_index()<<"followers "<<followers;
+//    qDebug()<<"runner "<<runner->get_m_index()<<"inc: followers "<<followers;
     frash_follower_time = QDateTime::currentDateTime();
 }
 
 void Streamer::followers_dec()
 {
+
     int prev=followers;
     if(followers>0){
         followers--;
     }
-     qDebug()<<"runner "<<runner->get_m_index()<<"followers "<<followers;
+//     qDebug()<<"runner "<<runner->get_m_index()<<" dec: followers "<<followers;
 /*
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
@@ -142,7 +143,7 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
-    qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
+  //  qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
     runner->go_to_free_state=true;
     countlost=0;
 }
@@ -165,7 +166,7 @@ void Streamer::receiveFrame(QString URL)
 void Streamer::lostConnection(QString URL)
 {
 
-    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о поетре связи "<<URL;
+    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL;
     runner->go_to_free_state=true;
     emit lost(URL);
 

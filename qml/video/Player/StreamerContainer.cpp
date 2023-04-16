@@ -43,7 +43,7 @@ bool flag=true;
             }
             }
 
-
+/*
             if(one.data()->runner){
             qDebug()<<"runner: "<<one.data()->runner->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
@@ -55,6 +55,7 @@ bool flag=true;
                 qDebug()<<"no runner";
 
             }
+            */
 
 
 
@@ -235,7 +236,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 {
     timer.stop();
 func();
-   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
+//   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
@@ -327,7 +328,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
             mutex.unlock();
-            qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
+      //      qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
             return one;
         }
     }
@@ -346,13 +347,13 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
             mutex.unlock();
-            qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
+      //      qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             return one;
         }
     }
 
 
-   qDebug()<<"<-- StreamerContainer::find [2]";
+//   qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

@@ -263,7 +263,7 @@ void VideoPlayer::lost(QString source)
         img=QImage(":/qml/video/no_signal.jpeg");
     this->update();
     }
-    timer.start(1000);
+    timer.start(500);
 
 }
 
