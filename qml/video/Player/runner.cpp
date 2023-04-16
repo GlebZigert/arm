@@ -13,43 +13,74 @@ static std::mutex local_mutex;
 
 Runner::Runner( QObject *parent) : QObject(parent)
 {
-    //qDebug()<"Runner::Runner( QObject *parent)";
+    qDebug()<<"Runner::Runner( QObject *parent)";
   //  //   //qDebug()<"Runner::Runner( QObject *parent) : QObject(parent)";
     av_log_set_level(AV_LOG_QUIET);
     frash_stream=false;
     go_to_free_state=false;
 
+
+
 created++;
      videoHeight=1920;
      videoWidth=1080;
      pAVCodecContext = NULL;
-     pAVFrame = NULL;
+
      svFrame = NULL;
       pSwsContext = NULL;
      pAVPicture = NULL;
      pAVCodec = NULL;
-        options = NULL;
+     options = NULL;
      pFormatCtx = NULL;
 
      param  = NULL;
+
+     pAVFrame = av_frame_alloc();
+       param = avcodec_parameters_alloc();
+  //  av_init_packet(&packet);
+}
+
+Runner::~Runner()
+{
+//qDebug()<"Runner::~Runner()-->";
+     local_mutex.lock();
+  //  //qDebug()<"DELETE Runner "<<m_index;
+
+    close();
+
+    if(pAVFrame!=NULL){
+        //   //qDebug()<"av_frame_free(&pAVFrame); ";
+        av_frame_unref(pAVFrame);
+    av_frame_free(&pAVFrame);
+    }
+
+    if(options!=NULL){
+//   //qDebug()<"  av_dict_free(&options);";
+        av_dict_free(&options);
+        options=NULL;
+    }
+
+    if(param)   {
+   //   //qDebug()<"  avcodec_parameters_free(&param);";
+   avcodec_parameters_free(&param);
+    }
+  //  //qDebug()<"runner destroyed "<<m_index<<" ";
+    local_mutex.unlock();
+    deleted++;
+    //qDebug()<"Runner::~Runner()<--";
+    //qDebug()<"раннеров  создано: "<<created<<" удалено: "
+     //      <<deleted<<" живут: "
+     //     <<created-deleted;
 
 }
 
 Runner::Runner(int index, QObject *parent ):Runner(parent)
 {
-    //qDebug()<"Runner::Runner(int index, QObject *parent )";
+    qDebug()<<"Runner::Runner(int index, QObject *parent )";
 
     m_running = Mode::Started;
 
-    pAVCodecContext = NULL;
-    pAVFrame = NULL;
-    svFrame = NULL;
-    pSwsContext = NULL;
 
-    pAVCodec = NULL;
-    options = NULL;
-    pFormatCtx = NULL;
-    param  = NULL;
     set_m_running(Mode::Free);
 
     frash_stream=false;
@@ -62,7 +93,7 @@ Runner::Runner(int index, QObject *parent ):Runner(parent)
 Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::StreamType type, QObject *parent)
     :Runner(index)
 {
-//qDebug()<"Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)";
+qDebug()<<"Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner::Mode mode, QObject *parent)";
     videoHeight=1920;
     videoWidth=1080;
 
@@ -81,22 +112,7 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
 
 }
 
-Runner::~Runner()
-{
-//qDebug()<"Runner::~Runner()-->";
-     local_mutex.lock();
-  //  //qDebug()<"DELETE Runner "<<m_index;
 
-    close();
-  //  //qDebug()<"runner destroyed "<<m_index<<" ";
-    local_mutex.unlock();
-    deleted++;
-    //qDebug()<"Runner::~Runner()<--";
-    //qDebug()<"раннеров  создано: "<<created<<" удалено: "
-     //      <<deleted<<" живут: "
-     //     <<created-deleted;
-
-}
 
 
 int Runner::get_m_index() const
@@ -197,7 +213,6 @@ return first_frame_getted;
 void Runner::load()
 {
 
-    pAVFrame = av_frame_alloc();
 
 }
 
@@ -255,13 +270,14 @@ bool Runner::load_settings()
     av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
     av_dict_set(&options, "stimeout", "20000000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
     av_dict_set(&options, "max_delay", "1000", 0); //Set the maximum delay
+    qDebug()<<"runner "<<m_index<<" options: "<<options;
     //   //qDebug()<"avformat_open_input -->";
     //qDebug()<"av_dict_set<--";
 
 
-        //qDebug()<"avformat_open_input-->";
+        qDebug()<<"avformat_open_input-->";
     int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
-    //   //qDebug()<"<-- avformat_open_input";
+   qDebug()<<"<-- avformat_open_input";
     if (error != 0){
 
 
@@ -270,13 +286,14 @@ bool Runner::load_settings()
 
         return false;
     }
+    qDebug()<<"runner "<<m_index<<" pFormatCtx: "<<pFormatCtx;
         //qDebug()<"avformat_open_input<--";
     prev=clock();
     pFormatCtx->interrupt_callback.callback=interrupt_cb;
     pFormatCtx->interrupt_callback.opaque = this;
 
     //qDebug()<"av_init_packet-->";
-    av_init_packet(&packet);
+
     //qDebug()<"av_init_packet<--";
 
     pFormatCtx->probesize = 1000;
@@ -308,8 +325,9 @@ bool Runner::load_settings()
 
     av_dump_format(pFormatCtx, 0, filepath,0);
 
-    param = avcodec_parameters_alloc();
+
     pAVCodecContext = avcodec_alloc_context3(NULL);
+    qDebug()<<"runner "<<m_index<<" pAVCodecContext: "<<pAVCodecContext;
     pAVCodec = avcodec_find_decoder(pFormatCtx->streams[videoindex]->codec->codec_id);
 
     prev=clock();
@@ -346,7 +364,8 @@ bool Runner::load_settings()
      }
  //qDebug()<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
     pSwsContext = sws_getContext(videoWidth,videoHeight,pAVCodecContext->pix_fmt,videoWidth,videoHeight,AV_PIX_FMT_RGB32,SWS_BICUBIC,0,0,0);
- //qDebug()<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
+    qDebug()<<"runner "<<m_index<<" pSwsContext: "<<pSwsContext;
+    //qDebug()<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
 //    AVBufferRef *hw_device_ctx = NULL;
 //   //qDebug()<"vdpau: "<< av_hwdevice_ctx_create(&hw_device_ctx,  AV_HWDEVICE_TYPE_VDPAU, NULL, NULL, 0);
  //  //qDebug()<"vaapi: "<<  av_hwdevice_ctx_create(&hw_device_ctx,  AV_HWDEVICE_TYPE_VAAPI, NULL, NULL, 0);
@@ -370,8 +389,7 @@ bool Runner::load_settings()
     }
 av_codec_open++;
     int y_size = pAVCodecContext->width * pAVCodecContext->height;
-    //   //qDebug()<"y_size "<<y_size;
-//    av_new_packet(packet, y_size);
+
     prev=clock();
 
 
@@ -381,17 +399,7 @@ av_codec_open++;
 
 void Runner::free_settings()
 {
-    //  if(packet->buf){
-    /*
-    if(packet){
-        //   //qDebug()<"av_packet_unref(packet);";
 
-     av_packet_unref(packet);
-    }
-    */
-   //   }
-   //   if(packet->buf){
-    //qDebug()<"pAVPicture: "<<(pAVPicture==NULL);
 
    if(pAVPicture!=NULL){
     //qDebug()<"avpicture_free(pAVPicture)-->";
@@ -401,20 +409,7 @@ void Runner::free_settings()
       *data=NULL;
    //qDebug()<"avpicture_free(pAVPicture)<--";
    }
-   //qDebug()<"pAVPicture: "<<(pAVPicture==NULL);
-/*
-   //qDebug()<"? "<<(pAVPicture==NULL);
-      if(pAVPicture!=NULL){
-             //qDebug()<"avpicture_free(pAVPicture)-->";
-             //qDebug()<"? "<<(pAVPicture==NULL);
-      avpicture_free(pAVPicture);
-         //qDebug()<"? "<<(pAVPicture==NULL);
-      delete pAVPicture;
-         pAVPicture=NULL;
-            //qDebug()<"? "<<(pAVPicture==NULL);
-      //qDebug()<"avpicture_free(pAVPicture)<--";
-      }
-      */
+
 
  //qDebug()<"freeSettings --> ";
     //qDebug()<"pFormatContext "<<&pFormatCtx<<" "<<(pFormatCtx==NULL);
@@ -442,19 +437,12 @@ void Runner::free_settings()
 
  //qDebug()<"options "<<(options==NULL);
 
-      if(options!=NULL){
-  //   //qDebug()<"  av_dict_free(&options);";
-          av_dict_free(&options);
-          options=NULL;
-      }
+
 
 
        //qDebug()<"param "<<(param==NULL);
 
-       if(param)   {
-      //   //qDebug()<"  avcodec_parameters_free(&param);";
-      avcodec_parameters_free(&param);
-       }
+
 
              //qDebug()<"pAVCodecContext "<<(pAVCodecContext==NULL);
 
@@ -475,12 +463,8 @@ void Runner::free()
     av_free(packet);
     }
     */
-  //qDebug()<"pAVFrame "<<(pAVFrame==NULL);
-    if(pAVFrame!=NULL){
-        //   //qDebug()<"av_frame_free(&pAVFrame); ";
-        av_frame_unref(pAVFrame);
-    av_frame_free(&pAVFrame);
-    }
+
+
 
 
   //qDebug()<"pSwsContext "<<(pSwsContext==NULL);
@@ -523,12 +507,7 @@ bool Runner::capture()
 
    if (got_frame==1){
 
-    //    //qDebug()<"fmt "<<pAVFrame->format;
-   //    if(pAVFrame->format == AV_PIX_FMT_VDPAU){
-   //     //qDebug()<"AV_PIX_FMT_VDPAU";
-  //     }else{
 
-     //  av_hwfame_transfer_data(svFrame, pAVFrame, 0);
            sws_scale(pSwsContext,
                     (const uint8_t* const *)pAVFrame->data,
                     pAVFrame->linesize,
@@ -607,13 +586,6 @@ void Runner::run()
             set_m_running(Mode::Prepare);
             frash_stream=0;
             //qDebug()<QDateTime::currentDateTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
-
-
-            if(pAVFrame==NULL){
-                //qDebug()<"av_frame_alloc()-->";
-                pAVFrame = av_frame_alloc();
-                //qDebug()<"av_frame_alloc()<--";
-            }
 
 
             //qDebug()<"pAVPicture: "<<(pAVPicture==NULL);
