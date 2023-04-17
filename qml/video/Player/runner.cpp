@@ -572,7 +572,7 @@ void Runner::run()
 
             //qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
             if(m_running==Runner::Mode::Play){
-                qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
+                //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
                 go_to_free_state=false;
             }
             if(m_running==Runner::Mode::Free){
@@ -610,7 +610,7 @@ void Runner::run()
 
         //открыть новый поток
         if(frash_stream){
-            qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+            //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
             local_mutex.lock();
             set_m_running(Mode::Prepare);
             frash_stream=0;

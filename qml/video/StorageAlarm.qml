@@ -412,7 +412,7 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-        console.log("storageAlarm stream_request ",id," ",quality)
+      //  console.log("storageAlarm stream_request ",id," ",quality)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
@@ -699,7 +699,7 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function  update_vm()    {
-         console.log("storagealarm update_vm")
+     //    console.log("storagealarm update_vm")
         accesser.start()
         var cids =  multivm.get_cids()
         for(var one in cids)

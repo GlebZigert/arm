@@ -543,7 +543,7 @@ id: btn_clear_camera
                     }
 
     if(vvm.get_connection()){
-        console.log("no connection")
+     //   console.log("no connection")
      good.stream_request(cid, quality)
     }
 
@@ -966,7 +966,7 @@ console.log("Multivm add_storage_camera")
 
     function add_camera(id,alarm){
 
-        console.log("add_camera ",id)
+     //   console.log("add_camera ",id)
         /*
         var fl=true
         for(var i=0;i<cids.count;i++){

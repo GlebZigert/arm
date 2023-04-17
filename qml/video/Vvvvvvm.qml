@@ -746,7 +746,7 @@ console.log("Key_Down")
 
         var lcl = vm.getCid()
 
-        console.log("lcl: ",lcl)
+       // console.log("lcl: ",lcl)
 
     }
 

@@ -126,7 +126,7 @@ void VideoPlayer::start(Runner::StreamType type)
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
         streamType=current->runner->streamType;
-        qDebug()<<"streamType = "<<streamType;
+      //  qDebug()<<"streamType = "<<streamType;
       //  m_connection=true;
   }
 

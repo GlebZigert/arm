@@ -46,9 +46,9 @@ root.eventSelected.connect(eventSelected_handler)
     }
 
     function eventSelected_handler(){
-        console.log("OnlyStorageAlarm eventSelected_handler ")
-        console.log("userSettings.videoMode: ",userSettings.videoMode)
-        console.log("root.videopane: ",root.videoPane)
+     //   console.log("OnlyStorageAlarm eventSelected_handler ")
+     //   console.log("userSettings.videoMode: ",userSettings.videoMode)
+     //   console.log("root.videopane: ",root.videoPane)
         if(userSettings.videoMode==1){
             if(root.videoPane>-1){
                 root.activePane=root.videoPane

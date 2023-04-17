@@ -511,7 +511,7 @@ Axxon.prototype.ExecCommand_handler = function (data) {
     return
    }
     root.event_on_camera(id)
-    console.log("userSettings.videomode: ",userSettings.videoMode)
+ //   console.log("userSettings.videomode: ",userSettings.videoMode)
     if(userSettings.videoMode==1){
 root.activePane=root.videoPane
     }

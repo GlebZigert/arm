@@ -105,8 +105,8 @@ bool fl=true;
                 auto diff = one.data()->no_followers.secsTo(now);
          //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
-                qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
-                qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
+              //  qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
+              //  qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
                 one.data()->stop();
             }
