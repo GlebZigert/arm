@@ -1050,7 +1050,10 @@ console.log("Multivm add_storage_camera")
 
             var serviceId=Axxon.camera(id).serviceId
 
-            Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc",quality)
+        //    Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc",quality)
+
+        good.stream_request(id,good.quality)
+
         }
 
     function setVid(vvid){
