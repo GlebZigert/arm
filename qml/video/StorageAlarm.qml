@@ -710,7 +710,7 @@ timeline.pause_signal.connect(f_paused)
             var id=cids[one]
             var lcl=Axxon.camera(id)
 
-            console.log("lcl: ","frash ",lcl.frash)
+       //     console.log("lcl: ","frash ",lcl.frash)
                if(lcl.frash){
 
               Axxon.clear_frash(lcl.id)

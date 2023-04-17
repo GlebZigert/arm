@@ -30,6 +30,7 @@ public:
 
      void delete_free_streamers();
 
+     bool flag=false;
 
      QSharedPointer<Streamer> find(QString url,Runner::StreamType type);
 

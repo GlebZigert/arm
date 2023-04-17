@@ -123,7 +123,7 @@ for (var i = 0; i < events.length; i++) {
             root.log("DeviceId: ",globalDeviceId," root.cameraList[i].: ",root.cameraList.get(j).id)
             if(globalDeviceId==root.cameraList.get(j).id){
 
-                root.log("[PROFIT]")
+
                 root.cameraList.get(j).mapState="alarm"
                 root.cameraList.get(j).color="red"
                 root.cameraList.get(j).display="blink"
@@ -167,7 +167,7 @@ for (var i = 0; i < events.length; i++) {
              root.log("DeviceId: ",globalDeviceId," root.cameraList[i].axxon_id: ",root.cameraList.get(j).id)
              if(globalDeviceId==root.cameraList.get(j).id){
 
-                 root.log("[PROFIT !!!]")
+
 
             //     root.cameraList.get(j).stickyState=false
                  root.cameraList.get(j).mapState=data[i].state
@@ -206,7 +206,7 @@ for (var i = 0; i < events.length; i++) {
                 root.log("DeviceId: ",globalDeviceId," root.cameraList[i].: ",root.cameraList.get(j).id)
                 if(globalDeviceId==root.cameraList.get(j).id){
 
-                    root.log("[PROFIT !!!]")
+
 
                     root.cameraList.get(j).stickyState=false
 
@@ -272,7 +272,7 @@ root.log(data.objects[i])
             root.log(x.point)
             if(x.point==point)
             {
-            root.log("PROFIT !!!")
+
                 var id=x.id
             root.log("x.id: ",id)
             root.log("this.serviceId: ",this.serviceId)
@@ -980,7 +980,7 @@ function clear_frash(id){
                 )
                 */
     if(root.cameraList.get(i).id===id){
-      console.log("PROFIT")
+
   root.cameraList.get(i).frash=false
     }
     }

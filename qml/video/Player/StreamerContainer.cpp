@@ -18,7 +18,7 @@ void StreamerContainer::func(){
   //  qDebug()<<" ";
   //  qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
   //   qDebug()<<" ";
-bool flag=true;
+bool fl=true;
         for(auto one : map){
 
 
@@ -130,7 +130,10 @@ bool flag=true;
         }
 // qDebug()<<"4";
    //     qDebug()<<" ";
-   //     qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
+        if(flag==true){
+            flag=false;
+        qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
+        }
    //      qDebug()<<" ";
 
 
@@ -142,10 +145,10 @@ void StreamerContainer::show()
     qDebug()<<" ";
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
     qDebug()<<" ";
-    bool flag=true;
+    bool fl=true;
     for(auto one : map){
-        if(flag){
-            flag=false;
+        if(fl){
+            fl=false;
             qDebug()<<"стримеров создано: "<<one.data()->created<<" удалено: "
                    <<one.data()->deleted<<" живут: "
                   <<one.data()->created-one.data()->deleted;
@@ -285,6 +288,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
               mutex.unlock();
 
 // qDebug()<<"<-- StreamerContainer::start "<<url;
+              flag=true;
               timer.start(100);
     if(streamer){
         return streamer;
