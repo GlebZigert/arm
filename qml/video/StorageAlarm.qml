@@ -4,6 +4,7 @@ import MyQMLEnums 13.37
 import QtQuick.Layouts 1.5
 import QtQuick.Controls 2.4
 import QtQuick.Controls 1.4
+import StreamerContainer_QML_accesser 1.0
 Item{
     id: base
     anchors.fill: parent
@@ -27,6 +28,10 @@ Item{
 
     signal switch_tlmtr
    // visible: false
+
+    StreamerContainer_QML_accesser{
+    id: accesser
+    }
 
     onVisibleChanged: {
 
@@ -686,6 +691,7 @@ timeline.pause_signal.connect(f_paused)
 
     function  update_vm()    {
          console.log("storagealarm update_vm")
+        accesser.start()
         var cids =  multivm.get_cids()
         for(var one in cids)
         {

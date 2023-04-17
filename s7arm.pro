@@ -16,6 +16,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         main.cpp \
         printer.cpp \
+        qml/video/Player/Streamercontainer_qml_accesser.cpp \
         qml/video/Player/streamercontaineraccesser.cpp
 !win32 {
     SOURCES += \
@@ -41,6 +42,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     printer.h \
+    qml/video/Player/Streamercontainer_qml_accesser.h \
     qml/video/Player/streamercontaineraccesser.h
 
 !win32 {

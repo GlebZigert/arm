@@ -10,6 +10,7 @@
 #include "qml/video/Player/model.h"
 #include "qml/video/Preview/Preview.h"
 #include "qml/video/Player/runner.h"
+#include "qml/video/Player/Streamercontainer_qml_accesser.h"
 #endif
 
 
@@ -27,6 +28,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<Preview>("Preview",1,0,"Preview");
     qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
     qmlRegisterType<Model>("Model",1,0,"Model");
+    qmlRegisterType<StreamerContainer_QML_accesser>("StreamerContainer_QML_accesser",1,0,"StreamerContainer_QML_accesser");
 
     Runner::declareQML();
     #endif

@@ -15,9 +15,9 @@ timer.start(1000);
 void StreamerContainer::func(){
     int free=0;
     int play=0;
-    qDebug()<<" ";
-    qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
-     qDebug()<<" ";
+  //  qDebug()<<" ";
+  //  qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
+  //   qDebug()<<" ";
 bool flag=true;
         for(auto one : map){
 
@@ -129,9 +129,9 @@ bool flag=true;
             }
         }
 // qDebug()<<"4";
-        qDebug()<<" ";
-        qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
-         qDebug()<<" ";
+   //     qDebug()<<" ";
+   //     qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
+   //      qDebug()<<" ";
 
 
 }
@@ -237,7 +237,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 {
     timer.stop();
 //func();
-   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
+   qDebug()<<QTime::currentTime()<<" --> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
