@@ -596,8 +596,9 @@ var lcl = root.cameraList.get(j)
             root.cameraList.get(j).storageStream=data.data[i].storageStream
             root.cameraList.get(j).snapshot=data.data[i].snapshot
             root.cameraList.get(j).intervals=data.data[i].intervals
-
+            root.cameraList.get(j).frash=true
  root.update_intervals(data.data[i].intervals)
+
          }
 
  }
@@ -750,6 +751,7 @@ Axxon.prototype.rebuildTree = function (data) {
                     root.cameraList.get(j).mapState =data[i].state
                     root.cameraList.get(j).color =data[i].color
 
+
                 }
 
             }
@@ -777,7 +779,9 @@ Axxon.prototype.rebuildTree = function (data) {
                     snapshot: "",
 
                     intervals: data[i].Intervals,
-                    ipadress: data[i].ipadress
+                    ipadress: data[i].ipadress,
+
+                    frash: true
 
 
 
@@ -961,6 +965,26 @@ function get_cids(){
 
     }
     return cids
+
+}
+
+function clear_frash(id){
+
+    for(var i=0;i<root.cameraList.count;i++){
+        /*
+     console.log(root.cameraList.get(i).id
+                 ," "<<root.cameraList.get(i).name
+                 ," "<<root.cameraList.get(i).liveStream
+                 ," "<<root.cameraList.get(i).storageStream
+                 ," "<<root.cameraList.get(i).snapshot
+                )
+                */
+    if(root.cameraList.get(i).id===id){
+      console.log("PROFIT")
+  root.cameraList.get(i).frash=false
+    }
+    }
+
 
 }
 

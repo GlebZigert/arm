@@ -318,7 +318,13 @@ Item{
             //   timeline.set_camera_zone(lcl.name)
 
             multivm.set_current_cid(cid)
-            request_URL(multivm.get_cids(),lcl.serviceId,dt,"higth")
+
+            var res =[]
+            res.push(id)
+
+            request_URL(res,lcl.serviceId,dt,"higth")
+
+
             timeline.set_camera_zone(lcl.name,lcl.ipadress)
 
 
@@ -600,7 +606,10 @@ timeline.pause_signal.connect(f_paused)
 
         storage_live=live
         pause_play=play
-        update_vm()
+
+          var serviceId=Axxon.camera(multivm.get_cids()[0]).serviceId
+        Axxon.request_URL(multivm.vid,multivm.get_cids(), serviceId, timeline.current_dt(),"utc","higth")
+        //update_vm()
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
@@ -695,15 +704,18 @@ timeline.pause_signal.connect(f_paused)
         var cids =  multivm.get_cids()
         for(var one in cids)
         {
+
+
+
             var id=cids[one]
             var lcl=Axxon.camera(id)
 
-            console.log("lcl: ",lcl.id
-                        ," "<<lcl.name
-                        ," "<<lcl.liveStream
-                        ," "<<lcl.storageStream
-                        ," "<<lcl.snapshot
-                       )
+            console.log("lcl: ","frash ",lcl.frash)
+               if(lcl.frash){
+
+              Axxon.clear_frash(lcl.id)
+
+
 
 
 
@@ -763,6 +775,7 @@ timeline.pause_signal.connect(f_paused)
                         }
 
                 }
+        }
         }
         multivm.save()
     }
