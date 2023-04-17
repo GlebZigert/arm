@@ -130,7 +130,7 @@ void VideoPlayer::start(Runner::StreamType type)
       //  m_connection=true;
   }
 
-
+  timer.start(1000);
 
 }
 
@@ -251,7 +251,7 @@ void VideoPlayer::frame(QString source){
 
     timer.stop();
     if(streamType!=Runner::StreamType::Snapshot) {
-    timer.start(500);
+    timer.start(200);
     }
 
 }

@@ -6,8 +6,9 @@ static std::mutex mutex;
 
 void StreamerContainer::on_timer()
 {
-//timer.stop();
+timer.stop();
 func();
+timer.start(1000);
 
 //timer.start(1000);
 }
@@ -236,7 +237,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 {
     timer.stop();
 //func();
-//   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
+   qDebug()<<"--> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
