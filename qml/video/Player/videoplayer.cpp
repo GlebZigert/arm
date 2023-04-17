@@ -130,7 +130,7 @@ void VideoPlayer::start(Runner::StreamType type)
       //  m_connection=true;
   }
 
-  timer.start(1000);
+  timer.start(3000);
 
 }
 
@@ -251,7 +251,7 @@ void VideoPlayer::frame(QString source){
 
     timer.stop();
     if(streamType!=Runner::StreamType::Snapshot) {
-    timer.start(200);
+    timer.start(500);
     }
 
 }
@@ -281,7 +281,9 @@ void VideoPlayer::on_timer()
 
     timer.stop();
     m_connection = false;
-    qDebug()<<"lost";
+
+  //  qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index();
+    stop();
     emit connectionChanged(m_connection);
 }
 

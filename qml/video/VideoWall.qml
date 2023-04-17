@@ -781,28 +781,24 @@ Item{
             var id=cids[one]
             var lcl=Axxon.camera(id)
 
+            if(lcl.frash){
 
-            //    preset_list.clear_model()
-            //    Tlmtr.preset_info()
+           Axxon.clear_frash(lcl.id)
 
-            //   Tlmtr.capture_session()
-            //   timer.start()
 
-            //        v1.tform1.xScale =1
-            //        v1.tform1.yScale =1
+
 
             multivm.set_Scale(1);
 
             multivm.vm_start(id,lcl.liveStream, StreamType.Streaming)
 
-
-
         }
-              multivm.save()
+        }
+        multivm.save()
     }
 
     function rescale(){
-    multivm.rescale()
+        multivm.rescale()
     }
 
 
