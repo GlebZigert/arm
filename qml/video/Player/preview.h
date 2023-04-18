@@ -6,24 +6,31 @@
 #include <QThread>
 #include <QTimer>
 #include "Streamer.h"
+#include "previewcontaineraccesser.h"
+#include <QSharedPointer>
 
 
 class Preview : public QQuickPaintedItem
 {
     Q_OBJECT
 
-    Q_PROPERTY(int cid READ cid WRITE set_cid)
+    Q_PROPERTY(QString url READ url WRITE set_url)
 
 private:
-    int cid_=-1;
+    QString url_= "";
 public:
     Preview();
 
-    int cid();
-    void set_cid(int cid);
+    QString url();
+    void set_url(QString url);
 
     void paint(QPainter *painter) override;
 
+    QSharedPointer<PreviewContainer> container;
+    QSharedPointer<PreviewMaker> maker;
+
+public slots:
+    void get_image();
 
 signals:
 

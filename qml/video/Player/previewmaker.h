@@ -21,13 +21,16 @@ class PreviewMaker : public QQuickItem
 private:
     QString     url_="";
     int cid_=-1;
+    bool flag=true;
 public:
-    PreviewMaker();
+    QImage get_image();
+    PreviewMaker(QString url);
 
     Q_INVOKABLE void start(int cid,QString url);
 
 
     QSharedPointer<Streamer> current = nullptr;
+
 
     AVPicture *data;
 
@@ -38,9 +41,16 @@ public:
     int cid();
     void set_cid(int cid);
 
+    QSharedPointer<StreamerContainer> container;
+
     QImage img;
 
+public slots:
+    void frame(QString URL);
+
 signals:
+
+    void image();
 
 };
 #endif // PREVIEWMAKER_H

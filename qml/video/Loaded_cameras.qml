@@ -73,9 +73,10 @@ Row{
 
     Preview{
     id: image
-    property int mid: modelData.preview_id
+ //   property int mid: modelData.preview_id
     width: 150
     height: 98
+    url: root.cameraList.get(j).livestream_low
 
     }
 

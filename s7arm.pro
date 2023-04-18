@@ -19,6 +19,7 @@ SOURCES += \
         qml/video/Player/Streamercontainer_qml_accesser.cpp \
         qml/video/Player/preview.cpp \
         qml/video/Player/previewcontainer.cpp \
+        qml/video/Player/previewcontaineraccesser.cpp \
         qml/video/Player/previewmaker.cpp \
         qml/video/Player/streamercontaineraccesser.cpp
 !win32 {
@@ -47,6 +48,7 @@ HEADERS += \
     qml/video/Player/Streamercontainer_qml_accesser.h \
     qml/video/Player/preview.h \
     qml/video/Player/previewcontainer.h \
+    qml/video/Player/previewcontaineraccesser.h \
     qml/video/Player/previewmaker.h \
     qml/video/Player/streamercontaineraccesser.h
 
