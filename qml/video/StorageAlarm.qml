@@ -582,12 +582,12 @@ timeline.pause_signal.connect(f_paused)
 
     function f_paused(){
         pause_play=pause
-        multivm.vm_stop()
+      //  multivm.vm_stop()
     }
 
     function f_paused_and_moved_at_dt(){
         pause_play=pause
-        multivm.vm_stop()
+     //   multivm.vm_stop()
         pause_play=pause
         f_moved_at_dt(timeline.current_dt())
     }
@@ -744,7 +744,7 @@ timeline.pause_signal.connect(f_paused)
                 else
                     if(storage_live==live)
                     {
-                        multivm.vm_stop()
+                     //   multivm.vm_stop()
                         //vm.stop()
 
                     }

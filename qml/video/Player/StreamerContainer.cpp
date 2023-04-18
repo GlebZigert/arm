@@ -44,7 +44,7 @@ bool fl=true;
             }
             }
 
-/*
+    if(flag==true){
             if(one.data()->runner){
             qDebug()<<"runner: "<<one.data()->runner->get_m_index()
                    <<" mode: "<<one.data()->runner->get_state()
@@ -56,7 +56,7 @@ bool fl=true;
                 qDebug()<<"no runner";
 
             }
-            */
+          }
 
 
 
@@ -106,7 +106,7 @@ bool fl=true;
          //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
               //  qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
-              //  qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
+                qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
                 one.data()->stop();
             }
@@ -131,8 +131,13 @@ bool fl=true;
 // qDebug()<<"4";
    //     qDebug()<<" ";
         if(flag==true){
+
+
+
             flag=false;
+             qDebug()<<" ";
         qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
+         qDebug()<<" ";
         }
    //      qDebug()<<" ";
 
@@ -330,17 +335,26 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
     QSharedPointer<Streamer> ready;
     QSharedPointer<Streamer> free;
     for(auto one : map){
-        if(one.data()->runner->URL==url
-                &&
-                (one.data()->runner->get_m_running()==Runner::Mode::Play||
-                 one.data()->runner->get_m_running()==Runner::Mode::Hold
-                 )
-                ){
+        if(one.data()->runner->URL==url)
+                {
 qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
             ready = one;
+
+            if(ready->runner->get_m_running()==Runner::Mode::Free){
+                 qDebug()<<"<..";
+                ready.data()->runner->set_m_running(Runner::Mode::Prepare);
+                 qDebug()<<"<..";
+                ready.data()->runner->streamType=type;
+                 qDebug()<<"<..";
+                ready.data()->runner->frash_stream=true;
+                 qDebug()<<"<..";
+
+            }
+ qDebug()<<"<..";
+
             break;
         }
-        if(type!=Runner::StreamType::Streaming && one.data()->runner->get_m_running()==Runner::Mode::Free){
+        if(one.data()->runner->get_m_running()==Runner::Mode::Free){
          //   one.data()->runner->m_running=Runner::Mode::Prepare;
          //   qDebug()<<"нашел свободный "<<one.data()->get_m_index();
          //   one->setSave(false);

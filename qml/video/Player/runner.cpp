@@ -151,11 +151,7 @@ break;
 case 8:
     res="Waiting ";
 break;
-case 9:
-        res="Saving";
-break;
-case 10:
-        res="Exit";
+
 break;
 }
 return res;
@@ -597,7 +593,7 @@ void Runner::run()
 
             }else{
                 frameCnt++;
-                if(frameCnt>100){
+                if(frameCnt>0){
                     if(m_running==Mode::Waiting){
                       qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
                     }
@@ -620,7 +616,7 @@ void Runner::run()
         //открыть новый поток
         if(frash_stream){
             frameCnt=0;
-            //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+            qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
             local_mutex.lock();
             set_m_running(Mode::Prepare);
             frash_stream=0;
@@ -641,7 +637,7 @@ void Runner::run()
                 //   free();
                 //   go_to_free_state=true;
                  local_mutex.unlock();
-                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
                 //     emit lost_connection(URL);
                 set_m_running(Mode::Lost);
             }else{
@@ -650,7 +646,7 @@ void Runner::run()
                 go_to_free_state=false;
                 sleep=false;
                 local_mutex.unlock();
-                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }

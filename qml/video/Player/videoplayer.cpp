@@ -154,8 +154,9 @@ void VideoPlayer::start(Runner::StreamType type)
 void VideoPlayer::stop()
 {
         timer.stop();
-    //qDebug()<<"VideoPlayer::stop()";
+   // qDebug()<<"VideoPlayer::stop() ";
     if(current){
+        qDebug()<<"VideoPlayer::stop() runner "<<current->runner->get_m_index();
     disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
     disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
 
