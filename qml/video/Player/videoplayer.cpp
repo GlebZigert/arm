@@ -14,7 +14,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
     connect(&cleaner, SIGNAL(timeout()), this, SLOT(f_clear()));
     connect(&timer, SIGNAL(timeout()), this, SLOT(on_timer()));
-
+    connect(&wait_for_next, SIGNAL(timeout()), this, SLOT(f_wait_for_next()));
   //  list1=new Streamer(&data,&h,&w);
   //  list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
 
@@ -86,26 +86,11 @@ void VideoPlayer::setSource(const QString source)
 void VideoPlayer::start(Runner::StreamType type)
 {
    qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
+    disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+    next.clear();
     timer.stop();
     streamType=Runner::Nothing;
-    if(current){
 
-        if(current.data()->runner->URL==m_source && type != Runner::StreamType::Snapshot){
-
-         //   qDebug()<<"это он и  есть";
-            return;
-        }
-
-        //если мы уже принимаем поток - нужно от него отписаться
-        disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-        disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
-
-        //qDebug()<<"clear "<<current.data()->getURL();
-
-        data=NULL;
-        current->followers_dec();
-        current.clear();
-    }
 
 
     if(m_source==""){
@@ -117,9 +102,32 @@ void VideoPlayer::start(Runner::StreamType type)
 
 
 
-  current = container->start(m_source,type);
+  next = container->start(m_source,type);
 
-  if(current){
+  if(next){
+      {
+      if(next->runner->get_m_running()==Runner::Mode::Play ||next->runner->get_m_running()==Runner::Mode::Hold){
+      if(current){
+
+          if(current.data()->runner->URL==m_source && type != Runner::StreamType::Snapshot){
+
+           //   qDebug()<<"это он и  есть";
+              return;
+          }
+
+          //если мы уже принимаем поток - нужно от него отписаться
+          disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+          disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
+          //qDebug()<<"clear "<<current.data()->getURL();
+
+          data=NULL;
+          current->followers_dec();
+          current.clear();
+      }
+      current=next;
+      next.clear();
+
         current->followers_inc();
         data = current.data()->getData();
 
@@ -128,6 +136,15 @@ void VideoPlayer::start(Runner::StreamType type)
         streamType=current->runner->streamType;
       //  qDebug()<<"streamType = "<<streamType;
       //  m_connection=true;
+      }else{
+          connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+       //   m_connection = false;
+    //wait_for_next.start(1000);
+      //    emit connectionChanged(m_connection);
+      }
+  }
+
+
   }
 
   timer.start(3000);
@@ -285,6 +302,81 @@ void VideoPlayer::on_timer()
   //  qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index();
     stop();
     emit connectionChanged(m_connection);
+}
+
+void VideoPlayer::f_wait_for_next()
+{
+    next = container->start(m_source,streamType);
+
+    if(next){
+        if(current){
+
+            if(current.data()->runner->URL==m_source && streamType != Runner::StreamType::Snapshot){
+
+             //   qDebug()<<"это он и  есть";
+                return;
+            }
+
+            //если мы уже принимаем поток - нужно от него отписаться
+            disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+            disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
+            //qDebug()<<"clear "<<current.data()->getURL();
+
+            data=NULL;
+            current->followers_dec();
+            current.clear();
+        }
+        current=next;
+        next.clear();
+
+          current->followers_inc();
+          data = current.data()->getData();
+
+          connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+          connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+          streamType=current->runner->streamType;
+        //  qDebug()<<"streamType = "<<streamType;
+        //  m_connection=true;
+    }else{
+        timer.stop();
+        m_connection = false;
+
+      //  qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index();
+        stop();
+        emit connectionChanged(m_connection);
+    }
+}
+
+void VideoPlayer::next_frame(QString src)
+{
+    qDebug()<<"VideoPlayer::next_frame()";
+    disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+    if(current){
+
+
+        //если мы уже принимаем поток - нужно от него отписаться
+        disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+        disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
+        //qDebug()<<"clear "<<current.data()->getURL();
+
+        data=NULL;
+        current->followers_dec();
+        current.clear();
+    }
+    current=next;
+    next.clear();
+
+      current->followers_inc();
+      data = current.data()->getData();
+
+      connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+      connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+      streamType=current->runner->streamType;
+    //  qDebug()<<"streamType = "<<streamType;
+    //  m_connection=true;
+
 }
 
 

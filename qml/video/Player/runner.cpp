@@ -149,7 +149,7 @@ case 7:
     res="Exit    ";
 break;
 case 8:
-        res="NoSignal";
+    res="Waiting ";
 break;
 case 9:
         res="Saving";
@@ -565,41 +565,50 @@ void Runner::run()
     int previos=0;
     int interval=10;
     bool sleep=true;
+    int frameCnt=0;
     while(m_running!=Mode::Exit){
         sleep=true;
         time=QDateTime::currentDateTime();
         if(m_running!=previos){
 
-            //qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
-            if(m_running==Runner::Mode::Play){
-                //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
+            qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
+            if(m_running==Runner::Mode::Waiting){
+                qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
                 go_to_free_state=false;
             }
             if(m_running==Runner::Mode::Free){
-                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
                 go_to_free_state=false;
                 first_frame_getted=false;
             }
             previos=m_running;
         }
         //qDebug()<<"mode "<<m_running;
-        if(m_running==Mode::Play){
+        if(m_running==Mode::Play || m_running==Mode::Waiting){
             if (!capture()){
                 count++;
-                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count;//<<URL;
                 if(count>1){
-                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
+                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: ";//<<URL;
                     m_running==Mode::Lost;
                     count=0;
                 }
                 //    emit  finished();
 
             }else{
+                frameCnt++;
+                if(frameCnt>100){
+                    if(m_running==Mode::Waiting){
+                      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
+                    }
+                m_running=Mode::Play;
+
+                }
                 first_frame_getted=true;
                 count=0;
 
                 if(streamType==StreamType::Snapshot){
-                    //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
+                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
                     set_m_running(Mode::Hold);
 
                 }
@@ -610,6 +619,7 @@ void Runner::run()
 
         //открыть новый поток
         if(frash_stream){
+            frameCnt=0;
             //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
             local_mutex.lock();
             set_m_running(Mode::Prepare);
@@ -636,7 +646,7 @@ void Runner::run()
                 set_m_running(Mode::Lost);
             }else{
 
-                set_m_running(Mode::Play);
+                set_m_running(Mode::Waiting);
                 go_to_free_state=false;
                 sleep=false;
                 local_mutex.unlock();

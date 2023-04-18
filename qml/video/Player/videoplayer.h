@@ -33,7 +33,7 @@ public:
 
     QTimer timer;
 
-
+    QTimer wait_for_next;
 
 
     Q_INVOKABLE void start(Runner::StreamType type);
@@ -47,7 +47,7 @@ public:
 
     Q_INVOKABLE void  delete_free_streamers();
 
-    int streamType;
+    Runner::StreamType streamType;
 
     AVPicture *data;
     int h;
@@ -72,7 +72,7 @@ private:
     QSharedPointer<StreamerContainer> container;
 
     QSharedPointer<Streamer> current = nullptr;
-
+    QSharedPointer<Streamer> next = nullptr;
 
 signals:
     void playing();
@@ -87,8 +87,8 @@ public slots:
     void lost(QString src);
     void f_clear();
     void on_timer();
-
-
+    void f_wait_for_next();
+    void next_frame(QString src);
 };
 
 #endif // VIDEOPLAYER_H

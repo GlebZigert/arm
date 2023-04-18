@@ -291,9 +291,14 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
               flag=true;
               timer.start(100);
     if(streamer){
-        return streamer;
-}
 
+             qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner"<<streamer->runner->get_m_index();
+
+
+        return streamer;
+        }
+
+qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[2]";
     return nullptr;
 
 
@@ -320,7 +325,7 @@ void StreamerContainer::delete_free_streamers()
 
 QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType type)
 {
-  //  qDebug()<<"--> StreamerContainer::find "<<url;
+    qDebug()<<"--> StreamerContainer::find "<<url;
     QSharedPointer<Streamer> wanted;
     QSharedPointer<Streamer> ready;
     QSharedPointer<Streamer> free;
@@ -331,11 +336,11 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
                  one.data()->runner->get_m_running()==Runner::Mode::Hold
                  )
                 ){
-
+qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
             ready = one;
             break;
         }
-        if(one.data()->runner->get_m_running()==Runner::Mode::Free){
+        if(type!=Runner::StreamType::Streaming && one.data()->runner->get_m_running()==Runner::Mode::Free){
          //   one.data()->runner->m_running=Runner::Mode::Prepare;
          //   qDebug()<<"нашел свободный "<<one.data()->get_m_index();
          //   one->setSave(false);
@@ -347,7 +352,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 */
 
 
-      //      qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
+            qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             free = one;
         }
     }
@@ -391,7 +396,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
     }
 
 
-//   qDebug()<<"<-- StreamerContainer::find [2]";
+   qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

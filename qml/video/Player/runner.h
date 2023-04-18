@@ -48,7 +48,7 @@ public:
     static int av_codec_not_open;
     static int av_codec_close;
 
-    int streamType;
+
 
     enum StreamType
           {
@@ -70,11 +70,15 @@ public:
         Hold,
         Lost,
         Exit,
+        Waiting //wait first frame
 
 
            };
-           Q_ENUMS(Mode)
 
+
+
+           Q_ENUMS(Mode)
+    StreamType streamType;
     explicit Runner( QObject *parent = nullptr);
         explicit Runner(int index, QObject *parent = nullptr);
         explicit Runner(int index,AVPicture** data,int *h, int *w, QString URL,Runner::StreamType type, QObject *parent = nullptr);
