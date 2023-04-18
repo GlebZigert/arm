@@ -43,7 +43,7 @@ bool fl=true;
 
             }
             }
-
+/*
     if(flag==true){
             if(one.data()->runner){
             qDebug()<<"runner: "<<one.data()->runner->get_m_index()
@@ -57,7 +57,7 @@ bool fl=true;
 
             }
           }
-
+*/
 
 
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";

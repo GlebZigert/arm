@@ -705,7 +705,9 @@ Item{
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
-           Axxon.request_URL(multivm.vid,res, serviceId, "","utc",quality)
+
+
+          multivm.vm_start(id,lcl.livestream_low,StreamType.Streaming)
     }
 
     function f_clear(){
