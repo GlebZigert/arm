@@ -609,6 +609,8 @@ console.log(" vm_start(mode)")
 
     function add_alarm_camera(id){
 
+
+        console.log("add_alarm_camera")
         md.to_page("Тревоги")
 
           //  cids.clear()
@@ -632,7 +634,7 @@ console.log(" vm_start(mode)")
         }
 
         md.set_scale(1)
-        md.check_the_scale(id,Axxon.camera(id).livestream_low,alarm)
+        md.check_the_scale(id,Axxon.camera(id).livestream_low,true)
          md.save_to_settings()
 
 /*
@@ -648,7 +650,7 @@ console.log(" vm_start(mode)")
             }
             */
 
-
+  rescale(good.scale,true)
 
 
 

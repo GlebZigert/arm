@@ -276,7 +276,7 @@ void VideoPlayer::frame(QString source){
 
 void VideoPlayer::lost(QString source)
 {
-        stop();
+    //     stop();
 
     if(source==this->m_source){
         img=QImage(":/qml/video/no_signal.jpeg");
@@ -301,7 +301,7 @@ void VideoPlayer::on_timer()
     m_connection = false;
 
   //  qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index();
-    stop();
+    //stop();
     emit connectionChanged(m_connection);
 }
 
