@@ -563,21 +563,25 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-  //   console.log("")
+     console.log("")
          console.log("[receive_URL]")
-  //   console.log("",Date())
+    /*
+     console.log("",Date())
 
-    //     console.log(data)
-   //      console.log(JSON.stringify(data))
-  //        console.log(JSON.stringify(data))
-  //    console.log("")
+         console.log(data)
+         console.log(JSON.stringify(data))
+          console.log(JSON.stringify(data))
+      console.log("")
+    */
 
      var i
      for (i in data.data) {
-   //   console.log("id: ", data.data[i].id)
-   //   console.log("liveStream: ", data.data[i].liveStream)
-   //   console.log("storageStream: ", data.data[i].storageStream)
-    //  root.log("snapshot: ", data.data[i].snapshot)
+      console.log("id: ", data.data[i].id)
+      console.log("liveStream: ", data.data[i].liveStream)
+      console.log("storageStream: ", data.data[i].storageStream)
+      console.log("snapshot: ", data.data[i].snapshot)
+
+
    //   root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
 
 
@@ -669,6 +673,7 @@ var i
 
 Axxon.prototype.rebuildTree = function (data) {
 
+    /*
        console.log("")
            console.log("[rebuildTree]")
        console.log("",Date())
@@ -677,7 +682,7 @@ Axxon.prototype.rebuildTree = function (data) {
            console.log(JSON.stringify(data))
             console.log(JSON.stringify(data))
         console.log("")
-
+*/
     var i,
     list = [],
     model = this.model.children
@@ -900,6 +905,11 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
  console.log(" ")
      console.log("request_URL ")
      console.log(" ")
+
+    if(dt=""){
+           console.log("data.dt нулевое      : ",data.dt)
+    return;
+    }
             cameraId+";"+dt+" "+format_dt
     console.log("data.videowall : ",data.videowall)
     console.log("data.cameraId : ",data.cameraId)
@@ -908,6 +918,8 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
     console.log("data.format_dt: ",data.format_dt)
         console.log("data.quality: ",data.quality)
  console.log(" ")
+
+
 
       root.send(serviceId, 'request_URL', data)
 

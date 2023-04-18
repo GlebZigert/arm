@@ -463,7 +463,7 @@ id: btn_clear_camera
                 }
 
                 function vm_start(mode){
-//console.log(" vm_start(mode)")
+console.log(" vm_start(mode)")
                     vvm.vm_start(mode)
                 }
 
@@ -620,6 +620,21 @@ id: btn_clear_camera
 
         md.clear_if_not_alarm()
 
+        for(var i = 0;i < md.get_cids().length;i++){
+          //   console.log("смотрю ",md.get_cid_at(i)," ",id)
+            if(md.get_cid_at(i) === id){
+              var uid =  md.get_uid_at(i)
+                md.set_url_for_uid(uid)
+
+          //     console.log("такая камера уже есть ",id)
+                return
+            }
+        }
+
+        md.set_scale(1)
+        md.check_the_scale(id,Axxon.camera(id).livestream_low,alarm)
+         md.save_to_settings()
+
 /*
             for(var i = 0;i<cids.count; i++){
 
@@ -637,7 +652,7 @@ id: btn_clear_camera
 
 
 
-         add_camera(id,true)
+       //  add_camera(id,true)
  md.save_to_settings()
     }
 
@@ -762,7 +777,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_start(cid,src,mode){
-       // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+       console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
@@ -966,7 +981,7 @@ console.log("Multivm add_storage_camera")
 
     function add_camera(id,alarm){
 
-     //   console.log("add_camera ",id)
+        console.log("add_camera ",id)
         /*
         var fl=true
         for(var i=0;i<cids.count;i++){
@@ -981,7 +996,7 @@ console.log("Multivm add_storage_camera")
         for(var i = 0;i < md.get_cids().length;i++){
           //   console.log("смотрю ",md.get_cid_at(i)," ",id)
             if(md.get_cid_at(i) === id){
-          //     console.log("такая камера уже есть ",id)
+               console.log("такая камера уже есть ",id)
                 return
             }
         }
@@ -1016,7 +1031,7 @@ console.log("Multivm add_storage_camera")
         */
 
         md.set_scale(1)
-        md.check_the_scale(id,alarm)
+        md.check_the_scale(id,Axxon.camera(id),"",alarm)
          md.save_to_settings()
         /*
             for(var i=0;i<cids.count;i++){

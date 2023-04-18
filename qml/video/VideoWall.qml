@@ -36,6 +36,8 @@ Item{
 
 
                 if( Axxon.camera(multivm.get_cids()[0]).serviceId){
+
+
             request_URL(multivm.get_cids(),Axxon.camera(multivm.get_cids()[0]).serviceId,"","")
             }else{
             start_timer.start(1000)
@@ -642,7 +644,10 @@ Item{
 
             //   root.deviceSelected(panePosition,lcl.sid,lcl.id)
             multivm.set_current_cid(cid)
-            request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
+
+        //    request_URL(multivm.get_cids(),lcl.serviceId,dt,"")
+             multivm.vm_start(id,lcl.livestream_low,StreamType.Streaming)
+
             cameraName.text=lcl.name
             cameraIpAddr.text=lcl.ipadress
 

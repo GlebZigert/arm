@@ -321,7 +321,7 @@ Item{
 
             var res =[]
             res.push(id)
-
+            multivm.vm_start(id,lcl.livestream_low,StreamType.Streaming)
             request_URL(res,lcl.serviceId,dt,"higth")
 
 
@@ -608,6 +608,16 @@ timeline.pause_signal.connect(f_paused)
         pause_play=play
 
           var serviceId=Axxon.camera(multivm.get_cids()[0]).serviceId
+
+        var cids =  multivm.get_cids()
+        for(var one in cids)
+        {
+            var id=cids[one]
+             multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+
+        }
+
+
         Axxon.request_URL(multivm.vid,multivm.get_cids(), serviceId, timeline.current_dt(),"utc","higth")
         //update_vm()
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
@@ -699,7 +709,7 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function  update_vm()    {
-     //    console.log("storagealarm update_vm")
+         console.log("storagealarm update_vm")
         accesser.start()
         var cids =  multivm.get_cids()
         for(var one in cids)

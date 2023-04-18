@@ -248,11 +248,11 @@ int Model::current_scale()
 
 }
 
-void Model::check_the_scale(int id, bool alarm)
+void Model::check_the_scale(int id, QString url, bool alarm)
 {
-    //   qDebug()<<"Model::check_the_scale";
+       qDebug()<<"Model::check_the_scale "<<id<<" "<<url<<" "<<alarm;
 
-    mdl.value(vid)->check_the_scale(id,alarm);
+    mdl.value(vid)->check_the_scale(id,url,alarm);
  //       //show();
 }
 
@@ -794,7 +794,7 @@ bool Wall::get_alarm_at(int i)
     return false;
 }
 
-void Wall::check_the_scale(int id,bool alarm)
+void Wall::check_the_scale(int id,QString url,bool alarm)
 {
     if(current_page==-1)
         current_page=0;
@@ -806,7 +806,7 @@ void Wall::check_the_scale(int id,bool alarm)
     }
 
 
-    list.at(current_page)->check_the_scale(id, alarm);
+    list.at(current_page)->check_the_scale(id,url, alarm);
 }
 
 void Wall::set_cid_for_uid(int cid, int uid)
@@ -908,8 +908,9 @@ void Page::next_scale()
 
 }
 
-void Page::check_the_scale(int id,bool alarm)
+void Page::check_the_scale(int id,QString url,bool alarm)
 {
+    qDebug()<<"check_the_scale "<<id<<" "<<url;
     if(map.count()==0){
      for(int i=0;i<50;i++)
         add_camera();
@@ -932,6 +933,10 @@ void Page::check_the_scale(int id,bool alarm)
 
        if(map.value(key)->cid==-1){
            map.value(key)->cid=id;
+           if(url!=""){
+               qDebug()<<"map.value(key)->url= "<<url;
+           map.value(key)->url=url;
+           }
            map.value(key)->alarm=alarm;
      //       cids.setProperty(i,"cid",id)
      //       cids.setProperty(i,"alarm",alarm)
