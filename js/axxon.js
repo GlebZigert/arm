@@ -564,7 +564,7 @@ root.activePane=root.videoPane
 Axxon.prototype.receive_URL = function (data) {
 
   //   console.log("")
- //        console.log("[receive_URL]")
+         console.log("[receive_URL]")
   //   console.log("",Date())
 
     //     console.log(data)
@@ -669,7 +669,14 @@ var i
 
 Axxon.prototype.rebuildTree = function (data) {
 
+       console.log("")
+           console.log("[rebuildTree]")
+       console.log("",Date())
 
+           console.log(data)
+           console.log(JSON.stringify(data))
+            console.log(JSON.stringify(data))
+        console.log("")
 
     var i,
     list = [],
@@ -775,6 +782,10 @@ Axxon.prototype.rebuildTree = function (data) {
                     telemetryControlID: data[i].telemetryControlID,
 
                     liveStream:"",
+
+                    livestream_low: data[i].liveStream_low,
+                    livestream_higth: data[i].liveStream_higth,
+
                     storageStream: "",
                     snapshot: "",
 
