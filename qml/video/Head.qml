@@ -12,7 +12,7 @@ Rectangle{
     signal cancel
 
     signal current_page(int page)
-    signal do_it()
+
 
     ListModel{
     id: model

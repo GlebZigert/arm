@@ -7,24 +7,19 @@ Item {
      width:300
      height: 700
     property int page_size: 50
-    property int current: -1
 
-     property int current_page:1
+     property int page:1
 
     property var progress_bar
 
     signal add_to_space(var x)
 
-    signal refresh(var y)
+     ListModel {
 
-
-     ListModel{
-     id: model
+         id: model
+         dynamicRoles: true
 
      }
-
-property ListModel page_model: ListModel{ }
-
 //------------------------------------
 Rectangle
 {
@@ -73,10 +68,9 @@ Row{
 
     Preview{
     id: image
- //   property int mid: modelData.preview_id
+    property int mid: modelData.preview_id
     width: 150
     height: 98
-    url: root.cameraList.get(j).livestream_low
 
     }
 
@@ -165,7 +159,7 @@ MouseArea {
 
 Component.onCompleted: {
 
-head.do_it.connect(add_this_camera)
+
 head.current_page.connect(change_current_page)
 model.clear()
 var xx=model.count/page_size+1
@@ -179,106 +173,42 @@ container.visible=false
 }
 
 function change_current_page(page){
-current_page=page
-go_to_page(current_page)
+
+go_to_page(page)
 }
 
-function update_from_cameraList() {
 
- root.log("update_from_cameraList")
-    model.clear()
 
-      for(var j=0;j< root.cameraList.count;j++){
 
-         root.log(j," ",root.cameraList.get(j).name)
-         model.append({obj: {
-                              id: root.cameraList.get(j).id ,
-                              name: root.cameraList.get(j).name ,
-                              ipadress:  root.cameraList.get(j).ipadress ,
-                              frash_snapshot:root.cameraList.get(j).frash_snapshot,
-                          }
-                      })
-      }
-
-head.set_count(Math.floor(model.count/page_size)+1)
-go_to_page(current_page)
-}
-
-function add_this_camera()
-{
-
-if(container.current>(-1))
-{
-
-var x=container.page_model.get(container.current)
-
-add_to_space(x.obj.id)
-container.visible=false
-
-}
-
-}
 
 function go_to_page(page){
 
-    var sz=0
-    if (page>(model.count/page_size)){
+    console.log("go_to_page ",page)
+    container.page=page
+   container.page_size
 
-        sz=model.count%page_size
-
-    }else{
-
-        sz=page_size
-
+    var begin=page*page_size;
+    model.clear()
+    for(var i=page;i<page_size;i++){
+    if(i<root.cameraList.count){
+        model.append({obj: {
+                                     id: root.cameraList.get(j).id ,
+                                     name: root.cameraList.get(j).name ,
+                                     ipadress:  root.cameraList.get(j).ipadress ,
+                                     stream:root.cameraList.get(j).livestream_low,
+                                 }
+                             })
+        console.log("cid    ", root.cameraList.get(j).id)
+        console.log("name   ", root.cameraList.get(j).name)
+        console.log("ip     ", root.cameraList.get(j).ipadress)
+        console.log("stream ", root.cameraList.get(j).livestream_low)
+    }
     }
 
-    var size=sz-container.page_model.count
-    if(container.page_model.count<sz){
-
-        size=sz-container.page_model.count
 
 
-        for(var i=0;i<(size);i++){
-
-            var ind=container.page_model.count
-            container.page_model.append({obj:{
-            preview_id:ind ,
-            id: -1,
-            ipadress:  "" ,
-            name: "" ,
-            frash_snapshot:"",
-            }})
-
-        }
-    }
-    size=container.page_model.count-sz
-    if(container.page_model.count>sz){
-
-        for(i=0;i<size;i++){
-            var ind=container.page_model.count-1
-            container.page_model.remove(ind)
-        }
-    }
-
-    for(i=0;i<container.page_model.count;i++){
-        do_refresh(i)
-    }
-
-    for(i=0;i<container.page_model.count;i++)
-    {
-        var yy=container.page_model.get(i)
-    }
 }
 
-function do_refresh(i){
 
-    var ind=i+page_size*(current_page-1)
-    var x=model.get(ind)
-    var y=container.page_model.get(i)
-
-    container.page_model.set(i,{obj:{"preview_id":i,"ipadress":x.obj.ipadress,"id":x.obj.id,"name":x.obj.name}})
-
-    container.refresh({"obj":{"preview_id":i,"ipadress":x.obj.ipadress,"id":x.obj.id,"name":x.obj.name,"frash_snapshot":x.obj.frash_snapshot}})
-}
 
 }
