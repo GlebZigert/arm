@@ -17,13 +17,15 @@ SOURCES += \
         main.cpp \
         printer.cpp \
         qml/video/Player/Streamercontainer_qml_accesser.cpp \
+        qml/video/Player/preview.cpp \
+        qml/video/Player/previewcontainer.cpp \
+        qml/video/Player/previewmaker.cpp \
         qml/video/Player/streamercontaineraccesser.cpp
 !win32 {
     SOURCES += \
         qml/video/Player/Streamer.cpp \
         qml/video/Player/runner.cpp \
         qml/video/Player/videoplayer.cpp \
-        qml/video/Preview/Preview.cpp \
         qml/video/Player/StreamerContainer.cpp \
         qml/video/Player/model.cpp
 }
@@ -43,6 +45,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     printer.h \
     qml/video/Player/Streamercontainer_qml_accesser.h \
+    qml/video/Player/preview.h \
+    qml/video/Player/previewcontainer.h \
+    qml/video/Player/previewmaker.h \
     qml/video/Player/streamercontaineraccesser.h
 
 !win32 {
@@ -50,7 +55,6 @@ HEADERS += \
         qml/video/Player/Streamer.h \
         qml/video/Player/runner.h \
         qml/video/Player/videoplayer.h \
-        qml/video/Preview/Preview.h \
         qml/video/Player/StreamerContainer.h \
         qml/video/Player/model.h
 }
