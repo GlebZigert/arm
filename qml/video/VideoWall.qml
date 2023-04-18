@@ -707,7 +707,7 @@ Item{
             var serviceId=Axxon.camera(id).serviceId
 
 
-          multivm.vm_start(id,lcl.livestream_low,StreamType.Streaming)
+          multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
     }
 
     function f_clear(){
