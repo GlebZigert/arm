@@ -906,7 +906,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
      console.log("request_URL ")
      console.log(" ")
 
-    if(dt=""){
+    if(dt===""){
            console.log("data.dt нулевое      : ",data.dt)
     return;
     }
