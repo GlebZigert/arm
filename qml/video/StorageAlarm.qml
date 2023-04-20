@@ -544,6 +544,8 @@ timeline.pause_signal.connect(f_paused)
 
     function f_event_on_camera(id){
 
+        if(storage_live==live){
+
 
             storage_live=live
             pause_play=play
@@ -552,6 +554,7 @@ timeline.pause_signal.connect(f_paused)
 
  //multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             multivm.add_alarm_camera(id)
+        }
 
             //Для мультвм выставляем флаг тревожного режима
             //При переходе в тревожный режим чистим его модель
