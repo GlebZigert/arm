@@ -134,10 +134,10 @@ case 2:
     res="Free    ";
 break;
 case 3:
-     res="Prepare";
+    res="Prepare ";
 break;
 case 4:
-     res="Play   ";
+    res="Play    ";
 break;
 case 5:
     res="Hold    ";

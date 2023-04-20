@@ -350,6 +350,7 @@ id: btn_flip_camera
                         onClicked: {
 
                             console.log("onClicked .,.")
+                            vvm.info()
                             good.switch_tlmtr()
                             rrow.visible=false
                         }

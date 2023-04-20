@@ -781,7 +781,10 @@ console.log("Key_Down")
     }
 
 
-
+    function info(){
+            //    console.log("vm_shot ")
+              vm.info()
+    }
 
     Component.onCompleted: {
 

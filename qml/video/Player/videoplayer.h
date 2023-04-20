@@ -40,6 +40,8 @@ public:
     Q_INVOKABLE void  stop();
     Q_INVOKABLE void  shot();
 
+        Q_INVOKABLE void  info();
+
     Q_INVOKABLE void  saving_on();
     Q_INVOKABLE void  saving_off();
 

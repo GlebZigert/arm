@@ -186,6 +186,11 @@ void VideoPlayer::shot()
 
 }
 
+void VideoPlayer::info()
+{
+container->show();
+}
+
 void VideoPlayer::saving_on()
 {
     if(current!=0){
