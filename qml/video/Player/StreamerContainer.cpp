@@ -260,7 +260,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 {
     timer.stop();
 //func();
-   qDebug()<<QTime::currentTime()<<" --> StreamerContainer::start "<<url <<" "<<type;
+  // qDebug()<<QTime::currentTime()<<" --> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
     mutex.lock();
 
@@ -312,7 +312,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
               timer.start(100);
     if(streamer){
 
-             qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner "<<streamer->runner->get_m_index();
+            // qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner "<<streamer->runner->get_m_index();
 
 
         return streamer;
@@ -345,27 +345,27 @@ void StreamerContainer::delete_free_streamers()
 
 QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType type)
 {
-    qDebug()<<"--> StreamerContainer::find "<<url;
+ //   qDebug()<<"--> StreamerContainer::find "<<url;
     QSharedPointer<Streamer> wanted;
     QSharedPointer<Streamer> ready;
     QSharedPointer<Streamer> free;
     for(auto one : map){
         if(one.data()->runner->URL==url)
                 {
-qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
+//qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
             ready = one;
 
             if(ready->runner->get_m_running()==Runner::Mode::Free){
-                 qDebug()<<"<..";
+             //    qDebug()<<"<..";
                 ready.data()->runner->set_m_running(Runner::Mode::Prepare);
-                 qDebug()<<"<..";
+             //    qDebug()<<"<..";
                 ready.data()->runner->streamType=type;
-                 qDebug()<<"<..";
+              //   qDebug()<<"<..";
                 ready.data()->runner->frash_stream=true;
-                 qDebug()<<"<..";
+              //   qDebug()<<"<..";
 
             }
- qDebug()<<"<..";
+ //qDebug()<<"<..";
 
             break;
         }
@@ -381,7 +381,7 @@ qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
 */
 
 
-            qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
+          //  qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             free = one;
             break;
         }
@@ -426,7 +426,7 @@ qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
     }
 
 
-   qDebug()<<"<-- StreamerContainer::find [2]";
+ //  qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

@@ -30,7 +30,7 @@ Item{
 
         onTriggered:
         {
-                 console.log("videowall_start_timer ",)
+         //        console.log("videowall_start_timer ",)
 
             if(multivm.get_cids().length){
 
@@ -701,7 +701,7 @@ Item{
 
 
     function stream_request(id,quality){
-        console.log("VideoWall stream_request ",id," ",quality)
+        //console.log("VideoWall stream_request ",id," ",quality)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId

@@ -5,7 +5,7 @@ int Streamer::created=0;
 int Streamer::deleted=0;
 Streamer::Streamer(QString URL, enum Runner::StreamType type,QObject *parent) : QObject(parent)
 {
-    qDebug()<<"Streamer::Streamer "<<URL<<" "<<type;
+//    qDebug()<<"Streamer::Streamer "<<URL<<" "<<type;
     created++;
     m_index=index++;
 
@@ -145,7 +145,7 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
-    qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
+   // qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
     runner->go_to_free_state=true;
     countlost=0;
 }

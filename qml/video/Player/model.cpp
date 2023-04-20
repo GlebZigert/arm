@@ -239,7 +239,7 @@ void Model::set_scale(int val)
 
 int Model::current_scale()
 {
-       qDebug()<<"Model::current_scale()";
+      // qDebug()<<"Model::current_scale()";
     if(!mdl.value(vid)){
         add_vid();
     }
@@ -252,7 +252,7 @@ int Model::current_scale()
 
 void Model::check_the_scale(int id, QString url, bool alarm)
 {
-       qDebug()<<"Model::check_the_scale "<<id<<" "<<url<<" "<<alarm;
+    //   qDebug()<<"Model::check_the_scale "<<id<<" "<<url<<" "<<alarm;
 
     mdl.value(vid)->check_the_scale(id,url,alarm);
  //       //show();
@@ -912,7 +912,7 @@ void Page::next_scale()
 
 void Page::check_the_scale(int id,QString url,bool alarm)
 {
-    qDebug()<<"check_the_scale "<<id<<" "<<url;
+  //  qDebug()<<"check_the_scale "<<id<<" "<<url;
     if(map.count()==0){
      for(int i=0;i<50;i++)
         add_camera();
@@ -936,10 +936,10 @@ void Page::check_the_scale(int id,QString url,bool alarm)
        if(map.value(key)->cid==-1){
            map.value(key)->cid=id;
            if(url!=""){
-               qDebug()<<"map.value(key)->url= "<<url;
-                   qDebug()<<"Page::check_the_scale url 1= "<< map.value(key)->url;
+          //     qDebug()<<"map.value(key)->url= "<<url;
+            //       qDebug()<<"Page::check_the_scale url 1= "<< map.value(key)->url;
            map.value(key)->url=url;
-               qDebug()<<"Page::check_the_scale url 2= "<< map.value(key)->url;
+           //    qDebug()<<"Page::check_the_scale url 2= "<< map.value(key)->url;
            }
            map.value(key)->alarm=alarm;
      //       cids.setProperty(i,"cid",id)

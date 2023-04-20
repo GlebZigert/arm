@@ -569,11 +569,11 @@ void Runner::run()
 
             qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
             if(m_running==Runner::Mode::Waiting){
-                qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
+                //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
                 go_to_free_state=false;
             }
             if(m_running==Runner::Mode::Free){
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
                 go_to_free_state=false;
                 first_frame_getted=false;
             }
@@ -595,7 +595,7 @@ void Runner::run()
                 frameCnt++;
                 if(frameCnt>0){
                     if(m_running==Mode::Waiting){
-                      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
+                //      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
                     }
                 m_running=Mode::Play;
 
@@ -637,7 +637,7 @@ void Runner::run()
                 //   free();
                 //   go_to_free_state=true;
                  local_mutex.unlock();
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
                 //     emit lost_connection(URL);
                 set_m_running(Mode::Lost);
             }else{
@@ -646,7 +646,7 @@ void Runner::run()
                 go_to_free_state=false;
                 sleep=false;
                 local_mutex.unlock();
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
 
 
             }

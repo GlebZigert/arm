@@ -5,7 +5,7 @@
 
 VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
-    qDebug()<<"VideoPlayer::VideoPlayer";
+  //  qDebug()<<"VideoPlayer::VideoPlayer";
     container = StreamerContainerAccesser::get();
 
     m_connection = true;
@@ -85,7 +85,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::StreamType type)
 {
-   qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
+ //  qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
    if(next){
        next->followers_dec();
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
@@ -108,7 +108,7 @@ void VideoPlayer::start(Runner::StreamType type)
   next = container->start(m_source,type);
 
   if(next){
-            qDebug()<<"видеоплеер "<<cid<<" нашел следующий runner "<<next->runner->get_m_index();
+    //        qDebug()<<"видеоплеер "<<cid<<" нашел следующий runner "<<next->runner->get_m_index();
          next->followers_inc();
 
           connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
@@ -325,7 +325,7 @@ void VideoPlayer::f_wait_for_next()
 
 void VideoPlayer::next_frame(QString src)
 {
-    qDebug()<<"VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
+    //qDebug()<<"VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
     if(current){
 

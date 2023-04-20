@@ -632,7 +632,7 @@ timeline.hide_timelines.connect(f_hide_timelines)
             v1.forceActiveFocus()
 
             if(dt==""){
-                console.log("нулевое")
+            //    console.log("нулевое")
             request_URL(v1.cid,lcl.serviceId,dt)
             }
         }

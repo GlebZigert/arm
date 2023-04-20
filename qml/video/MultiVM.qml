@@ -425,7 +425,7 @@ id: btn_clear_camera
                 }
 
                 function vm_start(mode){
-console.log(" vm_start(mode)")
+//console.log(" vm_start(mode)")
                     vvm.vm_start(mode)
                 }
 
@@ -486,10 +486,10 @@ console.log(" vm_start(mode)")
 
 
                      if(flag===true){
-                     console.log("3")
+                    // console.log("3")
                      good.stream_request(cid, "higth")
                      }else{
-                                 console.log("4")
+                   //              console.log("4")
                   good.stream_request(cid, quality)
                      }
 
@@ -541,10 +541,10 @@ console.log(" vm_start(mode)")
 
 
         if(flag===true){
-        console.log("3")
+       // console.log("3")
         good.stream_request(cid, "higth")
         }else{
-                    console.log("4")
+                 //   console.log("4")
      good.stream_request(cid, quality)
         }
     }
@@ -635,7 +635,7 @@ Vvvvvvm{
 
     function add_alarm_camera(id){
 
-        console.log("add_alarm_camera")
+       // console.log("add_alarm_camera")
         md.to_page("Тревоги")
 
         full.visible=false
@@ -660,7 +660,7 @@ Vvvvvvm{
         rescale(good.scale,true)
 
         var serviceId=Axxon.camera(id).serviceId
-        console.log("5")
+       // console.log("5")
         good.stream_request(id,"low")
 
         //  add_camera(id,true)
@@ -674,7 +674,7 @@ Vvvvvvm{
 
         function add_alarm_cameras(arr){
 
-            console.log("Multivm add_alarm_cameras array")
+           // console.log("Multivm add_alarm_cameras array")
             //md.to_page("Архив")
             //  cids.clear()
             full.visible=false
@@ -811,7 +811,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_start(cid,src,mode){
-       console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+      // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
@@ -884,9 +884,9 @@ console.log("Multivm add_storage_camera")
 
         if(save){
         saving_on()
-        console.log("с сохранением")
+        //console.log("с сохранением")
         }else{
-        console.log("без сохранения")
+        //console.log("без сохранения")
         }
 
         var ww = width/scale
@@ -943,7 +943,7 @@ console.log("Multivm add_storage_camera")
         }else{
             */
 
-            console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
+           // console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
 
            // console.log("get_current_page_name ",md.get_current_page_name())
            // console.log("scale ",scale)
@@ -953,9 +953,9 @@ console.log("Multivm add_storage_camera")
                 var cid = md.get_cid_at(i)
 
                 if(url=="" && cid>-1){
-                    console.log("пустой cid ",cid)
+                //    console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                            console.log("6")
+                        //    console.log("6")
                        good.stream_request(cid, quality)
                 }
 
