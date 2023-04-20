@@ -106,6 +106,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
   if(next){
       {
+        /*
       if(next->runner->get_m_running()==Runner::Mode::Play ||next->runner->get_m_running()==Runner::Mode::Hold){
       if(current){
 
@@ -136,12 +137,15 @@ void VideoPlayer::start(Runner::StreamType type)
         streamType=current->runner->streamType;
       //  qDebug()<<"streamType = "<<streamType;
       //  m_connection=true;
-      }else{
+      }
+      */
+
+
           connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
        //   m_connection = false;
     //wait_for_next.start(1000);
       //    emit connectionChanged(m_connection);
-      }
+
   }
 
 

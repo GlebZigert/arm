@@ -15,35 +15,35 @@ timer.start(1000);
 void StreamerContainer::func(){
     int free=0;
     int play=0;
-  //  qDebug()<<" ";
-  //  qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
-  //   qDebug()<<" ";
-bool fl=true;
-        for(auto one : map){
+    //  qDebug()<<" ";
+    //  qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
+    //   qDebug()<<" ";
+    bool fl=true;
+    for(auto one : map){
 
 
-            QString sstr="";
+        QString sstr="";
 
-            if(one.data()->runner){
+        if(one.data()->runner){
             if(one.data()->runner->get_m_running()!=Runner::Mode::Free){
 
-            if(one.data()->getFollowers()==0){
-         sstr+=" без подписчиков уже ";
-         qint64 sec =one->no_followers.secsTo(QDateTime::currentDateTime());
+                if(one.data()->getFollowers()==0){
+                    sstr+=" без подписчиков уже ";
+                    qint64 sec =one->no_followers.secsTo(QDateTime::currentDateTime());
                     sstr+=QString::number(sec,10);
                     sstr+=" сек";
-            }else{
-                sstr+=" cвежая подписка: ";
-                 qint64 sec=one->frash_follower_time.secsTo(QDateTime::currentDateTime());
-                           sstr+=QString::number(sec,10);
-                           sstr+=" сек";
-        //    qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
+                }else{
+                    sstr+=" cвежая подписка: ";
+                    qint64 sec=one->frash_follower_time.secsTo(QDateTime::currentDateTime());
+                    sstr+=QString::number(sec,10);
+                    sstr+=" сек";
+                    //    qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
+
+                }
 
             }
-
-            }
-            }
-/*
+        }
+        /*
     if(flag==true){
             if(one.data()->runner){
             qDebug()<<"runner: "<<one.data()->runner->get_m_index()
@@ -63,13 +63,13 @@ bool fl=true;
         //    qDebug()<<one.data()->start_time.toString()<<" "<<one->start_time.secsTo(QDateTime::currentDateTime())<<" сек";
         //    qDebug()<<"подписчики: "<<one.data()->getFollowers();
 
-            if(one.data()->getFollowers()==0){
-         //       qDebug()<<"без подписчиков уже "<<one->no_followers.secsTo(QDateTime::currentDateTime())<<" сек";
-            }else{
-        //    qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
+        if(one.data()->getFollowers()==0){
+            //       qDebug()<<"без подписчиков уже "<<one->no_followers.secsTo(QDateTime::currentDateTime())<<" сек";
+        }else{
+            //    qDebug()<<"Свежая подписка: "<<one->frash_follower_time.secsTo(QDateTime::currentDateTime())<<" сек";
 
-            }
-/*
+        }
+        /*
             qDebug()<<"Хранится: "<<one.data()->getSave()
             <<"runner завершен:" <<one.data()->runner->thread()->isFinished()
             <<"mode: " <<one.data()->runner->get_state()
@@ -77,69 +77,84 @@ bool fl=true;
             <<"Running : " <<one.data()->thread->isRunning();
 */
 
-/*
+        /*
             if(one.data()->runner->URL==""){
                 one->stop();
             }
             */
-            if(one.data())
-                     if(one.data()->runner)
-                         if(one.data()->runner->get_m_running()==Runner::Mode::Free){
-                             free++;
-                         }
+        if(one.data())
+            if(one.data()->runner)
+                if(one.data()->runner->get_m_running()==Runner::Mode::Free){
+                    free++;
+                }
 
 
-    if(one.data())
-             if(one.data()->runner)
-        if(
-            //    one.data()->runner->getVideoHeight()>480&&
-            //      one.data()->runner->getVideoWidth()>640&&
-        //        one->mode==2 &&
-            one.data()->getFollowers()==0 &&
-                one.data()->runner->get_m_running()==Runner::Mode::Play&&
-                one.data()->runner->getVideoHeight()>600&&
-                  one.data()->runner->getVideoWidth()>800
-            ){
+        if(one.data())
+            if(one.data()->runner)
+                if(
+                        one.data()->getFollowers()==0 &&
 
+                        ( one.data()->runner->get_m_running()==Runner::Mode::Play ||
+                          one.data()->runner->get_m_running()==Runner::Mode::Hold ||
+                          one.data()->runner->get_m_running()==Runner::Mode::Waiting
+                          )&&
+                        one.data()->runner->getVideoHeight()>600&&
+                        one.data()->runner->getVideoWidth()>800
+                        ){
+
+                    auto now = QDateTime::currentDateTime();
+                    auto diff = one.data()->no_followers.secsTo(now);
+                    //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+                    if(diff>2){
+                        qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
+                        //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
+                        one.data()->setSave(false);
+                        one.data()->stop();
+                    }
+                }
+
+        if(one.data()->getFollowers()==0 &&
+                one.data()->runner->get_m_running()==Runner::Mode::Lost
+                ){
             auto now = QDateTime::currentDateTime();
-                auto diff = one.data()->no_followers.secsTo(now);
-         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+            auto diff = one.data()->no_followers.secsTo(now);
+            //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
-              //  qDebug()<<"h w "<<one->runner->getVideoHeight()<<" "<<one->runner->getVideoWidth();
+                       qDebug()<<"этот поток "<<one.data()->getURL()<<" без подписчиков с обрывом связи "<<diff<<" сек";
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
                 one.data()->stop();
             }
         }
-      }
+    }
 
 
 
-        QList<QSharedPointer<Streamer>>::iterator it = map.begin();
-        while(it != map.end()){
-            if(it->data()->runner){
+    QList<QSharedPointer<Streamer>>::iterator it = map.begin();
+    while(it != map.end()){
+        if(it->data()->runner){
             if(it->data()->runner->get_m_running() == Runner::Mode::Exit &&
                     it->data()->thread->isFinished()&&
                     !it->data()->thread->isRunning()
                     ){
-                    it = map.erase(it);
-        }else{
+                it = map.erase(it);
+            }else{
                 ++it;
             }
-            }
         }
-// qDebug()<<"4";
-   //     qDebug()<<" ";
-        if(flag==true){
+    }
+    // qDebug()<<"4";
+    //     qDebug()<<" ";
+    if(flag==true){
 
 
 
-            flag=false;
-             qDebug()<<" ";
+        flag=false;
+        qDebug()<<" ";
         qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
-         qDebug()<<" ";
-        }
-   //      qDebug()<<" ";
+        qDebug()<<" ";
+    }
+    //      qDebug()<<" ";
 
 
 }
