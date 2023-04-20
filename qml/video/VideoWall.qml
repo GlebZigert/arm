@@ -706,8 +706,11 @@ Item{
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
 
-
-          multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+            if(quality=="higth"){
+          multivm.vm_start(id,Axxon.camera(id).livestream_higth,StreamType.Streaming)
+            }else{
+           multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+            }
     }
 
     function f_clear(){

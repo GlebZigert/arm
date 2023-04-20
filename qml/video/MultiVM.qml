@@ -545,7 +545,23 @@ console.log(" vm_start(mode)")
 
     if(vvm.get_connection()){
      //   console.log("no connection")
+        var flag=false
+
+        if(fullscreen_uid>-1){
+        for(var i=0;i<md.get_all_cids().length;i++){
+            console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+            if(md.get_uid_at(i)===fullscreen_uid){
+                flag=true
+            }
+            }
+        }
+
+
+        if(flag===true){
+        good.stream_request(cid, "higth")
+        }else{
      good.stream_request(cid, quality)
+        }
     }
 
                     vvm.return_connection.connect(f_return_connection)
