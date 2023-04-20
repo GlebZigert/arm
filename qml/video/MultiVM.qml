@@ -5,7 +5,7 @@ import "../../js/axxon.js" as Axxon
 import "../../js/axxon_telemetry_control.js" as Tlmtr
 import QtQuick.Controls.Styles 1.4
 import QtQuick.Controls 1.4
-
+import MyQMLEnums 13.37
 import Model 1.0
 Item{
     property string vid
@@ -904,7 +904,8 @@ console.log("Multivm add_storage_camera")
                         console.log("пустой cid ",cid)
                         var serviceId=Axxon.camera(get_cids()[0]).serviceId
 
-                    good.stream_request(cid, "higth")
+                    vm_start(cid,Axxon.camera(cid).livestream_low,StreamType.Streaming)
+                  //  good.stream_request(cid, "higth")
                       //        Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
                  //   }
 /*

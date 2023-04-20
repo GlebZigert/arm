@@ -383,6 +383,7 @@ qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
 
             qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             free = one;
+            break;
         }
     }
 
