@@ -88,7 +88,7 @@ Item{
             width: parent.width
             Layout.fillWidth: true
             Layout.fillHeight: true
-            quality: "higth"
+            quality: "low"
 
         }
 
@@ -412,12 +412,23 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-      //  console.log("storageAlarm stream_request ",id," ",quality)
+        console.log("storageAlarm stream_request ",id," ",quality," ",storage_live)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
-         multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
-           Axxon.request_URL(multivm.vid,res, serviceId, timeline.current_dt(),"utc","higth")
+       //  multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+          if(storage_live===storage){
+
+           Axxon.request_URL(multivm.vid,res, serviceId, timeline.current_dt(),"utc",quality)
+          }else{
+
+              if(quality=="higth"){
+            multivm.vm_start(id,Axxon.camera(id).livestream_higth,StreamType.Streaming)
+              }else{
+             multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+              }
+
+          }
 
 
     }
@@ -539,8 +550,9 @@ timeline.pause_signal.connect(f_paused)
             timeline.to_live()
 
 
-
+ multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             multivm.add_alarm_camera(id)
+
             //Для мультвм выставляем флаг тревожного режима
             //При переходе в тревожный режим чистим его модель
             //добавляем видеоплеер
@@ -580,7 +592,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_play(){
         pause_play=play
-        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt(),"higth")
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,timeline.current_dt(),"")
     }
 
     function f_paused(){
@@ -597,6 +609,7 @@ timeline.pause_signal.connect(f_paused)
 
     function to_update_intervals_handler_and_go_to_this_dt()
     {
+        console.log("to_update_intervals_handler_and_go_to_this_dt")
         var dt=timeline.current_dt()
         storage_live=storage
         timeline.to_storage()
@@ -621,15 +634,14 @@ timeline.pause_signal.connect(f_paused)
         }
 
 
-        Axxon.request_URL(multivm.vid,multivm.get_cids(), serviceId, timeline.current_dt(),"utc","higth")
-        //update_vm()
+
         Axxon.request_intervals(cid,Axxon.camera(cid).serviceId)
     }
 
     function f_moved_at_dt(dt){
         console.log("dt: ",dt)
         storage_live=storage
-        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"higth")
+        request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"")
     }
 
     function  f_show_or_hide_calendar()

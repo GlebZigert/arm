@@ -106,6 +106,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
   if(next){
       {
+         next->followers_inc();
         /*
       if(next->runner->get_m_running()==Runner::Mode::Play ||next->runner->get_m_running()==Runner::Mode::Hold){
       if(current){
@@ -338,6 +339,7 @@ void VideoPlayer::f_wait_for_next()
             current.clear();
         }
         current=next;
+        next->followers_dec();
         next.clear();
 
           current->followers_inc();
