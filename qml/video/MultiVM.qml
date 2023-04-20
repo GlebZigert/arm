@@ -126,9 +126,6 @@ Rectangle{
         columns: 5
         baselineOffset: 0
 
-
-
-
         Repeater{
             model: w_model
 
@@ -140,48 +137,15 @@ Rectangle{
             Item {
 
                 id: vm
-
                 x: model.x
                 y:model.y
                 width: model.w
                 height: model.h
 
-
-
-/*
-                onXChanged: {
-                    resize_vm()
-                }
-                onYChanged: {
-                    resize_vm()
-                }
-                onHeightChanged: {
-                    resize_vm()
-                }
-                onWidthChanged: {
-                    resize_vm()
-                }
-
-                function resize_vm(){
-                 //   console.log("resize_vm")
-                    vm.x=model.x
-                    vm.y=model.y
-                    vm.width=model.w
-                    vm.height=model.h
-                }
-                */
-
-
-
-
                 property bool selected
                 property bool contain_mouse: area.containsMouse ? true : false
                 readonly property int uid: model.uid
                 property int cid: model.cid
-
-
-
-
 
                 Rectangle{
                     anchors.fill: parent
@@ -229,11 +193,8 @@ Rectangle{
                             border.color: "white"
                             border.width: 1
                             }
-
                         }
-
                         }
-
                     }
 
                     Row{
@@ -573,6 +534,28 @@ console.log(" vm_start(mode)")
 
             }
         }
+
+    }
+}
+
+Vvvvvvm{
+    id: full
+
+
+        anchors.fill: parent
+//     readonly property int uid: model.uid
+
+    onConnectionChanged: {
+    console.log("Vvvvvvm onConnectionChanged")
+    }
+    Button{
+        width: 20
+        height: 20
+        onClicked: {
+        fullscreen_uid=-1
+        full.visible=false
+        }
+
     }
 }
 
@@ -819,6 +802,11 @@ console.log("Multivm add_storage_camera")
             }
 
         }
+
+        if(full.cid==cid){
+            full.set_vm_source(cid,src)
+            full.vm_start(mode)
+        }
     }
 
     function vm_stop(){
@@ -891,7 +879,7 @@ console.log("Multivm add_storage_camera")
 
 
 
-
+/*
       //  console.log("full ",full)
         if(fullscreen_uid!=-1){
             console.log("rescale full")
@@ -910,13 +898,7 @@ console.log("Multivm add_storage_camera")
                   //  good.stream_request(cid, "higth")
                       //        Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
                  //   }
-/*
-                    console.log("append ")
-                    console.log("uid  ",md.get_uid_at(i))
-                    console.log("cid  ",md.get_cid_at(i))
-                    console.log("url  ",md.get_url_at(i))
-                    console.log("alarm  ",md.get_alarm_at(i))
-*/
+
 
 
 
@@ -935,6 +917,8 @@ console.log("Multivm add_storage_camera")
             }
 
         }else{
+            */
+
             console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
 
            // console.log("get_current_page_name ",md.get_current_page_name())
@@ -969,7 +953,7 @@ console.log("Multivm add_storage_camera")
                                    alarm: md.get_alarm_at(i),// cids.get(i).alarm
                                })
             }
-        }
+       // }
 
 
 
@@ -1162,15 +1146,41 @@ console.log("Multivm add_storage_camera")
                    if(w_model.get(i).uid === id){
                        if(Axxon.check_id(w_model.get(i).cid)){
 
+
+                           var url="";
+                           var scale= md.current_scale()
+                           for(var j=0;j<scale*scale;j++){
+
+                               var url_ = md.get_url_at(j)
+                               var uid_ = md.get_uid_at(j)
+                                     console.log("is ",id, " uid ",uid_," url ",url_)
+                               if(uid_ == id){
+                               url=url_
+                               }
+
+                           }
+
+                           full.vm_start_1(w_model.get(i).cid,
+                                         url,
+                                         1
+                                         )
+                           stream_request(id,"higth")
+
                          //   md.set_url_for_uid("",id)
                            fullscreen_uid = id
+                           full.visible=true
                            qquality="higth"
                        }
                    }
             }
         }else{
+
+
+
              md.set_url_for_uid("",id)
+          //  full.vm_start()
         fullscreen_uid=-1
+            full.visible=false
         }
 
 
@@ -1186,7 +1196,7 @@ console.log("Multivm add_storage_camera")
         }
 */
 
-    rescale(good.scale,true)
+
     }
 
     function save(){
@@ -1198,7 +1208,7 @@ console.log("Multivm add_storage_camera")
             return
         }
 
-        full=false
+
         console.log("1")
         good.stream_request(fullscreen_uid,good.quality)
         fullscreen_uid=-1
