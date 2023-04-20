@@ -765,13 +765,18 @@ console.log("Key_Down")
 
     }
 
-    function vm_start_1(cid,url,mmode){
+    function vm_start_1(cid_,url,mmode){
         mode = mmode
         console.log("vvvm vm_start(cid,url,mmode) ",mode)
-        vm.cid=cid
+        supreme.cid=cid_
+        vm.cid=cid_
         vm.source=url
         vm.start(mmode)
 
+    }
+
+    function get_cid(){
+    return vm.cid
     }
 
     function vm_stop(){

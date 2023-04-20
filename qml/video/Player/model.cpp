@@ -232,12 +232,14 @@ void Model::next_scale()
 
 void Model::set_scale(int val)
 {
+
+
     mdl.value(vid)->list.at(mdl.value(vid)->current_page)->scale=val;
 }
 
 int Model::current_scale()
 {
-    //   qDebug()<<"Model::current_scale()";
+       qDebug()<<"Model::current_scale()";
     if(!mdl.value(vid)){
         add_vid();
     }

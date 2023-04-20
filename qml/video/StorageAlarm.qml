@@ -1,4 +1,4 @@
-import QtQuick 2.4
+﻿import QtQuick 2.4
 import "../../js/axxon.js" as Axxon
 import MyQMLEnums 13.37
 import QtQuick.Layouts 1.5
@@ -410,12 +410,12 @@ timeline.pause_signal.connect(f_paused)
         timeline.signal_scale.connect(scale)
         timeline.hide_timelines.connect(hide_timelines)
 
-        root.cameraList.updated.connect(f_start_timer_start())
+      //  root.cameraList.updated.connect(f_start_timer_start)
     }
 
     function f_start_timer_start(){
         base.visible=true
-         multivm.to_page(0)
+         multivm.to_page("Тревоги")
         multivm.rescale()
     start_timer.start()
     }

@@ -471,7 +471,28 @@ console.log(" vm_start(mode)")
                 console.log("f_return_connection ",cid)
                  if(connection==false){
                              console.log("2")
-                 good.stream_request(cid, quality)
+
+
+                     var flag=false
+
+                     if(fullscreen_uid>-1){
+                     for(var i=0;i<md.get_all_cids().length;i++){
+                         console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+                         if(md.get_uid_at(i)===fullscreen_uid){
+                             flag=true
+                         }
+                         }
+                     }
+
+
+                     if(flag===true){
+                     console.log("3")
+                     good.stream_request(cid, "higth")
+                     }else{
+                                 console.log("4")
+                  good.stream_request(cid, quality)
+                     }
+
                  }
                 }
 
@@ -544,7 +565,7 @@ Vvvvvvm{
 
         anchors.fill: parent
 //     readonly property int uid: model.uid
-
+        visible: false
     onConnectionChanged: {
     console.log("Vvvvvvm onConnectionChanged")
     }
@@ -553,6 +574,8 @@ Vvvvvvm{
         height: 20
         onClicked: {
         fullscreen_uid=-1
+
+        stream_request(full.get_cid(),quality)
         full.visible=false
         }
 
@@ -646,7 +669,7 @@ Vvvvvvm{
 
         function add_storage_camera(id){
 
-             add_camera(id)
+             add_camera(id,false)
         }
 
         function add_alarm_cameras(arr){
@@ -773,7 +796,7 @@ console.log("Multivm add_storage_camera")
     Component.onCompleted: {
         console.log("storagealarm_ multivm quality: ",quality)
         console.log(md.get_info())
-        full=false
+
    //     vid = generateUUID()
    //     md.vid=vid
 
@@ -1007,7 +1030,7 @@ console.log("Multivm add_storage_camera")
         */
 
         for(var i = 0;i < md.get_cids().length;i++){
-          //   console.log("смотрю ",md.get_cid_at(i)," ",id)
+             console.log("смотрю ",md.get_cid_at(i)," ",id)
             if(md.get_cid_at(i) === id){
 
                console.log("такая камера уже есть ",id)
@@ -1045,10 +1068,13 @@ console.log("Multivm add_storage_camera")
             }
         }
         */
-
-        md.set_scale(2)
+console.log("1")
+        md.set_scale(1)
+        console.log("1")
         md.check_the_scale(id,Axxon.camera(id),"",alarm)
+        console.log("1")
          md.save_to_settings()
+        console.log("1")
         /*
             for(var i=0;i<cids.count;i++){
 
@@ -1075,16 +1101,16 @@ console.log("Multivm add_storage_camera")
                 }
             }
             */
-
+console.log("1")
             rescale(good.scale,true)
-
+console.log("1")
 
             var serviceId=Axxon.camera(id).serviceId
 
         //    Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc",quality)
         console.log("7")
         good.stream_request(id,good.quality)
-
+console.log("1")
         }
 
     function setVid(vvid){
@@ -1164,7 +1190,7 @@ console.log("Multivm add_storage_camera")
                                          url,
                                          1
                                          )
-                           stream_request(id,"higth")
+                           stream_request(w_model.get(i).cid,"higth")
 
                          //   md.set_url_for_uid("",id)
                            fullscreen_uid = id
@@ -1179,6 +1205,7 @@ console.log("Multivm add_storage_camera")
 
              md.set_url_for_uid("",id)
           //  full.vm_start()
+
         fullscreen_uid=-1
             full.visible=false
         }
