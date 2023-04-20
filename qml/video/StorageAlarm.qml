@@ -424,7 +424,7 @@ timeline.pause_signal.connect(f_paused)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
-         multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+       //  multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
           if(storage_live===storage){
 
            Axxon.request_URL(multivm.vid,res, serviceId, timeline.current_dt(),"utc",quality)

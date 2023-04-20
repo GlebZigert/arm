@@ -509,6 +509,7 @@ console.log(" vm_start(mode)")
              function   f_return_connection(connection){
                 console.log("f_return_connection ",cid)
                  if(connection==false){
+                             console.log("2")
                  good.stream_request(cid, quality)
                  }
                 }
@@ -558,9 +559,10 @@ console.log(" vm_start(mode)")
 
 
         if(flag===true){
-
+        console.log("3")
         good.stream_request(cid, "higth")
         }else{
+                    console.log("4")
      good.stream_request(cid, quality)
         }
     }
@@ -652,7 +654,7 @@ console.log(" vm_start(mode)")
         rescale(good.scale,true)
 
         var serviceId=Axxon.camera(id).serviceId
-
+        console.log("5")
         good.stream_request(id,good.quality)
 
         //  add_camera(id,true)
@@ -945,6 +947,7 @@ console.log("Multivm add_storage_camera")
                 if(url=="" && cid>-1){
                     console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
+                            console.log("6")
                        good.stream_request(cid, quality)
                 }
 
@@ -1095,7 +1098,7 @@ console.log("Multivm add_storage_camera")
             var serviceId=Axxon.camera(id).serviceId
 
         //    Axxon.request_URL(vid,get_cids(), serviceId, timeline.get_dt(),"utc",quality)
-
+        console.log("7")
         good.stream_request(id,good.quality)
 
         }
@@ -1196,6 +1199,7 @@ console.log("Multivm add_storage_camera")
         }
 
         full=false
+        console.log("1")
         good.stream_request(fullscreen_uid,good.quality)
         fullscreen_uid=-1
         md.next_scale()
