@@ -415,6 +415,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_start_timer_start(){
         base.visible=true
+
          multivm.to_page("Тревоги")
         multivm.rescale()
     start_timer.start()
@@ -447,23 +448,16 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function f_to_storage_cameras(){
- /*
-        if(multivm.get_current_page_name()==="Тревоги"){
-        multivm.to_page("Архив")
-            timeline.set_to_storage_cameras_text("К тревогам")
-        }else{
 
-        multivm.to_page("Тревоги")
-                        timeline.set_to_storage_cameras_text("Вернуться к просмотру камер")
-        }
-*/
 
     }
 
     function set_the_multivm_settings(){
         console.log("set_the_multivm_settings")
         multivm.setVid("storageAlarm")
-        multivm.multivm_add_page("Тревоги",maxScale)
+        multivm.multivm_delete_page("1") ;
+        multivm.multivm_delete_page("Тревоги")
+        multivm.multivm_add_page("Тревоги",3)
 
 
 

@@ -312,7 +312,7 @@ id: btn_flip_camera
 
                             console.log("onClicked .,.")
                             vvm.info()
-                          //  good.switch_tlmtr()
+                            good.switch_tlmtr()
                             rrow.visible=false
                         }
                     }
@@ -638,7 +638,7 @@ Vvvvvvm{
         console.log("add_alarm_camera")
         md.to_page("Тревоги")
 
-        full=false
+        full.visible=false
         good.scale=1
 
 
@@ -677,9 +677,10 @@ Vvvvvvm{
             console.log("Multivm add_alarm_cameras array")
             //md.to_page("Архив")
             //  cids.clear()
+            full.visible=false
 
 
-            full=false
+
             good.scale=1
             md.clear_if_not_alarm()
             md.set_scale(2)

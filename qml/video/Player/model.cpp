@@ -77,7 +77,7 @@ int Model::get_pages_count()
 
 bool Model::add_page(QString pageName,int maxScale)
 {
-//   qDebug()<<"на видеостене "<<vid<<" добавляем страницу :"<<pageName;
+   qDebug()<<"на видеостене "<<vid<<" добавляем страницу :"<<pageName<<" maxScale "<<maxScale;
 
     if(!mdl.value(vid))
        add_vid();
