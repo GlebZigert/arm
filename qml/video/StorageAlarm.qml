@@ -550,7 +550,7 @@ timeline.pause_signal.connect(f_paused)
             timeline.to_live()
 
 
- multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
+ //multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             multivm.add_alarm_camera(id)
 
             //Для мультвм выставляем флаг тревожного режима

@@ -539,8 +539,8 @@ console.log(" vm_start(mode)")
 
                     set_vm_source(model.cid,model.url)
                     //console.log("Rect ",index," создан; uid: ",uid,"; cid:",vm.cid,"; url:",vm.url)
-                    if(model.url!=""){
-                    vvm.vm_start(model.cid,model.url,1)
+                    if(model.url!==""){
+                    vvm.vm_start_1(model.cid,model.url,1)
                     }
 
     if(vvm.get_connection()){
@@ -643,7 +643,7 @@ console.log(" vm_start(mode)")
           //   console.log("смотрю ",md.get_cid_at(i)," ",id)
             if(md.get_cid_at(i) === id){
               var uid =  md.get_uid_at(i)
-                md.set_url_for_uid(uid)
+                md.set_url_for_uid(Axxon.camera(id).livestream_low,uid)
 
           //     console.log("такая камера уже есть ",id)
                 return
@@ -651,7 +651,7 @@ console.log(" vm_start(mode)")
         }
 
         md.set_scale(1)
-        md.check_the_scale(id,Axxon.camera(id).livestream_low,true)
+        md.check_the_scale(id,"",true)
          md.save_to_settings()
 
 /*
@@ -669,7 +669,9 @@ console.log(" vm_start(mode)")
 
   rescale(good.scale,true)
 
+        var serviceId=Axxon.camera(id).serviceId
 
+    good.stream_request(id,good.quality)
 
        //  add_camera(id,true)
  md.save_to_settings()
@@ -895,7 +897,7 @@ console.log("Multivm add_storage_camera")
                     var cid = md.get_cid_at(i)
 
                   //  if(url=="" && cid>-1){
-                      //  console.log("пустой cid ",cid)
+                        console.log("пустой cid ",cid)
                         var serviceId=Axxon.camera(get_cids()[0]).serviceId
 
                     good.stream_request(cid, "higth")
@@ -938,7 +940,7 @@ console.log("Multivm add_storage_camera")
                 if(url=="" && cid>-1){
                     console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                         Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
+                       good.stream_request(cid, quality)
                 }
 
 

@@ -935,7 +935,9 @@ void Page::check_the_scale(int id,QString url,bool alarm)
            map.value(key)->cid=id;
            if(url!=""){
                qDebug()<<"map.value(key)->url= "<<url;
+                   qDebug()<<"Page::check_the_scale url 1= "<< map.value(key)->url;
            map.value(key)->url=url;
+               qDebug()<<"Page::check_the_scale url 2= "<< map.value(key)->url;
            }
            map.value(key)->alarm=alarm;
      //       cids.setProperty(i,"cid",id)

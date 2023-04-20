@@ -760,7 +760,16 @@ console.log("Key_Down")
 
     function vm_start(mmode){
         mode = mmode
-      //  console.log("vm_start ",mode)
+        console.log("vvvm vm_start(mmode) ",mode)
+        vm.start(mmode)
+
+    }
+
+    function vm_start_1(cid,url,mmode){
+        mode = mmode
+        console.log("vvvm vm_start(cid,url,mmode) ",mode)
+        vm.cid=cid
+        vm.source=url
         vm.start(mmode)
 
     }

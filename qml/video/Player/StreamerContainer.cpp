@@ -312,7 +312,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
               timer.start(100);
     if(streamer){
 
-             qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner"<<streamer->runner->get_m_index();
+             qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner "<<streamer->runner->get_m_index();
 
 
         return streamer;

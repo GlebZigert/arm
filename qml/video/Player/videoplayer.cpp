@@ -86,8 +86,10 @@ void VideoPlayer::setSource(const QString source)
 void VideoPlayer::start(Runner::StreamType type)
 {
    qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
+   if(next){
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
     next.clear();
+   }
     timer.stop();
     streamType=Runner::Nothing;
 
@@ -105,50 +107,10 @@ void VideoPlayer::start(Runner::StreamType type)
   next = container->start(m_source,type);
 
   if(next){
-      {
+            qDebug()<<"видеоплеер "<<cid<<" нашел следующий runner "<<next->runner->get_m_index();
          next->followers_inc();
-        /*
-      if(next->runner->get_m_running()==Runner::Mode::Play ||next->runner->get_m_running()==Runner::Mode::Hold){
-      if(current){
-
-          if(current.data()->runner->URL==m_source && type != Runner::StreamType::Snapshot){
-
-           //   qDebug()<<"это он и  есть";
-              return;
-          }
-
-          //если мы уже принимаем поток - нужно от него отписаться
-          disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-          disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
-
-          //qDebug()<<"clear "<<current.data()->getURL();
-
-          data=NULL;
-          current->followers_dec();
-          current.clear();
-      }
-      current=next;
-      next.clear();
-
-        current->followers_inc();
-        data = current.data()->getData();
-
-        connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-        connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
-        streamType=current->runner->streamType;
-      //  qDebug()<<"streamType = "<<streamType;
-      //  m_connection=true;
-      }
-      */
-
 
           connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
-       //   m_connection = false;
-    //wait_for_next.start(1000);
-      //    emit connectionChanged(m_connection);
-
-  }
-
 
   }
 
@@ -362,7 +324,7 @@ void VideoPlayer::f_wait_for_next()
 
 void VideoPlayer::next_frame(QString src)
 {
-    qDebug()<<"VideoPlayer::next_frame()";
+    qDebug()<<"VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
     if(current){
 
