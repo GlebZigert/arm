@@ -661,7 +661,7 @@ Vvvvvvm{
 
         var serviceId=Axxon.camera(id).serviceId
         console.log("5")
-        good.stream_request(id,good.quality)
+        good.stream_request(id,"low")
 
         //  add_camera(id,true)
         md.save_to_settings()
