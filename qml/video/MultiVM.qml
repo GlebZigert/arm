@@ -645,7 +645,7 @@ console.log(" vm_start(mode)")
                 return
             }
         }
-        md.set_scale(1)
+        md.set_scale(2)
         md.check_the_scale(id,"",true)
         md.save_to_settings()
 
@@ -674,7 +674,7 @@ console.log(" vm_start(mode)")
             full=false
             good.scale=1
             md.clear_if_not_alarm()
-            md.set_scale(1)
+            md.set_scale(2)
             for(var i=0;i<arr.length;i++){
 
 
@@ -1058,7 +1058,7 @@ console.log("Multivm add_storage_camera")
         }
         */
 
-        md.set_scale(1)
+        md.set_scale(2)
         md.check_the_scale(id,Axxon.camera(id),"",alarm)
          md.save_to_settings()
         /*
