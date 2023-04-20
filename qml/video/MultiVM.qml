@@ -413,7 +413,23 @@ id: btn_clear_camera
 
                        md.set_alarm_for_uid(false,vm.uid)
 
-             //     console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",vm.url)
+
+                        var url="";
+                        var scale= md.current_scale()
+                        for(var j=0;j<scale*scale;j++){
+
+                            var url_ = md.get_url_at(j)
+                            var uid_ = md.get_uid_at(j)
+                          //        console.log("is ",id, " uid ",uid_," url ",url_)
+                            if(uid_ == vm.uid){
+                            url=url_
+                            }
+
+                        }
+
+
+                  console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",url)
+                        full.vm_start_1(vm.cid,url,1)
                 //    rrow.visible=true
                     }else{
                      rrow.visible=false
@@ -604,6 +620,9 @@ Vvvvvvm{
 
                     if(lcl!==-1){
                     root.telemetryPoint=lcl.telemetryControlID
+
+
+
 
                           Tlmtr.preset_info()
                        Tlmtr.capture_session()

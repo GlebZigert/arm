@@ -767,8 +767,9 @@ console.log("Key_Down")
 
     function vm_start_1(cid_,url,mmode){
         mode = mmode
-     //   console.log("vvvm vm_start(cid,url,mmode) ",mode)
+        console.log("vvvm vm_start(cid,url,mmode) ",mode)
         supreme.cid=cid_
+
         vm.cid=cid_
         vm.source=url
         vm.start(mmode)
