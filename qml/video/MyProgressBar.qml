@@ -698,6 +698,42 @@ Row {
     }
     }
 
+    Rectangle {
+
+        color: "red";
+        width: 170;
+        height: 40
+            id: alarms
+        visible: false
+
+        radius: 6
+
+
+    Text{
+        x:10
+        y:5
+
+        text: "Тревоги"
+        width: 40
+        height: 240
+        font.family: "Helvetica"
+        font.pointSize: 20
+        color: "black"
+    }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+
+            console.log("to alarms")
+            alarms.visible=false
+            to_live()
+            livestream_button_clicked()
+            }
+        }
+
+
+    }
+
     /*
     Rectangle{
         id: to_storage_cameras
@@ -789,6 +825,9 @@ Row {
 }
 
 }
+
+
+
 function increase()
 {
     //console.log(slider.value," ",m_item.speed," ",slider.to)
@@ -1271,6 +1310,10 @@ function storageAlarm_edition(){
 
 
 
+}
+
+function show_alarms(){
+alarms.visible=true
 }
 
 

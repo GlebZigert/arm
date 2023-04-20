@@ -24,6 +24,8 @@ Item{
     property string storage_live: ""
     property string pause_play: ""
 
+
+
     property int maxScale
 
     signal switch_tlmtr
@@ -32,6 +34,13 @@ Item{
     StreamerContainer_QML_accesser{
     id: accesser
     }
+
+    ListModel{
+        id: alarms
+
+    }
+
+
 
     onVisibleChanged: {
 
@@ -399,7 +408,6 @@ timeline.pause_signal.connect(f_paused)
         timeline.fullscreen_signal.connect(fullscreen)
 
         timeline.signal_scale.connect(scale)
-
         timeline.hide_timelines.connect(hide_timelines)
 
         root.cameraList.updated.connect(f_start_timer_start())
@@ -423,6 +431,7 @@ timeline.pause_signal.connect(f_paused)
           }else{
 
               if(quality=="higth"){
+            multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             multivm.vm_start(id,Axxon.camera(id).livestream_higth,StreamType.Streaming)
               }else{
              multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
@@ -544,7 +553,7 @@ timeline.pause_signal.connect(f_paused)
 
     function f_event_on_camera(id){
 
-        if(storage_live==live){
+        if(storage_live===live){
 
 
             storage_live=live
@@ -554,6 +563,14 @@ timeline.pause_signal.connect(f_paused)
 
  //multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             multivm.add_alarm_camera(id)
+        }else{
+        alarms.append({cid: id})
+            console.log("alarms: ",alarms.count)
+            for(var i=0;i<alarms.count;i++){
+            console.log(alarms.get(i).cid)
+            }
+            timeline.show_alarms()
+
         }
 
             //Для мультвм выставляем флаг тревожного режима
@@ -622,6 +639,41 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function f_set_live_play()    {
+
+        if(alarms.count>0){
+
+            var res =[]
+
+
+            for(var i = 0; i<alarms.count; i++)
+            {
+
+                var lcl = alarms.get(i).cid
+                //  console.log(i," ",lcl)
+                if(lcl!=-1){
+                    var frash=true
+                    for(var j in res){
+                        if(res[j]===lcl){
+                            frash=false
+                        }
+                    }
+                    if(frash){
+                        res.push(lcl)
+                    }
+                }
+            }
+            console.log("alarms ",res)
+
+
+            if(res.length>0){
+                multivm.add_alarm_cameras(res)
+            }
+
+            alarms.clear()
+        }
+
+
+
 
         storage_live=live
         pause_play=play

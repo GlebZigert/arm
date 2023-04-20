@@ -558,6 +558,7 @@ console.log(" vm_start(mode)")
 
 
         if(flag===true){
+
         good.stream_request(cid, "higth")
         }else{
      good.stream_request(cid, quality)
@@ -626,60 +627,63 @@ console.log(" vm_start(mode)")
 
     function add_alarm_camera(id){
 
-
         console.log("add_alarm_camera")
         md.to_page("Тревоги")
 
-          //  cids.clear()
-
-
         full=false
-            good.scale=1
+        good.scale=1
 
 
         md.clear_if_not_alarm()
 
         for(var i = 0;i < md.get_cids().length;i++){
-          //   console.log("смотрю ",md.get_cid_at(i)," ",id)
+            //   console.log("смотрю ",md.get_cid_at(i)," ",id)
             if(md.get_cid_at(i) === id){
-              var uid =  md.get_uid_at(i)
+                var uid =  md.get_uid_at(i)
                 md.set_url_for_uid(Axxon.camera(id).livestream_low,uid)
 
-          //     console.log("такая камера уже есть ",id)
                 return
             }
         }
-
         md.set_scale(1)
         md.check_the_scale(id,"",true)
-         md.save_to_settings()
+        md.save_to_settings()
 
-/*
-            for(var i = 0;i<cids.count; i++){
-
-                if(cids.get(i).alarm==false){
-                    console.log("сид  ",id, "не тревога")
-               //   cids.setProperty(i,"cid",-1)
-               //   cids.setProperty(i,"url","")
-                }else{
-                  console.log("сид  ",id, "тревога")
-                }
-            }
-            */
-
-  rescale(good.scale,true)
+        rescale(good.scale,true)
 
         var serviceId=Axxon.camera(id).serviceId
 
-    good.stream_request(id,good.quality)
+        good.stream_request(id,good.quality)
 
-       //  add_camera(id,true)
- md.save_to_settings()
+        //  add_camera(id,true)
+        md.save_to_settings()
     }
 
         function add_storage_camera(id){
 
              add_camera(id)
+        }
+
+        function add_alarm_cameras(arr){
+
+            console.log("Multivm add_alarm_cameras array")
+            //md.to_page("Архив")
+            //  cids.clear()
+
+
+            full=false
+            good.scale=1
+            md.clear_if_not_alarm()
+            md.set_scale(1)
+            for(var i=0;i<arr.length;i++){
+
+
+               //
+                md.check_the_scale(arr[i],"",true)
+
+            }
+            md.save_to_settings()
+            rescale(good.scale,true)
         }
 
     function add_storage_cameras(arr){
@@ -1002,7 +1006,7 @@ console.log("Multivm add_storage_camera")
 
     function add_camera(id,alarm){
 
-        console.log("add_camera ",id)
+        console.log("add_camera ",id," ",alarm)
         /*
         var fl=true
         for(var i=0;i<cids.count;i++){
@@ -1017,7 +1021,10 @@ console.log("Multivm add_storage_camera")
         for(var i = 0;i < md.get_cids().length;i++){
           //   console.log("смотрю ",md.get_cid_at(i)," ",id)
             if(md.get_cid_at(i) === id){
+
                console.log("такая камера уже есть ",id)
+                md.set_alarm_for_uid(true,(md.get_uid_at(i)))
+
                 return
             }
         }

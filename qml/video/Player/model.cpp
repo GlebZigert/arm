@@ -860,7 +860,7 @@ void Wall::clear_if_not_alarm()
 Page::Page(QString nm,int val)
 {
     //   qDebug()<<"Страница создана ";
-    scale=1;
+    scale=2;
     name=nm;
     maxScale=val;
 }
@@ -868,7 +868,7 @@ Page::Page(QString nm,int val)
 Page::Page(QObject *parent, QString nm,int val)
 {
     //   qDebug()<<"Страница создана ";
-    scale=1;
+    scale=2;
     name=nm;
     maxScale=val;
 }
@@ -893,7 +893,7 @@ void Page::next_scale()
     if((scale<maxScale)){
     scale++;
     }else{
-        scale=1;
+        scale=2;
     }
 
 
