@@ -151,7 +151,9 @@ break;
 case 8:
     res="Waiting ";
 break;
-
+case 9:
+    res="Low     ";
+break;
 break;
 }
 return res;
@@ -652,6 +654,24 @@ void Runner::run()
             }
 
 
+        }
+
+        if(m_running==Mode::Low){
+
+            if(return_from_low_mode){
+                return_from_low_mode=false;
+                //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+
+                set_m_running(Mode::Play);
+
+            }
+        }
+
+        if(go_to_low_mode){
+            go_to_low_mode=false;
+            //qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" в low mode";
+
+            set_m_running(Mode::Low);
         }
 
         if(go_to_free_state){

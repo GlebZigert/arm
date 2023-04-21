@@ -493,7 +493,7 @@ id: btn_clear_camera
 
                      if(fullscreen_uid>-1){
                      for(var i=0;i<md.get_all_cids().length;i++){
-                         console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+                       //  console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
                          if(md.get_uid_at(i)===fullscreen_uid){
                              flag=true
                          }
@@ -503,7 +503,8 @@ id: btn_clear_camera
 
                      if(flag===true){
                     // console.log("3")
-                     good.stream_request(cid, "higth")
+                         full.vm_start_1(cid,Axxon.camera(cid).low,1)
+                   //  good.stream_request(cid, "higth")
                      }else{
                    //              console.log("4")
                   good.stream_request(cid, quality)
@@ -548,7 +549,7 @@ id: btn_clear_camera
 
         if(fullscreen_uid>-1){
         for(var i=0;i<md.get_all_cids().length;i++){
-            console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+         //   console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
             if(md.get_uid_at(i)===fullscreen_uid){
                 flag=true
             }
@@ -558,7 +559,9 @@ id: btn_clear_camera
 
         if(flag===true){
        // console.log("3")
+       //     full.vm_start_1(cid,Axxon.camera(cid).low,1)
         good.stream_request(cid, "higth")
+
         }else{
                  //   console.log("4")
      good.stream_request(cid, quality)
@@ -589,10 +592,11 @@ Vvvvvvm{
         width: 20
         height: 20
         onClicked: {
-        fullscreen_uid=-1
+
 
         stream_request(full.get_cid(),quality)
         full.visible=false
+        fullscreen_uid=-1
         }
 
     }
@@ -922,50 +926,7 @@ console.log("Multivm add_storage_camera")
 
 
 
-/*
-      //  console.log("full ",full)
-        if(fullscreen_uid!=-1){
-            console.log("rescale full")
-            for(var i=0;i<md.get_all_cids().length;i++){
-                console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
-                if(md.get_uid_at(i)===fullscreen_uid){
 
-                    var url = md.get_url_at(i)
-                    var cid = md.get_cid_at(i)
-
-                  //  if(url=="" && cid>-1){
-                        console.log("пустой cid ",cid)
-                        var serviceId=Axxon.camera(get_cids()[0]).serviceId
-
-                    vm_start(cid,Axxon.camera(cid).livestream_low,StreamType.Streaming)
-                  //  good.stream_request(cid, "higth")
-                      //        Axxon.request_URL(vid,get_cids(), serviceId, "","utc",good.quality)
-                 //   }
-
-
-
-
-                    w_model.append({h:height,
-                                       w:width,
-                                       x: 0,
-                                       y: 0,
-                                       uid: md.get_uid_at(i),
-                                       cid:md.get_cid_at(i),
-                                       url:md.get_url_at(i),
-                                       alarm: md.get_alarm_at(i),
-                                   })
-
-                    break;
-                }
-            }
-
-        }else{
-            */
-
-           // console.log("rescale multi, fullscreen_uid = ",fullscreen_uid)
-
-           // console.log("get_current_page_name ",md.get_current_page_name())
-           // console.log("scale ",scale)
             for(var i=0;i<scale*scale;i++){
 
                 var url = md.get_url_at(i)
@@ -1210,7 +1171,7 @@ console.log("1")
                                          url,
                                          1
                                          )
-                           stream_request(w_model.get(i).cid,"higth")
+                         //  stream_request(w_model.get(i).cid,"higth")
 
                          //   md.set_url_for_uid("",id)
                            fullscreen_uid = id

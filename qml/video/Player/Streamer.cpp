@@ -150,6 +150,11 @@ void Streamer::stop()
     countlost=0;
 }
 
+void Streamer::to_low_mode()
+{
+     runner->go_to_low_mode=true;
+}
+
 AVPicture *Streamer::getData() const
 {
     return data;

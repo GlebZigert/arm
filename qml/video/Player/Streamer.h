@@ -53,6 +53,8 @@ int countlost=0;
 
     void stop();
 
+    void to_low_mode();
+
 
 
     QTimer *tmrStart;

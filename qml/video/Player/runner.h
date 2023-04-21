@@ -40,7 +40,8 @@ public:
     QDateTime time;
     bool frash_stream;
     bool go_to_free_state;
-
+    bool go_to_low_mode=false;
+    bool return_from_low_mode = false;
     static int created;
     static int deleted;
     static int index;
@@ -70,7 +71,8 @@ public:
         Hold,
         Lost,
         Exit,
-        Waiting //wait first frame
+        Waiting,
+        Low//wait first frame
 
 
            };

@@ -94,22 +94,30 @@ void StreamerContainer::func(){
                 if(
                         one.data()->getFollowers()==0 &&
 
-                        ( one.data()->runner->get_m_running()==Runner::Mode::Play ||
-                          one.data()->runner->get_m_running()==Runner::Mode::Hold ||
-                          one.data()->runner->get_m_running()==Runner::Mode::Waiting
-                          )&&
-                        one.data()->runner->getVideoHeight()>600&&
-                        one.data()->runner->getVideoWidth()>800
-                        ){
+                        one.data()->runner->get_m_running()==Runner::Mode::Play ||
+                        one.data()->runner->get_m_running()==Runner::Mode::Hold ||
+                        one.data()->runner->get_m_running()==Runner::Mode::Waiting
 
-                    auto now = QDateTime::currentDateTime();
-                    auto diff = one.data()->no_followers.secsTo(now);
-                    //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
-                    if(diff>2){
-                        qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
-                        //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
-                        one.data()->setSave(false);
-                        one.data()->stop();
+                        )
+                {
+
+
+                    if(one.data()->runner->getVideoHeight()>600&&
+                       one.data()->runner->getVideoWidth()>800
+                       ){
+
+                        auto now = QDateTime::currentDateTime();
+                        auto diff = one.data()->no_followers.secsTo(now);
+                        //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+                        if(diff>5){
+                            qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
+                            //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
+                            one.data()->setSave(false);
+                            one.data()->stop();
+                        }
+                    }else{
+
+                        one->runner->go_to_low_mode=true;
                     }
                 }
 
@@ -364,6 +372,11 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
                 ready.data()->runner->frash_stream=true;
               //   qDebug()<<"<..";
 
+            }
+
+            if(ready->runner->get_m_running()==Runner::Mode::Low){
+
+                ready->runner->return_from_low_mode=true;
             }
  //qDebug()<<"<..";
 

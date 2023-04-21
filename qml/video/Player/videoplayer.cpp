@@ -38,6 +38,13 @@ VideoPlayer::~VideoPlayer()
         current->followers_dec();
         current.clear();
     }
+    if(next){
+        next->followers_dec();
+     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+     next.clear();
+    }
+
+
 //qDebug()<<"<-- ~VideoPlayer::VideoPlayer";
 }
 
