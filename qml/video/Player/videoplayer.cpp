@@ -293,7 +293,7 @@ void VideoPlayer::f_wait_for_next()
 
             //если мы уже принимаем поток - нужно от него отписаться
             disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-            disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
 
             //qDebug()<<"clear "<<current.data()->getURL();
 
@@ -309,7 +309,7 @@ void VideoPlayer::f_wait_for_next()
           data = current.data()->getData();
 
           connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-          connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
           streamType=current->runner->streamType;
         //  qDebug()<<"streamType = "<<streamType;
         //  m_connection=true;
@@ -331,7 +331,7 @@ void VideoPlayer::next_frame(QString src)
     qDebug()<<"--> VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
     qDebug()<<"-1";
-    disconnect(next.data(),SIGNAL(lost(QString)),this,SLOT(next_lost(QString)));
+
        qDebug()<<"-2";
 
        qDebug()<<"-3";
@@ -340,7 +340,7 @@ void VideoPlayer::next_frame(QString src)
         streamType=current->runner->streamType;
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-        disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
 
         //qDebug()<<"clear "<<current.data()->getURL();
 
@@ -356,7 +356,7 @@ void VideoPlayer::next_frame(QString src)
       data = current.data()->getData();
    qDebug()<<"-6";
       connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-      connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
       streamType=current->runner->streamType;
     //  qDebug()<<"streamType = "<<streamType;
     //  m_connection=true;

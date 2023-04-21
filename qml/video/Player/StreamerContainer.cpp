@@ -93,11 +93,11 @@ void StreamerContainer::func(){
             if(one.data()->runner)
                 if(
                         one.data()->getFollowers()==0 &&
-
+                    (
                         one.data()->runner->get_m_running()==Runner::Mode::Play ||
                         one.data()->runner->get_m_running()==Runner::Mode::Hold ||
                         one.data()->runner->get_m_running()==Runner::Mode::Waiting
-
+                        )
                         )
                 {
 
@@ -110,7 +110,7 @@ void StreamerContainer::func(){
                         auto diff = one.data()->no_followers.secsTo(now);
                         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
                         if(diff>5){
-                            qDebug()<<"этот поток "<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
+                            qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
                             show();
                             //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                             one.data()->setSave(false);

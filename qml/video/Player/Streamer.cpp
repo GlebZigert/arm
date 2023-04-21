@@ -68,7 +68,7 @@ int Streamer::get_m_index() const
 void Streamer::followers_inc()
 {
     followers++;
-//    qDebug()<<"runner "<<runner->get_m_index()<<"inc: followers "<<followers;
+    qDebug()<<"runner "<<runner->get_m_index()<<"inc: followers "<<followers;
     frash_follower_time = QDateTime::currentDateTime();
 }
 
@@ -79,7 +79,7 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-//     qDebug()<<"runner "<<runner->get_m_index()<<" dec: followers "<<followers;
+     qDebug()<<"runner "<<runner->get_m_index()<<" dec: followers "<<followers;
 /*
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
