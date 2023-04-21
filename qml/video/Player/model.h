@@ -51,7 +51,7 @@ public:
     void next_scale();
     int current_scale(){return scale;};
 
-    void check_the_scale(int id,QString url,bool alarm);
+    bool check_the_scale(int id,QString url,bool alarm);
 
     void set_cid_for_uid(int cid, int uid);
     void set_url_for_uid(QString url, int uid);
@@ -108,7 +108,7 @@ public:
 
     bool get_alarm_at(int i);
 
-    void check_the_scale(int id,QString url,bool alarm);
+    bool check_the_scale(int id,QString url,bool alarm);
 
     void set_cid_for_uid(int cid, int uid);
     void set_url_for_uid(QString url, int uid);
@@ -165,7 +165,7 @@ public:
 
     Q_INVOKABLE int current_scale();
 
-    Q_INVOKABLE void check_the_scale(int id, QString url,bool alarm);
+    Q_INVOKABLE bool check_the_scale(int id, QString url,bool alarm);
 
     Q_INVOKABLE int get_uid_at(int i);
 

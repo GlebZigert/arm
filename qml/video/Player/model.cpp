@@ -250,11 +250,11 @@ int Model::current_scale()
 
 }
 
-void Model::check_the_scale(int id, QString url, bool alarm)
+bool Model::check_the_scale(int id, QString url, bool alarm)
 {
     //   qDebug()<<"Model::check_the_scale "<<id<<" "<<url<<" "<<alarm;
 
-    mdl.value(vid)->check_the_scale(id,url,alarm);
+   return mdl.value(vid)->check_the_scale(id,url,alarm);
  //       //show();
 }
 
@@ -364,7 +364,9 @@ int Model::get_cid_at(int i)
 QString Model::get_url_at(int i)
 {
         //   qDebug()<<"Model::get_url_at(int i)";
-   return mdl.value(vid)->get_url_at(i);
+    QString url = mdl.value(vid)->get_url_at(i);
+       qDebug()<<"Model::get_url_at(int i)  "<<url;
+   return url;
 }
 
 bool Model::get_alarm_at(int i)
@@ -775,8 +777,9 @@ QString Wall::get_url_at(int i)
         return "";
     }
 
-    if(list.at(current_page))
+    if(list.at(current_page)){
     return list.at(current_page)->get_url_at(i);
+    }
 
             qDebug()<<"Wall::get_url_at ERR 3";
     return "";
@@ -796,8 +799,9 @@ bool Wall::get_alarm_at(int i)
     return false;
 }
 
-void Wall::check_the_scale(int id,QString url,bool alarm)
+bool Wall::check_the_scale(int id,QString url,bool alarm)
 {
+
     if(current_page==-1)
         current_page=0;
 
@@ -808,7 +812,7 @@ void Wall::check_the_scale(int id,QString url,bool alarm)
     }
 
 
-    list.at(current_page)->check_the_scale(id,url, alarm);
+   return list.at(current_page)->check_the_scale(id,url, alarm);
 }
 
 void Wall::set_cid_for_uid(int cid, int uid)
@@ -910,8 +914,9 @@ void Page::next_scale()
 
 }
 
-void Page::check_the_scale(int id,QString url,bool alarm)
+bool Page::check_the_scale(int id,QString url,bool alarm)
 {
+    bool res=false;
   //  qDebug()<<"check_the_scale "<<id<<" "<<url;
     if(map.count()==0){
      for(int i=0;i<50;i++)
@@ -923,13 +928,13 @@ void Page::check_the_scale(int id,QString url,bool alarm)
 
     foreach(auto key , list){
 
-
+   qDebug()<<"--- i: "<<i<<" scale: "<<scale;
         if(i>(scale*scale)){
 
 
-        //   qDebug()<<"--- i: "<<i<<" scale: "<<scale;
-        next_scale();
 
+        next_scale();
+        res=true;
 
         }
 
@@ -953,7 +958,7 @@ void Page::check_the_scale(int id,QString url,bool alarm)
          i++;
     }
 
-
+return res;
 
 }
 
@@ -1003,7 +1008,7 @@ QString Page::get_url_at(int i)
                 qDebug()<<"Page::get_url_at ERR 1";
         return "";
     }
-   // qDebug()<<"url = "<<map.values().at(i)->url;
+    qDebug()<<"url = "<<map.values().at(i)->url;
     return map.values().at(i)->url;
 }
 
@@ -1044,6 +1049,7 @@ Camera::Camera(QObject *parent)
   //  //   qDebug()<<"Камера добавлена";
     cid=-1;
     alarm = false;
+    url="";
 
 }
 

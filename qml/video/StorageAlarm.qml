@@ -421,7 +421,7 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-      //  console.log("storageAlarm stream_request ",id," ",quality," ",storage_live)
+        console.log("storageAlarm stream_request ",id," ",quality," ",storage_live)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId

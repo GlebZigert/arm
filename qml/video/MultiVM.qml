@@ -381,19 +381,20 @@ id: btn_clear_camera
 
 
 
-                function set_cid(cid){
-                    vm.cid=cid
-                    vvm.cid=cid
-                 vvm.set_vm_cid(cid)
+                function set_cid(cid_){
+                    cid=cid_
+                    vm.cid=cid_
+                    vvm.cid=cid_
+                 vvm.set_vm_cid(cid_)
 
                  //на текущем видеоэкране найти uid и выставить ему cid
-                 findAndSet(cids,vm.uid,"cid",cid)
+                 findAndSet(cids,vm.uid,"cid",cid_)
 
                 //    console.log("set cid for uid: ",cid," ",vm.uid)
-                    md.set_cid_for_uid(cid,vm.uid)
+                    md.set_cid_for_uid(cid_,vm.uid)
 
 
-                 findAndSet(w_model,vm.uid,"cid",cid)
+                 findAndSet(w_model,vm.uid,"cid",cid_)
                 }
 
                 function set_Scale(val){
@@ -833,6 +834,25 @@ console.log("Multivm add_storage_camera")
 
     }
 
+    function set_cid(index,cid){
+      // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+
+
+            if(i==index){
+
+               console.log("set_cid ",cid," for ",i)
+
+                grid.children[i].set_cid(cid)
+
+
+            }
+
+        }
+
+    }
+
     function vm_start(cid,src,mode){
       // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
@@ -896,6 +916,75 @@ console.log("Multivm add_storage_camera")
     }
 
 
+
+    function refresh(){
+        console.log("refresh")
+
+        scale= md.current_scale()
+        var ww = width/scale
+        var hh = height/scale
+
+        for(var i=0;i<scale*scale;i++){
+
+
+            var cid_old = w_model.get(i).cid
+            var cid_new = md.get_cid_at(i)
+
+            var url_old = w_model.get(i).url
+            var url_new = md.get_url_at(i)
+
+            var uid_old = w_model.get(i).uid
+            var uid_new = md.get_uid_at(i)
+
+
+
+
+            console.log(" ")
+
+            if(cid_old!=cid_new){
+
+                console.log("uid: ",uid_old," ",uid_new)
+                console.log("cid: ",cid_old," ",cid_new)
+                console.log("url: ",url_old," ",url_new)
+
+                w_model.setProperty(i,"cid"  ,cid_new  )
+                w_model.setProperty(i,"url"  ,url_new  )
+
+                good.set_cid(i,cid_new)
+
+                good.stream_request(cid_new,quality)
+
+            }
+
+/*
+            console.log("--")
+
+
+            console.log(w_model.get(i).uid)
+            console.log(w_model.get(i).cid)
+            console.log(w_model.get(i).url)
+            console.log(w_model.get(i).alarm)
+
+console.log("")
+
+
+
+            w_model.setProperty(i,"uid"  ,md.get_uid_at(i)  )
+            w_model.setProperty(i,"cid"  ,md.get_cid_at(i)  )
+            w_model.setProperty(i,"url"  ,md.get_url_at(i)  )
+            w_model.setProperty(i,"alarm",md.get_alarm_at(i))
+
+            console.log(w_model.get(i).uid)
+            console.log(w_model.get(i).cid)
+            console.log(w_model.get(i).url)
+            console.log(w_model.get(i).alarm)
+
+          //  stream_request(w_model.get(i).cid,quality)
+console.log("--")
+            */
+        }
+
+    }
 
     function rescale(scale,save){
 
@@ -1050,9 +1139,9 @@ console.log("Multivm add_storage_camera")
         }
         */
 console.log("1")
-        md.set_scale(1)
+      //  md.set_scale(1)
         console.log("1")
-        md.check_the_scale(id,Axxon.camera(id),"",alarm)
+        var res = md.check_the_scale(id,Axxon.camera(id),"",alarm)
         console.log("1")
          md.save_to_settings()
         console.log("1")
@@ -1082,8 +1171,12 @@ console.log("1")
                 }
             }
             */
-console.log("1")
+console.log("res = ",res )
+        if(res===true){
             rescale(good.scale,true)
+        }else{
+        refresh()
+        }
 console.log("1")
 
             var serviceId=Axxon.camera(id).serviceId

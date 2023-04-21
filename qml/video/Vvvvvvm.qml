@@ -753,7 +753,9 @@ console.log("Key_Down")
     function set_vm_source(cid,src){
     //    console.log("set_vm_source ",cid," ",src)
     //    vm.cid=cid
+        if(src){
         vm.source=src
+        }
     }
 
 

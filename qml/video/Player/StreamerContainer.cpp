@@ -117,7 +117,11 @@ void StreamerContainer::func(){
                         }
                     }else{
 
+                        auto now = QDateTime::currentDateTime();
+                        auto diff = one.data()->no_followers.secsTo(now);
+                    if(diff>5){
                         one->runner->go_to_low_mode=true;
+                            }
                     }
                 }
 

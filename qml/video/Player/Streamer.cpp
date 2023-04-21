@@ -97,11 +97,7 @@ void Streamer::followers_dec()
         no_followers=QDateTime::currentDateTime();
     }
 
-    if(followers==0 && /*mode !=Runner::Mode::LiveStreaming && */save==false ){
-       URL.clear();
 
-        stop();
-    }
 }
 
 bool Streamer::getSave() const
