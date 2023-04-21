@@ -383,6 +383,8 @@ function set_alarm(alarm_){
   alarm= alarm_
     if(alarm){
     rect.color="red"
+    }else{
+    rect.color="gray"
     }
 }
 
@@ -419,7 +421,7 @@ function set_alarm(alarm_){
                     findAndSet(w_model,vm.uid,"alarm",false)
 
                        md.set_alarm_for_uid(false,vm.uid)
-
+                            rect.color="gray"
 
                         var url="";
                         var scale= md.current_scale()

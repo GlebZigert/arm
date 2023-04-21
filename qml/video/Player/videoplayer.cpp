@@ -12,6 +12,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 
     data=NULL;
 
+    connect(&timer, SIGNAL(timeout()), this, SLOT(on_timer()));
     connect(&cleaner, SIGNAL(timeout()), this, SLOT(f_clear()));
     connect(&wait_for_next, SIGNAL(timeout()), this, SLOT(f_wait_for_next()));
 
@@ -124,7 +125,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
   }
 
-  timer.start(3000);
+  timer.start(200);
 
 }
 
@@ -249,9 +250,9 @@ void VideoPlayer::frame(QString source){
     }
 
 
-    timer.stop();
+//    timer.stop();
     if(streamType!=Runner::StreamType::Snapshot) {
-    timer.start(500);
+    timer.start(200);
     }
 
 }
@@ -265,13 +266,13 @@ void VideoPlayer::f_clear()
 
 void VideoPlayer::on_timer()
 {
-
-    timer.stop();
+qDebug()<<"VideoPlayer::on_timer()";
+//    timer.stop();
     m_connection = false;
 
 
 
-    qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
+ //   qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
     //stop();
     img=QImage(":/qml/video/no_signal.jpeg");
        this->update();
@@ -314,11 +315,11 @@ void VideoPlayer::f_wait_for_next()
         //  qDebug()<<"streamType = "<<streamType;
         //  m_connection=true;
     }else{
-        timer.stop();
+   //     timer.stop();
         m_connection = false;
         img=QImage(":/qml/video/no_signal.jpeg");
            this->update();
-        emit connectionChanged(m_connection);
+
 
        qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
         stop();
@@ -362,6 +363,7 @@ void VideoPlayer::next_frame(QString src)
     //  m_connection=true;
    qDebug()<<"-7";
    qDebug()<<"<-- VideoPlayer::next_frame() from runner ";
+  timer.start(200);
 }
 
 
