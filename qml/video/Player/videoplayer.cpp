@@ -125,7 +125,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
   }
 
-  timer.start(200);
+  wait_for_next.start(1000);
 
 }
 
@@ -281,54 +281,23 @@ qDebug()<<"VideoPlayer::on_timer()";
 
 void VideoPlayer::f_wait_for_next()
 {
-    next = container->start(m_source,streamType);
-
-    if(next){
-        if(current){
-
-            if(current.data()->runner->URL==m_source && streamType != Runner::StreamType::Snapshot){
-
-             //   qDebug()<<"это он и  есть";
-                return;
-            }
-
-            //если мы уже принимаем поток - нужно от него отписаться
-            disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
 
 
-            //qDebug()<<"clear "<<current.data()->getURL();
+qDebug()<<"VideoPlayer::f_wait_for_next()";
 
-            data=NULL;
-            current->followers_dec();
-            current.clear();
-        }
-        current=next;
-        next->followers_dec();
-        next.clear();
-
-          current->followers_inc();
-          data = current.data()->getData();
-
-          connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-
-          streamType=current->runner->streamType;
-        //  qDebug()<<"streamType = "<<streamType;
-        //  m_connection=true;
-    }else{
-   //     timer.stop();
+       qDebug()<<"videoplayer lost runner";
+       // stop();
+      //  img=QImage(":/qml/video/no_signal.jpeg");
+      //     this->update();
         m_connection = false;
-        img=QImage(":/qml/video/no_signal.jpeg");
-           this->update();
-
-
-       qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
-        stop();
         emit connectionChanged(m_connection);
-    }
+
 }
 
 void VideoPlayer::next_frame(QString src)
 {
+    wait_for_next.stop();
+
     qDebug()<<"--> VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
     qDebug()<<"-1";
