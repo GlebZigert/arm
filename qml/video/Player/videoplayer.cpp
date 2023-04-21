@@ -280,7 +280,7 @@ void VideoPlayer::on_timer()
     timer.stop();
     m_connection = false;
 
-  //  qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index();
+    qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
     //stop();
     emit connectionChanged(m_connection);
 }
@@ -324,7 +324,7 @@ void VideoPlayer::f_wait_for_next()
         timer.stop();
         m_connection = false;
 
-      //  qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index();
+       qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
         stop();
         emit connectionChanged(m_connection);
     }

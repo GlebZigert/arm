@@ -365,7 +365,7 @@ QString Model::get_url_at(int i)
 {
         //   qDebug()<<"Model::get_url_at(int i)";
     QString url = mdl.value(vid)->get_url_at(i);
-       qDebug()<<"Model::get_url_at(int i)  "<<url;
+  //     qDebug()<<"Model::get_url_at(int i)  "<<url;
    return url;
 }
 
@@ -1005,10 +1005,10 @@ int Page::get_cid_at(int i)
 QString Page::get_url_at(int i)
 {
     if(map.count()<=i){
-                qDebug()<<"Page::get_url_at ERR 1";
+     //           qDebug()<<"Page::get_url_at ERR 1";
         return "";
     }
-    qDebug()<<"url = "<<map.values().at(i)->url;
+  //  qDebug()<<"url = "<<map.values().at(i)->url;
     return map.values().at(i)->url;
 }
 

@@ -312,7 +312,7 @@ id: btn_flip_camera
 
                             console.log("onClicked .,.")
                             vvm.info()
-                            good.switch_tlmtr()
+                          //  good.switch_tlmtr()
                             rrow.visible=false
                         }
                     }
@@ -597,6 +597,7 @@ Vvvvvvm{
 
         stream_request(full.get_cid(),quality)
         full.visible=false
+
         fullscreen_uid=-1
         }
 
@@ -677,11 +678,15 @@ Vvvvvvm{
                 return
             }
         }
-        md.set_scale(2)
-        md.check_the_scale(id,"",true)
+        //md.set_scale(2)
+        var res = md.check_the_scale(id,"",true)
         md.save_to_settings()
 
-        rescale(good.scale,true)
+        if(res===true){
+            rescale(good.scale,true)
+        }else{
+        refresh()
+        }
 
         var serviceId=Axxon.camera(id).serviceId
        // console.log("5")
@@ -936,7 +941,8 @@ console.log("Multivm add_storage_camera")
             var uid_old = w_model.get(i).uid
             var uid_new = md.get_uid_at(i)
 
-
+            var alarm_old = w_model.get(i).alarm
+            var alarm_new = md.get_alarm_at(i)
 
 
             console.log(" ")
