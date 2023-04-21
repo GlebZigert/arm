@@ -614,6 +614,7 @@ void Runner::run()
 
         //открыть новый поток
         if(frash_stream){
+            losted=false;
             frameCnt=0;
             qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
 
@@ -687,8 +688,10 @@ void Runner::run()
             emit new_frame(URL);
         }
         if(m_running==Mode::Lost){
-
+                if(losted==false){
             emit lost_connection(URL);
+                    losted=true;
+                }
         }
 
 

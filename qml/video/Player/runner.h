@@ -49,6 +49,7 @@ public:
     static int av_codec_not_open;
     static int av_codec_close;
 
+    bool losted=false;
 
 
     enum StreamType

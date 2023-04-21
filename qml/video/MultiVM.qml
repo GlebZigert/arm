@@ -146,8 +146,9 @@ Rectangle{
                 property bool contain_mouse: area.containsMouse ? true : false
                 readonly property int uid: model.uid
                 property int cid: model.cid
-
+                property int alarm: model.alarm
                 Rectangle{
+                    id: rect
                     anchors.fill: parent
                     color: model.alarm ? "red" : "gray";
                     MouseArea{
@@ -378,7 +379,12 @@ id: btn_clear_camera
                 }
 
 
-
+function set_alarm(alarm_){
+  alarm= alarm_
+    if(alarm){
+    rect.color="red"
+    }
+}
 
 
                 function set_cid(cid_){
@@ -839,6 +845,25 @@ console.log("Multivm add_storage_camera")
 
     }
 
+    function set_alarm(index,alarm){
+      // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+
+
+            if(i==index){
+
+               console.log("set_cid ",alarm," for ",i)
+
+                grid.children[i].set_alarm(alarm)
+
+
+            }
+
+        }
+
+    }
+
     function set_cid(index,cid){
       // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         for(var i = 0; i<grid.children.length-1; i++)
@@ -949,14 +974,15 @@ console.log("Multivm add_storage_camera")
 
             if(cid_old!=cid_new){
 
-                console.log("uid: ",uid_old," ",uid_new)
-                console.log("cid: ",cid_old," ",cid_new)
-                console.log("url: ",url_old," ",url_new)
-
+                console.log("uid  : ",uid_old," ",uid_new)
+                console.log("cid  : ",cid_old," ",cid_new)
+                console.log("url  : ",url_old," ",url_new)
+                console.log("alarm: ",alarm_old," ",alarm_new)
                 w_model.setProperty(i,"cid"  ,cid_new  )
                 w_model.setProperty(i,"url"  ,url_new  )
 
                 good.set_cid(i,cid_new)
+                good.set_alarm(i,alarm_new)
 
                 good.stream_request(cid_new,quality)
 

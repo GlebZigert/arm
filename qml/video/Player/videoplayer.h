@@ -86,11 +86,12 @@ public slots:
     void onWidthChanged();
     void onheightChanged();
     void frame(QString src);
-    void lost(QString src);
+
     void f_clear();
     void on_timer();
     void f_wait_for_next();
     void next_frame(QString src);
+
 };
 
 #endif // VIDEOPLAYER_H

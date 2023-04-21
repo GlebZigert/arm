@@ -13,8 +13,8 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
     data=NULL;
 
     connect(&cleaner, SIGNAL(timeout()), this, SLOT(f_clear()));
-    connect(&timer, SIGNAL(timeout()), this, SLOT(on_timer()));
     connect(&wait_for_next, SIGNAL(timeout()), this, SLOT(f_wait_for_next()));
+
   //  list1=new Streamer(&data,&h,&w);
   //  list1->URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpnt.1/SourceEndpoint.video:0:0";
 
@@ -30,7 +30,7 @@ VideoPlayer::~VideoPlayer()
     if(current){
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-        disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
 
         //qDebug()<<"clear "<<current.data()->getURL();
 
@@ -41,6 +41,7 @@ VideoPlayer::~VideoPlayer()
     if(next){
         next->followers_dec();
      disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+
      next.clear();
     }
 
@@ -96,6 +97,7 @@ void VideoPlayer::start(Runner::StreamType type)
    if(next){
        next->followers_dec();
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+
     next.clear();
    }
     timer.stop();
@@ -129,11 +131,11 @@ void VideoPlayer::start(Runner::StreamType type)
 void VideoPlayer::stop()
 {
         timer.stop();
-   // qDebug()<<"VideoPlayer::stop() ";
+    qDebug()<<"VideoPlayer::stop() ";
     if(current){
         qDebug()<<"VideoPlayer::stop() runner "<<current->runner->get_m_index();
     disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
-    disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
+
 
     //qDebug()<<"clear "<<current.data()->getURL();
     current.data()->save=false;
@@ -254,19 +256,6 @@ void VideoPlayer::frame(QString source){
 
 }
 
-void VideoPlayer::lost(QString source)
-{
-    //     stop();
-
-    if(source==this->m_source){
-        img=QImage(":/qml/video/no_signal.jpeg");
-    this->update();
-    }
-    if(!timer.isActive()){
-    timer.start(500);
-    }
-
-}
 
 void VideoPlayer::f_clear()
 {
@@ -280,8 +269,12 @@ void VideoPlayer::on_timer()
     timer.stop();
     m_connection = false;
 
+
+
     qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
     //stop();
+    img=QImage(":/qml/video/no_signal.jpeg");
+       this->update();
     emit connectionChanged(m_connection);
 }
 
@@ -323,6 +316,9 @@ void VideoPlayer::f_wait_for_next()
     }else{
         timer.stop();
         m_connection = false;
+        img=QImage(":/qml/video/no_signal.jpeg");
+           this->update();
+        emit connectionChanged(m_connection);
 
        qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
         stop();
@@ -332,11 +328,16 @@ void VideoPlayer::f_wait_for_next()
 
 void VideoPlayer::next_frame(QString src)
 {
-    qDebug()<<"VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
+    qDebug()<<"--> VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+    qDebug()<<"-1";
+    disconnect(next.data(),SIGNAL(lost(QString)),this,SLOT(next_lost(QString)));
+       qDebug()<<"-2";
+
+       qDebug()<<"-3";
     if(current){
 
-
+        streamType=current->runner->streamType;
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         disconnect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
@@ -347,19 +348,23 @@ void VideoPlayer::next_frame(QString src)
         current->followers_dec();
         current.clear();
     }
+       qDebug()<<"-4";
     current=next;
     next.clear();
-
+   qDebug()<<"-5";
 
       data = current.data()->getData();
-
+   qDebug()<<"-6";
       connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
       connect(current.data(),SIGNAL(lost(QString)),this,SLOT(lost(QString)));
       streamType=current->runner->streamType;
     //  qDebug()<<"streamType = "<<streamType;
     //  m_connection=true;
-
+   qDebug()<<"-7";
+   qDebug()<<"<-- VideoPlayer::next_frame() from runner ";
 }
+
+
 
 
 

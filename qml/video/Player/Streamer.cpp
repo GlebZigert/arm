@@ -109,7 +109,9 @@ void Streamer::setSave(bool newSave)
 {
    // qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
     save = newSave;
+    if(newSave==true){
     no_followers=QDateTime::currentDateTime();
+    }
 }
 
 int Streamer::getW() const
@@ -169,8 +171,11 @@ void Streamer::receiveFrame(QString URL)
 void Streamer::lostConnection(QString URL)
 {
 
-    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL;
-    runner->go_to_free_state=true;
+    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
+
+    if(followers==0){
+    stop();
+    }
     emit lost(URL);
 
 }
