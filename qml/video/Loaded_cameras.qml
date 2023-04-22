@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.5
 import Preview 1.0
+import "../../js/axxon.js" as Axxon
 
 Item {
     id: container
@@ -15,7 +16,7 @@ Item {
 
     signal add_to_space(var x)
 
-    signal refresh(var y)
+    property bool updated: false
 
 
      ListModel{
@@ -51,7 +52,7 @@ height: parent.height-head.height
 GridView {
 
 id: rpt
-model:container.page_model
+model:model
 anchors.fill: parent
 anchors.margins: 2
 cellWidth: 300
@@ -73,7 +74,8 @@ Row{
 
     Preview{
     id: image
-    property int mid: modelData.preview_id
+    property int mid: modelData.id
+    url: modelData.frash_snapshot
     width: 150
     height: 98
 
@@ -95,7 +97,7 @@ Row{
             height: 10
             x:10
             y:0
-            text: modelData.id
+            text: modelData.name
             font.family: "Helvetica"
             font.pointSize: 10
             minimumPointSize: 10
@@ -123,22 +125,11 @@ Row{
 
 }
 
-function func(y){
 
-    if(image!=null)
-    if(image.mid==y.obj.preview_id){
-
-        text.text=y.obj.name
-        if(image.url!=y.obj.frash_snapshot){
-            image.url=y.obj.frash_snapshot
-        }
-    }
-}
 
 Component.onCompleted: {
     root.log("mid: ",image.mid)
-    container.refresh.connect(func)
-    container.do_refresh(image.mid)
+
 }
 
 }
@@ -149,7 +140,7 @@ MouseArea {
 
     onPressed: {
         var ind = rpt.indexAt(coords.mouseX, coords.mouseY)
-        root.log("ind " ,ind)
+        console.log("index: " ,ind)
         container.current=ind
         add_this_camera()
     }
@@ -184,7 +175,12 @@ go_to_page(current_page)
 
 function update_from_cameraList() {
 
- root.log("update_from_cameraList")
+    if(updated){
+    return
+    }
+    updated=true
+
+ console.log("update_from_cameraList")
     model.clear()
 
       for(var j=0;j< root.cameraList.count;j++){
@@ -194,7 +190,7 @@ function update_from_cameraList() {
                               id: root.cameraList.get(j).id ,
                               name: root.cameraList.get(j).name ,
                               ipadress:  root.cameraList.get(j).ipadress ,
-                              frash_snapshot:root.cameraList.get(j).frash_snapshot,
+                              frash_snapshot:root.cameraList.get(j).livestream_low,
                           }
                       })
       }
@@ -209,9 +205,11 @@ function add_this_camera()
 if(container.current>(-1))
 {
 
-var x=container.page_model.get(container.current)
+var x=model.get(container.current).obj.id
 
-add_to_space(x.obj.id)
+    console.log("x: ",x)
+
+add_to_space(x)
 container.visible=false
 
 }
@@ -220,6 +218,10 @@ container.visible=false
 
 function go_to_page(page){
 
+    console.log("go_to_page ",page," size ",page_size)
+
+
+    /*
     var sz=0
     if (page>(model.count/page_size)){
 
@@ -245,11 +247,13 @@ function go_to_page(page){
             id: -1,
             ipadress:  "" ,
             name: "" ,
-            frash_snapshot:"",
+            frash_snapshot:Axxon.camera(ind).livestream_low,
             }})
 
         }
     }
+
+
     size=container.page_model.count-sz
     if(container.page_model.count>sz){
 
@@ -259,25 +263,11 @@ function go_to_page(page){
         }
     }
 
-    for(i=0;i<container.page_model.count;i++){
-        do_refresh(i)
-    }
 
-    for(i=0;i<container.page_model.count;i++)
-    {
-        var yy=container.page_model.get(i)
-    }
+*/
+
 }
 
-function do_refresh(i){
 
-    var ind=i+page_size*(current_page-1)
-    var x=model.get(ind)
-    var y=container.page_model.get(i)
-
-    container.page_model.set(i,{obj:{"preview_id":i,"ipadress":x.obj.ipadress,"id":x.obj.id,"name":x.obj.name}})
-
-    container.refresh({"obj":{"preview_id":i,"ipadress":x.obj.ipadress,"id":x.obj.id,"name":x.obj.name,"frash_snapshot":x.obj.frash_snapshot}})
-}
 
 }

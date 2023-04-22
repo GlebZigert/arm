@@ -8,7 +8,7 @@
 #ifndef WIN32
 #include "qml/video/Player/videoplayer.h"
 #include "qml/video/Player/model.h"
-#include "qml/video/Preview/Preview.h"
+#include "qml/video/Player/preview.h"
 #include "qml/video/Player/runner.h"
 #include "qml/video/Player/Streamercontainer_qml_accesser.h"
 #endif

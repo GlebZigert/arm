@@ -776,7 +776,7 @@ Axxon.prototype.rebuildTree = function (data) {
                     name: data[i].name ,
                     //     telemetryControlID: data[i].telemetryControlID,
                     serviceId: this.serviceId,
-                    frash_snapshot:data[i].frash_snapshot,
+                    frash_snapshot:data[i].livestream_low,
                     color:color,
                     display:"",
                     tooltip:"",
