@@ -1013,6 +1013,41 @@ function clear_frash(id){
 
 }
 
+function check_the_storage(dt, id){
+    console.log("--> check_the_storage ",dt," ",id )
+
+    var intervals=camera(id).intervals
+
+    var vdt = parseFloat(dt.replace("T",""))
+    if(intervals.intervals)
+    {
+        console.log("intervals.length ",intervals.length)
+
+
+        if(intervals.intervals.length>0){
+            for (var i=0;i<intervals.intervals.length;i++) {
+
+
+                var begin=parseFloat((intervals.intervals[i].begin).replace("T",""))
+                var end=parseFloat((intervals.intervals[i].end).replace("T",""))
+
+                console.log(begin," ",end)
+
+                if(begin<vdt<end){
+                  console.log(begin," ",vdt," ",end)
+                    console.log("<-- check_the_storage [true] ",dt," ",id )
+                   return true
+                }
+            }
+        }
+
+
+
+    }
+     console.log("<-- check_the_storage [false] ",dt," ",id )
+    return false
+}
+
 function camera(id){
   //  console.log("...find camera... ",id)
     for(var i=0;i<root.cameraList.count;i++){

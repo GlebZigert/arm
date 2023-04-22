@@ -582,7 +582,7 @@ void Runner::run()
         if(m_running==Mode::Play || m_running==Mode::Waiting){
             if (!capture()){
                 count++;
-            //    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count<<" "<<URL;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count<<" "<<URL;
                 if(count>2){
                     qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: "<<URL;
                     m_running=Mode::Lost;
@@ -594,7 +594,7 @@ void Runner::run()
                 frameCnt++;
                 if(frameCnt>0){
                     if(m_running==Mode::Waiting){
-                //      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
+                      qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
                     }
                 m_running=Mode::Play;
 

@@ -320,7 +320,7 @@ void VideoPlayer::next_frame(QString src)
        qDebug()<<"-3";
     if(current){
 
-        streamType=current->runner->streamType;
+        //streamType=current->runner->streamType;
         //если мы уже принимаем поток - нужно от него отписаться
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
 

@@ -428,7 +428,14 @@ timeline.pause_signal.connect(f_paused)
        //  multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
           if(storage_live===storage){
 
+           if(Axxon.check_the_storage(timeline.current_dt(), id)){
            Axxon.request_URL(multivm.vid,res, serviceId, timeline.current_dt(),"utc",quality)
+           }else{
+                     console.log("камера ",id," ее нет в архиве ")
+                     multivm.vm_stop_at_cid(cid)
+           }
+
+
           }else{
 
 

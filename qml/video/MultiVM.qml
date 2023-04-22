@@ -919,6 +919,11 @@ console.log("Multivm add_storage_camera")
 
     function vm_start(cid,src,mode){
       // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+        if(src==""){
+        vm_stop_at_cid(cid)
+            return
+        }
+
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
