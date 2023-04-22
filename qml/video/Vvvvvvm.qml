@@ -51,7 +51,7 @@ Item {
          dx=-50;
  stop_moving_timer_dx.stop()
           console.log("Keys.onLeftPressed "," ",cid," ",vm.cid," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
-         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
              vm_area.move(dx,dy,0.5)
 
@@ -68,9 +68,9 @@ Item {
 
          var x1=vvm_arrea.containsMouse
          var x2=supreme.activeFocus
-         var x3=(vm.getMode()===Mode.LiveStreaming)
+         var x3=(vm.getMode()===StreamType.Streaming)
  console.log("Keys.onRightPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
-        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
              vm_area.move(dx,dy,0.5)
@@ -85,7 +85,7 @@ Item {
          dy=50;
  stop_moving_timer_dy.stop()
          console.log("Keys.onUpPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
-         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
              vm_area.move(dx,dy,0.5)
@@ -100,7 +100,7 @@ Item {
          dy=-50;
  stop_moving_timer_dy.stop()
           console.log("Keys.onDownPressed ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse)
-        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
              vm_area.move(dx,dy,0.5)
@@ -259,7 +259,7 @@ console.log("Key_Down")
 
                 onMouseXChanged: {
                     if(mouse_pressed)
-                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
                          //   console.log(mouse_x," ",mouseX," ",mouse_y," ",mouseY)
@@ -280,7 +280,7 @@ console.log("Key_Down")
 
                 onMouseYChanged: {
                     if(mouse_pressed)
-                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
                         //    console.log(mouse_x," ",mouseX," ",mouse_y," ",mouseY)
@@ -303,7 +303,7 @@ console.log("Key_Down")
                     mouse_y=mouseY
                     /*
                      console.log("onPressed")
-                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
                         var mx=mouseX-parent.width/2
@@ -356,7 +356,7 @@ console.log("Key_Down")
                       mouse_pressed=false
 
                  //    console.log("onReleased")
-                if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
                         stop_moving_timer.start()
                     }
@@ -531,10 +531,10 @@ console.log("Key_Down")
 
                     var x1=vvm_arrea.containsMouse
                     var x2=supreme.activeFocus
-                    var x3=(vm.getMode()===Mode.LiveStreaming)
+                    var x3=(vm.getMode()===StreamType.Streaming)
 
-                   // console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",Mode.LiveStreaming)
-                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===Mode.LiveStreaming)){
+                    console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",StreamType.Streaming)
+                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
                         if(wheel.angleDelta.y > 0)  // zoom in
@@ -637,7 +637,7 @@ console.log("Key_Down")
                 width: 20
                 height: 20
 
-                color:  mode===Mode.LiveStreaming ? "green" : "red"
+                color:  mode===StreamType.Streaming ? "green" : "red"
             }
 
             */

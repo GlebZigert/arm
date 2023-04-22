@@ -206,7 +206,9 @@ container->delete_free_streamers();
 
 Runner::StreamType VideoPlayer::getMode()
 {
-
+if(current){
+return current->runner->streamType;
+}
     return Runner::StreamType::Nothing;
 }
 

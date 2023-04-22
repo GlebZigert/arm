@@ -314,8 +314,8 @@ Item{
             //   telemetry.set_serviceId(lcl.sid)
             //   preset_list.serviceId=lcl.sid
 
-            //   root.log("telemetryControlID: ",lcl.telemetryControlID)
-            //   root.telemetryPoint=lcl.telemetryControlID
+               root.log("telemetryControlID: ",lcl.telemetryControlID)
+               root.telemetryPoint=lcl.telemetryControlID
 
 
 
