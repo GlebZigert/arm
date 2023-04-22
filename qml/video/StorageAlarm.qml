@@ -57,7 +57,7 @@ Item{
         onTriggered:
         {
                  console.log("storagealarm_start_timer ",)
-
+/*
             if(multivm.get_cids().length){
 
 
@@ -67,6 +67,7 @@ Item{
             start_timer.start(1000)
             }
             }
+            */
 
 
     }
@@ -98,6 +99,7 @@ Item{
             Layout.fillWidth: true
             Layout.fillHeight: true
             quality: "low"
+            visible: false
 
         }
 
@@ -401,7 +403,7 @@ timeline.pause_signal.connect(f_paused)
 
         multivm.rescale(multivm.scale)
 
-        multivm.onCompleted.connect(set_the_multivm_settings)
+        root.cameraList.updated.connect(set_the_multivm_settings)
 
         timeline.to_storage_cameras.connect(f_to_storage_cameras)
 
@@ -410,7 +412,7 @@ timeline.pause_signal.connect(f_paused)
         timeline.signal_scale.connect(scale)
         timeline.hide_timelines.connect(hide_timelines)
 
-      //  root.cameraList.updated.connect(f_start_timer_start)
+
     }
 
     function f_start_timer_start(){
@@ -469,16 +471,15 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function set_the_multivm_settings(){
+         root.cameraList.updated.disconnect(set_the_multivm_settings)
+                multivm.visible=true
         console.log("set_the_multivm_settings")
         multivm.setVid("storageAlarm")
         multivm.multivm_delete_page("1") ;
         multivm.multivm_delete_page("Тревоги")
         multivm.multivm_add_page("Тревоги",3)
-
-
-
-
-        multivm.rescale(1)
+        multivm.rescale(3)
+        f_start_timer_start()
 
     }
 

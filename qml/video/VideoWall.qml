@@ -30,11 +30,11 @@ Item{
 
         onTriggered:
         {
-         //        console.log("videowall_start_timer ",)
+                 console.log("videowall_start_timer ",)
 
             if(multivm.get_cids().length){
 
-
+/*
                 if( Axxon.camera(multivm.get_cids()[0]).serviceId){
 
 
@@ -42,6 +42,7 @@ Item{
             }else{
             start_timer.start(1000)
             }
+                */
             }
 
 
@@ -102,7 +103,7 @@ Item{
 
                 anchors.fill: parent
                 quality:"low"
-
+                visible:false
             }
 
 
@@ -680,7 +681,7 @@ Item{
         tlmt_rect.visible=false
         multivm.rescale(multivm.scale)
 
-        multivm.onCompleted.connect(set_the_multivm_settings)
+        root.cameraList.updated.connect(set_the_multivm_settings)
 
         multivm.currentPage.connect(f_currentPage)
 
@@ -692,7 +693,7 @@ Item{
 
         multivm.clear.connect(f_clear)
 
-        root.cameraList.updated.connect(f_start_timer_start())
+
 
         //     timeline.fullscreen_signal.connect(fullscreen)
 
@@ -750,8 +751,11 @@ Item{
     }
 
     function set_the_multivm_settings(){
+          root.cameraList.updated.disconnect(set_the_multivm_settings)
+        multivm.visible=true
         console.log("set_the_multivm_settings")
         multivm.setVid("VideoWall")
+        f_start_timer_start()
 
     }
 
