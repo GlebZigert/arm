@@ -423,7 +423,7 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-        console.log("storageAlarm stream_request ",id," ",quality," ",storage_live," state ",Axxon.camera(id).state)
+       // console.log("storageAlarm stream_request ",id," ",quality," ",storage_live," state ",Axxon.camera(id).state)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
@@ -705,7 +705,7 @@ timeline.pause_signal.connect(f_paused)
     }
 
     function f_moved_at_dt(dt){
-        console.log("dt: ",dt)
+     //   console.log("dt: ",dt)
         storage_live=storage
         request_URL(multivm.get_cids(),Axxon.camera(cid).serviceId,dt,"")
     }

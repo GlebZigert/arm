@@ -85,7 +85,7 @@ Item{
         property int sec : 0
         onTriggered:
         {
-            console.log("rescale timer")
+        //    console.log("rescale timer")
             multivm.rescale(good.scale,true)
 
         }
@@ -494,9 +494,9 @@ function set_alarm(alarm_){
                 }
 
              function   f_return_connection(connection){
-                console.log("f_return_connection ",cid)
+                console.log("f_return_connection ",connection," ",cid)
                  if(connection==false){
-                             console.log("2")
+                        //     console.log("2")
 
 
                      var flag=false
@@ -612,9 +612,9 @@ Vvvvvvm{
     }
 
     function   f_return_connection(connection){
-       console.log("full f_return_connection ",cid)
+     //  console.log("full f_return_connection ",cid)
         if(connection==false){
-                    console.log("2")
+             //       console.log("2")
 
 
             var flag=false
@@ -631,7 +631,7 @@ Vvvvvvm{
 
             if(flag===true){
            // console.log("3")
-                       console.log("full 3")
+                 //      console.log("full 3")
                 full.vm_start_1(cid,Axxon.camera(cid).low,1)
           //  good.stream_request(cid, "higth")
             }else{
@@ -935,6 +935,7 @@ console.log("Multivm add_storage_camera")
 
                // console.log("mode ",mode)
 
+
                 grid.children[i].set_vm_source(cid,src)
                 grid.children[i].vm_start(mode)
 
@@ -944,7 +945,7 @@ console.log("Multivm add_storage_camera")
 
         if(full.cid==cid){
             full.set_vm_source(cid,src)
-                   console.log("full 4")
+             //      console.log("full 4")
             full.vm_start_1(cid,src,mode)
         }
     }
@@ -1094,7 +1095,7 @@ console.log("--")
 
     function rescale(scale,save){
 
-       console.log("rescale-->")
+    //   console.log("rescale-->")
 
 
         scale= md.current_scale()
@@ -1128,9 +1129,9 @@ console.log("--")
                 var cid = md.get_cid_at(i)
 
                 if(url=="" && cid>-1){
-                    console.log("пустой cid ",cid)
+                //    console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                            console.log("6")
+                    //        console.log("6")
                        good.stream_request(cid, quality)
                 }
 
@@ -1169,7 +1170,7 @@ console.log("--")
 
 
 
-         console.log("<--rescale")
+       //  console.log("<--rescale")
     }
 
 
@@ -1344,7 +1345,7 @@ console.log("1")
     }
 
     function fullscreen(id){
-        console.log("function fullscreen(id) ",id, "full ",fullscreen_uid)
+      //  console.log("function fullscreen(id) ",id, "full ",fullscreen_uid)
 
         var qquality=good.quality
         if(fullscreen_uid==-1){
@@ -1365,7 +1366,7 @@ console.log("1")
                                }
 
                            }
-                                console.log("full 5")
+                           //     console.log("full 5")
                            full.vm_start_1(w_model.get(i).cid,
                                          url,
                                          1

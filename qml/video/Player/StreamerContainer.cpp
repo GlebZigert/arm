@@ -110,7 +110,7 @@ void StreamerContainer::func(){
                         auto diff = one.data()->no_followers.secsTo(now);
                         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
                         if(diff>5){
-                            qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
+                          //  qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
                          //   show();
                             //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                             one.data()->setSave(false);
@@ -133,7 +133,7 @@ void StreamerContainer::func(){
             auto diff = one.data()->no_followers.secsTo(now);
             //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
-                       qDebug()<<"этот поток "<<one.data()->getURL()<<" без подписчиков с обрывом связи "<<diff<<" сек";
+                    //   qDebug()<<"этот поток "<<one.data()->getURL()<<" без подписчиков с обрывом связи "<<diff<<" сек";
                   //      show();
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
@@ -332,7 +332,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
         return streamer;
         }
 
-qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[2]";
+//qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[2]";
     return nullptr;
 
 
@@ -371,7 +371,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
              }else{
-                 qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
+                 //qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
                              ready = one;
 
                              if(ready->runner->get_m_running()==Runner::Mode::Free){
@@ -409,7 +409,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 */
 
 
-            qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
+            //qDebug()<<"<-- StreamerContainer::find [1] "<<one.data()->get_m_index();
             free = one;
             break;
         }
@@ -454,7 +454,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
     }
 
 
-   qDebug()<<"<-- StreamerContainer::find [2]";
+  // qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

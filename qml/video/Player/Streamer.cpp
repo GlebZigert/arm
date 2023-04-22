@@ -5,7 +5,7 @@ int Streamer::created=0;
 int Streamer::deleted=0;
 Streamer::Streamer(QString URL, enum Runner::StreamType type,QObject *parent) : QObject(parent)
 {
-//    qDebug()<<"Streamer::Streamer "<<URL<<" "<<type;
+    //qDebug()<<"Streamer::Streamer "<<URL<<" "<<type;
     created++;
     m_index=index++;
 
@@ -36,17 +36,17 @@ Streamer::Streamer(QString URL, enum Runner::StreamType type,QObject *parent) : 
 Streamer::~Streamer()
 {
 
-//    qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+//qDebug()<<"-->Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 
-  //  qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
+  //qDebug()<<"<--Streamer::~Streamer() "<<mm->runner->thread()->isFinished()<<" "<<mm->runner->thread()->isRunning()<<" "<<m_index;
 
     deleted++;
-    qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
+    //qDebug()<<"создано: "<<created<<" удалено: "<<deleted<<" живут: "<<created-deleted;
 }
 
 int Streamer::getFollowers() const
 {
- //    qDebug()<<"runner "<<runner->get_m_index()<<" get followers: "<<followers;
+ //qDebug()<<"runner "<<runner->get_m_index()<<" get followers: "<<followers;
     return followers;
 }
 
@@ -68,7 +68,7 @@ int Streamer::get_m_index() const
 void Streamer::followers_inc()
 {
     followers++;
-    qDebug()<<"runner "<<runner->get_m_index()<<"inc: followers "<<followers;
+    //qDebug()<<"runner "<<runner->get_m_index()<<"inc: followers "<<followers;
     frash_follower_time = QDateTime::currentDateTime();
 }
 
@@ -79,18 +79,18 @@ void Streamer::followers_dec()
     if(followers>0){
         followers--;
     }
-     qDebug()<<"runner "<<runner->get_m_index()<<" dec: followers "<<followers;
+     //qDebug()<<"runner "<<runner->get_m_index()<<" dec: followers "<<followers;
 /*
     if(mm->runner->getVideoHeight()<=480&&
       mm->runner->getVideoWidth()<=640){
-      //  qDebug()<<"save low quality: "<<URL;
+      //qDebug()<<"save low quality: "<<URL;
         return;
     }
     */
 
 
 
-   // qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
+   //qDebug()<<"fStreamer::followers_dec. followers "<<followers<<" "<<URL<<" mode "<<mode<<" save "<<save;
 
     if(followers==0&&prev>0){
 
@@ -107,7 +107,7 @@ bool Streamer::getSave() const
 
 void Streamer::setSave(bool newSave)
 {
-   // qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
+   //qDebug()<<"treamer::setSave "<<newSave<<" "<<URL;
     save = newSave;
     if(newSave==true){
     no_followers=QDateTime::currentDateTime();
@@ -128,7 +128,7 @@ int Streamer::getH() const
 
 void Streamer::start()
 {
-qDebug()<<"Streamer::start()";
+//qDebug()<<"Streamer::start()";
 
 }
 
@@ -136,14 +136,14 @@ qDebug()<<"Streamer::start()";
 
 void Streamer::thread_is_over()
 {
- //   qDebug()<<"thread_is_over for "<<m_index<<" "<<URL;
+ //qDebug()<<"thread_is_over for "<<m_index<<" "<<URL;
     emit signal_thread_is_over();
 
 }
 
 void Streamer::stop()
 {
-   // qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
+   //qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
     runner->go_to_free_state=true;
     countlost=0;
 }
@@ -162,7 +162,7 @@ AVPicture *Streamer::getData() const
 
 void Streamer::receiveFrame(QString URL)
 {
- //   //qDebug()<<"+";
+    //qDebug()<<"+";
     got_frame=true;
     count = 0;
     emit frame(URL);
@@ -171,7 +171,7 @@ void Streamer::receiveFrame(QString URL)
 void Streamer::lostConnection(QString URL)
 {
 
-    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
+    //qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
 
     if(followers==0){
     stop();

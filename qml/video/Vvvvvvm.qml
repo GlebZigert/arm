@@ -199,7 +199,7 @@ console.log("Key_Down")
 
 
         onConnectionChanged:  (subject)=>{
-        console.log("VideoPlayer onConnectionChanged ")
+      //  console.log("VideoPlayer onConnectionChanged ")
                                   supreme.connection=subject
                                   return_connection(subject)
         }
@@ -771,8 +771,10 @@ console.log("Key_Down")
 
         if(url){
         mode = mmode
-        console.log("vvvm vm_start(cid,url,mmode) ",cid_," ",url," ",mmode)
+        //console.log("vvvm vm_start(cid,url,mmode) ",cid_," ",url," ",mmode)
         supreme.cid=cid_
+
+
 
         vm.cid=cid_
         vm.source=url

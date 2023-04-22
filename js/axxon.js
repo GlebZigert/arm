@@ -563,8 +563,8 @@ root.activePane=root.videoPane
 
 Axxon.prototype.receive_URL = function (data) {
 
-     console.log("")
-         console.log("[receive_URL]")
+    // console.log("")
+    //     console.log("[receive_URL]")
     /*
      console.log("",Date())
 
@@ -576,10 +576,10 @@ Axxon.prototype.receive_URL = function (data) {
 
      var i
      for (i in data.data) {
-      console.log("id: ", data.data[i].id)
-      console.log("liveStream: ", data.data[i].liveStream)
-      console.log("storageStream: ", data.data[i].storageStream)
-      console.log("snapshot: ", data.data[i].snapshot)
+    //  console.log("id: ", data.data[i].id)
+    //  console.log("liveStream: ", data.data[i].liveStream)
+    //  console.log("storageStream: ", data.data[i].storageStream)
+    //  console.log("snapshot: ", data.data[i].snapshot)
 
 
    //   root.log("интервалы: ", JSON.stringify(data.data[i].intervals))
@@ -904,15 +904,17 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
 
         }
 
- console.log(" ")
-     console.log("request_URL ")
-     console.log(" ")
+ //console.log(" ")
+ //    console.log("request_URL ")
+  //   console.log(" ")
 
     if(dt===""){
     //       console.log("data.dt нулевое      : ",data.dt)
     return;
     }
-            cameraId+";"+dt+" "+format_dt
+
+ /*
+    // cameraId+";"+dt+" "+format_dt
     console.log("data.videowall : ",data.videowall)
     console.log("data.cameraId : ",data.cameraId)
     console.log("data.serviceId : ",data.serviceId)
@@ -920,7 +922,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
     console.log("data.format_dt: ",data.format_dt)
         console.log("data.quality: ",data.quality)
  console.log(" ")
-
+*/
 
 
       root.send(serviceId, 'request_URL', data)
@@ -1014,14 +1016,14 @@ function clear_frash(id){
 }
 
 function check_the_storage(dt, id){
-    console.log("--> check_the_storage ",dt," ",id )
+ //   console.log("--> check_the_storage ",dt," ",id )
 
     var intervals=camera(id).intervals
 
     var vdt = parseFloat(dt.replace("T",""))
     if(intervals.intervals)
     {
-        console.log("intervals.length ",intervals.length)
+     //   console.log("intervals.length ",intervals.length)
 
 
         if(intervals.intervals.length>0){
@@ -1031,11 +1033,11 @@ function check_the_storage(dt, id){
                 var begin=parseFloat((intervals.intervals[i].begin).replace("T",""))
                 var end=parseFloat((intervals.intervals[i].end).replace("T",""))
 
-                console.log(begin," ",end)
+              //  console.log(begin," ",end)
 
                 if(begin<vdt<end){
-                  console.log(begin," ",vdt," ",end)
-                    console.log("<-- check_the_storage [true] ",dt," ",id )
+              //    console.log(begin," ",vdt," ",end)
+               //     console.log("<-- check_the_storage [true] ",dt," ",id )
                    return true
                 }
             }
@@ -1044,7 +1046,7 @@ function check_the_storage(dt, id){
 
 
     }
-     console.log("<-- check_the_storage [false] ",dt," ",id )
+  //   console.log("<-- check_the_storage [false] ",dt," ",id )
     return false
 }
 

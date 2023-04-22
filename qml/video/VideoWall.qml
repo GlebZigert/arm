@@ -702,7 +702,7 @@ Item{
 
 
     function stream_request(id,quality){
-        console.log("VideoWall stream_request ",id," ",quality," state ",Axxon.camera(id).state)
+        //console.log("VideoWall stream_request ",id," ",quality," state ",Axxon.camera(id).state)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId

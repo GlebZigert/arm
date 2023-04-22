@@ -928,7 +928,7 @@ bool Page::check_the_scale(int id,QString url,bool alarm)
 
     foreach(auto key , list){
 
-   qDebug()<<"--- i: "<<i<<" scale: "<<scale;
+   //qDebug()<<"--- i: "<<i<<" scale: "<<scale;
         if(i>(scale*scale)){
 
 
