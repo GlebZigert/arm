@@ -1033,7 +1033,15 @@ console.log("Multivm add_storage_camera")
 
             console.log(" ")
 
+
             if(cid_old!=cid_new){
+
+
+                if(cid_new==-1){
+
+                 good.vm_stop_at_cid(cid_old)
+
+                }
 
                 console.log("uid  : ",uid_old," ",uid_new)
                 console.log("cid  : ",cid_old," ",cid_new)
@@ -1045,9 +1053,14 @@ console.log("Multivm add_storage_camera")
                 good.set_cid(i,cid_new)
                 good.set_alarm(i,alarm_new)
 
+
+                if(cid_new!==-1){
                 good.stream_request(cid_new,quality)
+                }
 
             }
+
+
 
 /*
             console.log("--")
