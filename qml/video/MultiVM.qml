@@ -1077,7 +1077,7 @@ console.log("--")
 
     function rescale(scale,save){
 
-     //  console.log("rescale-->")
+       console.log("rescale-->")
 
 
         scale= md.current_scale()
@@ -1111,9 +1111,9 @@ console.log("--")
                 var cid = md.get_cid_at(i)
 
                 if(url=="" && cid>-1){
-                //    console.log("пустой cid ",cid)
+                    console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
-                        //    console.log("6")
+                            console.log("6")
                        good.stream_request(cid, quality)
                 }
 
@@ -1152,7 +1152,7 @@ console.log("--")
 
 
 
-     //    console.log("<--rescale")
+         console.log("<--rescale")
     }
 
 

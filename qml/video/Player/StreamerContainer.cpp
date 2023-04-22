@@ -111,7 +111,7 @@ void StreamerContainer::func(){
                         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
                         if(diff>5){
                             qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
-                            show();
+                         //   show();
                             //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                             one.data()->setSave(false);
                             one.data()->stop();
@@ -134,7 +134,7 @@ void StreamerContainer::func(){
             //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
             if(diff>2){
                        qDebug()<<"этот поток "<<one.data()->getURL()<<" без подписчиков с обрывом связи "<<diff<<" сек";
-                        show();
+                  //      show();
                 qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
                 one.data()->stop();
