@@ -516,6 +516,7 @@ function set_alarm(alarm_){
                    //  good.stream_request(cid, "higth")
                      }else{
                    //              console.log("4")
+
                   good.stream_request(cid, quality)
                      }
 
@@ -597,22 +598,53 @@ Vvvvvvm{
     onConnectionChanged: {
     console.log("Vvvvvvm onConnectionChanged")
     }
+
     Button{
         width: 20
         height: 20
         onClicked: {
-
-
         stream_request(full.get_cid(),quality)
         full.visible=false
-
         fullscreen_uid=-1
         }
-
     }
+
+    function   f_return_connection(connection){
+       console.log("full f_return_connection ",cid)
+        if(connection==false){
+                    console.log("2")
+
+
+            var flag=false
+
+            if(fullscreen_uid>-1){
+            for(var i=0;i<md.get_all_cids().length;i++){
+              //  console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+                if(md.get_uid_at(i)===fullscreen_uid){
+                    flag=true
+                }
+                }
+            }
+
+
+            if(flag===true){
+           // console.log("3")
+                full.vm_start_1(cid,Axxon.camera(cid).low,1)
+          //  good.stream_request(cid, "higth")
+            }else{
+          //              console.log("4")
+
+         good.stream_request(cid, quality)
+            }
+
+        }
+       }
+
+    Component.onCompleted: {
+    full.return_connection.connect(f_return_connection)
+    }
+
 }
-
-
 
         onClicked: {
           //  console.log("+++++++++++++++++++++++++++++")
@@ -921,7 +953,25 @@ console.log("Multivm add_storage_camera")
         }
     }
 
+    function vm_stop_at_cid(cid){
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
 
+        //    if(grid.children[i].selected){
+                if(grid.children[i].cid===cid){
+                grid.children[i].vm_stop()
+                }
+
+       //     }
+
+        }
+
+        if(full.get_cid()==cid){
+
+        full.vm_stop()
+        }
+
+    }
 
     function set_Scale(val){
 

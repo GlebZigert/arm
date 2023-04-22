@@ -784,6 +784,8 @@ Axxon.prototype.rebuildTree = function (data) {
                     stickyState:false,
                     actual:true,
 
+                    state: data[i].state,
+
                     telemetryControlID: data[i].telemetryControlID,
 
                     liveStream:"",

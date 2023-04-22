@@ -146,6 +146,19 @@ void VideoPlayer::stop()
     current.clear();
 
     }
+
+    if(next){
+        next->followers_dec();
+     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
+
+     next.clear();
+    }
+    timer.stop();
+    wait_for_next.stop();
+
+    img=QImage(":/qml/video/no_in_storage.jpeg");
+this->update();
+
      container->func();
  // list1->stop();
 }
@@ -275,7 +288,7 @@ qDebug()<<"VideoPlayer::on_timer()";
  //   qDebug()<<"videoplayer lost runner"<<current->runner->get_m_index()<<" "<<current->runner->URL;
     //stop();
     img=QImage(":/qml/video/no_signal.jpeg");
-       this->update();
+     //  this->update();
     emit connectionChanged(m_connection);
 }
 

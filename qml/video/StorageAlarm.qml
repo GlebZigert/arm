@@ -421,7 +421,7 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-        console.log("storageAlarm stream_request ",id," ",quality," ",storage_live)
+        console.log("storageAlarm stream_request ",id," ",quality," ",storage_live," state ",Axxon.camera(id).state)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
@@ -431,14 +431,23 @@ timeline.pause_signal.connect(f_paused)
            Axxon.request_URL(multivm.vid,res, serviceId, timeline.current_dt(),"utc",quality)
           }else{
 
+
+              if(Axxon.camera(id).state!=="lost")
+                                            {
               if(quality=="higth"){
             multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             multivm.vm_start(id,Axxon.camera(id).livestream_higth,StreamType.Streaming)
               }else{
              multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
               }
+          }else{
+              console.log("камера ",id," отсутствует живого потока нет")
+                  multivm.vm_stop_at_cid(cid)
+              }
 
           }
+
+
 
 
     }
