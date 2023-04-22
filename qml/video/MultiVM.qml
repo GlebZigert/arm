@@ -438,6 +438,7 @@ function set_alarm(alarm_){
 
 
                   console.log("выбран cid: ",vm.cid," uid:",vm.uid," url:",url)
+                               console.log("full 1")
                         full.vm_start_1(vm.cid,url,1)
                 //    rrow.visible=true
                     }else{
@@ -512,6 +513,7 @@ function set_alarm(alarm_){
 
                      if(flag===true){
                     // console.log("3")
+                                console.log("full 2")
                          full.vm_start_1(cid,Axxon.camera(cid).low,1)
                    //  good.stream_request(cid, "higth")
                      }else{
@@ -629,6 +631,7 @@ Vvvvvvm{
 
             if(flag===true){
            // console.log("3")
+                       console.log("full 3")
                 full.vm_start_1(cid,Axxon.camera(cid).low,1)
           //  good.stream_request(cid, "higth")
             }else{
@@ -941,7 +944,8 @@ console.log("Multivm add_storage_camera")
 
         if(full.cid==cid){
             full.set_vm_source(cid,src)
-            full.vm_start(mode)
+                   console.log("full 4")
+            full.vm_start_1(cid,src,mode)
         }
     }
 
@@ -1348,7 +1352,7 @@ console.log("1")
                                }
 
                            }
-
+                                console.log("full 5")
                            full.vm_start_1(w_model.get(i).cid,
                                          url,
                                          1
