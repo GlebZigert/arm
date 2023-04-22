@@ -313,11 +313,7 @@ void VideoPlayer::next_frame(QString src)
 
     qDebug()<<"--> VideoPlayer::next_frame() from runner "<<next->runner->get_m_index()<<" cid "<<cid<<" src "<<m_source;
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
-    qDebug()<<"-1";
 
-       qDebug()<<"-2";
-
-       qDebug()<<"-3";
     if(current){
 
         //streamType=current->runner->streamType;
@@ -331,19 +327,19 @@ void VideoPlayer::next_frame(QString src)
         current->followers_dec();
         current.clear();
     }
-       qDebug()<<"-4";
+
     current=next;
     next.clear();
-   qDebug()<<"-5";
+
 
       data = current.data()->getData();
-   qDebug()<<"-6";
+
       connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
 
       streamType=current->runner->streamType;
     //  qDebug()<<"streamType = "<<streamType;
     //  m_connection=true;
-   qDebug()<<"-7";
+
    qDebug()<<"<-- VideoPlayer::next_frame() from runner ";
   timer.start(200);
 }
