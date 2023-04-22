@@ -34,7 +34,7 @@ public:
 
     AVPicture *data;
 
-
+    QTimer timer;
     QString url() const;
     void set_url(const QString source);
 
@@ -47,7 +47,7 @@ public:
 
 public slots:
     void frame(QString URL);
-
+    void on_timer();
 signals:
 
     void image();

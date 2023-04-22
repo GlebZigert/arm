@@ -109,7 +109,7 @@ void StreamerContainer::func(){
                         auto now = QDateTime::currentDateTime();
                         auto diff = one.data()->no_followers.secsTo(now);
                         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
-                        if(diff>5){
+                        if(diff>1){
                           //  qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
                          //   show();
                             //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";

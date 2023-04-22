@@ -10,7 +10,7 @@ PreviewMaker::PreviewMaker(QString url)
 {
     img=QImage();
 qDebug()<<"PreviewMaker::PreviewMaker(QString url) : "<<url;
-
+    connect(&timer,SIGNAL(timeout()),this,SLOT(on_timer()));
  container = StreamerContainerAccesser::get();
  set_url(url);
 
@@ -32,6 +32,7 @@ QString PreviewMaker::url() const
 
 void PreviewMaker::set_url(const QString url)
 {
+    timer.stop();
     url_=url;
 
     if(current){
@@ -43,6 +44,7 @@ void PreviewMaker::set_url(const QString url)
 
 
 
+
     current=container->start(url,Runner::StreamType::Streaming);
     if(current){
 
@@ -50,6 +52,8 @@ void PreviewMaker::set_url(const QString url)
         data = current.data()->getData();
         connect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
     }
+
+    timer.start(5000);
 }
 
 int PreviewMaker::cid()
@@ -84,8 +88,20 @@ void PreviewMaker::frame(QString URL)
             disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
             current->followers_dec();
             current.clear();
-
+        //    timer.stop();
         }
         }
     }
+}
+
+void PreviewMaker::on_timer()
+{
+     qDebug()<<"PreviewMaker::on_timer() : "<<url_;
+    if(current){
+        disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
+        current->followers_dec();
+        current.clear();
+
+    }
+    timer.stop();
 }
