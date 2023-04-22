@@ -701,16 +701,22 @@ Item{
 
 
     function stream_request(id,quality){
-        //console.log("VideoWall stream_request ",id," ",quality)
+        console.log("VideoWall stream_request ",id," ",quality," state ",Axxon.camera(id).state)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
 
+           if(Axxon.camera(id).state!=="lost")
+        {
             if(quality=="higth"){
           multivm.vm_start(id,Axxon.camera(id).livestream_higth,StreamType.Streaming)
             }else{
            multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
             }
+           }else{
+               console.log("камера ",id," отсутствует живого потока нет")
+                   multivm.vm_stop_at_cid(cid)
+               }
     }
 
     function f_clear(){

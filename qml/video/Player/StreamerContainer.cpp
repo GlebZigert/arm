@@ -366,27 +366,36 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
     for(auto one : map){
         if(one.data()->runner->URL==url)
                 {
-qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
-            ready = one;
 
-            if(ready->runner->get_m_running()==Runner::Mode::Free){
-             //    qDebug()<<"<..";
-                ready.data()->runner->set_m_running(Runner::Mode::Prepare);
-             //    qDebug()<<"<..";
-                ready.data()->runner->streamType=type;
-              //   qDebug()<<"<..";
-                ready.data()->runner->frash_stream=true;
-              //   qDebug()<<"<..";
+             if(one.data()->runner->get_m_running()==Runner::Mode::Lost){
 
-            }
 
-            if(ready->runner->get_m_running()==Runner::Mode::Low){
+             }else{
+                 qDebug()<<"<-- StreamerContainer::find [0] "<<one.data()->get_m_index();
+                             ready = one;
 
-                ready->runner->return_from_low_mode=true;
-            }
- //qDebug()<<"<..";
+                             if(ready->runner->get_m_running()==Runner::Mode::Free){
+                              //    qDebug()<<"<..";
+                                 ready.data()->runner->set_m_running(Runner::Mode::Prepare);
+                              //    qDebug()<<"<..";
+                                 ready.data()->runner->streamType=type;
+                               //   qDebug()<<"<..";
+                                 ready.data()->runner->frash_stream=true;
+                               //   qDebug()<<"<..";
 
-            break;
+                             }
+
+                             if(ready->runner->get_m_running()==Runner::Mode::Low){
+
+                                 ready->runner->return_from_low_mode=true;
+                             }
+                  //qDebug()<<"<..";
+
+                             break;
+
+             }
+
+
         }
         if(one.data()->runner->get_m_running()==Runner::Mode::Free){
          //   one.data()->runner->m_running=Runner::Mode::Prepare;
