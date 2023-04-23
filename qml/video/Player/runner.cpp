@@ -232,7 +232,7 @@ void Runner::load()
 
 void Runner::show_statistics()
 {
-    qDebug()<<" ";
+    qDebug()<<"всего было запрошено потоков: "<<stream_count;
 
 
 m_pAVFrame->show_statistic();
@@ -513,7 +513,7 @@ void Runner::free()
     if(pSwsContext!=NULL){
         //qDebug()<<"sws_freeContext(pSwsContext); ";
     sws_freeContext(pSwsContext);
-    pSwsContext=NULL;
+   // pSwsContext=NULL;
     }
     //if(pAVCodecContext)
     //avcodec_free_context(&pAVCodecContext);
@@ -675,8 +675,8 @@ void Runner::run()
             if(pAVPicture==NULL){
              //qDebug()<<"pAVPicture = new AVPicture()-->";
                 pAVPicture = new AVPicture();
-                 qDebug()<<"pAVPicture: "<<pAVPicture;
-                qDebug()<<"sizeof(AVPicture): "<<sizeof(AVPicture);
+              //   qDebug()<<"pAVPicture: "<<pAVPicture;
+              //  qDebug()<<"sizeof(AVPicture): "<<sizeof(AVPicture);
              //qDebug()<<"pAVPicture = new AVPicture()<--";
             }
             //qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
@@ -837,7 +837,7 @@ Statistic::Statistic(QString name_)
 
 void Statistic::show_statistic()
 {
-    qDebug()<<"cсоздано "<<added<<" закрыто "<<deleted;
+    qDebug()<<"cоздано "<<added<<" закрыто "<<deleted;
    qDebug()<<"statistics for "<<name<<" всего: "<<map.size();
    foreach(auto addr, map.keys()){
        qDebug()<<"addr: "<<addr<<" "<<map.value(addr);
