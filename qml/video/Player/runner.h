@@ -26,6 +26,9 @@ extern "C"{
     #include <libavutil/hwcontext.h>
 }
 
+
+#include "TwoSlotAllocator.h"
+
 class Statistic : public QObject{
 
     Q_OBJECT
@@ -72,6 +75,8 @@ public:
     static int av_codec_open;
     static int av_codec_not_open;
     static int av_codec_close;
+
+    QSharedPointer<TwoSlotAllocator<AVPicture>> allocator;
 
     bool losted=false;
 

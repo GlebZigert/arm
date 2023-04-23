@@ -46,6 +46,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     printer.h \
     qml/video/Player/Streamercontainer_qml_accesser.h \
+    qml/video/Player/TwoSlotAllocator.h \
     qml/video/Player/preview.h \
     qml/video/Player/previewcontainer.h \
     qml/video/Player/previewcontaineraccesser.h \

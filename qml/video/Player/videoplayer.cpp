@@ -94,7 +94,7 @@ void VideoPlayer::setSource(const QString source)
 
 void VideoPlayer::start(Runner::StreamType type)
 {
-   //qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
+   qDebug()<<"VideoPlayer::start "<<m_source<<" "<<type;
    if(next){
        next->followers_dec();
     disconnect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));

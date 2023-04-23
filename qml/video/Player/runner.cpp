@@ -30,6 +30,7 @@ Runner::Runner( QObject *parent) : QObject(parent)
     frash_stream=false;
     go_to_free_state=false;
 
+   allocator=QSharedPointer<TwoSlotAllocator<AVPicture>>::create(sizeof(AVPicture));
 
 
 created++;
@@ -443,14 +444,19 @@ void Runner::free_settings()
 {
 
 
-   if(pAVPicture!=NULL){
-    //qDebug()<<"avpicture_free(pAVPicture)-->";
-   avpicture_free(pAVPicture);
-   delete pAVPicture;
-      pAVPicture=NULL;
-      *data=NULL;
-   //qDebug()<<"avpicture_free(pAVPicture)<--";
-   }
+    if(pAVPicture!=NULL){
+        qDebug()<<"avpicture_free(pAVPicture)-->";
+        avpicture_free(pAVPicture);
+        qDebug()<<"--> delete pAVPicture";
+
+        allocator->deallocate(pAVPicture,sizeof(AVPicture));
+      //  delete pAVPicture;
+
+        qDebug()<<"<-- delete pAVPicture";
+        pAVPicture=NULL;
+        *data=NULL;
+        qDebug()<<"avpicture_free(pAVPicture)<--";
+    }
 
 
  //qDebug()<<"freeSettings --> ";
@@ -674,7 +680,12 @@ void Runner::run()
             //qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
             if(pAVPicture==NULL){
              //qDebug()<<"pAVPicture = new AVPicture()-->";
-                pAVPicture = new AVPicture();
+
+                pAVPicture = allocator->allocate(sizeof(AVPicture));
+
+             //   pAVPicture = new AVPicture();
+
+
               //   qDebug()<<"pAVPicture: "<<pAVPicture;
               //  qDebug()<<"sizeof(AVPicture): "<<sizeof(AVPicture);
              //qDebug()<<"pAVPicture = new AVPicture()<--";
