@@ -101,6 +101,19 @@ void StreamerContainer::func(){
                         )
                 {
 
+/*
+                    auto now = QDateTime::currentDateTime();
+                    auto diff = one.data()->no_followers.secsTo(now);
+                    //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
+                    if(diff>1){
+                      //  qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
+                     //   show();
+                        //qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
+                        one.data()->setSave(false);
+                        one.data()->stop();
+                    }
+
+*/
 
                     if(one.data()->runner->getVideoHeight()>600&&
                        one.data()->runner->getVideoWidth()>800
@@ -124,6 +137,7 @@ void StreamerContainer::func(){
                         one->runner->go_to_low_mode=true;
                             }
                     }
+
                 }
 
         if(one.data()->getFollowers()==0 &&
@@ -180,6 +194,7 @@ void StreamerContainer::show()
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
     qDebug()<<" ";
     bool fl=true;
+    bool statistics=true;
     for(auto one : map){
         if(fl){
             fl=false;
@@ -236,7 +251,16 @@ void StreamerContainer::show()
                   <<"Подписчики: "<<one.data()->getFollowers()
                  <<"Хранится: "<<one.data()->getSave()
                 <<sstr<<" "<<one.data()->runner->URL
-                  ;}else{
+                  ;
+
+          if(statistics){
+              statistics=false;
+              one.data()->runner->show_statistics();
+
+          }
+
+
+        }else{
             qDebug()<<"no runner";
         }
     }

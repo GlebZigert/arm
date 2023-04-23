@@ -26,7 +26,31 @@ extern "C"{
     #include <libavutil/hwcontext.h>
 }
 
+class Statistic : public QObject{
 
+    Q_OBJECT
+
+       public:
+
+
+     explicit Statistic(QString name="");
+
+private:
+
+    QMap<QString,int> map;
+    QString name;
+
+
+
+
+   public:
+
+    void add_to_statistics(QString addr);
+    void show_statistic();
+    int added;
+    int deleted;
+
+};
 
 
 class Runner : public QObject
@@ -116,28 +140,45 @@ public:
     int *h;
     int *w;
 
-    AVDictionary* options;
+
     int getVideoWidth() const;
 
     int getVideoHeight() const;
 
     Runner::Mode get_m_running();
     void set_m_running(Runner::Mode mode);
+    void show_statistics();
     bool check_frame();
 private:
-
+    static int stream_count;
     bool first_frame_getted=false;
+
+
+
+
+
+
+    static QSharedPointer<Statistic> m_pAVFrame;
+    static QSharedPointer<Statistic> m_pAVCodecContext;
+    static QSharedPointer<Statistic> m_pSwsContext;
+    static QSharedPointer<Statistic> m_pAVPicture;
+    static QSharedPointer<Statistic> m_pAVCodec;
+    static QSharedPointer<Statistic> m_pFormatCtx;
+    static QSharedPointer<Statistic> m_options;
+    static QSharedPointer<Statistic> m_param;
+
 
     Runner::Mode m_running;
     int m_index=-1;
-    AVCodecContext *pAVCodecContext;
-    AVFrame *pAVFrame, *svFrame;
+    AVFrame *pAVFrame, *svFrame;        // +
+    AVCodecContext *pAVCodecContext;    // -
+
     SwsContext * pSwsContext;
     AVPicture*  pAVPicture;
     AVCodec *pAVCodec;
     AVPacket packet;
-    AVFormatContext *pFormatCtx;
-
+    AVFormatContext *pFormatCtx;        // ?
+    AVDictionary* options;              // -
     AVCodecParameters* param ;
 
     unsigned int videoindex;

@@ -7,6 +7,17 @@ int Runner::index=1;
 int Runner::av_codec_open=0;
 int Runner::av_codec_not_open=0;
 int Runner::av_codec_close=0;
+int Runner::stream_count=0;
+
+QSharedPointer<Statistic> Runner::m_pAVFrame=QSharedPointer<Statistic>::create("m_pAVFrame");
+QSharedPointer<Statistic> Runner::m_pAVCodecContext=QSharedPointer<Statistic>::create("m_pAVCodecContext");
+QSharedPointer<Statistic> Runner::m_pSwsContext=QSharedPointer<Statistic>::create("m_pSwsContext");
+QSharedPointer<Statistic> Runner::m_pAVPicture=QSharedPointer<Statistic>::create("m_pAVPicture");
+QSharedPointer<Statistic> Runner::m_pAVCodec=QSharedPointer<Statistic>::create("m_pAVCodec");
+QSharedPointer<Statistic> Runner::m_pFormatCtx=QSharedPointer<Statistic>::create("m_pFormatCtx");
+QSharedPointer<Statistic> Runner::m_options=QSharedPointer<Statistic>::create("m_options");
+QSharedPointer<Statistic> Runner::m_param=QSharedPointer<Statistic>::create("m_param");
+
 #define AVIO_FLAG_NONBLOCK   8
 
 static std::mutex local_mutex;
@@ -205,8 +216,10 @@ void Runner::set_m_running(Mode mode)
 
 bool Runner::check_frame()
 {
-return first_frame_getted;
+    return first_frame_getted;
 }
+
+
 
 void Runner::load()
 {
@@ -214,97 +227,99 @@ void Runner::load()
 
 }
 
+
+
+
+void Runner::show_statistics()
+{
+    qDebug()<<" ";
+
+
+m_pAVFrame->show_statistic();
+m_pAVCodecContext->show_statistic();
+m_pSwsContext->show_statistic();
+m_pAVPicture->show_statistic();
+m_pAVCodec->show_statistic();
+m_pFormatCtx->show_statistic();
+m_options->show_statistic();
+m_param->show_statistic();
+    /*
+    qDebug()<<"сколько  всего открывал потоков: "<<stream_count;
+    show_statistic(&m_pAVFrame,"m_pAVFrame");
+    show_statistic(&m_pAVCodecContext,"m_pAVCodecContext");
+    show_statistic(&m_pSwsContext,"m_pSwsContext");
+    show_statistic(&m_pAVPicture,"m_pAVPicture");
+    show_statistic(&m_pAVCodec,"m_pAVCodec");
+    show_statistic(&m_pFormatCtx,"m_pFormatCtx");
+    show_statistic(&m_options,"m_options");
+    show_statistic(&m_param,"m_param");
+    */
+    qDebug()<<" ";
+}
+
 bool Runner::load_settings()
 {
-/*
-    //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
-        //qDebug()<<"URL: "<<URL;
-        QByteArray ba = URL.toLatin1();
-        char *c_str2 = ba.data();
-        char *filepath = ba.data();
+
+    stream_count++;
+    //qDebug()<<"runner "<<m_index<<" --> pAVFrame "<<QString::number((qint64)pAVFrame,16)<<" sizeof(pAVFrame): "<<sizeof(*pAVFrame);
 
 
-        av_dict_set(&options, "buffer_size", "1024000", 0); //Set the cache size, 1080p can increase the value
-        av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
-        av_dict_set(&options, "stimeout", "400000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
-        av_dict_set(&options, "max_delay", "100", 0); //Set the maximum delay
-        //qDebug()<<"avformat_open_input -->";
-      int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
-        //qDebug()<<"<-- avformat_open_input";
-        if (error != 0){
-
-
-
-            //qDebug()<<"FAIL with: avformat_open_input "<<error;
-
-            return false;
-        }
-
-        pFormatCtx->probesize = 1000;
-        pFormatCtx->max_analyze_duration = AV_TIME_BASE;
-
-        if (avformat_find_stream_info(pFormatCtx, NULL)<0){
-
-
-            //qDebug()<<"FAIL with: avformat_find_stream_info ";
-            return false;
-        }
-
-    return false;
-   */
+    m_pAVFrame->add_to_statistics(QString::number((qint64)pAVFrame,16));
 
 //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
-    //qDebug()<<"URL: "<<URL;
+    ////qDebug()<<"URL: "<<URL;
 
     QByteArray ba = URL.toLatin1();
     char *c_str2 = ba.data();
     char *filepath = ba.data();
 
-  //qDebug()<<"-->";
-  //qDebug()<<"<--";
+  ////qDebug()<<"-->";
+  ////qDebug()<<"<--";
 
- //qDebug()<<"av_dict_set-->";
+ ////qDebug()<<"av_dict_set-->";
+    //qDebug()<<"runner "<<m_index<<" --> options "<<options<<" sizeof(options): "<<sizeof(&options);
     av_dict_set(&options, "buffer_size", "1024000", 0); //Set the cache size, 1080p can increase the value
     av_dict_set(&options, "rtsp_transport", "tcp", 0); //Open in udp mode, if open in tcp mode, replace udp with tcp
     av_dict_set(&options, "stimeout", "200000", 0); //Set timeout disconnect time, unit is microsecond "20000000"
     av_dict_set(&options, "max_delay", "1000", 0); //Set the maximum delay
-   //qDebug()<<"runner "<<m_index<<" options: "<<options;
-    //qDebug()<<"avformat_open_input -->";
-   //qDebug()<<"av_dict_set<--";
+    //qDebug()<<"runner "<<m_index<<" <-- options "<<options<<" sizeof(options): "<<sizeof(&options);
+   m_options->add_to_statistics(QString::number((qint64)options,16));
+    ////qDebug()<<"runner "<<m_index<<" options: "<<options;
+    ////qDebug()<<"avformat_open_input -->";
+   ////qDebug()<<"av_dict_set<--";
 
 
- //qDebug()<<"avformat_open_input-->";
+    //qDebug()<<"runner "<<m_index<<" --> pFormatCtx "<<pFormatCtx<<" sizeof(pFormatCtx): "<<sizeof(*pFormatCtx);
+
     int error = avformat_open_input(&pFormatCtx, filepath, NULL, &options);
- //qDebug()<<"<-- avformat_open_input";
+    //qDebug()<<"runner "<<m_index<<" <-- pFormatCtx "<<pFormatCtx<<" sizeof(pFormatCtx): "<<sizeof(*pFormatCtx);
+  m_pFormatCtx->add_to_statistics(QString::number((qint64)pFormatCtx,16));
     if (error != 0){
 
 
 
-   //qDebug()<<"FAIL with: avformat_open_input "<<error;
-
         return false;
     }
-  //qDebug()<<"runner "<<m_index<<" pFormatCtx: "<<pFormatCtx;
-        //qDebug()<<"avformat_open_input<--";
+
     prev=clock();
     pFormatCtx->interrupt_callback.callback=interrupt_cb;
     pFormatCtx->interrupt_callback.opaque = this;
 
-  //qDebug()<<"av_init_packet-->";
+  ////qDebug()<<"av_init_packet-->";
 
-  //qDebug()<<"av_init_packet<--";
+  ////qDebug()<<"av_init_packet<--";
 
     pFormatCtx->probesize = 1000;
     pFormatCtx->max_analyze_duration = AV_TIME_BASE;
 
-   //qDebug()<<"avformat_find_stream_info-->";
+   ////qDebug()<<"avformat_find_stream_info-->";
     if (avformat_find_stream_info(pFormatCtx, NULL)<0){
 
 
-        //qDebug()<<"FAIL with: avformat_find_stream_info ";
+        ////qDebug()<<"FAIL with: avformat_find_stream_info ";
         return false;
     }
-   //qDebug()<<"avformat_find_stream_info<--";
+   ////qDebug()<<"avformat_find_stream_info<--";
 
     videoindex = -1;
     for (int i = 0; i<pFormatCtx->nb_streams; i++)
@@ -317,75 +332,107 @@ bool Runner::load_settings()
     if (videoindex == -1){
 
 
-         //qDebug()<<"FAIL with: videoindex ";
+         ////qDebug()<<"FAIL with: videoindex ";
         return false;
     }
 
     av_dump_format(pFormatCtx, 0, filepath,0);
 
 
+
+
+
+
+    //qDebug()<<"runner "<<m_index<<" --> pAVCodecContext "<<pAVCodecContext<<" sizeof(pAVCodecContext): "<<sizeof(*pAVCodecContext);
     pAVCodecContext = avcodec_alloc_context3(NULL);
-  //qDebug()<<"runner "<<m_index<<" pAVCodecContext: "<<pAVCodecContext;
+    //qDebug()<<"runner "<<m_index<<" <-- pAVCodecContext "<<pAVCodecContext<<" sizeof(pAVCodecContext): "<<sizeof(*pAVCodecContext);
+
+       m_pAVCodecContext->add_to_statistics(QString::number((qint64)pAVCodecContext,16));
+
+    ////qDebug()<<"runner "<<m_index<<" pAVCodecContext: "<<pAVCodecContext;
+    //qDebug()<<" ";
+    //qDebug()<<"runner "<<m_index<<" --> pAVCodec "<<pAVCodec<<" sizeof(pAVCodec): "<<sizeof(*pAVCodec);
     pAVCodec = avcodec_find_decoder(pFormatCtx->streams[videoindex]->codec->codec_id);
+    //qDebug()<<"runner "<<m_index<<" -- pAVCodec "<<pAVCodec<<" sizeof(pAVCodec): "<<sizeof(*pAVCodec);
+
+    m_pAVCodec->add_to_statistics(QString::number((qint64)pAVCodec,16));
 
     prev=clock();
     pFormatCtx->interrupt_callback.callback=interrupt_cb;
     pFormatCtx->interrupt_callback.opaque = this;
-
-
+    //qDebug()<<" ";
+    //qDebug()<<"runner "<<m_index<<" --> param: "<<param<<" sizeof(param): "<<sizeof(*param);
     avcodec_parameters_from_context(param, pFormatCtx->streams[videoindex]->codec);
-    avcodec_parameters_to_context(pAVCodecContext, param);
+    //qDebug()<<"runner "<<m_index<<" --> param: "<<param<<" sizeof(param): "<<sizeof(*param);
 
+        m_param->add_to_statistics(QString::number((qint64)param,16));
+
+    avcodec_parameters_to_context(pAVCodecContext, param);
+    //qDebug()<<"runner "<<m_index<<" <-- param: "<<param<<" sizeof(param): "<<sizeof(*param);
+    //qDebug()<<"runner "<<m_index<<" <-- pAVCodecContext "<<pAVCodecContext<<" sizeof(pAVCodecContext): "<<sizeof(*pAVCodecContext);
+
+    m_pAVCodecContext->add_to_statistics(QString::number((qint64)pAVCodecContext,16));
 
     prev=clock();
     pFormatCtx->interrupt_callback.callback=interrupt_cb;
     pFormatCtx->interrupt_callback.opaque = this;
-
+    //qDebug()<<" ";
     videoWidth=pAVCodecContext->width;
     videoHeight=pAVCodecContext->height;
 
-  //qDebug()<<"URL: "<<URL<<"; width: "<<videoWidth<<"; height: "<<videoHeight;
+  ////qDebug()<<"URL: "<<URL<<"; width: "<<videoWidth<<"; height: "<<videoHeight;
 
     if(videoWidth<=640 && videoHeight<=480){
 
-       //qDebug()<<"Этот видеопоток нужно попробовать сохранить";
+       ////qDebug()<<"Этот видеопоток нужно попробовать сохранить";
 
     }
+
+    //qDebug()<<"runner "<<m_index<<" --> pAVPicture: "<<pAVPicture<<" sizeof(pAVPicture): "<<sizeof(*pAVPicture);
     avpicture_alloc(pAVPicture,AV_PIX_FMT_RGB32,videoWidth,videoHeight);
+    //qDebug()<<"runner "<<m_index<<" -- pAVPicture: "<<pAVPicture<<" sizeof(pAVPicture): "<<sizeof(*pAVPicture);
+
+        m_pAVPicture->add_to_statistics(QString::number((qint64)pAVPicture,16));
 
     pAVCodec = avcodec_find_decoder(pAVCodecContext->codec_id);
 
     if((videoWidth==0)&&(videoHeight==0)){
 
-        //qDebug()<<"FAIL with: videoWidth videoHeight";
+        ////qDebug()<<"FAIL with: videoWidth videoHeight";
        return false;
      }
-//qDebug()<<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
+////qDebug()<<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
+    //qDebug()<<"runner "<<m_index<<" --> pSwsContext: "<<pSwsContext<<" sizeof(pSwsContext): "<<sizeof(pSwsContext);
     pSwsContext = sws_getContext(videoWidth,videoHeight,pAVCodecContext->pix_fmt,videoWidth,videoHeight,AV_PIX_FMT_RGB32,SWS_BICUBIC,0,0,0);
-  //qDebug()<<"runner "<<m_index<<" pSwsContext: "<<pSwsContext;
-  //qDebug()<<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
-//    AVBufferRef *hw_device_ctx = NULL;
+    //qDebug()<<"runner "<<m_index<<" <-- pSwsContext: "<<pSwsContext<<" sizeof(pSwsContext): "<<sizeof(pSwsContext);
 
+    m_pSwsContext->add_to_statistics(QString::number((qint64)pSwsContext,16));
+
+    ////qDebug()<<"runner "<<m_index<<" pSwsContext: "<<pSwsContext;
+  ////qDebug()<<"sws_getContext pSwsContext "<<(pSwsContext==NULL);
+//    AVBufferRef *hw_device_ctx = NULL;
+    //qDebug()<<" ";
  //  pAVCodecContext->hw_device_ctx = av_buffer_ref(hw_device_ctx);
 
     pAVCodecContext->thread_count=1;
 
-//qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
+////qDebug()<<"int result=avcodec_open2(av_context,codec,NULL);";
   //  int result=avcodec_open2(av_context,codec,NULL);
- //qDebug()<<"profit";
+ ////qDebug()<<"profit";
     int result=avcodec_open2(pAVCodecContext,pAVCodec,&options);
     if (result<0){
         av_codec_not_open++;
  //   close();
         emit finished();
 
-       //qDebug()<<"FAIL with: avcodec_open2t";
+       ////qDebug()<<"FAIL with: avcodec_open2t";
         return false;
     }
 av_codec_open++;
     int y_size = pAVCodecContext->width * pAVCodecContext->height;
 
     prev=clock();
+
 
 
     return true;
@@ -628,6 +675,8 @@ void Runner::run()
             if(pAVPicture==NULL){
              //qDebug()<<"pAVPicture = new AVPicture()-->";
                 pAVPicture = new AVPicture();
+                 qDebug()<<"pAVPicture: "<<pAVPicture;
+                qDebug()<<"sizeof(AVPicture): "<<sizeof(AVPicture);
              //qDebug()<<"pAVPicture = new AVPicture()<--";
             }
             //qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
@@ -776,3 +825,31 @@ free();
 
 
 
+
+
+
+Statistic::Statistic(QString name_)
+{
+    name = name_;
+    added=0;
+    deleted=0;
+}
+
+void Statistic::show_statistic()
+{
+    qDebug()<<"cсоздано "<<added<<" закрыто "<<deleted;
+   qDebug()<<"statistics for "<<name<<" всего: "<<map.size();
+   foreach(auto addr, map.keys()){
+       qDebug()<<"addr: "<<addr<<" "<<map.value(addr);
+   }
+}
+
+void Statistic::add_to_statistics(QString addr)
+{
+    if(map.contains(addr)){
+        int val=map.value(addr)+1;
+        map.insert(addr,val);
+    }else{
+        map.insert(addr,1);
+    }
+}
