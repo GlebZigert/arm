@@ -201,7 +201,7 @@ void StreamerContainer::show()
             qDebug()<<"стримеров создано: "<<one.data()->created<<" удалено: "
                    <<one.data()->deleted<<" живут: "
                   <<one.data()->created-one.data()->deleted;
-
+/*
             qDebug()<<"тредов     создано: "<<one.data()->created<<" удалено: "
                    <<one.data()->deleted<<" живут: "
                   <<one.data()->created-one.data()->deleted;
@@ -215,7 +215,9 @@ void StreamerContainer::show()
                        <<one.data()->runner->av_codec_not_open<<" закрыто: "
                       <<one.data()->runner->av_codec_close<<" не закрытых: "
                      <<one.data()->runner->av_codec_open+one.data()->runner->av_codec_not_open-one.data()->runner->av_codec_close;
+
             }
+         */
         }
 
         QString sstr="";
@@ -263,6 +265,7 @@ void StreamerContainer::show()
         }else{
             qDebug()<<"no runner";
         }
+
     }
     qDebug()<<" ";
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных: "<<free;

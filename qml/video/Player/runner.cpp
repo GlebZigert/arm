@@ -371,7 +371,7 @@ bool Runner::load_settings()
     //qDebug()<<"runner "<<m_index<<" <-- param: "<<param<<" sizeof(param): "<<sizeof(*param);
     //qDebug()<<"runner "<<m_index<<" <-- pAVCodecContext "<<pAVCodecContext<<" sizeof(pAVCodecContext): "<<sizeof(*pAVCodecContext);
 
-    m_pAVCodecContext->add_to_statistics(QString::number((qint64)pAVCodecContext,16));
+
 
     prev=clock();
     pFormatCtx->interrupt_callback.callback=interrupt_cb;
@@ -513,7 +513,7 @@ void Runner::free()
     if(pSwsContext!=NULL){
         //qDebug()<<"sws_freeContext(pSwsContext); ";
     sws_freeContext(pSwsContext);
-   // pSwsContext=NULL;
+    pSwsContext=NULL;
     }
     //if(pAVCodecContext)
     //avcodec_free_context(&pAVCodecContext);
@@ -837,11 +837,32 @@ Statistic::Statistic(QString name_)
 
 void Statistic::show_statistic()
 {
-    qDebug()<<"cоздано "<<added<<" закрыто "<<deleted;
+  //  qDebug()<<"cоздано "<<added<<" закрыто "<<deleted;
    qDebug()<<"statistics for "<<name<<" всего: "<<map.size();
+   int reuse=0;
+   int once=0;
+   int i=0;
+ //  qDebug()<<"первые 10 адресов:";
    foreach(auto addr, map.keys()){
-       qDebug()<<"addr: "<<addr<<" "<<map.value(addr);
+       i++;
+       if(i<=10){
+    //     qDebug()<<"addr "<<addr<<" "<<map.value(addr);
+       }
+       if(map.value(addr)>1){
+           reuse++;
+    //   qDebug()<<": "<<addr<<" "<<map.value(addr);
+       }else{
+         once++;
+       }
    }
+       if(reuse>0){
+        qDebug()<<"повторно использованных адресов  : "<<reuse;
+       }
+       if(once>0){
+        qDebug()<<"однократно использованных адресов: "<<once;
+       }
+       qDebug()<<" ";
+
 }
 
 void Statistic::add_to_statistics(QString addr)
