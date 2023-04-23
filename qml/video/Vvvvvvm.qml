@@ -535,7 +535,7 @@ console.log("Key_Down")
 
                     console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",StreamType.Streaming)
 
-                    if(vm_area.pressedButtons & Qt.LeftButton){
+                    if(mouse_pressed){
                         if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
