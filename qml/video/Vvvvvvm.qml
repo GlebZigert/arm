@@ -534,32 +534,34 @@ console.log("Key_Down")
                     var x3=(vm.getMode()===StreamType.Streaming)
 
                     console.log( cid," ",vm.cid ," ",Axxon.camera(vm.cid).telemetryControlID," ",root.telemetryPoint," ",vvm_arrea.containsMouse," ",supreme.activeFocus," ",supreme.activeFocus && vm.getMode()," ",StreamType.Streaming)
-                    if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
+
+                    if(vm_area.pressedButtons & Qt.LeftButton){
+                        if(Axxon.camera(vm.cid).telemetryControlID==root.telemetryPoint && vvm_arrea.containsMouse && (supreme.activeFocus && vm.getMode()===StreamType.Streaming)){
 
 
-                        if(wheel.angleDelta.y > 0)  // zoom in
-                            zoom=1
-                        else                        // zoom out
-                            zoom=-1
-                        console.log("zoom ",zoom_prev," ",zoom)
-                        if(zoom_prev!=zoom)
-                        {
-                            if (zoom==1)
+                            if(wheel.angleDelta.y > 0)  // zoom in
+                                zoom=1
+                            else                        // zoom out
+                                zoom=-1
+                            console.log("zoom ",zoom_prev," ",zoom)
+                            if(zoom_prev!=zoom)
                             {
-                             //   console.log("+++")
-                                Tlmtr.zoom_in()
+                                if (zoom==1)
+                                {
+                                 //   console.log("+++")
+                                    Tlmtr.zoom_in()
+                                }
+                                if (zoom==-1)
+                                {
+                                    console.log("-")
+                                    Tlmtr.zoom_out()
+                                }
                             }
-                            if (zoom==-1)
-                            {
-                                console.log("-")
-                                Tlmtr.zoom_out()
-                            }
+                            zoom_prev=zoom
+                            zoom_timer.stop()
+                            zoom_timer.start()
                         }
-                        zoom_prev=zoom
-                        zoom_timer.stop()
-                        zoom_timer.start()
-                    }
-                    else
+                    }else
                     {
                     if(wheel.angleDelta.y > 0)  // zoom in
                         var zoomFactor = factor
