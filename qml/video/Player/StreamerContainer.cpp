@@ -177,6 +177,7 @@ void StreamerContainer::show()
 {
     int free=0;
     qDebug()<<" ";
+    qDebug()<<"время старта приложения: "<<start_dt;
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count();
     qDebug()<<" ";
     bool fl=true;
@@ -250,7 +251,7 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
 qDebug()<<"StreamerContainer::StreamerContainer";
 
-
+start_dt=QDateTime::currentDateTime();
 
 /*
 connect(timer.data(),

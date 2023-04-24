@@ -494,7 +494,7 @@ function set_alarm(alarm_){
                 }
 
              function   f_return_connection(connection){
-                console.log("f_return_connection ",connection," ",cid)
+                console.log("f_return_connection ",connection," ",cid," ",Axxon.camera(cid).name)
                  if(connection==false){
                         //     console.log("2")
 

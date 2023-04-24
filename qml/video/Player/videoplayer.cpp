@@ -236,7 +236,7 @@ void VideoPlayer::onheightChanged(){
 }
 
 void VideoPlayer::frame(QString source){
-
+timer.stop();
 //    //qDebug()<<"VideoPlayer::frame "<<streamType;
 
 

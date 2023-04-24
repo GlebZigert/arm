@@ -13,7 +13,7 @@ class StreamerContainer : public QObject
 
 private:
 
-
+    QDateTime start_dt;
 
 public:
      void func();
