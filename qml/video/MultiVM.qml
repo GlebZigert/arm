@@ -505,8 +505,12 @@ console.log("vm_stop 7")
 
                      if(fullscreen_uid>-1){
                      for(var i=0;i<md.get_all_cids().length;i++){
-                       //  console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
-                         if(md.get_uid_at(i)===fullscreen_uid){
+
+                         if(md.get_uid_at(i)===fullscreen_uid &&
+                           md.get_cid_at(i)===cid
+                           ){
+
+                            console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid," ",md.get_cid_at(i)," ",cid)
                              flag=true
                          }
                          }
@@ -516,7 +520,7 @@ console.log("vm_stop 7")
                      if(flag===true){
                     // console.log("3")
                                 console.log("full 2")
-                         full.vm_start_1(cid,Axxon.camera(cid).low,1)
+                         full.vm_start_1(cid,Axxon.camera(cid).livestream_low,1)
                    //  good.stream_request(cid, "higth")
                      }else{
                    //              console.log("4")
@@ -608,6 +612,8 @@ Vvvvvvm{
         width: 20
         height: 20
         onClicked: {
+
+        full.vm_start_1(cid,Axxon.camera(cid).livestream_low,1)
         stream_request(full.get_cid(),quality)
         full.visible=false
         fullscreen_uid=-1
@@ -929,6 +935,7 @@ console.log("Multivm add_storage_camera")
         vm_stop_at_cid(cid)
             return
         }
+
 
         for(var i = 0; i<grid.children.length-1; i++)
         {
