@@ -521,7 +521,7 @@ console.log("vm_stop 7")
                     // console.log("3")
                                 console.log("full 2")
                          full.vm_start_1(cid,Axxon.camera(cid).livestream_low,1)
-                   //  good.stream_request(cid, "higth")
+                     good.stream_request(cid, "higth")
                      }else{
                    //              console.log("4")
 
@@ -719,7 +719,7 @@ Vvvvvvm{
         good.scale=1
 
 
-        md.clear_if_not_alarm()
+              md.clear_if_not_alarm_or_fullscreen(full.get_cid())
 
         for(var i = 0;i < md.get_cids().length;i++){
             //   console.log("смотрю ",md.get_cid_at(i)," ",id)
@@ -763,7 +763,7 @@ Vvvvvvm{
 
 
             good.scale=1
-            md.clear_if_not_alarm()
+             md.clear_if_not_alarm_or_fullscreen(full.get_cid())
             md.set_scale(2)
             for(var i=0;i<arr.length;i++){
 
@@ -785,7 +785,7 @@ console.log("Multivm add_storage_camera")
 
         full=false
             good.scale=1
-   md.clear_if_not_alarm()
+          md.clear_if_not_alarm_or_fullscreen(full.get_cid())
 /*
             for(var i = 0;i<cids.count; i++){
 
@@ -954,6 +954,7 @@ console.log("Multivm add_storage_camera")
         }
 
         if(full.cid==cid){
+
             full.set_vm_source(cid,src)
              //      console.log("full 4")
             full.vm_start_1(cid,src,mode)
@@ -1382,7 +1383,7 @@ console.log("1")
                                          url,
                                          1
                                          )
-                         //  stream_request(w_model.get(i).cid,"higth")
+                           stream_request(w_model.get(i).cid,"higth")
 
                          //   md.set_url_for_uid("",id)
                            fullscreen_uid = id

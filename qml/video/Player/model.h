@@ -65,7 +65,7 @@ public:
 
     bool get_alarm_at(int i);
 
-    void clear_if_not_alarm();
+    void clear_if_not_alarm(int full);
 
     ~Page();
 };
@@ -115,7 +115,7 @@ public:
     void set_alarm_for_uid(bool alarm, int uid);
      int current_page;
 
-     void clear_if_not_alarm();
+     void clear_if_not_alarm(int full);
 
 
 private:
@@ -157,7 +157,7 @@ public:
 
     Q_INVOKABLE bool add_camera();
 
-    Q_INVOKABLE void clear_if_not_alarm();
+    Q_INVOKABLE void clear_if_not_alarm_or_fullscreen(int full);
 
     Q_INVOKABLE void next_scale();
 

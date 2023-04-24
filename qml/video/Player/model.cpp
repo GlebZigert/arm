@@ -216,9 +216,9 @@ bool Model::add_camera()
 
 }
 
-void Model::clear_if_not_alarm()
+void Model::clear_if_not_alarm_or_fullscreen(int full)
 {
-      mdl.value(vid)->clear_if_not_alarm();
+      mdl.value(vid)->clear_if_not_alarm(full);
 
 
 }
@@ -856,11 +856,11 @@ void Wall::set_alarm_for_uid(bool alarm, int uid)
 }
 
 
-void Wall::clear_if_not_alarm()
+void Wall::clear_if_not_alarm(int full)
 {
     auto page = list.at(current_page);
 
-    page->clear_if_not_alarm();
+    page->clear_if_not_alarm(full);
 }
 
 Page::Page(QString nm,int val)
@@ -1024,16 +1024,25 @@ bool Page::get_alarm_at(int i)
     return map.values().at(i)->alarm;
 }
 
-void Page::clear_if_not_alarm()
+void Page::clear_if_not_alarm(int full)
 {
     for(auto one : map.values()){
 
-        if(one->alarm==0){
+           bool res = true;
+        if(one->alarm==true){
+            res = false;
+        }
+        if(one->cid==full && full !=-1){
+         qDebug()<<"сохраняем fullscreen "<<full;
+        res = false;
+        }
+
+            if(res){
             one->cid=-1;
             one->url="";
+            }
 
 
-        }
 
 
     }
