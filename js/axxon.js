@@ -763,12 +763,22 @@ Axxon.prototype.rebuildTree = function (data) {
                     root.cameraList.get(j).mapState =data[i].state
                     root.cameraList.get(j).color =data[i].color
 
+                    var oldstate = root.cameraList.get(j).state
 
+
+
+                    var newstate = data[i].state
+console.log("УЖЕ ЕСТЬ ", data[i].id," ",root.cameraList.get(j).name," ",oldstate," ",newstate)
+                    if(oldstate=="lost" && newstate!="lost"){
+                    console.log("ВОССТАНОВЛЕНИЕ СВЯЗИ ", data[i].id," ",data[i].state)
+                    }
+
+                    root.cameraList.get(j).state =data[i].state
                 }
 
             }
             if(res){
-           //     //console.log("ДОБАВЛЯЮ ", data[i].id)
+           console.log("ДОБАВЛЯЮ ", data[i].id," ",data[i].state)
 
                 root.cameraList.append(    {
                     sid: data[i].sid ,
@@ -835,7 +845,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
            root.log(j," ",root.cameraList.get(j).id," ",root.cameraList.get(j).name)
         }
-   //     root.log(" ")
+        root.log(" ")
 
 
 
@@ -905,8 +915,8 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
         }
 
  //console.log(" ")
-   //  console.log("request_URL ")
-   //  console.log(" ")
+     console.log("request_URL ")
+     console.log(" ")
 
     if(dt===""){
     //       console.log("data.dt нулевое      : ",data.dt)
@@ -915,13 +925,13 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
 
 
     // cameraId+";"+dt+" "+format_dt
-  //  console.log("data.videowall : ",data.videowall)
-  //  console.log("data.cameraId : ",data.cameraId)
- //   console.log("data.serviceId : ",data.serviceId)
- //   console.log("data.dt       : ",data.dt)
- //   console.log("data.format_dt: ",data.format_dt)
-//        console.log("data.quality: ",data.quality)
-// console.log(" ")
+    console.log("data.videowall : ",data.videowall)
+    console.log("data.cameraId : ",data.cameraId)
+    console.log("data.serviceId : ",data.serviceId)
+    console.log("data.dt       : ",data.dt)
+    console.log("data.format_dt: ",data.format_dt)
+        console.log("data.quality: ",data.quality)
+ console.log(" ")
 
 
 

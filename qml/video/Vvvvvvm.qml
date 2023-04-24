@@ -201,6 +201,14 @@ console.log("Key_Down")
         onConnectionChanged:  (subject)=>{
       //  console.log("VideoPlayer onConnectionChanged ")
                                   supreme.connection=subject
+
+
+                                    if(subject===true){
+                                  lost_rect.visible=false
+                                  }else{
+                                    console.log("onConnectionChanged: cid: ",vm.getCid()," url: ",vm.source," connection: ",subject)
+                                   lost_rect.visible=true
+                                  }
                                   return_connection(subject)
         }
 
@@ -608,6 +616,18 @@ console.log("Key_Down")
 
         }
 
+
+        Rectangle{
+            id: lost_rect
+
+        x: vm_rect.width-20
+        y:10
+        width:10
+        height: 10
+        color: "red"
+        visible:false
+        }
+
         Timer{
             id: delay_timer
             interval: 100; running: false; repeat: false
@@ -652,7 +672,7 @@ console.log("Key_Down")
             hoverEnabled: true
 
             onPressed: {
-              //  console.log("vvm_arrea onPressed ",vm.cid," ",vm.source)
+                console.log("vvm_arrea onPressed ",vm.cid," ",vm.source)
                 delay_timer.start()
                 mouse.accepted=false
             }
@@ -782,7 +802,7 @@ console.log("Key_Down")
         vm.source=url
         vm.start(mmode)
 }else{
-     //   console.log("url uderfined")
+        console.log("url uderfined")
         }
     }
 
@@ -791,11 +811,13 @@ console.log("Key_Down")
     }
 
     function vm_stop(){
-           //     console.log("vm_stop ")
+        lost_rect.visible=true;
+                console.log("vm_stop ")
               vm.stop()
     }
 
     function vm_clear(){
+        lost_rect.visible=false;
            //     console.log("m_clear ")
               vm.clear()
     }

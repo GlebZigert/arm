@@ -143,7 +143,7 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
-//   qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
+   qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
     runner->go_to_free_state=true;
     countlost=0;
 }
@@ -171,9 +171,10 @@ void Streamer::receiveFrame(QString URL)
 void Streamer::lostConnection(QString URL)
 {
 
-    //qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
+    //
 
     if(followers==0){
+    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
     stop();
     }
     emit lost(URL);
