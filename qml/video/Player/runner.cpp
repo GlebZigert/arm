@@ -698,10 +698,14 @@ void Runner::run()
 
         if(videoHeight>600&&
                 videoWidth>800){
-            interval=10;
+            interval=1;
         }else{
-            interval=1000;
+            interval=100;
         }
+        if(m_running==Mode::Free){
+            interval=10000;
+        }
+
         if(sleep){
         QThread::usleep(interval);
         }
