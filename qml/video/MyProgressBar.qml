@@ -679,7 +679,7 @@ Row {
     Rectangle {
 
         color: "lightgray";
-        width: 170;
+        width: 200;
         height: 40
         visible: true
 
