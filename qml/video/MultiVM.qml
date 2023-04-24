@@ -716,6 +716,8 @@ Vvvvvvm{
         md.to_page("Тревоги")
 
         full.visible=false
+        fullscreen_uid=-1
+        full.vm_stop()
         good.scale=1
 
 
