@@ -1033,7 +1033,7 @@ void Page::clear_if_not_alarm(int full)
             res = false;
         }
         if(one->cid==full && full !=-1){
-         qDebug()<<"сохраняем fullscreen "<<full;
+        // qDebug()<<"сохраняем fullscreen "<<full;
         res = false;
         }
 

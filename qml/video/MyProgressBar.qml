@@ -563,7 +563,7 @@ Row {
 
         onClicked: {
 
-            console.log("onClicked .,.")
+          //  console.log("onClicked .,.")
          signal_telemetry_on_off()
         }
     }
@@ -584,7 +584,7 @@ Row {
 
         onClicked: {
 
-            console.log("onClicked .,.")
+          //  console.log("onClicked .,.")
          signal_loaded_cameras_on_off()
         }
     }
@@ -607,7 +607,7 @@ Row {
 
         onClicked: {
 
-            console.log("onClicked .,.")
+          //  console.log("onClicked .,.")
          eventlog_on_off()
         }
     }
@@ -628,7 +628,7 @@ Row {
 
         onClicked: {
 
-            console.log("onClicked .,.")
+          //  console.log("onClicked .,.")
          tree_on_off()
         }
     }

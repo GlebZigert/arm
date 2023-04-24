@@ -164,9 +164,9 @@ void StreamerContainer::func(){
 
 
         flag=false;
-        qDebug()<<" ";
-        qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
-        qDebug()<<" ";
+   //     qDebug()<<" ";
+    //    qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
+   //     qDebug()<<" ";
     }
     //      qDebug()<<" ";
 
@@ -372,7 +372,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
              }else{
-                 qDebug()<<"<-- StreamerContainer::find [0] runner "<<one.data()->get_m_index();
+                 //qDebug()<<"<-- StreamerContainer::find [0] runner "<<one.data()->get_m_index();
                              ready = one;
 
                              if(ready->runner->get_m_running()==Runner::Mode::Free){
@@ -410,7 +410,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 */
 
 
-            qDebug()<<"<-- StreamerContainer::find [1] runner "<<one.data()->get_m_index();
+          //  qDebug()<<"<-- StreamerContainer::find [1] runner "<<one.data()->get_m_index();
             free = one;
             break;
         }
@@ -455,7 +455,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
     }
 
 
-   qDebug()<<"<-- StreamerContainer::find [2]";
+  // qDebug()<<"<-- StreamerContainer::find [2]";
     return nullptr;
 }
 

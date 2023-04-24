@@ -198,7 +198,7 @@ Item{
 
             onClicked: {
                         timer.stop()
-                console.log("onClicked .")
+               // console.log("onClicked .")
                 timer.stop()
                 shoot.stop()
              //   multivm.to_next_page()
@@ -220,7 +220,7 @@ Item{
 
             onClicked: {
                         timer.stop()
-                console.log("onClicked .")
+                //console.log("onClicked .")
                 timer.stop()
    multivm.next_scale()
             }
@@ -260,7 +260,7 @@ Item{
 
             onClicked: {
 
-                console.log("onClicked .")
+                //console.log("onClicked .")
                 if(timer.running)
                     timer.stop()
                 else
@@ -306,7 +306,7 @@ Item{
             }
 
             onClicked: {
-                console.log("onClicked .")
+              //  console.log("onClicked .")
                         timer.stop()
                page_delete_view.visible=true
             }
@@ -325,7 +325,7 @@ Item{
             }
 
             onClicked: {
-                console.log("onClicked .")
+             //   console.log("onClicked .")
                         timer.stop()
                 page_input_view.visible=true
                 page_name_input.forceActiveFocus()
@@ -760,14 +760,14 @@ Item{
     }
 
     function f_switch_tlmtr(){
-            console.log("videowall f_switch_tlmtr")
+       //     console.log("videowall f_switch_tlmtr")
         base.switch_tlmtr()
         tlmt_rect.visible=!tlmt_rect.visible
     }
 
     function f_open_in_alarm_window(id){
 
-        console.log("f_open_in_alarm_window")
+      //  console.log("f_open_in_alarm_window")
         open_in_alarm_window(id)
     }
 

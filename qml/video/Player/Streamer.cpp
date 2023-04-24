@@ -143,7 +143,7 @@ void Streamer::thread_is_over()
 
 void Streamer::stop()
 {
-   qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
+//   qDebug()<<"Streamer::stop() runner "<<runner->get_m_index();
     runner->go_to_free_state=true;
     countlost=0;
 }

@@ -652,7 +652,7 @@ console.log("Key_Down")
             hoverEnabled: true
 
             onPressed: {
-                console.log("vvm_arrea onPressed ",vm.cid," ",vm.source)
+              //  console.log("vvm_arrea onPressed ",vm.cid," ",vm.source)
                 delay_timer.start()
                 mouse.accepted=false
             }
@@ -782,7 +782,7 @@ console.log("Key_Down")
         vm.source=url
         vm.start(mmode)
 }else{
-        console.log("url uderfined")
+     //   console.log("url uderfined")
         }
     }
 
