@@ -905,15 +905,15 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
         }
 
  //console.log(" ")
- //    console.log("request_URL ")
-  //   console.log(" ")
+     console.log("request_URL ")
+     console.log(" ")
 
     if(dt===""){
     //       console.log("data.dt нулевое      : ",data.dt)
     return;
     }
 
- /*
+
     // cameraId+";"+dt+" "+format_dt
     console.log("data.videowall : ",data.videowall)
     console.log("data.cameraId : ",data.cameraId)
@@ -922,7 +922,7 @@ function request_URL(videowall, cameraId, serviceId, dt, format_dt,quality)
     console.log("data.format_dt: ",data.format_dt)
         console.log("data.quality: ",data.quality)
  console.log(" ")
-*/
+
 
 
       root.send(serviceId, 'request_URL', data)

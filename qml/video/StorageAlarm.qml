@@ -388,7 +388,7 @@ timeline.pause_signal.connect(f_paused)
 
         root.eventSelected.connect(eventSelected_handler)
 
-        multivm.ready.connect(update_vm)
+       // multivm.ready.connect(update_vm)
 
 
 
@@ -423,7 +423,7 @@ timeline.pause_signal.connect(f_paused)
     start_timer.start()
     }
     function stream_request(id,quality){
-       // console.log("storageAlarm stream_request ",id," ",quality," ",storage_live," state ",Axxon.camera(id).state)
+        console.log("storageAlarm stream_request ",id," ",quality," ",storage_live," state ",Axxon.camera(id).state)
            var res =[]
            res.push(id)
             var serviceId=Axxon.camera(id).serviceId
@@ -861,7 +861,7 @@ timeline.pause_signal.connect(f_paused)
                             //    vm.start()
 
                          //   if(lcl.livestream){
-                                multivm.vm_start(id,lcl.liveStream,StreamType.Streaming)
+                                multivm.vm_start(id,lcl.liveStream_low,StreamType.Streaming)
                         //    }
                         }
 

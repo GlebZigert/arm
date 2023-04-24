@@ -349,6 +349,7 @@ id: btn_clear_camera
                         vvm.set_vm_source(-1,"")
                     //    findAndSet(cids,vm.uid,"cid",-1)
                     //    findAndSet(cids,vm.uid,"url","")
+                        console.log("vm_stop 6")
                         vvm.vm_stop()
                         vvm.vm_clear()
                         txt.text=""
@@ -452,11 +453,12 @@ function set_alarm(alarm_){
 
                 function vm_start(mode){
 //console.log(" vm_start(mode)")
+                    console.log("vvm.start 1")
                     vvm.vm_start(mode)
                 }
 
                 function vm_stop(){
-
+console.log("vm_stop 7")
                     vvm.vm_stop()
                 }
 
@@ -552,6 +554,7 @@ function set_alarm(alarm_){
                     set_vm_source(model.cid,model.url)
                     //console.log("Rect ",index," создан; uid: ",uid,"; cid:",vm.cid,"; url:",vm.url)
                     if(model.url!==""){
+                         console.log("vvm.start 2")
                     vvm.vm_start_1(model.cid,model.url,1)
                     }
 
@@ -722,7 +725,7 @@ Vvvvvvm{
             }
         }
         //md.set_scale(2)
-        var res = md.check_the_scale(id,"",true)
+        var res = md.check_the_scale(id,Axxon.camera(id).livestream_low,true)
         md.save_to_settings()
 
         if(res===true){
@@ -917,12 +920,12 @@ console.log("Multivm add_storage_camera")
             }
 
         }
-
     }
 
     function vm_start(cid,src,mode){
-      // console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+       console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         if(src==""){
+            console.log("vm_stop 1")
         vm_stop_at_cid(cid)
             return
         }
@@ -955,7 +958,7 @@ console.log("Multivm add_storage_camera")
         {
 
         //    if(grid.children[i].selected){
-
+console.log("vm_stop 2")
                 grid.children[i].vm_stop()
 
        //     }
@@ -964,6 +967,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_stop_at_cid(cid){
+        console.log("vm_stop 3")
         for(var i = 0; i<grid.children.length-1; i++)
         {
 
@@ -977,7 +981,7 @@ console.log("Multivm add_storage_camera")
         }
 
         if(full.get_cid()==cid){
-
+console.log("vm_stop 4")
         full.vm_stop()
         }
 
@@ -1039,15 +1043,15 @@ console.log("Multivm add_storage_camera")
 
 
                 if(cid_new==-1){
-
+console.log("vm_stop 5")
                  good.vm_stop_at_cid(cid_old)
 
                 }
 
-                console.log("uid  : ",uid_old," ",uid_new)
-                console.log("cid  : ",cid_old," ",cid_new)
-                console.log("url  : ",url_old," ",url_new)
-                console.log("alarm: ",alarm_old," ",alarm_new)
+                console.log("uid  : ",uid_old," new_uid",uid_new)
+                console.log("cid  : ",cid_old," new_cid",cid_new)
+                console.log("url  : ",url_old," new_url ",url_new)
+                console.log("alarm: ",alarm_old," new_alarm",alarm_new)
                 w_model.setProperty(i,"cid"  ,cid_new  )
                 w_model.setProperty(i,"url"  ,url_new  )
 
@@ -1129,20 +1133,20 @@ console.log("--")
                 var cid = md.get_cid_at(i)
 
                 if(url=="" && cid>-1){
-                //    console.log("пустой cid ",cid)
+                    console.log("пустой cid ",cid)
                     var serviceId=Axxon.camera(get_cids()[0]).serviceId
                     //        console.log("6")
                        good.stream_request(cid, quality)
                 }
 
 
-/*
+
                 console.log("append ")
                 console.log("uid  ",md.get_uid_at(i))
                 console.log("cid  ",md.get_cid_at(i))
                 console.log("url  ",md.get_url_at(i))
                 console.log("alarm  ",md.get_alarm_at(i))
-*/
+
                 w_model.append({h:hh,
                                    w:ww,
                                    x: ww*(i%scale),
@@ -1248,7 +1252,7 @@ console.log("--")
 console.log("1")
       //  md.set_scale(1)
         console.log("1")
-        var res = md.check_the_scale(id,Axxon.camera(id),"",alarm)
+        var res = md.check_the_scale(id,"",alarm)
         console.log("1")
          md.save_to_settings()
         console.log("1")
