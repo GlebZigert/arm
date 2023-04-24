@@ -564,6 +564,11 @@ timeline.pause_signal.connect(f_paused)
 
     function f_event_on_camera(id){
 
+        if(Axxon.camera(id).state=="lost"){
+        console.log("тревога на камере ",Axxon.camera(id).name," но ее лайвстрим отсутствует")
+        return
+        }
+
         if(storage_live===live){
 
 
