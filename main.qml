@@ -136,7 +136,11 @@ ApplicationWindow {
     //property ListModel panes: ListModel {}
 
     /********************** V I D E O ***********************/
-    property ListModel cameraList: ListModel{signal updated();signal current_update()}
+    property ListModel cameraList: ListModel{
+        signal updated();
+        signal current_update();
+        signal returning_of(int id);
+    }
     property ListModel stream_from_storage: ListModel{signal updated()}
     property ListModel camera_presets: ListModel {signal updated()}
 

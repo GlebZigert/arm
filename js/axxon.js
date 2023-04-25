@@ -771,9 +771,15 @@ Axxon.prototype.rebuildTree = function (data) {
 console.log("УЖЕ ЕСТЬ ", data[i].id," ",root.cameraList.get(j).name," ",oldstate," ",newstate)
                     if(oldstate=="lost" && newstate!="lost"){
                     console.log("ВОССТАНОВЛЕНИЕ СВЯЗИ ", data[i].id," ",data[i].state)
+
+                    root.cameraList.setProperty(i,'state',data[i].state)
+
+                    root.cameraList.returning_of(data[i].id)
+
                     }
                     if(oldstate!="lost" && newstate=="lost"){
                     console.log("ПРОПАЖА СВЯЗИ ", data[i].id," ",data[i].state)
+
                     }
                     root.cameraList.get(j).state =data[i].state
                 }
@@ -1004,6 +1010,27 @@ function get_cids(){
 
     }
     return cids
+
+}
+
+function forse_lost_state(id){
+console.log("forse_lost_state for ",id," ",root.cameraList.get(id).name)
+    for(var i=0;i<root.cameraList.count;i++){
+        /*
+     console.log(root.cameraList.get(i).id
+                 ," "<<root.cameraList.get(i).name
+                 ," "<<root.cameraList.get(i).liveStream
+                 ," "<<root.cameraList.get(i).storageStream
+                 ," "<<root.cameraList.get(i).snapshot
+                )
+              */
+    if(root.cameraList.get(i).id===id){
+        console.log("--> root.cameraList(i).state ",root.cameraList.get(i).state)
+root.cameraList.setProperty(i,'state',"lost")
+        console.log("<-- root.cameraList(i).state ",root.cameraList.get(i).state)
+    }
+    }
+
 
 }
 
