@@ -768,7 +768,7 @@ Axxon.prototype.rebuildTree = function (data) {
 
 
                     var newstate = data[i].state
-console.log("УЖЕ ЕСТЬ ", data[i].id," ",root.cameraList.get(j).name," ",oldstate," ",newstate)
+//console.log("УЖЕ ЕСТЬ ", data[i].id," ",root.cameraList.get(j).name," ",oldstate," ",newstate)
                     if(oldstate=="lost" && newstate!="lost"){
                     console.log("ВОССТАНОВЛЕНИЕ СВЯЗИ ", data[i].id," ",data[i].state)
 
@@ -786,7 +786,7 @@ console.log("УЖЕ ЕСТЬ ", data[i].id," ",root.cameraList.get(j).name," ",o
 
             }
             if(res){
-           console.log("ДОБАВЛЯЮ ", data[i].id," ",data[i].state)
+       //    console.log("ДОБАВЛЯЮ ", data[i].id," ",data[i].state)
 
                 root.cameraList.append(    {
                     sid: data[i].sid ,
