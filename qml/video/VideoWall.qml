@@ -664,12 +664,20 @@ Item{
     start_timer.start()
     }
 
+    function f_returning_of(cid){
+    console.log("f_returning_of ",cid)
+
+    stream_request(cid,"low")
+
+    }
+
     Component.onCompleted: {
 
         root.frash_URL.connect(f_current_camera_update)
         multivm.give_me_a_camera.connect(give_him_a_camera)
 
         root.cameraList.updated.connect(camera_storage.update_from_cameraList)
+               root.cameraList.returning_of.connect(f_returning_of)
         camera_storage.add_to_space.connect(f_change_camera)
 
         multivm.open_in_alarm_window.connect(f_open_in_alarm_window)
