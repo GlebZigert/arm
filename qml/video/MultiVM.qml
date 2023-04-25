@@ -320,12 +320,9 @@ id: btn_flip_camera
 
 
                     Button{
-
 id: btn_clear_camera
                         width: 40
                         height: 40
-
-
                     style: ButtonStyle {
 
                         label: Image {
@@ -333,12 +330,8 @@ id: btn_clear_camera
                             fillMode: Image.PreserveAspectFit  // ensure it fits
                         }
                     }
-
-
                     onClicked: {
-
                    //     console.log("onClicked .,.")
-
                    //     console.log("set cid for uid: ",-1," ",vm.uid)
                         md.set_cid_for_uid(-1,vm.uid)
                         md.set_url_for_uid("",vm.uid)
@@ -354,29 +347,27 @@ id: btn_clear_camera
                         vvm.vm_clear()
                         txt.text=""
                     rrow.visible=false
-
-
+                    }
                     }
 
+                    Button{
+                        id: btn_test
+                        width: 40
+                        height: 40
 
+                        onClicked: {
 
+                            vm.vm_stop();
+                            Axxon.forse_lost_state(vm.cid)
+
+                        }
                     }
 
                     }
-
-
-
                     function get_cid(){
                     return vvm.cid
                     }
-
                 }
-
-
-
-
-
-
                 }
 
 
