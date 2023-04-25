@@ -772,7 +772,9 @@ console.log("УЖЕ ЕСТЬ ", data[i].id," ",root.cameraList.get(j).name," ",o
                     if(oldstate=="lost" && newstate!="lost"){
                     console.log("ВОССТАНОВЛЕНИЕ СВЯЗИ ", data[i].id," ",data[i].state)
                     }
-
+                    if(oldstate!="lost" && newstate=="lost"){
+                    console.log("ПРОПАЖА СВЯЗИ ", data[i].id," ",data[i].state)
+                    }
                     root.cameraList.get(j).state =data[i].state
                 }
 
