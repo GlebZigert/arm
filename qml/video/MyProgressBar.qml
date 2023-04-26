@@ -83,19 +83,25 @@ Item {
     }
 
     Timer {
-        id: scroll_timer
-        interval: 300; running: false; repeat: false
+        id: play_or_pause_timer
+        interval: 1000; running: false; repeat: false
         onTriggered:
         {
+play_or_pause()
+    }
+    }
 
-
+    Timer {
+        id: scroll_timer
+        interval: 1000; running: false; repeat: false
+        onTriggered:
+        {
                 if(slider.pressed)
                 {
                  scroll_timer.start()
                 }
                 else
                 {
-
                     timer.msec=0
                     var dt=datetime(slider.value)
 
@@ -105,6 +111,7 @@ Item {
                     to_storage_toolbox.visible=false
 
     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
+                    console.log("moved_at_dt 1")
                  moved_at_dt(get_dt(dt))
                     update_timelist(dt)
                  }
@@ -113,9 +120,7 @@ Item {
                 {
 
                 }
-
             }
-
     }
 
 
@@ -395,7 +400,9 @@ Row {
             }
 
             onClicked: {
-                 play_or_pause()
+                play_or_pause_timer.stop()
+                play_or_pause_timer.start()
+
 
         }
         }
