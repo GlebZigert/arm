@@ -790,7 +790,7 @@ console.log("Multivm add_storage_camera")
           //  cids.clear()
 
 
-        full=false
+        full.visible=false
             good.scale=1
           md.clear_if_not_alarm_or_fullscreen(full.get_cid())
 /*
