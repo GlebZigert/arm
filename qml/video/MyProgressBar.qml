@@ -474,6 +474,7 @@ Row {
 
                     var max = "000000T000000.000000"
                             console.log("m_intervals.length ",m_intervals.count)
+                if(m_intervals.count){
                     for (var i=0; i < m_intervals.count;i++) {
 
                        var dt=m_intervals.get(i).end
@@ -498,6 +499,9 @@ Row {
                     to_storage_toolbox.visible=false
     dt_text.text=Qt.formatDateTime(dt,"dd.MM.yyyy hh:mm:ss")
                     moved_at_dt(get_dt(max))
+
+
+                }
 
 
 
