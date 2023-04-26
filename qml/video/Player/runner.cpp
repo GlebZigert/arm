@@ -38,6 +38,11 @@ created++;
      pAVFrame = av_frame_alloc();
        param = avcodec_parameters_alloc();
   //  av_init_packet(&packet);
+       if(pAVPicture==NULL){
+        //qDebug()<<"pAVPicture = new AVPicture()-->";
+           pAVPicture = new AVPicture();
+        //qDebug()<<"pAVPicture = new AVPicture()<--";
+       }
 }
 
 Runner::~Runner()
@@ -71,6 +76,8 @@ Runner::~Runner()
     //qDebug()<<"раннеров  создано: "<<created<<" удалено: "
            //<<deleted<<" живут: "
           //<<created-deleted;
+
+    delete pAVPicture;
 
 }
 
@@ -396,14 +403,12 @@ void Runner::free_settings()
 {
 
 
-   if(pAVPicture!=NULL){
-    //qDebug()<<"avpicture_free(pAVPicture)-->";
+
    avpicture_free(pAVPicture);
-   delete pAVPicture;
-      pAVPicture=NULL;
+
       *data=NULL;
    //qDebug()<<"avpicture_free(pAVPicture)<--";
-   }
+
 
 
  //qDebug()<<"freeSettings --> ";
@@ -625,11 +630,7 @@ void Runner::run()
 
 
             //qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
-            if(pAVPicture==NULL){
-             //qDebug()<<"pAVPicture = new AVPicture()-->";
-                pAVPicture = new AVPicture();
-             //qDebug()<<"pAVPicture = new AVPicture()<--";
-            }
+
             //qDebug()<<"pAVPicture: "<<(pAVPicture==NULL);
 
             if (!load_settings()){
