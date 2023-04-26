@@ -207,7 +207,7 @@ anchors.fill: parent
              id: text_field
              visible: false
              width: parent.width
-             height: 30
+             height: 50
              placeholderText: qsTr("Enter name")
         //     focus: true
        //      activeFocusOnPress: true
