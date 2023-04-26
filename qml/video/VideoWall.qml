@@ -187,7 +187,8 @@ Item{
         Button{
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Следующая видеостена"
             style: ButtonStyle {
 
                 label: Image {
@@ -209,7 +210,8 @@ Item{
         Button{
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Изменить масштаб"
             style: ButtonStyle {
 
                 label: Image {
@@ -249,7 +251,8 @@ Item{
         Button{
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Запустить/остановить смену видеостен"
             style: ButtonStyle {
 
                 label: Image {
@@ -296,7 +299,8 @@ Item{
             width: 40
             height: 40
 
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Удалить видеостену"
             style: ButtonStyle {
 
                 label: Image {
@@ -315,7 +319,8 @@ Item{
         Button{
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Добавить видеостену"
             style: ButtonStyle {
 
                 label: Image {
@@ -413,7 +418,8 @@ Item{
         Button{
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "скрыть панели"
             style: ButtonStyle {
 
                 label: Image {
@@ -457,7 +463,8 @@ Item{
         Button{
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Полноэкранный режим"
             style: ButtonStyle {
 
                 label: Image {

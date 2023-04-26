@@ -214,7 +214,8 @@ Rectangle{
 
                         id: btn_select_camera
 
-
+                        ToolTip.visible: hovered
+                        ToolTip.text: "Выбор камер"
 
 
                     width: 40
@@ -251,6 +252,8 @@ Rectangle{
                     visible: selected ? true : false
 
 id: btn_flip_camera
+ToolTip.visible: hovered
+ToolTip.text: "Открыть камеру в тревожном окне"
                     style: ButtonStyle {
 
                         label: Image {
@@ -275,6 +278,8 @@ id: btn_flip_camera
                     visible: selected ? true : false
 
    id: btn_fullscreen
+   ToolTip.visible: hovered
+   ToolTip.text: "На весь экран"
                     style: ButtonStyle {
 
                         label: Image {
@@ -301,6 +306,8 @@ id: btn_flip_camera
                         height: 40
 
    id: btn_switch_tlmtr
+   ToolTip.visible: hovered
+   ToolTip.text: "Телеметрия"
                         style: ButtonStyle {
 
                             label: Image {
@@ -321,6 +328,8 @@ id: btn_flip_camera
 
                     Button{
 id: btn_clear_camera
+ToolTip.visible: hovered
+ToolTip.text: "Очистить"
                         width: 40
                         height: 40
                     style: ButtonStyle {
@@ -350,6 +359,7 @@ id: btn_clear_camera
                     }
                     }
 
+                   /*
                     Button{
                         id: btn_test
                         width: 40
@@ -362,6 +372,7 @@ id: btn_clear_camera
 
                         }
                     }
+                    */
 
                     }
                     function get_cid(){
@@ -600,6 +611,9 @@ Vvvvvvm{
     }
 
     Button{
+
+        ToolTip.visible: hovered
+        ToolTip.text: "Выход из полноэкранного режима"
         width: 20
         height: 20
         onClicked: {

@@ -336,7 +336,8 @@ Row {
 
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Предыдущий кадр"
 
             style: ButtonStyle {
 
@@ -380,7 +381,8 @@ Row {
 
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Пауза/плэй"
 
             style: ButtonStyle {
 
@@ -402,7 +404,8 @@ Row {
 
             width: 40
             height: 40
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Следующий кадр"
             style: ButtonStyle {
 
                 label: Image {
@@ -556,7 +559,8 @@ Row {
         width: 40
         height: 40
 
-
+        ToolTip.visible: hovered
+        ToolTip.text: "Телеметрия"
         style: ButtonStyle {
 
             label: Image {
@@ -576,7 +580,8 @@ Row {
         id: camera_list
         width: 40
         height: 40
-
+        ToolTip.visible: hovered
+        ToolTip.text: "Выбор камеры"
 
         style: ButtonStyle {
 
@@ -600,7 +605,8 @@ Row {
         width: 40
         height: 40
 
-
+        ToolTip.visible: hovered
+        ToolTip.text: "Журнал событий"
         style: ButtonStyle {
 
             label: Image {
@@ -621,7 +627,8 @@ Row {
     id: tree
         width: 40
         height: 40
-
+        ToolTip.visible: hovered
+        ToolTip.text: "Дерево устройств"
         style: ButtonStyle {
 
             label: Image {
@@ -644,7 +651,8 @@ Row {
         id: scale_rectangle
 
         style: ButtonStyle {
-
+            ToolTip.visible: hovered
+            ToolTip.text: "Изменение масштаба"
             label: Image {
 
                 source:"grid.png"
@@ -776,7 +784,8 @@ Row {
        height: 40
 
        id: hide_timelines_scale_rectangle
-
+       ToolTip.visible: hovered
+       ToolTip.text: "Скрыть панели"
 
        style: ButtonStyle {
 
@@ -807,7 +816,8 @@ Row {
         id: fullscreen_signal_rectangle
 
        style: ButtonStyle {
-
+           ToolTip.visible: hovered
+           ToolTip.text: "Полноэкранный режим"
            label: Image {
 
                source:"fullscreen.png"
