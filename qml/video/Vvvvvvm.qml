@@ -216,7 +216,9 @@ console.log("Key_Down")
                                       if(cid>-1){
                                     console.log("onConnectionChanged: cid: ",vm.getCid()," url: ",vm.source," connection: ",subject)
 
-                                   lost_rect.visible=true
+                                          if(cid!=-1){
+                                          lost_rect.visible=true;
+                                          }
                                       }
                                   }
                                   return_connection(subject)
@@ -824,9 +826,12 @@ console.log("Key_Down")
     }
 
     function vm_stop(){
+        if(cid!=-1){
         lost_rect.visible=true;
+        }
                 console.log("vm_stop ")
               vm.stop()
+
     }
 
     function vm_clear(){
