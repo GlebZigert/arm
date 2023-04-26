@@ -1060,6 +1060,8 @@ console.log("vm_stop 5")
                 good.set_alarm(i,alarm_new)
 
 
+
+
                 if(cid_new!==-1){
                 good.stream_request(cid_new,quality)
                 }

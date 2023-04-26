@@ -30,6 +30,13 @@ Item {
     property int mouse_x
     property int mouse_y
 
+
+    onCidChanged: {
+
+        console.log("onCidChanged:")
+        vm.set_cid(-1)
+    }
+
      onActiveFocusChanged:{
    //  console.log("vvvvvvm activeFocus: ",vm.source," ",supreme.activeFocus)
 
@@ -199,15 +206,18 @@ console.log("Key_Down")
 
 
         onConnectionChanged:  (subject)=>{
-      //  console.log("VideoPlayer onConnectionChanged ")
+ //console.log("onConnectionChanged: cid: ",vm.getCid()," url: ",vm.source," connection: ",subject)
                                   supreme.connection=subject
 
 
                                     if(subject===true){
                                   lost_rect.visible=false
                                   }else{
+                                      if(cid>-1){
                                     console.log("onConnectionChanged: cid: ",vm.getCid()," url: ",vm.source," connection: ",subject)
+
                                    lost_rect.visible=true
+                                      }
                                   }
                                   return_connection(subject)
         }
@@ -767,6 +777,9 @@ console.log("Key_Down")
        vm.cid=cid
 
         var lcl = vm.getCid()
+        if(cid==-1){
+        lost_rect.visible=false
+        }
 
        // console.log("lcl: ",lcl)
 

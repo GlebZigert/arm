@@ -1014,7 +1014,7 @@ function get_cids(){
 }
 
 function forse_lost_state(id){
-console.log("forse_lost_state for ",id," ",root.cameraList.get(id).name)
+console.log("forse_lost_state for ",id," ")
     for(var i=0;i<root.cameraList.count;i++){
         /*
      console.log(root.cameraList.get(i).id
