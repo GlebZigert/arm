@@ -112,9 +112,9 @@ Runner::Runner(int index, AVPicture **data, int *h, int *w, QString URL, Runner:
     this->h=h;
     this->w=w;
     streamType=type;
-
-    frash_stream=true;
-    set_m_running(Mode::Prepare);
+    set_m_running(Mode::Wait_for_start);
+  //  frash_stream=true;
+  //  set_m_running(Mode::Prepare);
 
 
 }
@@ -160,6 +160,8 @@ case 8:
 break;
 case 9:
     res="Low     ";
+case 10:
+    res="Wait_for_start     ";
 break;
 break;
 }
