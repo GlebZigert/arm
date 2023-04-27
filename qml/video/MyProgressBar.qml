@@ -339,10 +339,13 @@ Row {
 
        QQC1.Button{
 
+
             width: 40
             height: 40
             ToolTip.visible: hovered
             ToolTip.text: "Предыдущий кадр"
+
+
 
             style: ButtonStyle {
 
@@ -378,12 +381,17 @@ Row {
                  paused_and_moved_at_dt(get_dt(dt))
            delay.start()
             }
+
+
         }
+
+
         }
 
 
          QQC1.Button{
 
+              id: b1
             width: 40
             height: 40
             ToolTip.visible: hovered
@@ -400,11 +408,27 @@ Row {
             }
 
             onClicked: {
-                play_or_pause_timer.stop()
-                play_or_pause_timer.start()
+                console.log("b1 onClicked")
+                play_or_pause()
+                b1.enabled=false
+                console.log("b1.enabled: ",b1.enabled)
 
+                b1_timer.start()
 
         }
+
+            Timer {
+                id: b1_timer
+                interval: 1000; running: false; repeat: false
+                onTriggered:
+                {
+                b1.enabled=true
+                console.log("b1.enabled: ",b1.enabled)
+            }
+            }
+
+
+
         }
 
          QQC1.Button{
