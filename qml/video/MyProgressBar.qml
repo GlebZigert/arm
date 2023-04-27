@@ -1402,5 +1402,9 @@ function show_alarms(){
 alarms.visible=true
 }
 
+function disable_all(){
+
+}
+
 
 }

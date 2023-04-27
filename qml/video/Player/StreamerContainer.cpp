@@ -247,6 +247,8 @@ void StreamerContainer::show()
 }
 
 
+
+
 StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
 qDebug()<<"StreamerContainer::StreamerContainer";

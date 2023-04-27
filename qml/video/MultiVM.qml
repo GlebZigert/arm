@@ -359,7 +359,7 @@ ToolTip.text: "Очистить"
                     }
                     }
 
-                   /*
+
                     Button{
                         id: btn_test
                         width: 40
@@ -367,12 +367,15 @@ ToolTip.text: "Очистить"
 
                         onClicked: {
 
+
+                            vvm.destroy_who_free()
+                                /*
                             vm.vm_stop();
                             Axxon.forse_lost_state(vm.cid)
-
+*/
                         }
                     }
-                    */
+
 
                     }
                     function get_cid(){

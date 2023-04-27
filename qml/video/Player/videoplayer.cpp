@@ -195,6 +195,12 @@ void VideoPlayer::saving_off()
 
 }
 
+void VideoPlayer::destroy_who_free()
+{
+container->delete_free_streamers();
+container->show();
+}
+
 void VideoPlayer::clear()
 {
         timer.stop();

@@ -45,6 +45,8 @@ public:
     Q_INVOKABLE void  saving_on();
     Q_INVOKABLE void  saving_off();
 
+        Q_INVOKABLE void  destroy_who_free();
+
     Q_INVOKABLE void  clear();
 
     Q_INVOKABLE void  delete_free_streamers();

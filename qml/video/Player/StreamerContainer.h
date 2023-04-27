@@ -20,6 +20,8 @@ public:
 
      void show();
 
+
+
     QTimer timer;
 
     explicit StreamerContainer(QObject *parent = nullptr);

@@ -851,6 +851,11 @@ console.log("Key_Down")
               vm.info()
     }
 
+    function destroy_who_free(){
+            //    console.log("vm_shot ")
+              vm.destroy_who_free()
+    }
+
     Component.onCompleted: {
 
        // supreme.forceActiveFocus()
