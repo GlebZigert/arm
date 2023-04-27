@@ -34,7 +34,7 @@ Item {
     onCidChanged: {
 
         console.log("onCidChanged:")
-        vm.set_cid(-1)
+    //    vm.set_cid(-1)
     }
 
      onActiveFocusChanged:{

@@ -121,7 +121,7 @@ void VideoPlayer::start(Runner::StreamType type)
   if(next){
             qDebug()<<"видеоплеер "<<cid<<" нашел следующий runner "<<next->runner->get_m_index()<<" "<<next->runner->get_state();
          next->followers_inc();
-
+            container->func();
           connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
 
   }

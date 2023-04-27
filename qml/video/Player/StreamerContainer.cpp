@@ -8,7 +8,7 @@ void StreamerContainer::on_timer()
 {
 timer.stop();
 func();
-timer.start(1000);
+timer.start(200);
 
 //timer.start(1000);
 }
@@ -109,8 +109,8 @@ void StreamerContainer::func(){
                         auto now = QDateTime::currentDateTime();
                         auto diff = one.data()->no_followers.secsTo(now);
                         //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
-                        if(diff>1){
-                            qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
+                        if(diff>0){
+                           // qDebug()<<"этот поток runner"<<one.data()->runner->get_m_index()<<" "<<one.data()->getURL()<<" хранится без подписчиков уже "<<diff<<" сек";
                          //   show();
                           //  qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                             one.data()->setSave(false);
@@ -132,8 +132,8 @@ void StreamerContainer::func(){
             auto now = QDateTime::currentDateTime();
             auto diff = one.data()->no_followers.secsTo(now);
             //   qDebug()<<"этот поток "<<one.data()->getURL()<<" хранится уже "<<diff<<" сек";
-            if(diff>2){
-                       qDebug()<<"этот поток "<<one.data()->getURL()<<" без подписчиков с обрывом связи "<<diff<<" сек";
+            if(diff>0){
+                   //    qDebug()<<"этот поток "<<one.data()->getURL()<<" без подписчиков с обрывом связи "<<diff<<" сек";
                   //      show();
                // qDebug()<<" потоку "<<one.data()->get_m_index()<<" сбрасываем save";
                 one.data()->setSave(false);
