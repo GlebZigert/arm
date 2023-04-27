@@ -84,9 +84,12 @@ QString VideoPlayer::source() const
 
 void VideoPlayer::setSource(const QString source)
 {
+    QString user_password=user+":"+password;
+    QString lcl=source;
+    lcl.replace("root:root",user_password);
 
-    m_source=source;
-    emit sourceChanged(m_source);
+    m_source=lcl;
+    emit sourceChanged(lcl);
 }
 
 
