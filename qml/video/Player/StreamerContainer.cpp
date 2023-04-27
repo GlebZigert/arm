@@ -15,21 +15,27 @@ timer.start(1000);
 
 void StreamerContainer::on_start_timer()
 {
+    start_timer.stop();
+    qDebug()<<QTime::currentTime()<<" on_start_timer ";
+
     if(queue.size()==0){
         return;
     }
   auto streamer=queue.dequeue();
   if(streamer){
+      qDebug()<<streamer->runner->get_m_index()<<" "<<streamer->runner->URL;
   streamer->start();
   }
   if(queue.size()>0){
-      start_timer.start();
+      start_timer.start(10);
   }
 }
 void StreamerContainer::add_for_start(QSharedPointer<Streamer> streamer)
 {
+    qDebug()<<QTime::currentTime()<<" add_for_start ";
+    qDebug()<<streamer->runner->get_m_index()<<" "<<streamer->runner->URL;
 queue.enqueue(streamer);
-start_timer.start(100);
+start_timer.start(10);
 }
 
 void StreamerContainer::func(){
@@ -321,7 +327,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
         if(streamer){
 
             map.append(streamer);
-
+            add_for_start(streamer);
         //    qDebug()<<"добавляем в контейер "<<url;
 
          //   streamer.data()->runner->URL=url;
@@ -352,7 +358,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 
             // qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner "<<streamer->runner->get_m_index();
 
-        add_for_start(streamer);
+
         return streamer;
         }
 
@@ -448,6 +454,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
            free.data()->runner->URL=url;
            free.data()->runner->streamType=type;
            free.data()->runner->set_m_running(Runner::Mode::Wait_for_start);
+           add_for_start(free);
         //   free.data()->runner->frash_stream=true;
 
        }

@@ -292,7 +292,7 @@ void VideoPlayer::f_clear()
 
 void VideoPlayer::on_timer()
 {
-//qDebug()<<"VideoPlayer::on_timer()";
+qDebug()<<"VideoPlayer::on_timer() ";
 //    timer.stop();
     m_connection = false;
     emit connectionChanged(m_connection);
@@ -309,7 +309,7 @@ void VideoPlayer::f_wait_for_next()
 {
 
 
-//qDebug()<<"VideoPlayer::f_wait_for_next()";
+qDebug()<<"VideoPlayer::f_wait_for_next()";
 
        //qDebug()<<"videoplayer lost runner";
        // stop();
