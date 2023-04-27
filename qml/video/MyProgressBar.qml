@@ -339,7 +339,7 @@ Row {
 
        QQC1.Button{
 
-
+            id: b2
             width: 40
             height: 40
             ToolTip.visible: hovered
@@ -382,8 +382,20 @@ Row {
            delay.start()
             }
 
+        b2.enabled=false
+                 console.log("b2.enabled: ",b2.enabled)
+                b2_timer.start()
 
         }
+            Timer {
+                id: b2_timer
+                interval: 1000; running: false; repeat: false
+                onTriggered:
+                {
+                b2.enabled=true
+                console.log("b2.enabled: ",b2.enabled)
+            }
+            }
 
 
         }
@@ -432,7 +444,7 @@ Row {
         }
 
          QQC1.Button{
-
+ id: b3
             width: 40
             height: 40
             ToolTip.visible: hovered
@@ -472,6 +484,22 @@ Row {
              paused_and_moved_at_dt(get_dt(dt))
             delay.start()
 
+            }
+
+                b3.enabled=false
+                console.log("b3.enabled: ",b3.enabled)
+
+                b3_timer.start()
+
+            }
+
+            Timer {
+                id: b3_timer
+                interval: 1000; running: false; repeat: false
+                onTriggered:
+                {
+                b3.enabled=true
+                console.log("b3.enabled: ",b3.enabled)
             }
             }
         }
