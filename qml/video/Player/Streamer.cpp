@@ -97,7 +97,12 @@ void Streamer::followers_dec()
         no_followers=QDateTime::currentDateTime();
     }
 
+    if(followers==0&&!save &&(runner->getVideoHeight()>600&&
+                              runner->getVideoWidth()>800
+                              )){
 
+        stop();
+    }
 }
 
 bool Streamer::getSave() const

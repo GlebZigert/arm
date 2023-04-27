@@ -721,8 +721,21 @@ Row {
 
         onClicked: {
            signal_scale()
+            scale_rectangle.enabled=false
+            scale_rectangle_timer.start()
 
     }
+
+        Timer {
+            id: scale_rectangle_timer
+            interval: 300; running: false; repeat: false
+            onTriggered:
+            {
+            scale_rectangle.enabled=true
+            console.log("scale_rectangle.enabled: ",scale_rectangle.enabled)
+        }
+        }
+
     }
 
     Rectangle {
