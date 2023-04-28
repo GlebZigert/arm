@@ -7,6 +7,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
   //  //qDebug()<<"VideoPlayer::VideoPlayer";
     container = StreamerContainerAccesser::get();
+    index = container->get_vm_index();
 
     m_connection = true;
     emit connectionChanged(m_connection);
@@ -124,7 +125,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
 
 
-  next = container->start(m_source,type);
+  next = container->start(m_source,type,index);
 
   if(next){
             qDebug()<<"видеоплеер "<<cid<<" нашел следующий runner "<<next->runner->get_m_index()<<" "<<next->runner->get_state();
@@ -134,7 +135,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
   }
 
-  wait_for_next.start(1000);
+  wait_for_next.start(10000);
 
 }
 
@@ -212,7 +213,7 @@ container->show();
 void VideoPlayer::clear()
 {
         timer.stop();
-    cleaner.start(1000);
+    cleaner.start(10000);
 }
 
 void VideoPlayer::delete_free_streamers()
@@ -284,7 +285,7 @@ timer.stop();
 
 //    timer.stop();
     if(streamType!=Runner::StreamType::Snapshot) {
-    timer.start(200);
+    timer.start(5000);
     }
 
 }
@@ -360,7 +361,7 @@ void VideoPlayer::next_frame(QString src)
     //  m_connection=true;
 
    //qDebug()<<"<-- VideoPlayer::next_frame() from runner ";
-  timer.start(200);
+  timer.start(5000);
 }
 
 

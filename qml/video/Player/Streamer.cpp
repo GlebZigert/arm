@@ -133,7 +133,7 @@ int Streamer::getH() const
 
 void Streamer::start()
 {
-//qDebug()<<"Streamer::start()";
+qDebug()<<"Streamer::start() "<<runner->get_m_index();
     runner->frash_stream=true;
 
 }

@@ -30,6 +30,7 @@ public:
     void setSource(const QString source);
 
 
+
     QTimer cleaner;
 
     QTimer timer;
@@ -73,6 +74,8 @@ private:
     QString     m_source;
 
     QImage img;
+
+    int index=0;
 
     QSharedPointer<StreamerContainer> container;
 

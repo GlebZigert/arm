@@ -12,6 +12,7 @@ PreviewMaker::PreviewMaker(QString url)
 qDebug()<<"PreviewMaker::PreviewMaker(QString url) : "<<url;
     connect(&timer,SIGNAL(timeout()),this,SLOT(on_timer()));
  container = StreamerContainerAccesser::get();
+ index = container->get_vm_index();
  set_url(url);
 
 }
@@ -45,7 +46,7 @@ void PreviewMaker::set_url(const QString url)
 
 
 
-    current=container->start(url,Runner::StreamType::Streaming);
+    current=container->start(url,Runner::StreamType::Streaming,index);
     if(current){
 
         current->followers_inc();

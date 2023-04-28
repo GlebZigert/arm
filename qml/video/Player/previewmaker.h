@@ -29,6 +29,8 @@ public:
     Q_INVOKABLE void start(int cid,QString url);
 
 
+    int index;
+
     QSharedPointer<Streamer> current = nullptr;
 
 

@@ -572,7 +572,7 @@ void Runner::run()
         time=QDateTime::currentDateTime();
         if(m_running!=previos){
 
-            //qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
+            qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
             if(m_running==Runner::Mode::Waiting){
                 //qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
                 go_to_free_state=false;
