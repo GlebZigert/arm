@@ -367,8 +367,10 @@ ToolTip.text: "Очистить"
 
                         onClicked: {
 
+                            stream_request(cid,"higth")
 
-                            vvm.destroy_who_free()
+
+                        //    vvm.destroy_who_free()
 
                          //   vm.vm_stop();
                          //   Axxon.forse_lost_state(vm.cid)
@@ -376,6 +378,7 @@ ToolTip.text: "Очистить"
                         }
                     }
                     */
+
 
 
                     }
@@ -622,6 +625,7 @@ Vvvvvvm{
         height: 20
         onClicked: {
 
+            full.vm_stop()
         full.vm_start_1(cid,Axxon.camera(cid).livestream_low,1)
         stream_request(full.get_cid(),quality)
         full.visible=false
