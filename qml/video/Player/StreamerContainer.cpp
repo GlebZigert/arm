@@ -15,9 +15,11 @@ timer.start(200);
 
 void StreamerContainer::on_start_timer()
 {
+    mutex.lock();
     start_timer.stop();
    qDebug()<<QTime::currentTime()<<" on_start_timer "<<start_map.size()<<" "<<queue.size();
     if(queue.size()==0){
+        mutex.unlock();
         return;
     }
     qDebug()<<"--> start_map";
@@ -37,9 +39,12 @@ void StreamerContainer::on_start_timer()
   if(queue.size()>0){
       start_timer.start(10);
   }
+  mutex.unlock();
 }
 void StreamerContainer::add_for_start(QSharedPointer<Streamer> streamer,int index)
 {
+
+
     qDebug()<<QTime::currentTime()<<" StreamerContainer::add_for_start"
             <<index<<" "
             <<" runner "<<streamer->runner->get_m_index()<<" "
@@ -50,11 +55,13 @@ void StreamerContainer::add_for_start(QSharedPointer<Streamer> streamer,int inde
 
         qDebug()<<" "<<index<<" уже содержит "
                <<start_map.value(index)->runner->get_m_index()
+               <<" "<<start_map.value(index)->runner->get_state()
               <<" "<<start_map.value(index)->runner->URL;
     }
     start_map.insert(index,streamer);
 queue.enqueue(streamer);
 start_timer.start(10);
+
 }
 
 void StreamerContainer::func(){

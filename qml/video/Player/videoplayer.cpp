@@ -134,8 +134,12 @@ void VideoPlayer::start(Runner::StreamType type)
           connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
 
   }
-
-  wait_for_next.start(10000);
+  int interval=1000;
+    if(!m_connection){
+         interval=3000;
+    }
+    qDebug()<<"m_connection "<<m_connection<<" interval "<<interval;
+     wait_for_next.start(interval);
 
 }
 
@@ -213,7 +217,7 @@ container->show();
 void VideoPlayer::clear()
 {
         timer.stop();
-    cleaner.start(10000);
+    cleaner.start(1000);
 }
 
 void VideoPlayer::delete_free_streamers()
@@ -285,7 +289,7 @@ timer.stop();
 
 //    timer.stop();
     if(streamType!=Runner::StreamType::Snapshot) {
-    timer.start(5000);
+    timer.start(500);
     }
 
 }
@@ -299,7 +303,7 @@ void VideoPlayer::f_clear()
 
 void VideoPlayer::on_timer()
 {
-//qDebug()<<"VideoPlayer::on_timer()";
+qDebug()<<"VideoPlayer::on_timer() "<<index;
 //    timer.stop();
     m_connection = false;
     emit connectionChanged(m_connection);
@@ -316,7 +320,7 @@ void VideoPlayer::f_wait_for_next()
 {
 
 
-//qDebug()<<"VideoPlayer::f_wait_for_next()";
+qDebug()<<"VideoPlayer::f_wait_for_next() "<<index;
 
        //qDebug()<<"videoplayer lost runner";
        // stop();
@@ -361,7 +365,7 @@ void VideoPlayer::next_frame(QString src)
     //  m_connection=true;
 
    //qDebug()<<"<-- VideoPlayer::next_frame() from runner ";
-  timer.start(5000);
+  timer.start(500);
 }
 
 
