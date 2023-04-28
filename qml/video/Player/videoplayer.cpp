@@ -126,7 +126,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
   }
 
-  wait_for_next.start(1000);
+  wait_for_next.start(5000);
 
 }
 
@@ -290,7 +290,7 @@ void VideoPlayer::f_clear()
 
 void VideoPlayer::on_timer()
 {
-//qDebug()<<"VideoPlayer::on_timer()";
+qDebug()<<QTime::currentTime()<<" VideoPlayer::on_timer() ";
 //    timer.stop();
     m_connection = false;
     emit connectionChanged(m_connection);

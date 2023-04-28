@@ -163,7 +163,7 @@ Rectangle{
                    //     readonly property int uid: model.uid
 
                         onConnectionChanged: {
-                        console.log("Vvvvvvm onConnectionChanged")
+                       // console.log("Vvvvvvm onConnectionChanged")
                         }
 
                         x:2
@@ -614,7 +614,7 @@ Vvvvvvm{
 //     readonly property int uid: model.uid
         visible: false
     onConnectionChanged: {
-    console.log("Vvvvvvm onConnectionChanged")
+  //  console.log("Vvvvvvm onConnectionChanged")
     }
 
     Button{
@@ -1165,13 +1165,13 @@ console.log("--")
                 }
 
 
-
+/*
                 console.log("append ")
                 console.log("uid  ",md.get_uid_at(i))
                 console.log("cid  ",md.get_cid_at(i))
                 console.log("url  ",md.get_url_at(i))
                 console.log("alarm  ",md.get_alarm_at(i))
-
+*/
                 w_model.append({h:hh,
                                    w:ww,
                                    x: ww*(i%scale),
