@@ -21,7 +21,8 @@ public:
     ~VideoPlayer();
     void paint(QPainter *painter) override;
 
-
+    QString user="user1";
+    QString password="1111";
 
     bool connection() const;
 

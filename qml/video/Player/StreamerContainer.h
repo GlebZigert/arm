@@ -6,6 +6,7 @@
 #include "Streamer.h"
 #include <QSharedPointer>
 #include <QTimer>
+#include <QQueue>
 
 class StreamerContainer : public QObject
 {
@@ -14,6 +15,11 @@ class StreamerContainer : public QObject
 private:
 
     QDateTime start_dt;
+
+    QQueue<QSharedPointer<Streamer>> queue;
+    QTimer start_timer;
+
+    void add_for_start(QSharedPointer<Streamer> streamer);
 
 public:
      void func();
@@ -39,6 +45,7 @@ public:
 public slots:
      void thread_is_over();
     void on_timer();
+    void on_start_timer();
 
 signals:
 

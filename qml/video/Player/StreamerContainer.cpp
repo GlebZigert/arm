@@ -12,6 +12,26 @@ timer.start(200);
 
 //timer.start(1000);
 }
+
+void StreamerContainer::on_start_timer()
+{
+    if(queue.size()==0){
+        return;
+    }
+  auto streamer=queue.dequeue();
+  if(streamer){
+  streamer->start();
+  }
+  if(queue.size()>0){
+      start_timer.start();
+  }
+}
+void StreamerContainer::add_for_start(QSharedPointer<Streamer> streamer)
+{
+queue.enqueue(streamer);
+start_timer.start(100);
+}
+
 void StreamerContainer::func(){
     int free=0;
     int play=0;
@@ -266,7 +286,10 @@ connect(timer.data(),
             this,
             SLOT(on_timer()));
 
-
+    connect(&start_timer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(on_start_timer()));
 
     timer.start(1000);
     qDebug()<<"timer: "<<timer.isActive()<<" "<<timer.isSingleShot();
@@ -331,7 +354,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 
             // qDebug()<<QTime::currentTime()<<" <-- StreamerContainer::start "<<"[1]  runner "<<streamer->runner->get_m_index();
 
-
+        add_for_start(streamer);
         return streamer;
         }
 
@@ -423,10 +446,11 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
     }else{
        if(free){
            wanted=free;
-           free.data()->runner->set_m_running(Runner::Mode::Prepare);
+
            free.data()->runner->URL=url;
            free.data()->runner->streamType=type;
-           free.data()->runner->frash_stream=true;
+           free.data()->runner->set_m_running(Runner::Mode::Wait_for_start);
+        //   free.data()->runner->frash_stream=true;
 
        }
     }

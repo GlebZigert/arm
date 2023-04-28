@@ -134,6 +134,7 @@ int Streamer::getH() const
 void Streamer::start()
 {
 //qDebug()<<"Streamer::start()";
+    runner->frash_stream=true;
 
 }
 

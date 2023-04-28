@@ -87,6 +87,14 @@ void VideoPlayer::setSource(const QString source)
 
     m_source=source;
     emit sourceChanged(m_source);
+    /*
+    QString user_password=user+":"+password;
+    QString lcl=source;
+    lcl.replace("root:root",user_password);
+
+    m_source=lcl;
+    emit sourceChanged(lcl);
+    */
 }
 
 
