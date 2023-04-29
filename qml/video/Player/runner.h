@@ -49,6 +49,17 @@ public:
     static int av_codec_not_open;
     static int av_codec_close;
 
+    int count_load_settings=0;
+    int count_free_settings=0;
+
+    int get_count_settings(){
+        qDebug()<<"runner  "<<m_index
+                <<"loaded: "<<count_load_settings
+                <<"free:   "<<count_free_settings
+                <<"res:    "<<count_load_settings-count_free_settings;
+        return (count_load_settings-count_free_settings);
+    }
+
     bool losted=false;
 
 
@@ -112,6 +123,10 @@ public:
     static int interrupt_cb(void *ctx);
     QString URL;
     clock_t prev;
+
+    clock_t prev_frame;
+    long frame_delay;
+
     AVPicture **data;
     int *h;
     int *w;
@@ -124,6 +139,8 @@ public:
     Runner::Mode get_m_running();
     void set_m_running(Runner::Mode mode);
     bool check_frame();
+    long getFrame_delay() const;
+
 private:
 
     bool first_frame_getted=false;

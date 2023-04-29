@@ -124,6 +124,8 @@ void VideoPlayer::start(Runner::StreamType type)
             container->func();
           connect(next.data(),SIGNAL(frame(QString)),this,SLOT(next_frame(QString)));
 
+          prev_frame=clock();
+          frame_delay=0;
   }
 
   wait_for_next.start(5000);
@@ -262,6 +264,9 @@ timer.stop();
                     w,
                     h,
                     QImage::Format_RGB32);
+
+         frame_delay=clock()-prev_frame;
+         prev_frame=clock();
 
     m_connection = true;
     emit connectionChanged(m_connection);

@@ -175,6 +175,8 @@ void StreamerContainer::func(){
 
 void StreamerContainer::show()
 {
+    long max_frame_delay;
+    long min_frame_delay;
     int free=0;
     qDebug()<<" ";
     qDebug()<<"время старта приложения: "<<start_dt;
@@ -193,6 +195,10 @@ void StreamerContainer::show()
                   <<one.data()->created-one.data()->deleted;
 
             if(one.data()->runner){
+
+                max_frame_delay=one.data()->runner->getFrame_delay();
+                min_frame_delay=one.data()->runner->getFrame_delay();
+
                 qDebug()<<"раннеров  создано: "<<one.data()->runner->created<<" удалено: "
                        <<one.data()->runner->deleted<<" живут: "
                       <<one.data()->runner->created-one.data()->runner->deleted;
@@ -204,9 +210,19 @@ void StreamerContainer::show()
             }
         }
 
+
+
         QString sstr="";
 
         if(one.data()->runner){
+
+            long frame_delay=one.data()->runner->getFrame_delay();
+            if(frame_delay>max_frame_delay){
+                max_frame_delay=frame_delay;
+            }
+            if(frame_delay<min_frame_delay){
+                min_frame_delay=frame_delay;
+            }
 
             if(one.data()->runner->get_m_running()==Runner::Mode::Free){
                 free++;
@@ -237,12 +253,15 @@ void StreamerContainer::show()
                   <<"Подписчики: "<<one.data()->getFollowers()
                  <<"Хранится: "<<one.data()->getSave()
                 <<sstr<<" "<<one.data()->runner->URL
+               <<"settings: "<<one.data()->runner->get_count_settings()
+              <<"frame_delay: "<<one.data()->runner->getFrame_delay();
                   ;}else{
             qDebug()<<"no runner";
         }
     }
     qDebug()<<" ";
     qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" свободных: "<<free;
+    qDebug()<<QDateTime::currentDateTime()<< "frame_delay: min: "<<min_frame_delay<<" max: "<<max_frame_delay;
     qDebug()<<" ";
 }
 

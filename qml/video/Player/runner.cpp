@@ -185,6 +185,11 @@ int Runner::interrupt_cb(void *ctx)
 
 }
 
+long Runner::getFrame_delay() const
+{
+    return frame_delay;
+}
+
 int Runner::getVideoWidth() const
 {
     return videoWidth;
@@ -219,6 +224,7 @@ void Runner::load()
 
 bool Runner::load_settings()
 {
+    count_load_settings++;
 /*
     //   QString URL="rtsp://root:root@192.168.0.187:50554/hosts/ASTRAAXXON/DeviceIpint.1/SourceEndpoint.video:0:0";
         //qDebug()<<"URL: "<<URL;
@@ -397,7 +403,7 @@ av_codec_open++;
 
 void Runner::free_settings()
 {
-
+count_free_settings++;
 
     if(pAVPicture!=NULL){
    avpicture_free(pAVPicture);
@@ -481,6 +487,9 @@ bool Runner::capture()
 {
 
     int res=(av_read_frame(pFormatCtx, &packet));
+
+    frame_delay=clock()-prev_frame;
+    prev_frame=clock();
 
    if(res<0){
     //   //qDebug()<<"interrupt lostConnection";
@@ -646,7 +655,8 @@ void Runner::run()
                 //     emit lost_connection(URL);
                 set_m_running(Mode::Lost);
             }else{
-
+                  prev_frame=clock();
+                  frame_delay=0;
                 set_m_running(Mode::Waiting);
                 go_to_free_state=false;
                 sleep=false;

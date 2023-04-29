@@ -320,6 +320,8 @@ ToolTip.text: "Открыть камеру в тревожном окне"
 
                             console.log("onClicked .,.")
                             vvm.info()
+                            good.info()
+
                             good.switch_tlmtr()
                             rrow.visible=false
                         }
@@ -418,6 +420,12 @@ function set_alarm(alarm_){
                 function set_Scale(val){
 
                     vvm.set_Scale(val)
+                }
+
+
+                function get_frame_delay(){
+
+                    vvm.get_frame_delay()
                 }
 
                 function set_selected(val){
@@ -1459,6 +1467,15 @@ console.log("1")
 
     function get_current_page_name(){
         return md.get_current_page_name()
+    }
+
+    function info(){
+        console.log("videoplayer frame delay:")
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+          grid.children[i].get_frame_delay()
+
+        }
     }
 
 }

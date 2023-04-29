@@ -28,6 +28,13 @@ public:
     QString source() const;
     void setSource(const QString source);
 
+    Q_INVOKABLE void get_frame_delay(){
+        qDebug()<<"index: "<<index
+                <<" URL "<<m_source
+                <<" "<<frame_delay;
+    };
+    clock_t prev_frame;
+    long frame_delay;
 
     QTimer cleaner;
 

@@ -856,6 +856,10 @@ console.log("Key_Down")
               vm.destroy_who_free()
     }
 
+    function get_frame_delay(){
+     vm.get_frame_delay()
+    }
+
     Component.onCompleted: {
 
        // supreme.forceActiveFocus()
