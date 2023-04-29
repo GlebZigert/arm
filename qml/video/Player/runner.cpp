@@ -605,6 +605,11 @@ void Runner::run()
                 qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count<<" "<<URL;
                 if(count>2){
                     qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: "<<URL;
+
+                    local_mutex.lock();
+                    free_settings();
+                    free();
+                    local_mutex.unlock();
                     m_running=Mode::Lost;
                     count=0;
                 }
@@ -658,6 +663,10 @@ void Runner::run()
                 if (!load_settings()){
                     local_mutex.unlock();
                     qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                    local_mutex.lock();
+                    free_settings();
+                    free();
+                    local_mutex.unlock();
                     set_m_running(Mode::Lost);
                 }else{
                     prev_frame=clock();
@@ -705,6 +714,14 @@ void Runner::run()
                 emit lost_connection(URL);
                 losted=true;
             }
+
+            if(go_to_free_state){
+                go_to_free_state=false;
+                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+
+                set_m_running(Mode::Free);
+            }
+
             break;
 
 
