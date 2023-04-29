@@ -470,12 +470,12 @@ function set_alarm(alarm_){
 
                 function vm_start(mode){
 //console.log(" vm_start(mode)")
-                    console.log("vvm.start 1")
+                   // console.log("vvm.start 1")
                     vvm.vm_start(mode)
                 }
 
                 function vm_stop(){
-console.log("vm_stop 7")
+//console.log("vm_stop 7")
                     vvm.vm_stop()
                 }
 
@@ -575,7 +575,7 @@ console.log("vm_stop 7")
                     set_vm_source(model.cid,model.url)
                     //console.log("Rect ",index," создан; uid: ",uid,"; cid:",vm.cid,"; url:",vm.url)
                     if(model.url!==""){
-                         console.log("vvm.start 2")
+                     //    console.log("vvm.start 2")
                     vvm.vm_start_1(model.cid,model.url,1)
                     }
 
@@ -952,7 +952,7 @@ console.log("Multivm add_storage_camera")
     }
 
     function vm_start(cid,src,mode){
-       console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
+    //   console.log("multivm vm_start(cid,src,mode) ",cid," ",src," ",mode)
         if(src==""){
             console.log("vm_stop 1")
         vm_stop_at_cid(cid)

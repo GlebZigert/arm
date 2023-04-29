@@ -133,7 +133,7 @@ int Streamer::getH() const
 
 void Streamer::start()
 {
-qDebug()<<"Streamer::start() "<<runner->get_m_index();
+// qDebug()<<"Streamer::start() "<<runner->get_m_index();
     runner->frash_stream=true;
 
 }
@@ -180,7 +180,7 @@ void Streamer::lostConnection(QString URL)
     //
 
     if(followers==0){
-    qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
+  //  qDebug()<<"runner "<<runner->get_m_index()<<"сигнал о потере связи "<<URL<<" followers: "<<followers;
     stop();
     }
     emit lost(URL);

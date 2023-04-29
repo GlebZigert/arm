@@ -33,7 +33,7 @@ Item {
 
     onCidChanged: {
 
-        console.log("onCidChanged:")
+    //    console.log("onCidChanged:")
     //    vm.set_cid(-1)
     }
 

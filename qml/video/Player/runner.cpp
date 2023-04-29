@@ -581,13 +581,13 @@ void Runner::run()
         time=QDateTime::currentDateTime();
         if(m_running!=previos){
 
-            qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
+          //  qDebug()<<"runner "<<m_index<<" m_running: "<<m_running<<" "<<get_state() ;
             if(m_running==Runner::Mode::Waiting){
-                qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
+              //  qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" начал работу с потоком типа"<<streamType;//<<URL;
                 go_to_free_state=false;
             }
             if(m_running==Runner::Mode::Free){
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
+             //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" свободен: ";//<<URL;
                 go_to_free_state=false;
                 first_frame_getted=false;
             }
@@ -602,9 +602,9 @@ void Runner::run()
 
             if (!capture()){
                 count++;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count<<" "<<URL;
+               // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" нет кадров: "<<count<<" "<<URL;
                 if(count>2){
-                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: "<<URL;
+                 //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" потеря связи с потоком: "<<URL;
 
                     local_mutex.lock();
                     free_settings();
@@ -617,28 +617,28 @@ void Runner::run()
                 frameCnt++;
                 if(frameCnt>0){
                     if(m_running==Mode::Waiting){
-                        qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
+                      //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" первый кадр ";//<<URL;
                     }
                     m_running=Mode::Play;
                 }
                 first_frame_getted=true;
                 count=0;
                 if(streamType==StreamType::Snapshot){
-                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
+                 //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" снимок готов ";//<<URL;
                     set_m_running(Mode::Hold);
                 }
             }
 
             if(go_to_low_mode){
                 go_to_low_mode=false;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" в low mode";
+               // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" в low mode";
 
                 set_m_running(Mode::Low);
             }
 
             if(go_to_free_state){
                 go_to_free_state=false;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+              //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
                 local_mutex.lock();
                 free_settings();
                 free();
@@ -653,7 +653,7 @@ void Runner::run()
             if(frash_stream){
                 losted=false;
                 frameCnt=0;
-                qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
+              //  qDebug()<<QTime::currentTime()<<" runner "<<m_index<<" новый поток: ";//<<URL;
                 set_m_running(Mode::Prepare);
                 frash_stream=0;
                 local_mutex.lock();
@@ -661,9 +661,9 @@ void Runner::run()
                     pAVPicture = new AVPicture();
                 }
                 if (!load_settings()){
-                    local_mutex.unlock();
-                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
-                    local_mutex.lock();
+                 //   local_mutex.unlock();
+                //    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток не открылся: ";//<<URL;
+                //    local_mutex.lock();
                     free_settings();
                     free();
                     local_mutex.unlock();
@@ -675,7 +675,7 @@ void Runner::run()
                     go_to_free_state=false;
                     sleep=false;
                     local_mutex.unlock();
-                    qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
+                   // qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" поток открылся: ";//<<URL;
                 }
             }
 
@@ -685,7 +685,7 @@ void Runner::run()
 
             if(return_from_low_mode){
                 return_from_low_mode=false;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+             //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
 
                 set_m_running(Mode::Play);
 
@@ -698,7 +698,7 @@ void Runner::run()
 
             if(go_to_free_state){
                 go_to_free_state=false;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+              //  qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
                 local_mutex.lock();
                 free_settings();
                 free();
@@ -717,7 +717,7 @@ void Runner::run()
 
             if(go_to_free_state){
                 go_to_free_state=false;
-                qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
+             //   qDebug()<<QDateTime::currentDateTime()<<" runner "<<m_index<<" освобождаем";
 
                 set_m_running(Mode::Free);
             }

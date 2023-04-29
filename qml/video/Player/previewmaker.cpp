@@ -9,7 +9,7 @@ QImage PreviewMaker::get_image()
 PreviewMaker::PreviewMaker(QString url)
 {
     img=QImage();
-qDebug()<<"PreviewMaker::PreviewMaker(QString url) : "<<url;
+//qDebug()<<"PreviewMaker::PreviewMaker(QString url) : "<<url;
     connect(&timer,SIGNAL(timeout()),this,SLOT(on_timer()));
  container = StreamerContainerAccesser::get();
  index = container->get_vm_index();
@@ -19,7 +19,7 @@ qDebug()<<"PreviewMaker::PreviewMaker(QString url) : "<<url;
 
 void PreviewMaker::start(int cid,QString url)
 {
-qDebug()<<"Preview::start "<<cid<<" "<<url;
+//qDebug()<<"Preview::start "<<cid<<" "<<url;
 }
 
 
@@ -69,7 +69,7 @@ void PreviewMaker::set_cid(int cid)
 
 void PreviewMaker::frame(QString URL)
 {
-    qDebug()<<"PreviewMaker::frame(QString URL) : "<<URL;
+  //  qDebug()<<"PreviewMaker::frame(QString URL) : "<<URL;
     if(flag){
         flag=false;
         if(current)
@@ -97,7 +97,7 @@ void PreviewMaker::frame(QString URL)
 
 void PreviewMaker::on_timer()
 {
-     qDebug()<<"PreviewMaker::on_timer() : "<<url_;
+  //   qDebug()<<"PreviewMaker::on_timer() : "<<url_;
     if(current){
         disconnect(current.data(),SIGNAL(frame(QString)),this,SLOT(frame(QString)));
         current->followers_dec();

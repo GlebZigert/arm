@@ -4,7 +4,7 @@
 
 Preview::Preview()
 {
-    qDebug()<<"Preview::Preview()";
+ //   qDebug()<<"Preview::Preview()";
     container=PreviewContainerAccesser::get();
 
 
@@ -38,7 +38,7 @@ void Preview::paint(QPainter *painter)
 
 void Preview::get_image()
 {
-    qDebug()<<"Preview::get_image() "<<url_;
+ //   qDebug()<<"Preview::get_image() "<<url_;
   //  img = maker.data()->img;
     this->update();
 
