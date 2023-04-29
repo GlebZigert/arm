@@ -83,8 +83,9 @@ public:
         Hold,
         Lost,
         Exit,
-        Waiting,
-        Low//wait first frame
+        Waiting,//wait first frame
+        Low,
+        Wait_for_start
 
 
            };

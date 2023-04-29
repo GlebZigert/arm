@@ -93,7 +93,7 @@ play_or_pause()
 
     Timer {
         id: scroll_timer
-        interval: 500; running: false; repeat: false
+        interval: 300; running: false; repeat: false
         onTriggered:
         {
                 if(slider.pressed)

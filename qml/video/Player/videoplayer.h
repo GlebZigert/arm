@@ -21,7 +21,8 @@ public:
     ~VideoPlayer();
     void paint(QPainter *painter) override;
 
-
+    QString user="user1";
+    QString password="1111";
 
     bool connection() const;
 
@@ -35,6 +36,7 @@ public:
     };
     clock_t prev_frame;
     long frame_delay;
+
 
     QTimer cleaner;
 
@@ -79,6 +81,8 @@ private:
     QString     m_source;
 
     QImage img;
+
+    int index=0;
 
     QSharedPointer<StreamerContainer> container;
 

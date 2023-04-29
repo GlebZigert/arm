@@ -12,6 +12,58 @@ timer.start(200);
 
 //timer.start(1000);
 }
+
+void StreamerContainer::on_start_timer()
+{
+    mutex.lock();
+    start_timer.stop();
+   qDebug()<<QTime::currentTime()<<" on_start_timer "<<start_map.size()<<" "<<queue.size();
+    if(queue.size()==0){
+        mutex.unlock();
+        return;
+    }
+    qDebug()<<"--> start_map";
+    for(auto index : start_map.keys()){
+        qDebug()<<"vm_ind: "<<index
+               <<" "<<start_map.value(index)->runner->get_m_index()
+               <<" "<<start_map.value(index)->runner->URL;
+    }
+        qDebug()<<"<-- start_map";
+  auto streamer=queue.dequeue();
+  if(streamer){
+      int key=start_map.key(streamer);
+      start_map.remove(key);
+      qDebug()<<"treamerContainer::on_start_timer start runner"<<streamer->runner->get_m_index();
+  streamer->start();
+  }
+  if(queue.size()>0){
+      start_timer.start(10);
+  }
+  mutex.unlock();
+}
+void StreamerContainer::add_for_start(QSharedPointer<Streamer> streamer,int index)
+{
+
+
+    qDebug()<<QTime::currentTime()<<" StreamerContainer::add_for_start"
+            <<index<<" "
+            <<" runner "<<streamer->runner->get_m_index()<<" "
+            <<" "<<streamer->runner->get_state();
+            qDebug()<<"очередь: "<<queue.size()<<" карта: "<<start_map.size();
+    streamer->runner->set_m_running(Runner::Mode::Wait_for_start);
+    if(start_map.contains(index)){
+
+        qDebug()<<" "<<index<<" уже содержит "
+               <<start_map.value(index)->runner->get_m_index()
+               <<" "<<start_map.value(index)->runner->get_state()
+              <<" "<<start_map.value(index)->runner->URL;
+    }
+    start_map.insert(index,streamer);
+queue.enqueue(streamer);
+start_timer.start(10);
+
+}
+
 void StreamerContainer::func(){
     int free=0;
     int play=0;
@@ -285,16 +337,20 @@ connect(timer.data(),
             this,
             SLOT(on_timer()));
 
-
+    connect(&start_timer,
+            SIGNAL(timeout()),
+            this,
+            SLOT(on_start_timer()));
 
     timer.start(1000);
     qDebug()<<"timer: "<<timer.isActive()<<" "<<timer.isSingleShot();
 
 }
 
-QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type)
+QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type, int index)
 {
-    timer.stop();
+  //  timer.stop();
+  //  start_timer.stop();
 //func();
   // qDebug()<<QTime::currentTime()<<" --> StreamerContainer::start "<<url <<" "<<type;
  //   qDebug()<<"mode "<<mode;
@@ -304,7 +360,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
     QSharedPointer<Streamer> streamer=nullptr;
 
   //  if(mode==Runner::Mode::LiveStreaming){
-    streamer = find(url,type);
+    streamer = find(url,type,index);
 
 
   //  }
@@ -319,7 +375,7 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
         if(streamer){
 
             map.append(streamer);
-
+            add_for_start(streamer,index);
         //    qDebug()<<"добавляем в контейер "<<url;
 
          //   streamer.data()->runner->URL=url;
@@ -379,12 +435,16 @@ void StreamerContainer::delete_free_streamers()
 
 }
 
-QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType type)
+QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType type, int index)
 {
  //   qDebug()<<"--> StreamerContainer::find "<<url;
     QSharedPointer<Streamer> wanted;
     QSharedPointer<Streamer> ready;
     QSharedPointer<Streamer> free;
+
+
+
+
     for(auto one : map){
         if(one.data()->runner->URL==url)
                 {
@@ -393,12 +453,12 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
 
              }else{
-                 qDebug()<<"<-- StreamerContainer::find [0] runner "<<one.data()->get_m_index();
+
                              ready = one;
 
                              if(ready->runner->get_m_running()==Runner::Mode::Free){
                               //    qDebug()<<"<..";
-                                 ready.data()->runner->set_m_running(Runner::Mode::Prepare);
+                              //   ready.data()->runner->set_m_running(Runner::Mode::Prepare);
                               //    qDebug()<<"<..";
                                  ready.data()->runner->streamType=type;
                                //   qDebug()<<"<..";
@@ -431,7 +491,7 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 */
 
 
-            qDebug()<<"<-- StreamerContainer::find [1] runner "<<one.data()->get_m_index();
+
             free = one;
             break;
         }
@@ -439,15 +499,40 @@ QSharedPointer<Streamer> StreamerContainer::find(QString url,Runner::StreamType 
 
     if(ready){
         wanted=ready;
+        qDebug()<<"<-- StreamerContainer::find [0] runner "<<wanted.data()->get_m_index();
     }else{
-       if(free){
-           wanted=free;
-           free.data()->runner->set_m_running(Runner::Mode::Prepare);
-           free.data()->runner->URL=url;
-           free.data()->runner->streamType=type;
-           free.data()->runner->frash_stream=true;
 
-       }
+        if(start_map.contains(index)){
+
+            auto streamer = start_map.value(index);
+            qDebug()<<" "<<index<<" уже содержит "
+                   <<streamer->runner->get_m_index()
+                  <<" "<<streamer->runner->URL;
+            qDebug()<<"очередь: "<<queue.size()<<" карта: "<<start_map.size();
+
+            streamer->runner->URL=url;
+            streamer->runner->streamType=type;
+            qDebug()<<"<-- StreamerContainer::find [3] runner "<<streamer->get_m_index();
+
+
+
+           wanted=streamer;
+        }
+
+        if(!wanted){
+
+            if(free){
+               wanted=free;
+    qDebug()<<"<-- StreamerContainer::find [1] runner "<<wanted.data()->get_m_index();
+               free.data()->runner->URL=url;
+               free.data()->runner->streamType=type;
+
+                add_for_start(free, index);
+            //   free.data()->runner->frash_stream=true;
+
+           }
+        }
+
     }
 
     /*
