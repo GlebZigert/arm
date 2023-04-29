@@ -634,8 +634,8 @@ Vvvvvvm{
         onClicked: {
 
             full.vm_stop()
-        full.vm_start_1(cid,Axxon.camera(cid).livestream_low,1)
-        stream_request(full.get_cid(),quality)
+      //  full.vm_start_1(cid,Axxon.camera(cid).livestream_low,1)
+        stream_request(full.get_cid(),"low")
         full.visible=false
         fullscreen_uid=-1
         }
