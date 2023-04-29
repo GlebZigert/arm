@@ -37,7 +37,7 @@ void StreamerContainer::on_start_timer()
   streamer->start();
   }
   if(queue.size()>0){
-      start_timer.start(10);
+      start_timer.start(100);
   }
   mutex.unlock();
 }
@@ -60,7 +60,7 @@ void StreamerContainer::add_for_start(QSharedPointer<Streamer> streamer,int inde
     }
     start_map.insert(index,streamer);
 queue.enqueue(streamer);
-start_timer.start(10);
+start_timer.start(100);
 
 }
 
