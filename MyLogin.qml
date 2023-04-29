@@ -72,7 +72,7 @@ Item {
             placeholderText: "Введите логин"
             validator: RegExpValidator { regExp: /\S{2,}/ }
             color: acceptableInput ? palette.text : "red"
-     text: "Начкар"
+   //  text: "Начкар"
               //    text:"Администратор"
       //    text:"33333"
         //   text:"ИвановИИ"
@@ -89,7 +89,7 @@ Item {
             validator: RegExpValidator { regExp: /.{4,20}/ }
             color: acceptableInput ? palette.text : "red"
            //    text: "Start7"
-       text:"33333"
+    //   text:"33333"
         //               text:"q1w2e3"
         }
         ///////////////////////////////////////////

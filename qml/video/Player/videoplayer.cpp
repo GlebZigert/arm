@@ -281,7 +281,7 @@ timer.stop();
 
 //    timer.stop();
     if(streamType!=Runner::StreamType::Snapshot) {
-    timer.start(200);
+    timer.start(500);
     }
 
 }
