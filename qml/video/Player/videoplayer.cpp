@@ -7,6 +7,7 @@ VideoPlayer::VideoPlayer(QQuickItem *parent):QQuickPaintedItem(parent)
 {
   //  //qDebug()<<"VideoPlayer::VideoPlayer";
     container = StreamerContainerAccesser::get();
+    index = container->get_vm_index();
 
     m_connection = true;
     emit connectionChanged(m_connection);
@@ -116,7 +117,7 @@ void VideoPlayer::start(Runner::StreamType type)
 
 
 
-  next = container->start(m_source,type);
+  next = container->start(m_source,type,index);
 
   if(next){
             qDebug()<<"видеоплеер "<<cid<<" нашел следующий runner "<<next->runner->get_m_index()<<" "<<next->runner->get_state();

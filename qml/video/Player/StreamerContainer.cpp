@@ -305,8 +305,8 @@ void StreamerContainer::show()
                   <<"Подписчики: "<<one.data()->getFollowers()
                  <<"Хранится: "<<one.data()->getSave()
                 <<sstr<<" "<<one.data()->runner->URL
-               <<"settings: "<<one.data()->runner->get_count_settings()
-              <<"frame_delay: "<<one.data()->runner->getFrame_delay();
+          //     <<"settings: "<<one.data()->runner->get_count_settings()
+         //     <<"frame_delay: "<<one.data()->runner->getFrame_delay();
                   ;}else{
             qDebug()<<"no runner";
         }
