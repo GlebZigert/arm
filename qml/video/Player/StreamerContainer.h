@@ -32,13 +32,16 @@ public:
 
     QTimer timer;
 
+    QDateTime t1;
+
+
     explicit StreamerContainer(QObject *parent = nullptr);
 
      QList<QSharedPointer<Streamer>> map;
 
      QSharedPointer<Streamer> start(QString url, Runner::StreamType type,int index);
 
-     void delete_free_streamers();
+     void delete_free_streamers(int count);
 
      bool flag=false;
 

@@ -71,6 +71,19 @@ void StreamerContainer::func(){
     //  qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
     //   qDebug()<<" ";
     bool fl=true;
+
+    /*
+    qint64 dt1=t1.secsTo(QDateTime::currentDateTime());
+    if(dt1>10){
+        t1=QDateTime::currentDateTime();
+        delete_free_streamers();
+
+    }
+    */
+
+//    qDebug()<<"dt1: "<<dt1;
+
+
     for(auto one : map){
 
 
@@ -209,6 +222,10 @@ void StreamerContainer::func(){
             }
         }
     }
+
+
+
+
     // qDebug()<<"4";
     //     qDebug()<<" ";
     if(flag==true){
@@ -219,6 +236,9 @@ void StreamerContainer::func(){
         qDebug()<<" ";
         qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
         qDebug()<<" ";
+        if(free>5){
+           delete_free_streamers(free-5);
+        }
     }
     //      qDebug()<<" ";
 
@@ -305,8 +325,8 @@ void StreamerContainer::show()
                   <<"Подписчики: "<<one.data()->getFollowers()
                  <<"Хранится: "<<one.data()->getSave()
                 <<sstr<<" "<<one.data()->runner->URL
-          //     <<"settings: "<<one.data()->runner->get_count_settings()
-         //     <<"frame_delay: "<<one.data()->runner->getFrame_delay();
+               <<"settings: "<<one.data()->runner->get_count_settings()
+              <<"frame_delay: "<<one.data()->runner->getFrame_delay();
                   ;}else{
             qDebug()<<"no runner";
         }
@@ -324,6 +344,7 @@ StreamerContainer::StreamerContainer(QObject *parent) : QObject(parent)
 {
 qDebug()<<"StreamerContainer::StreamerContainer";
 
+t1=QDateTime::currentDateTime();
 start_dt=QDateTime::currentDateTime();
 
 /*
@@ -349,6 +370,7 @@ connect(timer.data(),
 
 QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamType type, int index)
 {
+
   //  timer.stop();
   //  start_timer.stop();
 //func();
@@ -417,18 +439,25 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 
 }
 
-void StreamerContainer::delete_free_streamers()
+void StreamerContainer::delete_free_streamers(int count)
 {
-  //  qDebug()<<"delete all free streamers";
+    int cnt;
+    qDebug()<<"delete all free streamers";
+    QList<QSharedPointer<Streamer>> list_to_free;
+
     QList<QSharedPointer<Streamer>>::iterator it = map.begin();
     while(it != map.end()){
         if(it->data()->runner)
         if(it->data()->runner->get_m_running()==Runner::Mode::Free){
 
+
                 it->data()->runner->set_m_running(Runner::Mode::Exit);
 
             }
-
+            cnt++;
+            if(cnt>count){
+                break;
+            }
            ++it;
         }
 
