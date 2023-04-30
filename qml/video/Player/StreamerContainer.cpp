@@ -33,8 +33,9 @@ void StreamerContainer::on_start_timer()
   if(streamer){
       int key=start_map.key(streamer);
       start_map.remove(key);
-  //    qDebug()<<"treamerContainer::on_start_timer start runner"<<streamer->runner->get_m_index();
+  ..    qDebug()<<"treamerContainer::on_start_timer start runner"<<streamer->runner->get_m_index();
   streamer->start();
+  timer.start(200);
   }
   if(queue.size()>0){
       start_timer.start(100);
@@ -67,21 +68,8 @@ start_timer.start(100);
 void StreamerContainer::func(){
     int free=0;
     int play=0;
-    //  qDebug()<<" ";
-    //  qDebug()<<QDateTime::currentDateTime()<< "Потоки: "<<map.count()<<" -->";
-    //   qDebug()<<" ";
+
     bool fl=true;
-
-    /*
-    qint64 dt1=t1.secsTo(QDateTime::currentDateTime());
-    if(dt1>10){
-        t1=QDateTime::currentDateTime();
-        delete_free_streamers();
-
-    }
-    */
-
-//    qDebug()<<"dt1: "<<dt1;
 
 
     for(auto one : map){
@@ -236,9 +224,13 @@ void StreamerContainer::func(){
         qDebug()<<" ";
         qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
         qDebug()<<" ";
-        if(free>5){
-           delete_free_streamers(free-5);
-        }
+
+    }
+    if(free>10){
+        qDebug()<<" ";
+        qDebug()<<QDateTime::currentDateTime()<<" <<--"<< "Потоки: "<<map.count()<<" свободных "<<free;
+        qDebug()<<" ";
+       delete_free_streamers(free-10);
     }
     //      qDebug()<<" ";
 
@@ -441,8 +433,8 @@ QSharedPointer<Streamer> StreamerContainer::start(QString url, Runner::StreamTyp
 
 void StreamerContainer::delete_free_streamers(int count)
 {
-    int cnt;
-    qDebug()<<"delete all free streamers";
+    int cnt=0;
+    qDebug()<<"delete free streamers "<<count;
     QList<QSharedPointer<Streamer>> list_to_free;
 
     QList<QSharedPointer<Streamer>>::iterator it = map.begin();
@@ -450,14 +442,18 @@ void StreamerContainer::delete_free_streamers(int count)
         if(it->data()->runner)
         if(it->data()->runner->get_m_running()==Runner::Mode::Free){
 
-
+                if(cnt<count){
+               //    qDebug()<<cnt<<" "<<count;
                 it->data()->runner->set_m_running(Runner::Mode::Exit);
+                cnt++;
+                if(cnt>count){
+                    break;
+                }
+                }
+
 
             }
-            cnt++;
-            if(cnt>count){
-                break;
-            }
+
            ++it;
         }
 
