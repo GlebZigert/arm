@@ -33,7 +33,7 @@ void StreamerContainer::on_start_timer()
   if(streamer){
       int key=start_map.key(streamer);
       start_map.remove(key);
-  ..    qDebug()<<"treamerContainer::on_start_timer start runner"<<streamer->runner->get_m_index();
+  //   qDebug()<<"treamerContainer::on_start_timer start runner"<<streamer->runner->get_m_index();
   streamer->start();
   timer.start(200);
   }
