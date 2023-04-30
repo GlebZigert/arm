@@ -37,10 +37,12 @@ Item {
                 model: treeModel
                 anchors.margins: 10
                 //anchors.fill: parent
-                width: 200
-                Layout.minimumWidth: 200
+                width: 150
+                Layout.minimumWidth: 150
 
             }
+
+            /*
             QC1.TableView {
                 id: tableView
                 //width: parent.width
@@ -83,8 +85,10 @@ Item {
                     title: "Событие"
                 }
             }
+            */
         }
         // right panel
+
         Rectangle {
             visible: adminMode
             color: "lightgray"
@@ -103,7 +107,9 @@ Item {
                 //source: 'template' in model ? 'qml/forms/'+forms[model.template]+'.qml' : ''
             }
         }
+
     }
+
     Menu {
         id: menu
           Instantiator {
@@ -124,6 +130,7 @@ Item {
               onObjectRemoved: menu.removeItem(object)
           }
     }
+
     Component.onCompleted: {
         zonesTree.selected.connect(selected)
         zonesTree.contextMenu.connect(contextMenu)
