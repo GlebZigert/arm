@@ -809,7 +809,7 @@ Row {
         onClicked: {
 
             console.log("to alarms")
-            alarms.visible=false
+
             to_live()
             livestream_button_clicked()
             }
@@ -1324,7 +1324,7 @@ function to_storage(){
 
 function to_live()
 {
-
+ alarms.visible=false
     m_item.mode=m_item.live
 livestream_txt.text=m_item.mode
 

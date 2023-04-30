@@ -57,7 +57,7 @@ config[Const.ARM_CHECKPOINT] = {}
 //{id: 4, text: "Начальник Караула"},
 ///////////////////////////////////
 layouts[Const.ARM_GUARD] = [
-            {symbol: '1', views: [['DevicesTree'], ['MyMap', 'MyJournal']]},
+            {symbol: '1', views: [['DevicesTree'],['ZonesTree'], ['MyMap', 'MyJournal']]},
             {symbol: '2', views: [['MyVideo']]},
             {symbol: '3', views: [['ZonesTree'], ['MyJournal']]},
         ]
