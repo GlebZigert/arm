@@ -42,6 +42,7 @@ Item {
     signal fullscreen_signal()
     signal signal_scale()
     signal hide_timelines()
+    signal alarmReset()
 
     Timer {
         id: timer
@@ -791,8 +792,6 @@ Row {
         visible: false
 
         radius: 6
-
-
     Text{
         x:10
         y:5
@@ -814,8 +813,37 @@ Row {
             livestream_button_clicked()
             }
         }
+    }
+
+    Rectangle {
 
 
+        width: 170;
+        height: 40
+            id: alarmReset
+
+
+        radius: 6
+    Text{
+        x:10
+        y:5
+
+        text: "Сброс"
+        width: 40
+        height: 240
+        font.family: "Helvetica"
+        font.pointSize: 20
+        color: "black"
+    }
+    MouseArea {
+        anchors.fill: parent
+        onClicked: {
+
+            console.log("alarmReset")
+            m_item.alarmReset()
+
+            }
+        }
     }
 
     /*

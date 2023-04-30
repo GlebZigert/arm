@@ -909,7 +909,7 @@ void Page::show()
     for(auto key : map.keys()){
 
         auto one= map.value(key);
-     qDebug()<<key<<" "<<one->cid<<" "<<one->url;
+     qDebug()<<key<<" "<<one->cid<<" "<<one->url<<" "<<one->alarm;
 
     }
 }

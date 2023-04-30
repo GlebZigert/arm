@@ -1513,4 +1513,37 @@ console.log("1")
 
     }
 
+    function alarmReset(){
+
+        md.show_current_page()
+        show_w_model()
+        for(var i = 0;i < w_model.count;i++){
+
+
+
+                w_model.setProperty(i,"alarm",false  )
+
+                   md.set_alarm_for_uid(false,w_model.get(i).uid)
+            }
+
+        for(var i = 0; i<grid.children.length-1; i++)
+        {
+          grid.children[i].set_alarm(false)
+
+        }
+
+        md.show_current_page()
+        show_w_model()
+
+        }
+        /*
+    console.log("muiltivm alarmReset")
+        for(var i=0;i<md.get_all_cids().length;i++){
+          //  console.log("look.. ",md.get_uid_at(i)," ",fullscreen_uid)
+
+            }
+        */
+
+
+
 }
