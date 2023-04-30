@@ -48,6 +48,8 @@ public:
 
     bool add_camera();
 
+    void show();
+
     void next_scale();
     int current_scale(){return scale;};
 
@@ -66,6 +68,7 @@ public:
     bool get_alarm_at(int i);
 
     void clear_if_not_alarm(int full);
+
 
     ~Page();
 };
@@ -93,6 +96,8 @@ public:
     bool add_camera();
 
     void next_scale();
+
+    void show_current_page();
 
     int current_scale();
     ~Wall();
@@ -190,6 +195,8 @@ public:
     void setVid(const QString vid);
 
     Q_INVOKABLE void save_to_settings();
+
+    Q_INVOKABLE void show_current_page();
 
     void load_from_settings();
 

@@ -344,9 +344,22 @@ ToolTip.text: "Очистить"
                     onClicked: {
                    //     console.log("onClicked .,.")
                    //     console.log("set cid for uid: ",-1," ",vm.uid)
+                        md.show_current_page()
                         md.set_cid_for_uid(-1,vm.uid)
                         md.set_url_for_uid("",vm.uid)
+show_w_model()
+                        for(var i = 0;i < w_model.count;i++){
 
+                            if(w_model.get(i).uid === vm.uid){
+                                w_model.setProperty(i,"cid"  ,-1  )
+                                w_model.setProperty(i,"url"  ,""  )
+                            }
+
+                        }
+                        show_w_model()
+
+
+                        md.show_current_page()
                         vm.cid=-1
 
                         vvm.set_vm_cid(-1)
@@ -733,7 +746,7 @@ Vvvvvvm{
 
     function add_alarm_camera(id){
 
-       // console.log("add_alarm_camera")
+        console.log("add_alarm_camera ",id)
         md.to_page("Тревоги")
 
         full.visible=false
@@ -754,7 +767,9 @@ Vvvvvvm{
             }
         }
         //md.set_scale(2)
+        md.show_current_page()
         var res = md.check_the_scale(id,Axxon.camera(id).livestream_low,true)
+        md.show_current_page()
         md.save_to_settings()
 
         if(res===true){
@@ -778,7 +793,7 @@ Vvvvvvm{
 
         function add_alarm_cameras(arr){
 
-           // console.log("Multivm add_alarm_cameras array")
+            console.log("Multivm add_alarm_cameras array")
             //md.to_page("Архив")
             //  cids.clear()
             full.visible=false
@@ -788,6 +803,7 @@ Vvvvvvm{
             good.scale=1
              md.clear_if_not_alarm_or_fullscreen(full.get_cid())
             md.set_scale(2)
+            md.show_current_page()
             for(var i=0;i<arr.length;i++){
 
 
@@ -795,6 +811,7 @@ Vvvvvvm{
                 md.check_the_scale(arr[i],"",true)
 
             }
+            md.show_current_page()
             md.save_to_settings()
             rescale(good.scale,true)
         }
@@ -1066,11 +1083,19 @@ console.log("vm_stop 4")
             var alarm_old = w_model.get(i).alarm
             var alarm_new = md.get_alarm_at(i)
 
+               console.log(" ")
+            console.log("i: ",i)
+            console.log("uid_old  : ",uid_old," new_uid",uid_new)
+            console.log("cid_old  : ",cid_old," new_cid",cid_new)
+            console.log("url_old  : ",url_old," new_url ",url_new)
+            console.log("alarm_old: ",alarm_old," new_alarm",alarm_new)
+
 
             console.log(" ")
 
 
-            if(cid_old!=cid_new){
+            if(cid_old!==cid_new || url_old!==url_new){
+                    console.log("поменялся")
 
 
                 if(cid_new==-1){
@@ -1079,10 +1104,7 @@ console.log("vm_stop 5")
 
                 }
 
-                console.log("uid  : ",uid_old," new_uid",uid_new)
-                console.log("cid  : ",cid_old," new_cid",cid_new)
-                console.log("url  : ",url_old," new_url ",url_new)
-                console.log("alarm: ",alarm_old," new_alarm",alarm_new)
+
                 w_model.setProperty(i,"cid"  ,cid_new  )
                 w_model.setProperty(i,"url"  ,url_new  )
 
@@ -1476,6 +1498,19 @@ console.log("1")
           grid.children[i].get_frame_delay()
 
         }
+    }
+
+    function show_w_model(){
+
+        console.log("show_w_model")
+        for(var i = 0;i < w_model.count;i++){
+
+         console.log(i," ",w_model.get(i).uid
+                     ," ",w_model.get(i).cid
+                     ," ",w_model.get(i).url
+                     ," ",w_model.get(i).alarm)
+            }
+
     }
 
 }

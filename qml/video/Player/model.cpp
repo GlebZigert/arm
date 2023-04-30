@@ -485,6 +485,11 @@ void Model::save_to_settings()
 
 }
 
+void Model::show_current_page()
+{
+    mdl.value(vid)->show_current_page();
+}
+
 void Model::load_from_settings()
 {
        qDebug()<<" ";
@@ -697,6 +702,13 @@ if(current_page==-1)
  page->next_scale();
 }
 
+void Wall::show_current_page()
+{
+     list.at(current_page)->show();
+
+
+}
+
 int Wall::current_scale()
 {
 
@@ -891,6 +903,17 @@ bool Page::add_camera()
     }
 }
 
+void Page::show()
+{
+    qDebug()<<"show page "<<name;
+    for(auto key : map.keys()){
+
+        auto one= map.value(key);
+     qDebug()<<key<<" "<<one->cid<<" "<<one->url;
+
+    }
+}
+
 void Page::next_scale()
 {
     qDebug()<<"page name "<<name<<" maxScale "<<maxScale;
@@ -917,7 +940,7 @@ void Page::next_scale()
 bool Page::check_the_scale(int id,QString url,bool alarm)
 {
     bool res=false;
-  //  qDebug()<<"check_the_scale "<<id<<" "<<url;
+    qDebug()<<"check_the_scale "<<id<<" "<<url;
     if(map.count()==0){
      for(int i=0;i<50;i++)
         add_camera();
@@ -941,15 +964,18 @@ bool Page::check_the_scale(int id,QString url,bool alarm)
        if(map.value(key)->cid==-1){
            map.value(key)->cid=id;
            if(url!=""){
-          //     qDebug()<<"map.value(key)->url= "<<url;
+               qDebug()<<"map.value(key)->url= "<<url;
             //       qDebug()<<"Page::check_the_scale url 1= "<< map.value(key)->url;
            map.value(key)->url=url;
            //    qDebug()<<"Page::check_the_scale url 2= "<< map.value(key)->url;
            }
            map.value(key)->alarm=alarm;
+           qDebug()<<"check: "<< map.value(key)->cid<<" "<<map.value(key)->url;
      //       cids.setProperty(i,"cid",id)
      //       cids.setProperty(i,"alarm",alarm)
 //   qDebug()<<"i: "<<i<<" scale: "<<scale;
+
+
 
             break;
             //выделить этот cid
@@ -1026,8 +1052,10 @@ bool Page::get_alarm_at(int i)
 
 void Page::clear_if_not_alarm(int full)
 {
+    qDebug()<<"clear_if_not_alarm";
     for(auto one : map.values()){
 
+         qDebug()<<map.key(one)<<" "<<one->cid<<" "<<one->url;
            bool res = true;
         if(one->alarm==true){
             res = false;
@@ -1038,6 +1066,7 @@ void Page::clear_if_not_alarm(int full)
         }
 
             if(res){
+                qDebug()<<"чистим "<<one->cid<<" "<<one->url;
             one->cid=-1;
             one->url="";
             }

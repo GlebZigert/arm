@@ -576,18 +576,20 @@ timeline.pause_signal.connect(f_paused)
         console.log("тревога на камере ",Axxon.camera(id).name," но ее лайвстрим отсутствует")
         return
         }
-
+        console.log("[1]")
         if(storage_live===live){
-
+     console.log("[2]")
 
             storage_live=live
             pause_play=play
+            multivm.add_alarm_camera(id)
             timeline.to_live()
 
 
  //multivm.vm_start(id,Axxon.camera(id).livestream_low,StreamType.Streaming)
-            multivm.add_alarm_camera(id)
+
         }else{
+             console.log("[3]")
         alarms.append({cid: id})
             console.log("alarms: ",alarms.count)
             for(var i=0;i<alarms.count;i++){
