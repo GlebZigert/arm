@@ -11,6 +11,7 @@
 #include "qml/video/Player/preview.h"
 #include "qml/video/Player/runner.h"
 #include "qml/video/Player/Streamercontainer_qml_accesser.h"
+#include "qml/video/Player/logutils.h"
 #endif
 
 
@@ -23,12 +24,17 @@ int main(int argc, char *argv[])
     //qputenv("QT_LOGGING_RULES", "*.debug=false;qml=false");
     #endif
 
+
+    LOGUTILS::initLogging();
+
     //Глеб - регистрирую свои классы
     #ifndef WIN32
     qmlRegisterType<Preview>("Preview",1,0,"Preview");
     qmlRegisterType<VideoPlayer>("VideoPlayer",1,0,"VideoPlayer");
     qmlRegisterType<Model>("Model",1,0,"Model");
     qmlRegisterType<StreamerContainer_QML_accesser>("StreamerContainer_QML_accesser",1,0,"StreamerContainer_QML_accesser");
+
+
 
     Runner::declareQML();
     #endif

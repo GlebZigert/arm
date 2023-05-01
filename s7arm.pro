@@ -17,6 +17,7 @@ SOURCES += \
         main.cpp \
         printer.cpp \
         qml/video/Player/Streamercontainer_qml_accesser.cpp \
+        qml/video/Player/logutils.cpp \
         qml/video/Player/preview.cpp \
         qml/video/Player/previewcontainer.cpp \
         qml/video/Player/previewcontaineraccesser.cpp \
@@ -46,6 +47,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     printer.h \
     qml/video/Player/Streamercontainer_qml_accesser.h \
+    qml/video/Player/logutils.h \
     qml/video/Player/preview.h \
     qml/video/Player/previewcontainer.h \
     qml/video/Player/previewcontaineraccesser.h \
